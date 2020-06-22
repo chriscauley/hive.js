@@ -9,13 +9,35 @@ const geo_cache = {}
 const B = {
   storage: new Storage('saved_games'),
   save: (b) => B.storage.set(b.id, B.toJson(b)),
-  get: (id) => B.storage.get(id),
+  get: (id) => {
+    return (window.b = B.storage.get(id))
+  },
   add: (b, piece, index) => b.pieces[index].push(piece),
   move: (b, i1, i2) => b.pieces[i2].push(b.pieces[i1].pop()),
-  toJson: (b) => pick(b, ['pieces', 'id']),
+  toJson: (b) =>
+    pick(b, [
+      'pieces',
+      'id',
+      'pieces_1',
+      'pieces_2',
+      'piece_types',
+      'piece_owners',
+    ]),
   new: (options) => {
-    const board = { ...options }
-    board.id = Math.random()
+    const board = {
+      ...options,
+      id: Math.random(),
+      piece_types: [],
+      piece_owner: [],
+    }
+    board.pieces_1.forEach((type) => {
+      board.piece_types.push(type)
+      board.piece_owner.push(1)
+    })
+    board.pieces_2.forEach((type) => {
+      board.piece_types.push(type)
+      board.piece_owner.push(2)
+    })
     const WH = `${board.W},${board.H}`
     if (!geo_cache[WH]) {
       geo_cache[WH] = new Geo(board)

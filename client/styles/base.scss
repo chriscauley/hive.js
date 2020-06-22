@@ -1,1 +1,10 @@
-@import './hex.scss'
+@import './hex.scss';
+
+.rjsf {
+  .checkboxes {
+    @apply flex flex-wrap;
+    .checkbox {
+      @apply pr-4 w-1/3;
+    }
+  }
+}

@@ -9,8 +9,8 @@
   background: linear-gradient(135deg, #90F7EC 10%, #32CCBC 100%);
   display: flex;
   flex-wrap: wrap;
-  padding: (2 * $size) $size;
-  width: 9 * ($hex_w + $buffer); /* TODO this is approximate */
+  padding: 2 * $size;
+  width: 13 * ($hex_w + $buffer); /* TODO this is approximate */
   .item {
     @apply relative;
     width: $hex_w / 2 + $buffer;

@@ -1,0 +1,55 @@
+{
+  "ignorePatterns": ["client/posts/javascript/scroll-header/scroll.js"],
+  "parser": "babel-eslint",
+  "extends": [
+    "prettier",
+    "eslint:recommended",
+    "plugin:react/recommended"
+  ],
+
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [
+          ".js",
+        ]
+      }
+    },
+    "react": { "version": "detect" },
+  },
+
+  "plugins": [
+    "prettier",
+    "promise",
+    "react"
+  ],
+
+  "rules": {
+    "prettier/prettier": ["error", {
+      "singleQuote": true,
+      "trailingComma": "all",
+      "semi": false,
+    }],
+    "no-var": 2,
+    "no-console": [2, { "allow": ["warn", "error"] }],
+    "eol-last": [2, "always"],
+    "no-multiple-empty-lines": [2, {"max": 1, "maxEOF": 0}],
+    "eqeqeq": 2,
+    "prefer-const": ["error", { "destructuring": "all" }],
+    "no-unused-vars": ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+    "react/prop-types": 0,
+    "react/no-unescaped-entities": 0,
+  },
+
+  "env": {
+    "browser": true,
+    "jest": true,
+    "es6": true,
+  },
+
+  "globals": {
+    "document": false,
+    "window": false,
+    "process": true,
+  }
+}

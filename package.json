@@ -1,0 +1,45 @@
+{
+  "main": "client/index.html",
+  "author": "chriscauley <chris@lablackey.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "rm -rf docs; parcel build client/index.html -d docs --public-url /hive.js/",
+    "develop": "DRAFT=1 parcel client/index.html -p 8169 --public-url /static/ --no-hmr",
+    "lint": "yarn eslint client"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chriscauley/hive.js"
+  },
+  "dependencies": {
+    "@babel/core": "^7.0.0-0",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/preset-env": "^7.9.5",
+    "@unrest/core": "^0.0.1",
+    "@unrest/css": "chriscauley/unrest-css",
+    "@unrest/react-config-hook": "^0.0.3",
+    "@unrest/tailwind": "^0.0.2",
+    "classnames": "^2.2.6",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.11.0",
+    "parcel": "^1.12.4",
+    "react": ">=15",
+    "react-dom": "^16.13.1",
+    "react-jsonschema-form": "^2.0.0-alpha.1",
+    "react-markdown": "^4.3.1",
+    "react-router-dom": "^5.1.2",
+    "react-tabs": "^3.1.1",
+    "tailwindcss": "^1.4.5",
+    "use-global-hook": "^0.1.12"
+  },
+  "devDependencies": {
+    "@babel/preset-react": "^7.9.4",
+    "babel-eslint": "^10.1.0",
+    "eslint-plugin-prettier": "^3.1.3",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.19.0",
+    "jest": "^26.0.1",
+    "prettier": "^2.0.5",
+    "sass": "^1.26.3"
+  }
+}

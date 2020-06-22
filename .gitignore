@@ -1,0 +1,4 @@
+# node related
+.cache
+dist
+node_modules

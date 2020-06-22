@@ -1,0 +1,33 @@
+.hex-grid {
+  $size: 50px;
+  $sqrt3: 1.73205080757;
+  $hex_w: 2 * $size;
+  $hex_h: $sqrt3 * $size;
+  $cell_w: 0.75 * $hex_w;
+  $cell_h: $hex_h;
+  $buffer: 5px;
+  background: linear-gradient(135deg, #90F7EC 10%, #32CCBC 100%);
+  display: flex;
+  flex-wrap: wrap;
+  padding: (2 * $size) $size;
+  width: 9 * ($hex_w + $buffer); /* TODO this is approximate */
+  .item {
+    @apply relative;
+    width: $hex_w / 2 + $buffer;
+    height: $hex_h + $buffer;
+    margin: 0 $hex_w / 8;
+    .content {
+      @apply flex items-center justify-center absolute;
+      clip-path: polygon(75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%, 25% 0);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      height: $hex_h;
+      width: $hex_w;
+    }
+    &:nth-child(even) .content {
+      margin-top: - ($hex_h / 2 + 2px);
+    }
+  }
+}

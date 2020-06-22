@@ -1320,6 +1320,11 @@
   resolved "https://registry.yarnpkg.com/@unrest/react-config-hook/-/react-config-hook-0.0.3.tgz#10f0a2ff0735af32b17a55ae37aa55772c837a2f"
   integrity sha512-n5yGh0emGtCmSOSmCN2QF9htMYIBvZ7aoMuVvfSu/bqpOoxioqzDvbI9r4wHlCaYWwJfgOY7S42E6q9DVByYtA==
 
+"@unrest/react-jsonschema-form@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@unrest/react-jsonschema-form/-/react-jsonschema-form-0.0.2.tgz#cb620eff33702d3452c72b81eaeb7b324e728fa1"
+  integrity sha512-4eTFUO4/waCkTujfPC1J2s4Ht3ryXN4wm8RBQ9sHX1ZhSPvLJc0lMLQCrs8TkYA4hC1A05LMyjsmTRZipz9y0Q==
+
 "@unrest/tailwind@^0.0.2":
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/@unrest/tailwind/-/tailwind-0.0.2.tgz#e2d1e49c9cf6f11f9ebfd79eae77a442f2c5cb7f"

@@ -1,19 +1,13 @@
 import React from 'react'
-import { range } from 'lodash'
-import './styles.scss'
+import Board from './Board'
 
-class Game extends React.Component {
-  render() {
-    return (
-      <div className="hex-grid">
-        {range(30).map((i) => (
-          <div className="item" key={i}>
-            <div className="content">{i}</div>
-          </div>
-        ))}
-      </div>
-    )
-  }
+function Game(props) {
+  const board = Board.get(props.match.params.board_id)
+  return (
+    <div>
+      <Board.Component board={board} />
+    </div>
+  )
 }
 
 export default Game

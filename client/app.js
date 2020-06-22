@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom'
 // import classnames from 'classnames'
 import { HashRouter, Route } from 'react-router-dom'
 
+import Nav from './components/Nav'
+import NewGame from './hive/NewGame'
 import Game from './hive/Game'
 
 const App = () => {
@@ -10,7 +12,9 @@ const App = () => {
   return (
     <HashRouter>
       <div className="app-content">
-        <Route exact path="/" component={Game} />
+        <Nav />
+        <Route exact path="/" component={NewGame} />
+        <Route exact path="/play/:board_id/" component={Game} />
       </div>
     </HashRouter>
   )

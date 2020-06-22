@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "build": "rm -rf docs; parcel build client/index.html -d docs --public-url /hive.js/",
-    "develop": "DRAFT=1 parcel client/index.html -p 8169 --public-url /static/ --no-hmr",
+    "develop": "parcel client/index.html -p 4483",
     "lint": "yarn eslint client"
   },
   "repository": {

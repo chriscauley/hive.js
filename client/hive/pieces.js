@@ -1,7 +1,7 @@
 const custom = [
-  'assassin_bug',
+  'assasin_bug',
   'dragonfly',
-  'earthwork',
+  'earthworm',
   'earwig',
   'firefly',
   'mantis',
@@ -22,8 +22,10 @@ const original = [
   'spider',
 ]
 
+const all = original.concat(custom)
+
 export default {
   original,
   custom,
-  all: original.concat(custom),
+  all,
 }

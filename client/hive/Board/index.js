@@ -16,8 +16,10 @@ const B = {
   move: (b, i1, i2) => b.pieces[i2].push(b.pieces[i1].pop()),
   toJson: (b) =>
     pick(b, [
-      'pieces',
       'id',
+      'W',
+      'H',
+      'pieces',
       'pieces_1',
       'pieces_2',
       'piece_types',
@@ -28,15 +30,15 @@ const B = {
       ...options,
       id: Math.random(),
       piece_types: [],
-      piece_owner: [],
+      piece_owners: [],
     }
     board.pieces_1.forEach((type) => {
       board.piece_types.push(type)
-      board.piece_owner.push(1)
+      board.piece_owners.push(1)
     })
     board.pieces_2.forEach((type) => {
       board.piece_types.push(type)
-      board.piece_owner.push(2)
+      board.piece_owners.push(2)
     })
     const WH = `${board.W},${board.H}`
     if (!geo_cache[WH]) {

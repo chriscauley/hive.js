@@ -1,33 +1,80 @@
+$size: 2em;
 .hex-grid {
-  $size: 50px;
+  --columns: 5; /* should be overwrittenby component */
   $sqrt3: 1.73205080757;
   $hex_w: 2 * $size;
   $hex_h: $sqrt3 * $size;
   $cell_w: 0.75 * $hex_w;
   $cell_h: $hex_h;
-  $buffer: 5px;
-  background: linear-gradient(135deg, #90F7EC 10%, #32CCBC 100%);
-  display: flex;
-  flex-wrap: wrap;
-  padding: 2 * $size;
-  width: 13 * ($hex_w + $buffer); /* TODO this is approximate */
+  $buffer: 0.25em;
+  font-size: 16px;
+  .row {
+    width: calc(var(--columns) * #{$cell_w + $buffer});
+    display: flex;
+  }
   .item {
     @apply relative;
     width: $hex_w / 2 + $buffer;
     height: $hex_h + $buffer;
     margin: 0 $hex_w / 8;
     .content {
-      @apply flex items-center justify-center absolute;
+      background: rgba(128,128,128,0.5);
       clip-path: polygon(75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%, 25% 0);
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: white;
       height: $hex_h;
+      left: 50%;
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
       width: $hex_w;
     }
     &:nth-child(even) .content {
-      margin-top: - ($hex_h / 2 + 2px);
+      margin-top: - ($hex_h / 2 + 0.08em);
     }
+  }
+}
+
+$custom: assasin_bug dragonfly earthworm earwig firefly mantis shield_bug tick wasp;
+$original: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spider;
+
+@each $type in $original {
+  .type-#{$type} {
+    background-image: url(../images/original/#{$type}.png);
+  }
+}
+
+@each $type in $custom {
+  .type-#{$type} {
+    background-image: url(../images/custom/#{$type}.png);
+  }
+}
+
+.hex-grid .item .content .piece {
+  @apply flex items-center justify-center absolute w-full h-full;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  &.player-1, &.player-2 {
+    background-color: white;
+  }
+  &.player-2 {
+    filter: invert(1);
+  }
+}
+
+.Game {
+  background: linear-gradient(135deg, #90F7EC 10%, #32CCBC 100%);
+  display: inline-block;
+  padding: 2 * $size (3 * $size);
+  position: relative;
+  .player_1, .player_2 {
+    position: absolute;
+    top: $size;
+  }
+  .player_1 {
+    left: $size / 2;
+  }
+  .player_2 {
+    right: $size / 2;
   }
 }

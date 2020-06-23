@@ -1,32 +1,48 @@
 import React from 'react'
-import withMouse from '../withMouse'
+import withBoard from '../withBoard'
+import { useDrag, useDrop } from 'react-dnd'
+
+const Tile = ({ className, target }) => {
+  const [_, dragRef] = useDrag({
+    item: target,
+    canDrag: () => true,
+  })
+  return <div className={className} ref={dragRef} />
+}
+
+const TileStack = ({ cell, move }) => {
+  const [{ _isOver, _canDrop }, dropRef] = useDrop({
+    accept: 'cell',
+    canDrop: () => true,
+    drop: (_from) => move(_from, cell),
+    collect: (monitor) => ({
+      isOver: !!monitor.isOver(),
+      canDrop: !!monitor.canDrop(),
+    }),
+  })
+  return (
+    <div className="item">
+      <div className="content" ref={dropRef}>
+        {cell.stack.map((item, i) => (
+          <Tile className={item} key={i} target={cell} />
+        ))}
+      </div>
+    </div>
+  )
+}
 
 class BoardComponent extends React.Component {
   render() {
-    const { hover, mousedown, mouseup } = this.props.mouse.actions
     const { className = '' } = this.props
+    const { board, move } = this.props.game
     const W = this.props.rows[0].length
     const style = { '--columns': W }
-    const _down = (cell) => () => mousedown(cell.target)
-    const _up = (cell) => () => mouseup(cell.target)
     return (
       <div className={'hex-grid ' + className} style={style}>
         {this.props.rows.map((row, ir) => (
           <div className="row" key={ir}>
             {row.map((cell, ic) => (
-              <div className="item" key={ic}>
-                <div
-                  className="content"
-                  onMouseDown={() => mousedown(cell.target)}
-                  onMouseUp={() => mouseup(cell.target)}
-                  onMouseOver={() => hover(cell.target)}
-                  onDragStart={(e) => e.preventDefault()}
-                >
-                  {cell.stack.map((item, i) => (
-                    <div className={item} key={i} />
-                  ))}
-                </div>
-              </div>
+              <TileStack key={ic} cell={cell} board={board} move={move} />
             ))}
           </div>
         ))}
@@ -35,4 +51,4 @@ class BoardComponent extends React.Component {
   }
 }
 
-export default withMouse(BoardComponent)
+export default withBoard(BoardComponent)

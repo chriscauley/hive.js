@@ -5,10 +5,8 @@ import Board from './Board'
 let board
 
 const actions = {
-  hover: (store, hover_index) => store.setState({ hover_index }),
-  mousedown: (store, click_target) => store.setState({ click_target }),
-  mouseup: (store, drop_target) => {
-    Board.move(board, store.state.click_target, drop_target)
+  move: (store, from_target, to_target) => {
+    Board.move(board, from_target, to_target)
 
     // just need to trigger reflow, hash isn't used anywhere
     store.setState({ hash: board.hash })
@@ -17,20 +15,21 @@ const actions = {
 
 const makeHook = globalHook(React, {}, actions)
 
-export default function withMouse(Component, _options = {}) {
-  function MouseProvider(props) {
+export default function withBoard(Component, _options = {}) {
+  function BoardProvider(props) {
     const [state, actions] = makeHook()
 
     const connectedProps = {
       ...props,
-      mouse: {
+      game: {
         ...state,
-        actions,
+        ...actions,
+        board,
         useBoard: (b) => (board = b),
       },
     }
     return <Component {...connectedProps} />
   }
-  MouseProvider.WrappedComponent = Component
-  return MouseProvider
+  BoardProvider.WrappedComponent = Component
+  return BoardProvider
 }

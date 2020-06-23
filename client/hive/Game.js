@@ -1,7 +1,8 @@
 import React from 'react'
 
 import Board from './Board'
-import withMouse from './withMouse'
+import BoardComponent from './Board/Component'
+import withBoard from './withBoard'
 
 const pieceToClass = (board, piece_id) => {
   const type = board.piece_types[piece_id]
@@ -21,7 +22,7 @@ const toRows = (board) => {
     const cell = {
       index,
       stack: [],
-      target: { index },
+      type: 'cell',
     }
     row.push(cell)
     stack.forEach((piece) => {
@@ -39,7 +40,8 @@ const toRows = (board) => {
     players[owner].push([
       {
         stack: [pieceToClass(board, piece_id)],
-        target: { piece_id },
+        piece_id,
+        type: 'cell',
       },
     ])
   })
@@ -54,16 +56,16 @@ class Game extends React.Component {
   state = {}
   render() {
     const board = Board.get(this.props.match.params.board_id)
-    this.props.mouse.useBoard(board)
+    this.props.game.useBoard(board)
     const { rows, player_1, player_2 } = toRows(board)
     return (
       <div className="Game">
-        <Board.Component rows={player_1} className="player_1" />
-        <Board.Component rows={player_2} className="player_2" />
-        <Board.Component rows={rows} className="game_board" />
+        <BoardComponent rows={player_1} className="player_1" />
+        <BoardComponent rows={player_2} className="player_2" />
+        <BoardComponent rows={rows} className="game_board" />
       </div>
     )
   }
 }
 
-export default withMouse(Game)
+export default withBoard(Game)

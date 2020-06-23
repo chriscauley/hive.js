@@ -2,7 +2,6 @@ import Storage from '@unrest/storage'
 import { pick } from 'lodash'
 
 import Geo from './Geo'
-import Component from './Component'
 
 const geo_cache = {}
 
@@ -70,7 +69,6 @@ const B = {
     B.save(board)
     return board
   },
-  Component,
   getGeo: (board) => {
     const WH = `${board.W},${board.H}`
     if (!geo_cache[board.WH]) {

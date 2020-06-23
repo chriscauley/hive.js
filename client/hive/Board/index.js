@@ -15,7 +15,7 @@ const B = {
     }
     B.current_hash = b.hash
     b.reverse = {}
-    B.getGeo(b).indexes.forEach((index) => (b.reverse[b.pieces[index]] = index))
+    B.getGeo(b).indexes.forEach((index) => (b.reverse[b.stacks[index]] = index))
     B.storage.set(b.id, B.toJson(b))
   },
   get: (id) => {
@@ -32,9 +32,9 @@ const B = {
     const old_index =
       piece_id === undefined ? target.index : b.reverse[piece_id]
     if (old_index) {
-      piece_id = b.pieces[old_index].pop()
+      piece_id = b.stacks[old_index].pop()
     }
-    b.pieces[target2.index].push(piece_id)
+    b.stacks[target2.index].push(piece_id)
     B.save(b)
   },
   toJson: (b) =>
@@ -42,7 +42,7 @@ const B = {
       'id',
       'W',
       'H',
-      'pieces',
+      'stacks',
       'pieces_1',
       'pieces_2',
       'piece_types',
@@ -66,7 +66,7 @@ const B = {
       board.piece_owners.push(2)
     })
     const geo = B.getGeo(board)
-    board.pieces = geo.indexes.map(() => [])
+    board.stacks = geo.indexes.map(() => [])
     B.save(board)
     return board
   },

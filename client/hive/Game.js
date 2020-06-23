@@ -13,7 +13,7 @@ const toRows = (board) => {
   const used = {}
   const rows = []
   let row
-  board.pieces.forEach((stack, index) => {
+  board.stacks.forEach((stack, index) => {
     if (index % board.W === 0) {
       row = []
       rows.push(row)

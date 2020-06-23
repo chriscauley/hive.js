@@ -26,6 +26,7 @@ const TileStack = ({ cell, move }) => {
         {cell.stack.map((item, i) => (
           <Tile className={item} key={i} target={cell} />
         ))}
+        {cell.stack.length === 0 && <div className="piece hex hex-empty" />}
       </div>
     </div>
   )

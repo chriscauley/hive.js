@@ -1,12 +1,12 @@
 $size: 2em;
+$sqrt3: 1.73205080757;
+$hex_w: 2 * $size;
+$hex_h: $sqrt3 * $size;
+$cell_w: 0.75 * $hex_w;
+$cell_h: $hex_h;
+$buffer: 0.25em;
 .hex-grid {
   --columns: 5; /* should be overwrittenby component */
-  $sqrt3: 1.73205080757;
-  $hex_w: 2 * $size;
-  $hex_h: $sqrt3 * $size;
-  $cell_w: 0.75 * $hex_w;
-  $cell_h: $hex_h;
-  $buffer: 0.25em;
   font-size: 16px;
   .row {
     width: calc(var(--columns) * #{$cell_w + $buffer});
@@ -18,8 +18,6 @@ $size: 2em;
     height: $hex_h + $buffer;
     margin: 0 $hex_w / 8;
     .content {
-      background: rgba(128,128,128,0.5);
-      clip-path: polygon(75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%, 25% 0);
       height: $hex_h;
       left: 50%;
       position: absolute;
@@ -37,7 +35,7 @@ $custom: assasin_bug dragonfly earthworm earwig firefly mantis shield_bug tick w
 $original: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spider;
 
 @each $type in $original {
-  .type-#{$type} {
+  .type-#{$type}:before {
     background-image: url(../images/original/#{$type}.png);
   }
 }
@@ -48,21 +46,20 @@ $original: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spi
   }
 }
 
-.hex-grid .item .content:hover {
-  box-shadow: inset 0 0 5px 8px #080;
-}
-
 .hex-grid .item .content .piece {
   @apply flex items-center justify-center absolute w-full h-full;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
   cursor: pointer;
-  &.player-1, &.player-2 {
-    background-color: white;
-  }
-  &.player-2 {
+  &.hex-player_2:before {
     filter: invert(1);
+  }
+  &.type:before {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
   }
 }
 
@@ -81,4 +78,14 @@ $original: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spi
   .player_2 {
     right: $size / 2;
   }
+}
+
+.hex {
+  background-size: contain;
+}
+
+.hex.debug {
+  float: left;
+  width: $hex_w * 2;
+  height: $hex_h * 2;
 }

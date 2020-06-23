@@ -3,11 +3,12 @@ import React from 'react'
 import Board from './Board'
 import BoardComponent from './Board/Component'
 import withBoard from './withBoard'
+import { makeSprites } from '../Sprites'
 
 const pieceToClass = (board, piece_id) => {
   const type = board.piece_types[piece_id]
   const player = board.piece_owners[piece_id]
-  return `piece player-${player} type-${type}`
+  return `piece hex-player_${player} type type-${type} hex `
 }
 
 const toRows = (board) => {
@@ -56,6 +57,7 @@ class Game extends React.Component {
   state = {}
   render() {
     const board = Board.get(this.props.match.params.board_id)
+    makeSprites() // idempotent
     this.props.game.useBoard(board)
     const { rows, player_1, player_2 } = toRows(board)
     return (

@@ -1,15 +1,22 @@
 import { getGeo } from './Geo'
 
-export default (board, remove_index) => {
+export default (board, indexes) => {
+  if (typeof indexes === 'number') {
+    indexes = [indexes]
+  }
   let hive_count = 0
   const hive_map = {}
   const geo = getGeo(board)
   Object.keys(board.stacks).forEach((index) => {
-    if (remove_index === index) {
+    index = parseInt(index)
+    if (indexes.includes(index)) {
       return
     }
     let hive_no
     geo.touching[index].forEach((touched_index) => {
+      if (indexes.includes(touched_index)) {
+        return
+      }
       const touched_no = hive_map[touched_index]
       if (touched_no && touched_no !== hive_no) {
         if (hive_no) {
@@ -30,4 +37,5 @@ export default (board, remove_index) => {
     }
     hive_map[index] = hive_no
   })
+  return new Set(Object.values(hive_map)).size > 1
 }

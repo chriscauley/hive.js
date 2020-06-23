@@ -82,7 +82,7 @@ export const ant = (board, index) => {
 
 export const grasshopper = (board, index) => {
   const geo = getGeo(board)
-  const moves = geo.touching[index].map((target_index,i_dir) => {
+  const moves = geo.touching[index].map((target_index, i_dir) => {
     // grasshopper must first step on hive
     if (!board.stacks[target_index]) {
       return

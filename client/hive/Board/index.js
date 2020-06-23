@@ -12,9 +12,26 @@ const B = {
     if (b.reverse && B.current_hash === b.hash) {
       return
     }
+
+    // get derrived state of board
     B.current_hash = b.hash
     b.reverse = {}
-    B.getGeo(b).indexes.forEach((index) => (b.reverse[b.stacks[index]] = index))
+    const geo = B.getGeo(b)
+    Object.entries(b.stacks).forEach(([index, stack]) => {
+      if (!stack || stack.length === 0) {
+        // prune unused stacks
+        delete b.stacks[index]
+        return
+      }
+      stack.forEach(piece_id => {
+        (b.reverse[piece_id] = index)
+      })
+      const [x, y] = geo.index2xy(index)
+      if (x < 1 || y < 1 || x > b.W -1 || y > b.H -1) {
+        throw 'NotImplemented: needs resize'
+      }
+    })
+
     B.storage.set(b.id, B.toJson(b))
   },
   get: (id) => {
@@ -32,6 +49,9 @@ const B = {
       piece_id === undefined ? target.index : b.reverse[piece_id]
     if (old_index) {
       piece_id = b.stacks[old_index].pop()
+    }
+    if (!b.stacks[target2.index]) {
+      b.stacks[target2.index] = []
     }
     b.stacks[target2.index].push(piece_id)
     B.save(b)
@@ -65,7 +85,7 @@ const B = {
       board.piece_owners.push(2)
     })
     const geo = B.getGeo(board)
-    board.stacks = geo.indexes.map(() => [])
+    board.stacks = {}
     B.save(board)
     return board
   },

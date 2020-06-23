@@ -15,7 +15,7 @@ const toRows = (board) => {
   const used = {}
   const rows = []
   let row
-  board.stacks.forEach((stack, index) => {
+  Board.getGeo(board).indexes.forEach(index => {
     if (index % board.W === 0) {
       row = []
       rows.push(row)
@@ -26,7 +26,7 @@ const toRows = (board) => {
       type: 'cell',
     }
     row.push(cell)
-    stack.forEach((piece) => {
+    board.stacks[index] && board.stacks[index].forEach((piece) => {
       used[piece] = true
       cell.stack.push(pieceToClass(board, piece))
     })

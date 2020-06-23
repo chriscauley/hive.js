@@ -1,16 +1,15 @@
 import Storage from '@unrest/storage'
 import { pick } from 'lodash'
 
-import Geo from './Geo'
+import { getGeo } from './Geo'
 
-const geo_cache = {}
 const board_cache = {}
 const PLAYER_COUNT = 2
 
 const wouldBreakHive = (board, hive, remove_index) => {
   let hive_count = 0
   const hive_map = {}
-  const geo = B.getGeo(board)
+  const geo = getGeo(board)
   hive.forEach((index) => {
     if (remove_index === index) {
       return
@@ -50,7 +49,7 @@ const B = {
     // get derrived state of board
     B.current_hash = b.hash
     b.reverse = {}
-    const geo = B.getGeo(b)
+    const geo = getGeo(b)
     Object.entries(b.stacks).forEach(([index, stack]) => {
       if (!stack || stack.length === 0) {
         // prune unused stacks
@@ -128,15 +127,8 @@ const B = {
     B.save(board)
     return board
   },
-  getGeo: (board) => {
-    const WH = `${board.W},${board.H}`
-    if (!geo_cache[board.WH]) {
-      geo_cache[WH] = new Geo(board)
-    }
-    return geo_cache[WH]
-  },
   buildMoves: (board) => {
-    const geo = B.getGeo(board)
+    const geo = getGeo(board)
 
     // is index touching a player? (for placing moves)
     const player_touching = {

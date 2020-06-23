@@ -2,6 +2,16 @@ import { range } from 'lodash'
 
 const _mod = (a, b) => ((a % b) + b) % b
 
+const geo_cache = {}
+
+export const getGeo = (board) => {
+  const WH = `${board.W},${board.H}`
+  if (!geo_cache[board.WH]) {
+    geo_cache[WH] = new Geo(board)
+  }
+  return geo_cache[WH]
+}
+
 export default class Geo {
   constructor(options) {
     if (!options.W) {

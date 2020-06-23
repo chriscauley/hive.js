@@ -2,41 +2,10 @@ import Storage from '@unrest/storage'
 import { pick } from 'lodash'
 
 import { getGeo } from './Geo'
+import wouldBreakHive from './wouldBreakHive'
 
 const board_cache = {}
 const PLAYER_COUNT = 2
-
-const wouldBreakHive = (board, hive, remove_index) => {
-  let hive_count = 0
-  const hive_map = {}
-  const geo = getGeo(board)
-  hive.forEach((index) => {
-    if (remove_index === index) {
-      return
-    }
-    let hive_no
-    geo.touching[index].forEach((touched_index) => {
-      const touched_no = hive_map[touched_index]
-      if (touched_no && touched_no !== hive_no) {
-        if (hive_no) {
-          // set everything in hive equal to this hive_no
-          Object.entries(hive_map).forEach(([index, _no]) => {
-            if (_no === touched_no) {
-              hive_map[index] = hive_no
-            }
-          })
-        } else {
-          hive_no = touched_no
-        }
-      }
-    })
-    if (!hive_no) {
-      hive_count++
-      hive_no = hive_count
-    }
-    hive_map[index] = hive_no
-  })
-}
 
 const B = {
   storage: new Storage('saved_games'),
@@ -136,14 +105,11 @@ const B = {
       2: {},
     }
 
-    const hive = []
-
     board.piece_owners.forEach((_owner, piece_id) => {
       const index = board.reverse[piece_id]
       if (index === undefined) {
         return
       }
-      hive.push(index)
 
       const player = board.piece_owners[piece_id]
       geo.touching[index].forEach((index2) => {
@@ -174,7 +140,7 @@ const B = {
       }
 
       const piece_index = board.reverse[piece_id]
-      if (wouldBreakHive(board, hive, piece_index)) {
+      if (wouldBreakHive(board, piece_index)) {
         return []
       }
 

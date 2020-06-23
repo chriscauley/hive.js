@@ -1,0 +1,18 @@
+@import "./var.scss";
+
+.Game {
+  background: linear-gradient(135deg, #90F7EC 10%, #32CCBC 100%);
+  display: inline-block;
+  padding: 2 * $size (3 * $size);
+  position: relative;
+  .player_1, .player_2 {
+    position: absolute;
+    top: $size;
+  }
+  .player_1 {
+    left: $size / 2;
+  }
+  .player_2 {
+    right: $size / 2;
+  }
+}

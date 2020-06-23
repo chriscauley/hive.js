@@ -1,0 +1,31 @@
+$custom: assasin_bug dragonfly earthworm earwig firefly mantis shield_bug tick wasp;
+$original: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spider;
+
+@each $type in $original {
+  .type-#{$type}:before {
+    background-image: url(../images/original/#{$type}.png);
+  }
+}
+
+@each $type in $custom {
+  .type-#{$type} {
+    background-image: url(../images/custom/#{$type}.png);
+  }
+}
+
+.hex-grid .item .content .piece {
+  @apply flex items-center justify-center absolute w-full h-full;
+  cursor: pointer;
+  &.hex-player_2:before {
+    filter: invert(1);
+  }
+  &.type:before {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+}

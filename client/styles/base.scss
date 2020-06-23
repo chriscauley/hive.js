@@ -8,3 +8,7 @@
     }
   }
 }
+
+[data-index]:before {
+  content: attr(data-index);
+}

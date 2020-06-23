@@ -2,31 +2,48 @@ import React from 'react'
 import withBoard from '../withBoard'
 import { useDrag, useDrop } from 'react-dnd'
 
-const Tile = ({ className, target }) => {
+const Tile = ({ className, target, board, index }) => {
   const [_, dragRef] = useDrag({
     item: target,
-    canDrag: () => true,
+    canDrag: () => board.moves[target.piece_id].length !== 0,
   })
-  return <div className={className} ref={dragRef} />
+  return (
+    <div
+      className={className}
+      ref={dragRef}
+      data-index={index}
+      data-piece_id={target.piece_id}
+    />
+  )
 }
 
-const TileStack = ({ cell, move }) => {
-  const [{ _isOver, _canDrop }, dropRef] = useDrop({
+const TileStack = ({ cell, move, board }) => {
+  const [{ _isOver, canDrop }, dropRef] = useDrop({
     accept: 'cell',
-    canDrop: () => true,
+    canDrop: (a) =>
+      window.DEBUG || board.moves[a.piece_id].includes(cell.index),
     drop: (_from) => move(_from, cell),
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
       canDrop: !!monitor.canDrop(),
     }),
   })
+  const c = canDrop ? ' green' : ''
   return (
     <div className="item">
       <div className="content" ref={dropRef}>
         {cell.stack.map((item, i) => (
-          <Tile className={item} key={i} target={cell} />
+          <Tile
+            className={item + c}
+            key={i}
+            target={cell}
+            board={board}
+            index={cell.index}
+          />
         ))}
-        {cell.stack.length === 0 && <div className="piece hex hex-empty" />}
+        {cell.stack.length === 0 && (
+          <div className={'piece hex hex-empty' + c} data-index={cell.index} />
+        )}
       </div>
     </div>
   )

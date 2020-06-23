@@ -4,6 +4,40 @@ import { pick } from 'lodash'
 import Geo from './Geo'
 
 const geo_cache = {}
+const board_cache = {}
+const PLAYER_COUNT = 2
+
+const wouldBreakHive = (board, hive, remove_index) => {
+  let hive_count = 0
+  const hive_map = {}
+  const geo = B.getGeo(board)
+  hive.forEach((index) => {
+    if (remove_index === index) {
+      return
+    }
+    let hive_no
+    geo.touching[index].forEach((touched_index) => {
+      const touched_no = hive_map[touched_index]
+      if (touched_no && touched_no !== hive_no) {
+        if (hive_no) {
+          // set everything in hive equal to this hive_no
+          Object.entries(hive_map).forEach(([index, _no]) => {
+            if (_no === touched_no) {
+              hive_map[index] = hive_no
+            }
+          })
+        } else {
+          hive_no = touched_no
+        }
+      }
+    })
+    if (!hive_no) {
+      hive_count++
+      hive_no = hive_count
+    }
+    hive_map[index] = hive_no
+  })
+}
 
 const B = {
   storage: new Storage('saved_games'),
@@ -23,19 +57,22 @@ const B = {
         delete b.stacks[index]
         return
       }
-      stack.forEach(piece_id => {
-        (b.reverse[piece_id] = index)
+      stack.forEach((piece_id) => {
+        b.reverse[piece_id] = parseInt(index)
       })
       const [x, y] = geo.index2xy(index)
-      if (x < 1 || y < 1 || x > b.W -1 || y > b.H -1) {
+      if (x < 1 || y < 1 || x > b.W - 1 || y > b.H - 1) {
         throw 'NotImplemented: needs resize'
       }
     })
 
+    B.buildMoves(b)
     B.storage.set(b.id, B.toJson(b))
   },
   get: (id) => {
-    const b = (window.b = B.storage.get(id))
+    const b = board_cache[id] || B.storage.get(id)
+    board_cache[id] = b
+    window.b = b
     B.save(b)
     return b
   },
@@ -54,6 +91,7 @@ const B = {
       b.stacks[target2.index] = []
     }
     b.stacks[target2.index].push(piece_id)
+    b.turn++
     B.save(b)
   },
   toJson: (b) =>
@@ -67,6 +105,7 @@ const B = {
       'piece_types',
       'piece_owners',
       'hash',
+      'turn',
     ]),
   new: (options) => {
     const board = {
@@ -75,6 +114,7 @@ const B = {
       hash: Math.random(),
       piece_types: [],
       piece_owners: [],
+      turn: 0,
     }
     board.pieces_1.forEach((type) => {
       board.piece_types.push(type)
@@ -84,7 +124,6 @@ const B = {
       board.piece_types.push(type)
       board.piece_owners.push(2)
     })
-    const geo = B.getGeo(board)
     board.stacks = {}
     B.save(board)
     return board
@@ -95,6 +134,60 @@ const B = {
       geo_cache[WH] = new Geo(board)
     }
     return geo_cache[WH]
+  },
+  buildMoves: (board) => {
+    const geo = B.getGeo(board)
+
+    // is index touching a player? (for placing moves)
+    const player_touching = {
+      1: {},
+      2: {},
+    }
+
+    const hive = []
+
+    board.piece_owners.forEach((_owner, piece_id) => {
+      const index = board.reverse[piece_id]
+      if (index === undefined) {
+        return
+      }
+      hive.push(index)
+
+      const player = board.piece_owners[piece_id]
+      geo.touching[index].forEach((index2) => {
+        if (!board.stacks[index2]) {
+          player_touching[player][index2] = true
+        }
+      })
+    })
+
+    const current_player = (board.turn % PLAYER_COUNT) + 1
+    const other_player = current_player === 1 ? 2 : 1
+    board.moves = board.piece_owners.map((owner, piece_id) => {
+      if (current_player !== owner) {
+        return []
+      }
+      if (board.turn === 0) {
+        return [geo.center]
+      }
+      if (board.turn === 1) {
+        return [geo.center + 1]
+      }
+
+      if (board.reverse[piece_id] === undefined) {
+        // piece has not been placed yet
+        return Object.keys(player_touching[current_player])
+          .filter((index) => !player_touching[other_player][index])
+          .map((index) => parseInt(index))
+      }
+
+      const piece_index = board.reverse[piece_id]
+      if (wouldBreakHive(board, hive, piece_index)) {
+        return []
+      }
+
+      return []
+    })
   },
 }
 

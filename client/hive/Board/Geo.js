@@ -18,6 +18,10 @@ export default class Geo {
     this.H = H
     this.AREA = W * H
     this.preCache()
+    this.center = this.xy2index([
+      Math.floor(this.W / 2),
+      Math.floor(this.H / 2),
+    ])
   }
 
   // needs to be converted from cartesian to hex
@@ -41,5 +45,15 @@ export default class Geo {
   preCache = () => {
     // const { W, H, xy2index } = this
     this.indexes = range(this.AREA)
+
+    // added to an index these give the up-left, up, ..., down-left cells
+    this.dindexes = {
+      0: [-1, -this.W, 1, this.W - 1, this.W, this.W + 1], // index is even
+      1: [-this.W - 1, -this.W, -this.W + 1, -1, this.W, 1], // index is odd
+    }
+    this.touching = {}
+    this.indexes.forEach((index) => {
+      this.touching[index] = this.dindexes[index % 2].map((di) => index + di)
+    })
   }
 }

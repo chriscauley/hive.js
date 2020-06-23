@@ -3,14 +3,15 @@ import { pick } from 'lodash'
 
 import { getGeo } from './Geo'
 import wouldBreakHive from './wouldBreakHive'
-import { stepAlongHive, nStepsAlongHive, ant } from './moves'
+import { stepAlongHive, nStepsAlongHive, ant, stepOnHive } from './moves'
 
 const board_cache = {}
 const PLAYER_COUNT = 2
 const move_map = {
   queen: stepAlongHive,
   ant,
-  beetle: (b, i) => stepAlongHive(b, i),
+  beetle: (b, i) => stepAlongHive(b, i).concat(stepOnHive(b, i)),
+  spider: (b, i) => nStepsAlongHive(b, i, 3),
 }
 
 const B = {

@@ -17,6 +17,14 @@ export const stepAlongHive = (board, index, excludes = []) => {
   })
 }
 
+export const stepOnHive = (board, index, excludes = []) => {
+  const geo = getGeo(board)
+  const touching = geo.touching[index]
+  return touching.filter((target_index) => {
+    return board.stacks[target_index] && !excludes.includes(target_index)
+  })
+}
+
 const _stepUntil = (board, index, excludes, condition) => {
   let _count = 0
   while (!condition(index, excludes)) {

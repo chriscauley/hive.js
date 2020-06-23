@@ -1,9 +1,11 @@
 import React from 'react'
-import Board from './Board'
 
-const pieceToClass = (board, piece) => {
-  const type = board.piece_types[piece]
-  const player = board.piece_owners[piece]
+import Board from './Board'
+import withMouse from './withMouse'
+
+const pieceToClass = (board, piece_id) => {
+  const type = board.piece_types[piece_id]
+  const player = board.piece_owners[piece_id]
   return `piece player-${player} type-${type}`
 }
 
@@ -11,16 +13,20 @@ const toRows = (board) => {
   const used = {}
   const rows = []
   let row
-  board.pieces.forEach((stack, i) => {
-    if (i % board.W === 0) {
+  board.pieces.forEach((stack, index) => {
+    if (index % board.W === 0) {
       row = []
       rows.push(row)
     }
-    const cell = []
+    const cell = {
+      index,
+      stack: [],
+      target: { index },
+    }
     row.push(cell)
     stack.forEach((piece) => {
       used[piece] = true
-      cell.push(pieceToClass(board, piece))
+      cell.stack.push(pieceToClass(board, piece))
     })
   })
 
@@ -29,8 +35,13 @@ const toRows = (board) => {
     2: [],
   }
 
-  board.piece_owners.forEach((owner, piece) => {
-    players[owner].push([[pieceToClass(board, piece)]])
+  board.piece_owners.forEach((owner, piece_id) => {
+    players[owner].push([
+      {
+        stack: [pieceToClass(board, piece_id)],
+        target: { piece_id },
+      },
+    ])
   })
   return {
     rows,
@@ -39,22 +50,20 @@ const toRows = (board) => {
   }
 }
 
-function Game(props) {
-  const board = Board.get(props.match.params.board_id)
-  const { rows, player_1, player_2 } = toRows(board)
-  return (
-    <div className="Game">
-      <div className="player_1">
-        <Board.Component rows={player_1} />
+class Game extends React.Component {
+  state = {}
+  render() {
+    const board = Board.get(this.props.match.params.board_id)
+    this.props.mouse.useBoard(board)
+    const { rows, player_1, player_2 } = toRows(board)
+    return (
+      <div className="Game">
+        <Board.Component rows={player_1} className="player_1" />
+        <Board.Component rows={player_2} className="player_2" />
+        <Board.Component rows={rows} className="game_board" />
       </div>
-      <div className="player_2">
-        <Board.Component rows={player_2} />
-      </div>
-      <div className="game_board">
-        <Board.Component rows={rows} />
-      </div>
-    </div>
-  )
+    )
+  }
 }
 
-export default Game
+export default withMouse(Game)

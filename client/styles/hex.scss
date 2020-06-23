@@ -48,6 +48,10 @@ $original: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spi
   }
 }
 
+.hex-grid .item .content:hover {
+  box-shadow: inset 0 0 5px 8px #080;
+}
+
 .hex-grid .item .content .piece {
   @apply flex items-center justify-center absolute w-full h-full;
   background-size: contain;

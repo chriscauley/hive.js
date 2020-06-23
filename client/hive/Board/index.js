@@ -3,11 +3,20 @@ import { pick } from 'lodash'
 
 import { getGeo } from './Geo'
 import wouldBreakHive from './wouldBreakHive'
+import { stepAlongHive, nStepsAlongHive, ant } from './moves'
 
 const board_cache = {}
 const PLAYER_COUNT = 2
+const move_map = {
+  queen: stepAlongHive,
+  ant,
+  beetle: (b, i) => stepAlongHive(b, i),
+}
 
 const B = {
+  stepAlongHive,
+  nStepsAlongHive,
+  ant,
   storage: new Storage('saved_games'),
   save: (b) => {
     // TODO currently saving on mouse move
@@ -144,7 +153,9 @@ const B = {
         return []
       }
 
-      return []
+      const piece_type = board.piece_types[piece_id]
+      const f = move_map[piece_type] || (() => [])
+      return f(board, piece_index)
     })
   },
 }

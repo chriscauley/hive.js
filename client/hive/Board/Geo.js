@@ -1,6 +1,6 @@
 import { range } from 'lodash'
 
-const _mod = (a, b) => ((a % b) + b) % b
+export const mod = (a, b) => ((a % b) + b) % b
 
 const geo_cache = {}
 
@@ -58,8 +58,8 @@ export default class Geo {
 
     // added to an index these give the up-left, up, ..., down-left cells
     this.dindexes = {
-      0: [-1, -this.W, 1, this.W - 1, this.W, this.W + 1], // index is even
-      1: [-this.W - 1, -this.W, -this.W + 1, -1, this.W, 1], // index is odd
+      0: [-1, -this.W, 1, this.W + 1, this.W, this.W - 1], // index is even
+      1: [-this.W - 1, -this.W, -this.W + 1, 1, this.W, -1], // index is odd
     }
     this.touching = {}
     this.indexes.forEach((index) => {

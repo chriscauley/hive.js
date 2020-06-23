@@ -66,8 +66,6 @@ const isTouchingEnemySpider = (board, owner, target_index) => {
   return fail_index !== undefined
 }
 
-window.ies = isTouchingEnemySpider
-
 export const ant = (board, index) => {
   const owner = board.piece_owners[last(board.stacks[index])]
   let moves = stepAlongHive(board, index)
@@ -80,4 +78,22 @@ export const ant = (board, index) => {
     }),
   )
   return moves.filter((i) => i !== undefined && i !== index)
+}
+
+export const grasshopper = (board, index) => {
+  const geo = getGeo(board)
+  const moves = geo.touching[index].map((target_index,i_dir) => {
+    // grasshopper must first step on hive
+    if (!board.stacks[target_index]) {
+      return
+    }
+
+    // grasshopper travels in same direction until it falls off hive
+    while (board.stacks[target_index]) {
+      const dindex = geo.dindexes[mod(target_index, 2)][i_dir]
+      target_index += dindex
+    }
+    return target_index
+  })
+  return moves.filter((i) => i !== undefined)
 }

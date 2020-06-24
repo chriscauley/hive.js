@@ -1,6 +1,5 @@
 import React from 'react'
 import withBoard from '../withBoard'
-import { useDrag, useDrop } from 'react-dnd'
 
 const getZ = (i, height) => {
   if (height < 4) {
@@ -9,56 +8,37 @@ const getZ = (i, height) => {
   return Math.max(i - height + 4, 0)
 }
 
-const Tile = ({ className, target, index, z }) => {
-  const [_, dragRef] = useDrag({
-    item: target,
-    canDrag: () => true,
-  })
+const Tile = withBoard(({ className, target, index, z, game }) => {
   return (
     <div
+      onClick={() => game.click(target)}
       className={className + ' stacked-' + z}
-      ref={dragRef}
       data-index={index}
       data-piece_id={target.piece_id}
     />
   )
-}
-
-const TileStack = ({ cell, move }) => {
-  const [{ _isOver, canDrop }, dropRef] = useDrop({
-    accept: 'cell',
-    canDrop: (_a) => window.DEBUG || true, //board.moves[a.piece_id].includes(cell.index),
-    drop: (_from) => move(_from, cell),
-    collect: (monitor) => ({
-      isOver: !!monitor.isOver(),
-      canDrop: !!monitor.canDrop(),
-    }),
-  })
-  const c = canDrop ? ' green' : ''
+})
+const TileStack = ({ cell }) => {
   return (
     <div className="item">
-      <div className="content" ref={dropRef}>
+      <div className="content">
         {cell.stack.map((item, i) => (
           <Tile
-            className={item + c}
+            className={item}
             key={i}
             z={getZ(i, cell.stack.length)}
             target={cell}
             index={cell.index}
           />
         ))}
-        {cell.stack.length === 0 && (
-          <div className={'piece hex hex-empty' + c} data-index={cell.index} />
-        )}
       </div>
     </div>
   )
 }
 
-class BoardComponent extends React.Component {
+export default class BoardComponent extends React.Component {
   render() {
     const { className = '', rows } = this.props
-    const { board, move } = this.props.game
     if (rows.length === 0) {
       return null
     }
@@ -69,7 +49,7 @@ class BoardComponent extends React.Component {
         {rows.map((row, ir) => (
           <div className="row" key={ir}>
             {row.map((cell, ic) => (
-              <TileStack key={ic} cell={cell} move={move} />
+              <TileStack key={ic} cell={cell} />
             ))}
           </div>
         ))}
@@ -77,5 +57,3 @@ class BoardComponent extends React.Component {
     )
   }
 }
-
-export default withBoard(BoardComponent)

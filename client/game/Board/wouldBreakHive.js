@@ -6,7 +6,9 @@ export default (board, indexes) => {
   }
 
   // if a stack is 2+ pieces high, moving top piece will not break hive
-  indexes = indexes.filter((i) => board.stacks[i] && board.stacks[i].length === 1)
+  indexes = indexes.filter(
+    (i) => board.stacks[i] && board.stacks[i].length === 1,
+  )
 
   let hive_count = 0
   const hive_map = {}

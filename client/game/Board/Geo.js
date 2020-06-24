@@ -10,6 +10,7 @@ export const getGeo = (board) => {
   if (!geo_cache[board.WH]) {
     geo_cache[WH] = new Geo(board, WH)
   }
+  window.G = geo_cache[WH]
   return geo_cache[WH]
 }
 
@@ -34,6 +35,7 @@ export default class Geo {
       Math.floor(this.W / 2),
       Math.floor(this.H / 2),
     ])
+    this.center -= 1 // bias to lower size
   }
 
   // needs to be converted from cartesian to hex

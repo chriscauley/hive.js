@@ -5,9 +5,11 @@ import Board from './Board'
 let board
 
 const actions = {
-  move: (store, from_target, to_target) => {
-    Board.move(board, from_target, to_target)
-
+  click: (store, target) => {
+    Board.click(board, target)
+    store.actions.update()
+  },
+  update: (store) => {
     // just need to trigger reflow, hash isn't used anywhere
     store.setState({ hash: board.hash })
   },

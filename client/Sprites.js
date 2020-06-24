@@ -28,11 +28,17 @@ const fill_map = {
   black: '#333',
 }
 
+const border_map = {
+  green: '#4a4',
+  red: '#a44',
+  blue: 'blue',
+}
+
 const makeHex = (canvas, fillStyle, strokeStyle) => {
   if (!fillStyle && !strokeStyle) {
     return
   }
-  const lineWidth = canvas.height / 20
+  const lineWidth = canvas.height / 10
   const outlineWidth = 1
   const ctx = canvas.getContext('2d')
   const x = canvas.width / 2
@@ -48,7 +54,7 @@ const makeHex = (canvas, fillStyle, strokeStyle) => {
     fillStyle = fill_map[fillStyle]
   }
   if (strokeStyle) {
-    _hex(ctx, strokeStyle, x, y, size)
+    _hex(ctx, border_map[strokeStyle] || strokeStyle, x, y, size)
     size -= lineWidth
   }
   _hex(ctx, fillStyle, x, y, size)

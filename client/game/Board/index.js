@@ -89,7 +89,7 @@ const B = {
       }
     })
 
-    B.buildMoves(b)
+    b.current_player = (b.turn % PLAYER_COUNT) + 1 // 1 on even, 2 on odd
     B.storage.set(b.id, B.toJson(b))
   },
   get: (id) => {
@@ -99,28 +99,28 @@ const B = {
     B.save(b)
     return b
   },
-  move: (b, target, target2) => {
+  nextTurn: (b) => {
+    b.turn++
     b.hash = Math.random()
-    if (target === undefined || !target2.index) {
-      return
-    }
-    let piece_id = target.piece_id
-    const old_index =
-      piece_id === undefined ? target.index : b.reverse[piece_id]
-    if (old_index) {
+    delete b.selected
+    B.save(b)
+  },
+  addPiece: (b, index, type, player_id) => {
+    const piece_id = b.piece_types.length
+    b.piece_types.push(type)
+    b.piece_owners.push(player_id)
+    b.stacks[index] = b.stacks[index] || []
+    b.stacks[index].push(piece_id)
+    B.nextTurn(b)
+  },
+  move: (b, piece_id, index) => {
+    const old_index = b.reverse[piece_id]
+    if (old_index !== undefined) {
       piece_id = b.stacks[old_index].pop()
     }
-    if (piece_id === 'new') {
-      piece_id = b.piece_types.length
-      b.piece_types.push(target.piece_type)
-      b.piece_owners.push(target.player_id)
-    }
-    if (!b.stacks[target2.index]) {
-      b.stacks[target2.index] = []
-    }
-    b.stacks[target2.index].push(piece_id)
-    b.turn++
-    B.save(b)
+    b.stacks[index] = b.stacks[index] || []
+    b.stacks[index].push(piece_id)
+    B.nextTurn(b)
   },
   toJson: (b) =>
     pick(b, [
@@ -136,7 +136,7 @@ const B = {
     ]),
   new: (options) => {
     const board = {
-      W: 3,
+      W: 4, // hex math only works with even boards
       H: 3,
       ...options,
       id: Math.random(),
@@ -149,21 +149,26 @@ const B = {
     B.save(board)
     return board
   },
-  buildMoves: (board) => {
-    const geo = getGeo(board)
 
-    // is index touching a player? (for placing moves)
+  getPlacement: (board, player_id) => {
+    const geo = getGeo(board)
+    if (board.turn === 0) {
+      return [geo.center]
+    }
+    if (board.turn === 1) {
+      return [geo.center + 1]
+    }
+
+    player_id = parseInt(player_id)
+    const other_player = player_id === 1 ? 2 : 1
+
+    // is index touching a player?
     const player_touching = {
       1: {},
       2: {},
     }
-
-    board.piece_owners.forEach((_owner, piece_id) => {
+    board.piece_owners.forEach((owner, piece_id) => {
       const index = board.reverse[piece_id]
-      if (index === undefined) {
-        return
-      }
-
       const player = board.piece_owners[piece_id]
       geo.touching[index].forEach((index2) => {
         if (!board.stacks[index2]) {
@@ -172,35 +177,64 @@ const B = {
       })
     })
 
-    const current_player = (board.turn % PLAYER_COUNT) + 1
-    const other_player = current_player === 1 ? 2 : 1
-    board.moves = board.piece_owners.map((owner, piece_id) => {
-      if (current_player !== owner) {
-        return []
-      }
-      if (board.turn === 0) {
-        return [geo.center]
-      }
-      if (board.turn === 1) {
-        return [geo.center + 1]
-      }
+    return Object.keys(player_touching[player_id])
+      .filter((index) => !player_touching[other_player][index])
+      .map((index) => parseInt(index))
+  },
 
-      if (board.reverse[piece_id] === undefined) {
-        // piece has not been placed yet
-        return Object.keys(player_touching[current_player])
-          .filter((index) => !player_touching[other_player][index])
-          .map((index) => parseInt(index))
-      }
+  getMoves: (board, piece_id) => {
+    const index = board.reverse[piece_id]
+    const type = board.piece_types[piece_id]
 
-      const piece_index = board.reverse[piece_id]
-      if (wouldBreakHive(board, piece_index)) {
-        return []
-      }
+    if (wouldBreakHive(board, index)) {
+      return []
+    }
 
-      const piece_type = board.piece_types[piece_id]
-      const f = move_map[piece_type] || (() => [])
-      return f(board, piece_index)
-    })
+    const f = move_map[type] || (() => [])
+    return f(board, index)
+  },
+  select: (board, target) => {
+    if (!target.piece_id) {
+      delete board.selected
+      return
+    }
+    board.selected = pick(target, [
+      'player_id',
+      'piece_id',
+      'piece_type',
+      'index',
+    ])
+    board.hash = Math.random()
+  },
+  click: (board, target) => {
+    const selected = board.selected
+    if (
+      !selected || // no tile currently selected
+      selected.player_id !== board.current_player || // currently selected enemy piece
+      target.piece_id === 'new' // clicked sidebar
+    ) {
+      // currently selected an enemy piece, select new target piece instead
+      B.select(board, target)
+      return
+    }
+    if (selected.piece_id === 'new') {
+      const placements = B.getPlacement(board, selected.player_id)
+      if (placements.includes(target.index)) {
+        B.addPiece(board, target.index, selected.piece_type, selected.player_id)
+      } else {
+        B.select(board, target)
+        return // TODO show error
+      }
+      return
+    }
+
+    const moves = B.getMoves(board, selected.piece_id)
+    if (moves.includes(target.index)) {
+      B.move(board, selected.piece_id, target.index)
+      return
+    } else {
+      B.select(board, target)
+    }
   },
 }
 

@@ -8,6 +8,7 @@ import {
   nStepsAlongHive,
   ant,
   stepOnHive,
+  stepOffHive,
   grasshopper,
 } from './moves'
 
@@ -42,7 +43,8 @@ const moveStacks = (board, dx, dy) => {
 const move_map = {
   queen: stepAlongHive,
   ant,
-  beetle: (b, i) => stepAlongHive(b, i).concat(stepOnHive(b, i)),
+  beetle: (b, i) =>
+    stepOffHive(b, i).concat(stepOnHive(b, i)).concat(stepAlongHive(b, i)),
   spider: (b, i) => nStepsAlongHive(b, i, 3),
   grasshopper,
 }

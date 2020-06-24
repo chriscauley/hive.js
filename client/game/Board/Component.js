@@ -28,7 +28,7 @@ const TileStack = ({ cell, move, board }) => {
   const [{ _isOver, canDrop }, dropRef] = useDrop({
     accept: 'cell',
     canDrop: (a) =>
-      window.DEBUG || board.moves[a.piece_id].includes(cell.index),
+      window.DEBUG || true, //board.moves[a.piece_id].includes(cell.index),
     drop: (_from) => move(_from, cell),
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),

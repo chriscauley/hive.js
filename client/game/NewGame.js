@@ -4,7 +4,7 @@ import Form from '@unrest/react-jsonschema-form'
 
 import Board from './Board'
 
-const sw_description = (
+const _sw_description = (
   <i
     className="fa fa-question"
     data-tip="Ants stop moving if they collide with a spider. This does not apply to spiders touching an ant before the ant starts moving."
@@ -23,7 +23,7 @@ const schema = {
     spider_web: {
       title: 'Spider Web',
       type: 'boolean',
-      description: sw_description,
+      //description: sw_description,
     },
   },
 }

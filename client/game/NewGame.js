@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom'
 import Form from '@unrest/react-jsonschema-form'
 
 import Board from './Board'
+import pieces from './pieces'
 
 const _sw_description = (
   <i
@@ -14,11 +15,15 @@ const _sw_description = (
 const schema = {
   type: 'object',
   properties: {
-    piece_set: {
-      type: 'string',
-      title: 'Piece Set',
-      enum: ['standard'],
-      default: 'standard',
+    piece_sets: {
+      type: 'array',
+      title: 'Piece Sets',
+      items: {
+        type: 'string',
+        enum: Object.keys(pieces.piece_sets),
+      },
+      uniqueItems: true,
+      default: ['standard'],
     },
     spider_web: {
       title: 'Spider Web',
@@ -28,7 +33,11 @@ const schema = {
   },
 }
 
-const uiSchema = {}
+const uiSchema = {
+  piece_sets: {
+    'ui:widget': 'checkboxes',
+  },
+}
 
 export default withRouter((props) => {
   const onSubmit = (formData) => {

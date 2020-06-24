@@ -24,11 +24,10 @@ const Tile = ({ className, target, index, z }) => {
   )
 }
 
-const TileStack = ({ cell, move, board }) => {
+const TileStack = ({ cell, move }) => {
   const [{ _isOver, canDrop }, dropRef] = useDrop({
     accept: 'cell',
-    canDrop: (a) =>
-      window.DEBUG || true, //board.moves[a.piece_id].includes(cell.index),
+    canDrop: (_a) => window.DEBUG || true, //board.moves[a.piece_id].includes(cell.index),
     drop: (_from) => move(_from, cell),
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
@@ -70,7 +69,7 @@ class BoardComponent extends React.Component {
         {rows.map((row, ir) => (
           <div className="row" key={ir}>
             {row.map((cell, ic) => (
-              <TileStack key={ic} cell={cell} board={board} move={move} />
+              <TileStack key={ic} cell={cell} move={move} />
             ))}
           </div>
         ))}

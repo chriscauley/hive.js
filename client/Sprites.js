@@ -5,38 +5,53 @@ const append = (e) => document.querySelector('.sprite-box').appendChild(e)
 
 let style
 
+const _hex = (ctx, color, x, y, r) => {
+  ctx.beginPath()
+  ctx.moveTo(x + r * Math.cos(0), y + r * Math.sin(0))
+  const PI26 = (2 * Math.PI) / 6
+
+  for (let side = 0; side < 8; side++) {
+    ctx.lineTo(x + r * Math.cos(side * PI26), y + r * Math.sin(side * PI26))
+  }
+
+  if (color.includes('rgba')) {
+    ctx.globalCompositeOperation = 'destination-out'
+    ctx.fill()
+    ctx.globalCompositeOperation = 'source-over'
+  }
+  ctx.fillStyle = color
+  ctx.fill()
+}
+
+const fill_map = {
+  white: '#f8f8f8',
+  black: '#333',
+}
+
 const makeHex = (canvas, fillStyle, strokeStyle) => {
   if (!fillStyle && !strokeStyle) {
     return
   }
-  const lineWidth = canvas.height / 10
+  const lineWidth = canvas.height / 20
+  const outlineWidth = 1
   const ctx = canvas.getContext('2d')
   const x = canvas.width / 2
   const y = canvas.height / 2
   ctx.clearRect(0, 0, canvas.width, canvas.height)
-  const size = canvas.width / 2 - (strokeStyle ? lineWidth / 2 : 0)
-
-  ctx.beginPath()
-  ctx.moveTo(x + size * Math.cos(0), y + size * Math.sin(0))
-  const PI26 = (2 * Math.PI) / 6
-
-  for (let side = 0; side < 8; side++) {
-    ctx.lineTo(
-      x + size * Math.cos(side * PI26),
-      y + size * Math.sin(side * PI26),
-    )
+  let size = canvas.width / 2
+  if (!strokeStyle && fillStyle === 'white') {
+    _hex(ctx, 'black', x, y, size)
+    size -= outlineWidth
   }
-
-  ctx.strokeStyle = strokeStyle
+  if (fill_map[fillStyle]) {
+    strokeStyle = strokeStyle || fillStyle
+    fillStyle = fill_map[fillStyle]
+  }
   if (strokeStyle) {
-    ctx.lineWidth = lineWidth
-    ctx.stroke()
+    _hex(ctx, strokeStyle, x, y, size)
+    size -= lineWidth
   }
-
-  ctx.fillStyle = fillStyle
-  if (fillStyle) {
-    ctx.fill()
-  }
+  _hex(ctx, fillStyle, x, y, size)
 }
 
 export const makeSprites = (debug) => {
@@ -52,7 +67,7 @@ export const makeSprites = (debug) => {
   const bgs = {
     empty: 'rgba(128,128,128,0.5)',
     player_1: 'white',
-    player_2: '#333',
+    player_2: 'black',
   }
   const borders = [undefined, 'green', 'red', 'blue']
   Object.entries(bgs).forEach(([bg_name, bg]) =>

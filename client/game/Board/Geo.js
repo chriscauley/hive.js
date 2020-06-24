@@ -71,16 +71,3 @@ export default class Geo {
     })
   }
 }
-
-export const resize = (board, dx, dy) => {
-  const old_geo = getGeo(board)
-  board.W += Math.abs(dx)
-  board.H += Math.abs(dy)
-  const new_stacks = {}
-  const new_geo = getGeo(board)
-  Object.entries(board.stacks).forEach(([index, stack]) => {
-    const xy = old_geo.index2xy(index)
-    new_stacks[new_geo.xy2index(xy)] = stack
-  })
-  board.stacks = new_stacks
-}

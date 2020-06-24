@@ -64,6 +64,10 @@ const B = {
     B.current_hash = b.hash
     b.reverse = {}
     const geo = getGeo(b)
+    let x_max = 0,
+      y_max = 0,
+      x_min = Infinity,
+      y_min = Infinity
     Object.entries(b.stacks).forEach(([index, stack]) => {
       if (!stack || stack.length === 0) {
         // prune unused stacks
@@ -74,20 +78,24 @@ const B = {
         b.reverse[piece_id] = parseInt(index)
       })
       const [x, y] = geo.index2xy(index)
-      if (x < 1) {
-        resize(b, 2, 0)
-        moveStacks(b, 2, 0)
-      } else if (x > b.W - 2) {
-        resize(b, 2, 0)
-      }
-
-      if (y < 1) {
-        resize(b, 0, 1)
-        moveStacks(b, 0, 1)
-      } else if (y > b.H - 2) {
-        resize(b, 0, 1)
-      }
+      x_min = Math.min(x_min, x)
+      y_min = Math.min(y_min, y)
+      x_max = Math.max(x_max, x)
+      y_max = Math.max(y_max, y)
     })
+    if (x_min < 1) {
+      resize(b, 2, 0)
+      moveStacks(b, 2, 0)
+    } else if (x_max > b.W - 2) {
+      resize(b, 2, 0)
+    }
+
+    if (y_min < 1) {
+      resize(b, 0, 1)
+      moveStacks(b, 0, 1)
+    } else if (y_max > b.H - 2) {
+      resize(b, 0, 1)
+    }
 
     b.current_player = (b.turn % PLAYER_COUNT) + 1 // 1 on even, 2 on odd
     B.storage.set(b.id, B.toJson(b))
@@ -194,7 +202,7 @@ const B = {
     return f(board, index)
   },
   select: (board, target) => {
-    if (!target.piece_id) {
+    if (target.piece_id === undefined) {
       delete board.selected
       return
     }

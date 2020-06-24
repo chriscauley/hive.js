@@ -19,6 +19,13 @@
       top: 50%;
       transform: translate(-50%, -50%);
       width: $hex_w;
+      $z: -5%;
+      @for $i from  1 through 4 {
+        .stacked-#{$i} {
+          top: $i * $z;
+          left: $i * $z;
+        }
+      }
     }
     &:nth-child(even) .content {
       margin-top: - ($hex_h / 2 + 0.08em);

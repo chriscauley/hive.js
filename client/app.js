@@ -4,11 +4,12 @@ import ReactDOM from 'react-dom'
 import { HashRouter, Route } from 'react-router-dom'
 
 import Nav from './components/Nav'
-import NewGame from './hive/NewGame'
-import Game from './hive/Game'
+import NewGame from './game/NewGame'
+import Game from './game/Game'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import Sprites from './Sprites'
+import ReactTooltip from 'react-tooltip'
 
 const App = () => {
   // document.body.className = classnames(props.config.formData)
@@ -22,6 +23,7 @@ const App = () => {
           <Route exact path="/play/:board_id/" component={Game} />
         </div>
       </HashRouter>
+      <ReactTooltip className="max-w-sm" />
     </DndProvider>
   )
 }

@@ -10,7 +10,7 @@ const _hex = (ctx, color, x, y, r) => {
   ctx.moveTo(x + r * Math.cos(0), y + r * Math.sin(0))
   const PI26 = (2 * Math.PI) / 6
 
-  for (let side = 0; side < 8; side++) {
+  for (let side = 0; side < 7; side++) {
     ctx.lineTo(x + r * Math.cos(side * PI26), y + r * Math.sin(side * PI26))
   }
 

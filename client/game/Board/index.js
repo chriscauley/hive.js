@@ -13,6 +13,32 @@ import {
 
 const board_cache = {}
 const PLAYER_COUNT = 2
+
+export const resize = (board, dx, dy) => {
+  const old_geo = getGeo(board)
+  board.W += dx
+  board.H += dy
+  const new_stacks = {}
+  const new_geo = getGeo(board)
+  Object.entries(board.stacks).forEach(([index, stack]) => {
+    const xy = old_geo.index2xy(index)
+    new_stacks[new_geo.xy2index(xy)] = stack
+  })
+  board.stacks = new_stacks
+}
+
+const moveStacks = (board, dx, dy) => {
+  const geo = getGeo(board)
+  const new_stacks = {}
+  Object.entries(board.stacks).forEach(([index, stack]) => {
+    const xy = geo.index2xy(index)
+    xy[0] += dx
+    xy[1] += dy
+    new_stacks[geo.xy2index(xy)] = stack
+  })
+  board.stacks = new_stacks
+}
+
 const move_map = {
   queen: stepAlongHive,
   ant,
@@ -48,8 +74,18 @@ const B = {
         b.reverse[piece_id] = parseInt(index)
       })
       const [x, y] = geo.index2xy(index)
-      if (x < 1 || y < 1 || x > b.W - 1 || y > b.H - 1) {
-        throw 'NotImplemented: needs resize'
+      if (x < 1) {
+        resize(b, 2, 0)
+        moveStacks(b, 2, 0)
+      } else if (x > b.W - 2) {
+        resize(b, 2, 0)
+      }
+
+      if (y < 1) {
+        resize(b, 0, 1)
+        moveStacks(b, 0, 1)
+      } else if (y > b.H - 2) {
+        resize(b, 0, 1)
       }
     })
 
@@ -74,6 +110,11 @@ const B = {
     if (old_index) {
       piece_id = b.stacks[old_index].pop()
     }
+    if (piece_id === 'new') {
+      piece_id = b.piece_types.length
+      b.piece_types.push(target.piece_type)
+      b.piece_owners.push(target.player_id)
+    }
     if (!b.stacks[target2.index]) {
       b.stacks[target2.index] = []
     }
@@ -87,15 +128,16 @@ const B = {
       'W',
       'H',
       'stacks',
-      'pieces_1',
-      'pieces_2',
       'piece_types',
       'piece_owners',
       'hash',
       'turn',
+      'rules',
     ]),
   new: (options) => {
     const board = {
+      W: 3,
+      H: 3,
       ...options,
       id: Math.random(),
       hash: Math.random(),
@@ -103,14 +145,6 @@ const B = {
       piece_owners: [],
       turn: 0,
     }
-    board.pieces_1.forEach((type) => {
-      board.piece_types.push(type)
-      board.piece_owners.push(1)
-    })
-    board.pieces_2.forEach((type) => {
-      board.piece_types.push(type)
-      board.piece_owners.push(2)
-    })
     board.stacks = {}
     B.save(board)
     return board

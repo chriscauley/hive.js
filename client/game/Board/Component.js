@@ -2,14 +2,21 @@ import React from 'react'
 import withBoard from '../withBoard'
 import { useDrag, useDrop } from 'react-dnd'
 
-const Tile = ({ className, target, board, index }) => {
+const getZ = (i, height) => {
+  if (height < 4) {
+    return i
+  }
+  return Math.max(i - height + 4, 0)
+}
+
+const Tile = ({ className, target, index, z }) => {
   const [_, dragRef] = useDrag({
     item: target,
-    canDrag: () => board.moves[target.piece_id].length !== 0,
+    canDrag: () => true,
   })
   return (
     <div
-      className={className}
+      className={className + ' stacked-' + z}
       ref={dragRef}
       data-index={index}
       data-piece_id={target.piece_id}
@@ -36,8 +43,8 @@ const TileStack = ({ cell, move, board }) => {
           <Tile
             className={item + c}
             key={i}
+            z={getZ(i, cell.stack.length)}
             target={cell}
-            board={board}
             index={cell.index}
           />
         ))}
@@ -51,13 +58,16 @@ const TileStack = ({ cell, move, board }) => {
 
 class BoardComponent extends React.Component {
   render() {
-    const { className = '' } = this.props
+    const { className = '', rows } = this.props
     const { board, move } = this.props.game
-    const W = this.props.rows[0].length
+    if (rows.length === 0) {
+      return null
+    }
+    const W = rows[0].length
     const style = { '--columns': W }
     return (
       <div className={'hex-grid ' + className} style={style}>
-        {this.props.rows.map((row, ir) => (
+        {rows.map((row, ir) => (
           <div className="row" key={ir}>
             {row.map((cell, ic) => (
               <TileStack key={ic} cell={cell} board={board} move={move} />

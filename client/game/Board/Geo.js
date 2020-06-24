@@ -3,11 +3,12 @@ import { range } from 'lodash'
 export const mod = (a, b) => ((a % b) + b) % b
 
 const geo_cache = {}
+window.GC = geo_cache
 
 export const getGeo = (board) => {
   const WH = `${board.W},${board.H}`
   if (!geo_cache[board.WH]) {
-    geo_cache[WH] = new Geo(board)
+    geo_cache[WH] = new Geo(board, WH)
   }
   return geo_cache[WH]
 }
@@ -26,6 +27,7 @@ export default class Geo {
   setSize({ W, H = W }) {
     this.W = W
     this.H = H
+    this.WH = `${W},${H}`
     this.AREA = W * H
     this.preCache()
     this.center = this.xy2index([
@@ -66,4 +68,17 @@ export default class Geo {
       this.touching[index] = this.dindexes[index % 2].map((di) => index + di)
     })
   }
+}
+
+export const resize = (board, dx, dy) => {
+  const old_geo = getGeo(board)
+  board.W += Math.abs(dx)
+  board.H += Math.abs(dy)
+  const new_stacks = {}
+  const new_geo = getGeo(board)
+  Object.entries(board.stacks).forEach(([index, stack]) => {
+    const xy = old_geo.index2xy(index)
+    new_stacks[new_geo.xy2index(xy)] = stack
+  })
+  board.stacks = new_stacks
 }

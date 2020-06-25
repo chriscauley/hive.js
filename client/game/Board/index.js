@@ -217,7 +217,7 @@ const B = {
     board.hash = Math.random()
   },
   click: (board, target) => {
-    const selected = board.selected
+    const { no_rules, selected } = board
     if (
       !selected || // no tile currently selected
       selected.player_id !== board.current_player || // currently selected enemy piece
@@ -231,7 +231,7 @@ const B = {
     if (selected.piece_id === 'new') {
       const { player_id, piece_type } = selected
       const placements = B.getPlacement(board, player_id)
-      if (placements.includes(target.index)) {
+      if (no_rules || placements.includes(target.index)) {
         B.queenCheck(board) &&
           B.addPiece(board, target.index, piece_type, player_id)
       } else {
@@ -242,7 +242,7 @@ const B = {
     }
 
     const moves = B.getMoves(board, selected.piece_id)
-    if (moves.includes(target.index)) {
+    if (no_rules || B.moves.includes(target.index)) {
       B.queenCheck(board) && B.move(board, selected.piece_id, target.index)
     } else {
       B.select(board, target)
@@ -258,7 +258,7 @@ const B = {
     return board.reverse[piece_id]
   },
   queenCheck: (board) => {
-    if (board.selected.piece_type === 'queen') {
+    if (board.selected.piece_type === 'queen' || board.rules.no_rules) {
       // placing or moving queen, don't check anything else
       return true
     }

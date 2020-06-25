@@ -30,6 +30,10 @@ const schema = {
       type: 'boolean',
       //description: sw_description,
     },
+    no_rules: {
+      title: 'No Rules',
+      type: 'boolean',
+    }
   },
 }
 

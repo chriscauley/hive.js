@@ -4,8 +4,8 @@ $original: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spi
 @each $type in $original {
   .piece.type-#{$type}:before {
     background-image: url(../images/pieces/#{$type}.png);
-    .theme-charcoal & {
-      background-image: url(../images/original/#{$type}.png);
+    .theme-carbon & {
+      background-image: url(../images/pieces/#{$type}_dark.png);
     }
   }
 }
@@ -13,8 +13,8 @@ $original: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spi
 @each $type in $custom {
   .piece.type-#{$type}:before {
     background-image: url(../images/pieces/#{$type}.png);
-    .theme-charcoal & {
-      background-image: url(../images/custom/#{$type}.png);
+    .theme-carbon & {
+      background-image: url(../images/pieces/#{$type}_dark.png);
     }
   }
 }
@@ -28,7 +28,7 @@ $original: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spi
   @apply flex items-center justify-center absolute w-full h-full;
   cursor: pointer;
 
-  /* a few bugs are too dark on the black tiles. This is overwritten by invert in charcoal theme */
+  /* a few bugs are too dark on the black tiles. This is overwritten by invert in carbon theme */
   &.hex-player_2.type-{
     &spider:before, &scorpion:before, &fly:before, &pill_bug:before {
       filter: brightness(1.75);
@@ -48,7 +48,7 @@ $original: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spi
     }
   }
 
-  .theme-charcoal &.hex-player_2:before {
+  .theme-carbon &.hex-player_2:before {
     filter: invert(1);
   }
   &.type:before {

@@ -101,13 +101,13 @@ export function Hexes() {
   makeSprites()
   const names = pieces.getNames()
   const players = ['player_1', 'player_2']
-  const themes = ['', 'theme-charcoal']
+  const themes = ['', 'theme-carbon']
   return (
     <div>
       {themes.map((theme) => (
-        <div>
+        <div key={theme}>
           <h2>{theme || 'No Theme'}</h2>
-          <div className={`flex flex-wrap theme-${theme}`}>
+          <div className={`flex flex-wrap ${theme}`}>
             {names.map((name) => (
               <div key={name}>
                 {players.map((player) => (
@@ -157,7 +157,6 @@ function processPiece(name) {
   const canvas = document.createElement('canvas')
   canvas.width = img.width
   canvas.height = img.height
-  container.appendChild(canvas)
   const ctx = canvas.getContext('2d')
   ctx.drawImage(img, 0, 0)
   const image_data = ctx.getImageData(0, 0, canvas.width, canvas.height)
@@ -204,20 +203,30 @@ function processPiece(name) {
     image_data.data[i * 4 + 1] = g
     image_data.data[i * 4 + 2] = b
   }
-  ctx.clearRect(0, 0, canvas.width, canvas.height)
-  ctx.putImageData(image_data, 0, 0)
 
-  unblended[name] = canvas
+  ctx.putImageData(image_data, 0, 0)
+  container.appendChild(makeDownloadLink(name, canvas.toDataURL('image/png')))
+
+  for (let i = 0; i < image_data.data.length / 4; i++) {
+    image_data.data[i * 4] = 0
+    image_data.data[i * 4 + 1] = 0
+    image_data.data[i * 4 + 2] = 0
+  }
+
+  ctx.putImageData(image_data, 0, 0)
+  const a = makeDownloadLink(name + '_dark', canvas.toDataURL('image/png'))
+  a.style.backgroundColor = 'white'
+  container.appendChild(a)
 }
 
-const unblended = {}
-
-const download = (name) => {
+const makeDownloadLink = (name, url) => {
   const link = document.createElement('a')
   link.setAttribute('download', name + '.png')
-  const url = unblended[name].toDataURL('image/png')
   link.setAttribute('href', url.replace('image/png', 'image/octet-stream'))
-  link.click()
+  const img = document.createElement('img')
+  img.src = url
+  link.appendChild(img)
+  return link
 }
 
 export function PieceGenerator() {
@@ -225,12 +234,7 @@ export function PieceGenerator() {
   return (
     <div style={{ background: 'black' }}>
       {names.map((name) => (
-        <div
-          key={name}
-          id={`piece__${name}`}
-          className="cursor-pointer flex"
-          onClick={() => download(name)}
-        >
+        <div key={name} id={`piece__${name}`} className="cursor-pointer flex">
           <img
             src={`images/pieces/${name}.png`}
             onLoad={() => processPiece(name)}

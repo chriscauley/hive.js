@@ -3,6 +3,7 @@
   "author": "chriscauley <chris@lablackey.com>",
   "license": "MIT",
   "scripts": {
+    "cp/img": "rm-rf dist/;mkdir dist;cp -r client/images dist",
     "build": "rm -rf docs; parcel build client/index.html -d docs --public-url /hive.js/",
     "develop": "parcel client/index.html -p 4483",
     "lint": "yarn eslint client"

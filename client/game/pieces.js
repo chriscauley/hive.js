@@ -79,7 +79,16 @@ const getAvailable = (board) => {
   return available
 }
 
+const getNames = () => {
+  const names = ['queen']
+  Object.values(piece_sets).forEach((piece_set) => {
+    Object.keys(piece_set).forEach((name) => names.push(name))
+  })
+  return names
+}
+
 export default {
+  getNames,
   getAvailable,
   piece_sets,
   original,

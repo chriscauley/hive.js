@@ -241,7 +241,6 @@ const B = {
       }
       return
     }
-    console.log(no_rules)
 
     const moves = B.getMoves(board, selected.piece_id)
     if (no_rules || moves.includes(target.index)) {

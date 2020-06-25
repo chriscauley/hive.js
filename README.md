@@ -1,6 +1,6 @@
 # Hive.js
 
-This is intended to be a hive game engine, as well as assets and a react client. For now just clone and run normally.
+This is intended to be a hive game engine, as well as assets and a react client. Demo site is running on chriscauley.github.io/hive.js/ or you can clone and run normally.
 
 ``` js
 git clone https://github.com/chriscauley/hive.js.git
@@ -10,3 +10,9 @@ yarn develop
 ```
 
 Hive should be running on http:localhost:4483
+
+#TODO
+
+* online multiplayer
+
+* instructions

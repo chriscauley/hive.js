@@ -227,24 +227,48 @@ const B = {
       B.select(board, target)
       return
     }
+
     if (selected.piece_id === 'new') {
-      const placements = B.getPlacement(board, selected.player_id)
+      const { player_id, piece_type } = selected
+      const placements = B.getPlacement(board, player_id)
       if (placements.includes(target.index)) {
-        B.addPiece(board, target.index, selected.piece_type, selected.player_id)
+        B.queenCheck(board) &&
+          B.addPiece(board, target.index, piece_type, player_id)
       } else {
+        B.error(board, 'You cannot place next to an enemy tile.')
         B.select(board, target)
-        return // TODO show error
       }
       return
     }
 
     const moves = B.getMoves(board, selected.piece_id)
     if (moves.includes(target.index)) {
-      B.move(board, selected.piece_id, target.index)
-      return
+      B.queenCheck(board) && B.move(board, selected.piece_id, target.index)
     } else {
       B.select(board, target)
     }
+  },
+  error: (board, message) => {
+    console.error(message)
+  },
+  findQueen: (board, player_id) => {
+    const piece_id = board.piece_types
+      .map((type, piece_id) => (type === 'queen' ? piece_id : undefined))
+      .find((piece_id) => board.piece_owners[piece_id] === player_id)
+    return board.reverse[piece_id]
+  },
+  queenCheck: (board) => {
+    if (board.selected.piece_type === 'queen') {
+      // placing or moving queen, don't check anything else
+      return true
+    }
+    const fail1 = board.turn === 7 && B.findQueen(board, 2) === undefined
+    const fail2 = board.turn === 6 && B.findQueen(board, 1) === undefined
+    if (fail1 || fail2) {
+      B.error(board, 'You must place your queen on or before the 4th turn')
+      return false
+    }
+    return true
   },
 }
 

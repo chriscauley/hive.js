@@ -31,7 +31,7 @@ const fill_map = {
 const border_map = {
   green: '#4a4',
   red: '#a44',
-  blue: 'blue',
+  blue: '#84f',
 }
 
 const makeHex = (canvas, fillStyle, strokeStyle) => {

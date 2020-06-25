@@ -17,6 +17,10 @@ export default (board) => {
   const rows = []
   let row
   const marked = getMarked(board)
+  const { selected = {} } = board
+  if (selected.index !== undefined) {
+    marked[selected.index] = ' blue'
+  }
   getGeo(board).indexes.forEach((index) => {
     if (index % board.W === 0) {
       row = []
@@ -51,15 +55,18 @@ export default (board) => {
   pieces.getAvailable(board).forEach(({ player_id, type, count }) => {
     player_id = parseInt(player_id)
     const className = _class(player_id, type)
-    players[player_id].push([
-      {
-        stack: range(count).map(() => className),
-        player_id,
-        piece_id: 'new',
-        piece_type: type, // TODO remove drag and drop and then this can be type
-        type: 'cell',
-      },
-    ])
+    const cell = {
+      stack: range(count).map(() => className),
+      player_id,
+      piece_id: 'new',
+      piece_type: type, // TODO remove drag and drop and then this can be type
+      type: 'cell',
+    }
+    if (selected.piece_type === type) {
+      const _i = cell.stack.length - 1
+      cell.stack[_i] = cell.stack[_i] + ' blue'
+    }
+    players[player_id].push([cell])
   })
 
   return {

@@ -99,6 +99,12 @@ export default function Sprites() {
   setTimeout(() => makeSprites(true), 100)
   return (
     <div>
+      <div>
+        {"Pieces taken from "}
+        <a href="https://boardgamegeek.com/filepage/90063/collection-variant-pieces">A collection of variant pieces</a>
+        {" and "}
+        <a href="https://boardgamegeek.com/filepage/95016/hive-swarm">Hive Swarm</a>
+      </div>
       This is a page for viewing the sprites.
       <br />
       <a href="https://www.freepik.com/free-photos-vectors/texture">

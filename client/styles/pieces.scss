@@ -4,7 +4,7 @@ $original: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spi
 @each $type in $original {
   .piece.type-#{$type}:before {
     background-image: url(../images/pieces/#{$type}.png);
-    body.theme-charcoal & {
+    .theme-charcoal & {
       background-image: url(../images/original/#{$type}.png);
     }
   }
@@ -13,26 +13,49 @@ $original: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spi
 @each $type in $custom {
   .piece.type-#{$type}:before {
     background-image: url(../images/pieces/#{$type}.png);
-    body.theme-charcoal & {
+    .theme-charcoal & {
       background-image: url(../images/custom/#{$type}.png);
     }
   }
 }
 
+.dummy_piece {
+  height: $hex_h;
+  width: $hex_w;
+}
+
 .piece {
   @apply flex items-center justify-center absolute w-full h-full;
   cursor: pointer;
-  &.hex-player_2.type-spider:before {
-    filter: brightness(2);
+
+  /* a few bugs are too dark on the black tiles. This is overwritten by invert in charcoal theme */
+  &.hex-player_2.type-{
+    &spider:before, &scorpion:before, &fly:before, &pill_bug:before {
+      filter: brightness(1.75);
+    }
   }
-  body.theme-charcoal &.hex-player_2:before {
+
+  /* some bugs are off center and need to be shifted */
+  &.hex.type- {
+    &scorpion:before, &dragonfly:before {
+      margin-left: 10%;
+    }
+    &fly:before {
+      margin-left: 15%;
+    }
+    &spider:before, &queen:before {
+      margin-top: 5%;
+    }
+  }
+
+  .theme-charcoal &.hex-player_2:before {
     filter: invert(1);
   }
   &.type:before {
     content: "";
     display: block;
     width: 60%;
-    height: 75%;
+    height: 65%;
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;

@@ -8,7 +8,7 @@ import NewGame from './game/NewGame'
 import Game from './game/Game'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
-import Sprites, { PieceGenerator } from './Sprites'
+import Sprites, { PieceGenerator, Hexes } from './Sprites'
 import ReactTooltip from 'react-tooltip'
 
 const App = () => {
@@ -20,6 +20,7 @@ const App = () => {
           <Nav />
           <Route exact path="/" component={NewGame} />
           <Route exact path="/sprites/" component={Sprites} />
+          <Route exact path="/sprites/hexes/" component={Hexes} />
           <Route exact path="/sprites/pieces/" component={PieceGenerator} />
           <Route exact path="/play/:board_id/" component={Game} />
         </div>

@@ -97,6 +97,35 @@ export const makeSprites = (debug) => {
   document.head.appendChild(style)
 }
 
+export function Hexes() {
+  makeSprites()
+  const names = pieces.getNames()
+  const players = ['player_1', 'player_2']
+  const themes = ['', 'theme-charcoal']
+  return (
+    <div>
+      {themes.map((theme) => (
+        <div>
+          <h2>{theme || 'No Theme'}</h2>
+          <div className={`flex flex-wrap theme-${theme}`}>
+            {names.map((name) => (
+              <div key={name}>
+                {players.map((player) => (
+                  <div className="relative dummy_piece" key={player}>
+                    <div
+                      className={`piece hex hex-${player} type type-${name}`}
+                    />
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
 export default function Sprites() {
   style = undefined
   setTimeout(() => makeSprites(true), 100)

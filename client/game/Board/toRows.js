@@ -62,7 +62,7 @@ export default (board) => {
       piece_type: type, // TODO remove drag and drop and then this can be type
       type: 'cell',
     }
-    if (selected.piece_type === type) {
+    if (selected.piece_type === type && player_id === selected.player_id) {
       const _i = cell.stack.length - 1
       cell.stack[_i] = cell.stack[_i] + ' blue'
     }

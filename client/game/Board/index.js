@@ -217,7 +217,8 @@ const B = {
     board.hash = Math.random()
   },
   click: (board, target) => {
-    const { no_rules, selected } = board
+    const { rules, selected } = board
+    const { no_rules } = rules
     if (
       !selected || // no tile currently selected
       selected.player_id !== board.current_player || // currently selected enemy piece
@@ -240,9 +241,10 @@ const B = {
       }
       return
     }
+    console.log(no_rules)
 
     const moves = B.getMoves(board, selected.piece_id)
-    if (no_rules || B.moves.includes(target.index)) {
+    if (no_rules || moves.includes(target.index)) {
       B.queenCheck(board) && B.move(board, selected.piece_id, target.index)
     } else {
       B.select(board, target)

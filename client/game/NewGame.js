@@ -20,7 +20,7 @@ const schema = {
       title: 'Piece Sets',
       items: {
         type: 'string',
-        enum: Object.keys(pieces.piece_sets),
+        enum: Object.keys(pieces.modes),
       },
       uniqueItems: true,
       default: ['standard'],

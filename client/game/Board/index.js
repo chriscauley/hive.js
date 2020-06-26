@@ -100,8 +100,29 @@ const B = {
     }
 
     b.current_player = (b.turn % PLAYER_COUNT) + 1 // 1 on even, 2 on odd
+    B._markBoard(b)
     B.storage.set(b.id, B.toJson(b))
   },
+
+  _markBoard: (b) => {
+    b.onehive = {} // index: would break hive if moved
+    b.queens = {} // player: queen_index
+    b.piece_types.forEach((type, id) => {
+      const piece_index = b.reverse[id]
+      if (type === 'queen') {
+        b.queens[b.piece_owners[id]] = piece_index
+      }
+      if (wouldBreakHive(b, piece_index)) {
+        b.onehive[piece_index] = true
+      }
+    })
+
+    b.piece_types
+      .map((type, id) => (type === 'queen' ? id : undefined))
+      .filter((id) => id !== undefined)
+      .forEach((id) => (b.queens[b.piece_owners[id]] = b.reverse[id]))
+  },
+
   get: (id) => {
     const b = board_cache[id] || B.storage.get(id)
     board_cache[id] = b
@@ -113,6 +134,7 @@ const B = {
     b.turn++
     b.hash = Math.random()
     delete b.selected
+    delete b.error
     B.save(b)
   },
   addPiece: (b, index, type, player_id) => {
@@ -208,6 +230,12 @@ const B = {
       delete board.selected
       return
     }
+    if (board.onehive[target.index]) {
+      board.error = 'Moving that piece would break the hive.'
+      delete board.selected
+      return
+    }
+    delete board.error
     board.selected = pick(target, [
       'player_id',
       'piece_id',
@@ -222,7 +250,8 @@ const B = {
     if (
       !selected || // no tile currently selected
       selected.player_id !== board.current_player || // currently selected enemy piece
-      target.piece_id === 'new' // clicked sidebar
+      target.piece_id === 'new' || // clicked sidebar
+      board.onehive[selected.index]
     ) {
       // currently selected an enemy piece, select new target piece instead
       B.select(board, target)
@@ -250,14 +279,9 @@ const B = {
     }
   },
   error: (board, message) => {
-    console.error(message)
+    board.error = message
   },
-  findQueen: (board, player_id) => {
-    const piece_id = board.piece_types
-      .map((type, piece_id) => (type === 'queen' ? piece_id : undefined))
-      .find((piece_id) => board.piece_owners[piece_id] === player_id)
-    return board.reverse[piece_id]
-  },
+  findQueen: (board, player_id) => board.reverse[board.queens[player_id]],
   queenCheck: (board) => {
     if (board.selected.piece_type === 'queen' || board.rules.no_rules) {
       // placing or moving queen, don't check anything else

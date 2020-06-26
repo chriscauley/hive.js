@@ -78,7 +78,7 @@ export const makeSprites = (debug) => {
     player_1: 'white',
     player_2: 'black',
   }
-  const borders = [undefined, 'green', 'red', 'blue']
+  const borders = [undefined, 'green', 'red', 'blue', 'gray']
   Object.entries(bgs).forEach(([bg_name, bg]) =>
     borders.forEach((border) => {
       makeHex(canvas, bg, border)

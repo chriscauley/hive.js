@@ -78,6 +78,9 @@ export default (board) => {
 
 const getMarked = (board) => {
   const out = {}
+  Object.keys(board.onehive).forEach((index) => {
+    out[index] = 'gray'
+  })
   if (!board.selected) {
     return out
   }

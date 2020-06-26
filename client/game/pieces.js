@@ -54,6 +54,16 @@ const original = [
 
 const all = original.concat(custom)
 
+const _defaultMode = (name) => () => piece_sets[name]
+
+const modes = {
+  ants: (_board, used) => {
+    const ants = Math.max(used[1].ant || 0, Math.max(used[2].ant || 0))
+    return { ant: ants + 3 }
+  },
+}
+Object.keys(piece_sets).forEach((name) => (modes[name] = _defaultMode(name)))
+
 const getAvailable = (board) => {
   const used = {
     1: {},
@@ -63,10 +73,11 @@ const getAvailable = (board) => {
     const player_id = board.piece_owners[index]
     used[player_id][type] = (used[player_id][type] || 0) + 1
   })
+
   const available = []
   const piece_set = { queen: 1 }
   board.rules.piece_sets.forEach((name) => {
-    Object.assign(piece_set, piece_sets[name])
+    Object.assign(piece_set, modes[name](board, used))
   })
   Object.entries(used).forEach(([player_id, used_pieces]) => {
     Object.entries(piece_set).forEach(([type, total]) => {
@@ -94,4 +105,5 @@ export default {
   original,
   custom,
   all,
+  modes,
 }

@@ -60,4 +60,11 @@ $original: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spi
     background-position: center;
     background-repeat: no-repeat;
   }
+
+  &.gray {
+    filter: grayscale(0.75);
+    &:before {
+      opacity: 0.75;
+    }
+  }
 }

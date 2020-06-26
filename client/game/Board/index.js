@@ -3,14 +3,7 @@ import { pick } from 'lodash'
 
 import { getGeo } from './Geo'
 import wouldBreakHive from './wouldBreakHive'
-import {
-  stepAlongHive,
-  nStepsAlongHive,
-  ant,
-  stepOnHive,
-  stepOffHive,
-  grasshopper,
-} from './moves'
+import moves from './moves'
 
 const board_cache = {}
 const PLAYER_COUNT = 2
@@ -40,20 +33,8 @@ const moveStacks = (board, dx, dy) => {
   board.stacks = new_stacks
 }
 
-const move_map = {
-  queen: stepAlongHive,
-  ant,
-  beetle: (b, i) =>
-    stepOffHive(b, i).concat(stepOnHive(b, i)).concat(stepAlongHive(b, i)),
-  spider: (b, i) => nStepsAlongHive(b, i, 3),
-  grasshopper,
-}
-
 const B = {
-  stepAlongHive,
-  nStepsAlongHive,
-  ant,
-  grasshopper,
+  moves,
   wouldBreakHive,
   storage: new Storage('saved_games'),
   save: (b) => {
@@ -222,7 +203,7 @@ const B = {
       return []
     }
 
-    const f = move_map[type] || (() => [])
+    const f = moves[type] || (() => [])
     return f(board, index)
   },
   select: (board, target) => {
@@ -281,7 +262,7 @@ const B = {
   error: (board, message) => {
     board.error = message
   },
-  findQueen: (board, player_id) => board.reverse[board.queens[player_id]],
+  findQueen: (board, player_id) => board.queens[player_id],
   queenCheck: (board) => {
     if (board.selected.piece_type === 'queen' || board.rules.no_rules) {
       // placing or moving queen, don't check anything else

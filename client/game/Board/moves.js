@@ -109,3 +109,12 @@ export const grasshopper = (board, index) => {
   })
   return moves.filter((i) => i !== undefined)
 }
+
+export default {
+  queen: stepAlongHive,
+  ant,
+  beetle: (b, i) =>
+    stepOffHive(b, i).concat(stepOnHive(b, i)).concat(stepAlongHive(b, i)),
+  spider: (b, i) => nStepsAlongHive(b, i, 3),
+  grasshopper,
+}

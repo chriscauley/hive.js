@@ -16,8 +16,8 @@ const App = () => {
   return (
     <DndProvider backend={HTML5Backend}>
       <HashRouter>
+        <Nav />
         <div className="app-content">
-          <Nav />
           <Route exact path="/" component={NewGame} />
           <Route exact path="/sprites/" component={Sprites} />
           <Route exact path="/sprites/hexes/" component={Hexes} />

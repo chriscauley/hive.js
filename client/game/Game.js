@@ -7,18 +7,33 @@ import BoardComponent from './Board/Component'
 import withBoard from './withBoard'
 import { makeSprites } from '../Sprites'
 
+const scrollRef = React.createRef()
+
 class Game extends React.Component {
   state = {}
   render() {
     const board = Board.get(this.props.match.params.board_id)
     makeSprites() // idempotent
     this.props.game.useBoard(board)
-    const { rows, player_1, player_2 } = toRows(board)
+    const { rows, player_1, player_2 } = toRows(board, { columns: 2 })
+    const scrollbox = scrollRef.current
+    if (!this._scrolled && scrollbox) {
+      this._scrolled = true
+      const { scrollWidth, scrollHeight, clientWidth, clientHeight } = scrollbox
+      scrollbox.scroll(
+        (scrollWidth - clientWidth) / 2,
+        (scrollHeight - clientHeight) / 2,
+      )
+    }
     return (
       <div className="Game">
-        <BoardComponent rows={player_1} className="player_1" />
-        <BoardComponent rows={player_2} className="player_2" />
-        <BoardComponent rows={rows} className="game_board" />
+        <BoardComponent rows={player_1} className="player_1 odd-q" />
+        <BoardComponent rows={player_2} className="player_2 odd-q" />
+        <div className="scroll-box" ref={scrollRef}>
+          <div className="inner">
+            <BoardComponent rows={rows} className="game_board" />
+          </div>
+        </div>
         {board.error && (
           <div className="fixed left-0 bottom-0">
             <div className={css.alert.danger()}>

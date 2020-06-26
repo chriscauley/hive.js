@@ -1,10 +1,8 @@
 @import "./var.scss";
 
 .hex-grid {
-  --columns: 5; /* should be overwrittenby component */
   font-size: 16px;
   .row {
-    width: calc(var(--columns) * #{$cell_w + $buffer});
     display: flex;
   }
   .item {
@@ -27,9 +25,12 @@
         }
       }
     }
-    &:nth-child(even) .content {
-      margin-top: - ($hex_h / 2 + 0.08em);
-    }
+  }
+  .item:nth-child(even) .content {
+    margin-top: - ($hex_h / 2 + 0.08em);
+  }
+  &.odd-q .item:nth-child(even) .content {
+    margin-top: ($hex_h / 2 + 0.08em);
   }
 }
 

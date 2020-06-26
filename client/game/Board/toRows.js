@@ -13,7 +13,7 @@ const pieceToClass = (board, piece_id) => {
   return _class(player, type)
 }
 
-export default (board) => {
+export default (board, { columns }) => {
   const rows = []
   let row
   const marked = getMarked(board)
@@ -66,14 +66,28 @@ export default (board) => {
       const _i = cell.stack.length - 1
       cell.stack[_i] = cell.stack[_i] + ' blue'
     }
-    players[player_id].push([cell])
+    players[player_id].push(cell)
   })
 
   return {
     rows,
-    player_1: players[1],
-    player_2: players[2],
+    player_1: columnize(players[1], columns),
+    player_2: columnize(players[2], columns),
   }
+}
+
+const columnize = (cells, columns) => {
+  const out = []
+  let row = []
+  out.push(row)
+  while (cells.length) {
+    row.push(cells.shift())
+    if (row.length === columns) {
+      row = []
+      out.push(row)
+    }
+  }
+  return out
 }
 
 const getMarked = (board) => {

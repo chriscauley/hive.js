@@ -1,13 +1,35 @@
 @import "./var.scss";
 
 .Game {
+  @apply flex justify-center items-center;
   background: linear-gradient(135deg, #f5f2d0 10%, #e2dccd 100%);
-  display: inline-block;
-  padding: 2 * $size (3 * $size);
-  position: relative;
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  .scroll-box {
+    overflow: scroll;
+    height: 100%;
+    width: 100%;
+    .inner {
+      height: 2000px;
+      padding: 2 * $size (4 * $size);
+      position: relative;
+      width: 2000px;
+      .hex-grid {
+        left: 50%;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
+    }
+  }
+}
+
+.Game {
   .player_1, .player_2 {
     position: absolute;
-    top: $size;
+    top: 50%;
+    transform: translate(0, -50%);
   }
   .player_1 {
     left: $size / 2;

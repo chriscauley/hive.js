@@ -1,6 +1,11 @@
 @import './Game.scss';
 @import './hex.scss';
 @import './pieces.scss';
+@import './z-index.scss';
+
+.app-content {
+  position: relative;
+}
 
 .rjsf {
   .checkboxes {

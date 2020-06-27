@@ -1,6 +1,8 @@
 import { getGeo, mod } from './Geo'
 import { flatten, last } from 'lodash'
 
+const noop = () => []
+
 const getPlacement = (board, player_id, excludes = []) => {
   const geo = getGeo(board)
   if (board.turn === 0) {
@@ -184,19 +186,38 @@ const mantis = (board, index) => {
   return stepOnHive(board, index).concat(stepOffHive(board, index))
 }
 
-export default {
+const mosquito = (board, index) => {
+  if (board.stacks[index].length > 1) {
+    return beetle(board, index)
+  }
+  let out = []
+  const geo = getGeo(board)
+  geo.touching[index].forEach((i2) => {
+    const target_id = last(board.stacks[i2])
+    if (!target_id) {
+      return
+    }
+    const f = moves[board.piece_types[target_id]] || noop
+    out = out.concat(f(board, index))
+  })
+  return out
+}
+
+const beetle = (b, i) => {
+  if (b.stacks[i].length > 1) {
+    return stepOffHive(b, i).concat(stepOnHive(b, i))
+  }
+  return stepAlongHive(b, i).concat(stepOnHive(b, i))
+}
+
+const moves = {
   stepOnHive,
   stepOffHive,
 
   queen: stepAlongHive,
   pill_bug: stepAlongHive,
   ant,
-  beetle: (b, i) => {
-    if (b.stacks[i].length > 1) {
-      return stepOffHive(b, i).concat(stepOnHive(b, i))
-    }
-    return stepAlongHive(b, i).concat(stepOnHive(b, i))
-  },
+  beetle,
   spider: (b, i) => nStepsAlongHive(b, i, 3),
   scorpion: (b, i) => nStepsAlongHive(b, i, 3),
   grasshopper,
@@ -205,4 +226,8 @@ export default {
   getPlacement,
   lady_bug,
   mantis,
+  mosquito,
+  noop,
 }
+
+export default moves

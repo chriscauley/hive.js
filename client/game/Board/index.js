@@ -203,7 +203,7 @@ const B = {
   getSpecials: (board, piece_id) => {
     const type = board.piece_types[piece_id]
 
-    const f = specials[type] || (() => [])
+    const f = specials[type] || moves.noop
     return f(board, piece_id)
   },
 
@@ -215,7 +215,7 @@ const B = {
       return []
     }
 
-    const f = moves[type] || (() => [])
+    const f = moves[type] || moves.noop
     return f(board, index)
   },
 

@@ -1,6 +1,42 @@
 import { getGeo, mod } from './Geo'
 import { flatten, last } from 'lodash'
 
+const getPlacement = (board, player_id, excludes = []) => {
+  const geo = getGeo(board)
+  if (board.turn === 0) {
+    return [geo.center]
+  }
+  if (board.turn === 1) {
+    return [geo.center + 1]
+  }
+
+  player_id = parseInt(player_id)
+  const other_player = player_id === 1 ? 2 : 1
+
+  // is index touching a player?
+  const player_touching = {
+    1: {},
+    2: {},
+  }
+  Object.entries(board.stacks).forEach(([index, stack]) => {
+    const piece_id = last(stack)
+    index = parseInt(index)
+    if (excludes.includes(index)) {
+      return
+    }
+    const player = board.piece_owners[piece_id]
+    geo.touching[index].forEach((index2) => {
+      if (!board.stacks[index2]) {
+        player_touching[player][index2] = true
+      }
+    })
+  })
+
+  return Object.keys(player_touching[player_id])
+    .filter((index) => !player_touching[other_player][index])
+    .map((index) => parseInt(index))
+}
+
 const stepAlongHive = (board, index, excludes = []) => {
   const geo = getGeo(board)
   const touching = geo.touching[index]
@@ -127,6 +163,12 @@ const fly = (board, index) => {
   return moves.length ? moves : Object.keys(board.empty).map((i) => parseInt(i))
 }
 
+const wasp = (board, index) => {
+  const piece_id = last(board.stacks[index])
+  const player_id = board.piece_owners[piece_id]
+  return getPlacement(board, player_id === 1 ? 2 : 1, [index])
+}
+
 export default {
   queen: stepAlongHive,
   ant,
@@ -136,4 +178,6 @@ export default {
   scorpion: (b, i) => nStepsAlongHive(b, i, 3),
   grasshopper,
   fly,
+  wasp,
+  getPlacement,
 }

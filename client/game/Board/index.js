@@ -89,6 +89,7 @@ const B = {
     const geo = getGeo(b)
     b.onehive = {} // index: would break hive if moved
     b.empty = {} // empty but next to onehive
+    b.empties = [] // sometimes useful to have empty as an array
     b.queens = {} // player: queen_index
     b.piece_types.forEach((type, id) => {
       const piece_index = b.reverse[id]
@@ -101,6 +102,7 @@ const B = {
       geo.touching[piece_index].forEach((touched_index) => {
         if (!b.stacks[touched_index]) {
           b.empty[touched_index] = true
+          b.empties.push[touched_index]
         }
       })
     })
@@ -165,38 +167,6 @@ const B = {
     return board
   },
 
-  getPlacement: (board, player_id) => {
-    const geo = getGeo(board)
-    if (board.turn === 0) {
-      return [geo.center]
-    }
-    if (board.turn === 1) {
-      return [geo.center + 1]
-    }
-
-    player_id = parseInt(player_id)
-    const other_player = player_id === 1 ? 2 : 1
-
-    // is index touching a player?
-    const player_touching = {
-      1: {},
-      2: {},
-    }
-    board.piece_owners.forEach((owner, piece_id) => {
-      const index = board.reverse[piece_id]
-      const player = board.piece_owners[piece_id]
-      geo.touching[index].forEach((index2) => {
-        if (!board.stacks[index2]) {
-          player_touching[player][index2] = true
-        }
-      })
-    })
-
-    return Object.keys(player_touching[player_id])
-      .filter((index) => !player_touching[other_player][index])
-      .map((index) => parseInt(index))
-  },
-
   getMoves: (board, piece_id) => {
     const index = board.reverse[piece_id]
     const type = board.piece_types[piece_id]
@@ -243,7 +213,7 @@ const B = {
 
     if (selected.piece_id === 'new') {
       const { player_id, piece_type } = selected
-      const placements = B.getPlacement(board, player_id)
+      const placements = B.moves.getPlacement(board, player_id)
       if (no_rules || placements.includes(target.index)) {
         B.queenCheck(board) &&
           B.addPiece(board, target.index, piece_type, player_id)

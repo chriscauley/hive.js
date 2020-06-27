@@ -103,7 +103,7 @@ const getMarked = (board) => {
   const color = board.current_player === player_id ? ' green' : ' red'
   let indexes
   if (piece_id === 'new') {
-    indexes = Board.getPlacement(board, player_id)
+    indexes = Board.moves.getPlacement(board, player_id)
   } else {
     indexes = Board.getMoves(board, piece_id)
   }

@@ -1,7 +1,7 @@
 import { getGeo, mod } from './Geo'
 import { flatten, last } from 'lodash'
 
-export const stepAlongHive = (board, index, excludes = []) => {
+const stepAlongHive = (board, index, excludes = []) => {
   const geo = getGeo(board)
   const touching = geo.touching[index]
   return touching.filter((target_index, i) => {
@@ -17,15 +17,19 @@ export const stepAlongHive = (board, index, excludes = []) => {
   })
 }
 
-export const stepOnHive = (board, index, excludes = []) => {
+const stepOnHive = (board, index, excludes = []) => {
   const geo = getGeo(board)
   const touching = geo.touching[index]
   return touching.filter((target_index) => {
-    return board.stacks[target_index] && !excludes.includes(target_index)
+    return (
+      board.stacks[target_index] &&
+      !excludes.includes(target_index) &&
+      !isScorpion(board, target_index)
+    )
   })
 }
 
-export const stepOffHive = (board, index, excludes = []) => {
+const stepOffHive = (board, index, excludes = []) => {
   if (board.stacks[index].length === 1) {
     // not on hive, can't step off
     return []
@@ -52,7 +56,7 @@ const _stepUntil = (board, index, excludes, condition) => {
   return excludes
 }
 
-export const nStepsAlongHive = (board, index, n_steps) => {
+const nStepsAlongHive = (board, index, n_steps) => {
   const moves = stepAlongHive(board, index)
   return moves
     .map((current_index) => {
@@ -78,7 +82,7 @@ const isTouchingEnemySpider = (board, owner, target_index) => {
   return fail_index !== undefined
 }
 
-export const ant = (board, index) => {
+const ant = (board, index) => {
   const owner = board.piece_owners[last(board.stacks[index])]
   let moves = stepAlongHive(board, index)
   moves = flatten(
@@ -92,7 +96,7 @@ export const ant = (board, index) => {
   return moves.filter((i) => i !== undefined && i !== index)
 }
 
-export const grasshopper = (board, index) => {
+const grasshopper = (board, index) => {
   const geo = getGeo(board)
   const moves = geo.touching[index].map((target_index, i_dir) => {
     // grasshopper must first step on hive
@@ -102,6 +106,9 @@ export const grasshopper = (board, index) => {
 
     // grasshopper travels in same direction until it falls off hive
     while (board.stacks[target_index]) {
+      if (isScorpion(board, target_index)) {
+        return
+      }
       const dindex = geo.dindexes[mod(target_index, 2)][i_dir]
       target_index += dindex
     }
@@ -110,11 +117,17 @@ export const grasshopper = (board, index) => {
   return moves.filter((i) => i !== undefined)
 }
 
+const isScorpion = (board, target_index) => {
+  const piece_id = last(board.stacks[target_index])
+  return board.piece_types[piece_id] === 'scorpion'
+}
+
 export default {
   queen: stepAlongHive,
   ant,
   beetle: (b, i) =>
     stepOffHive(b, i).concat(stepOnHive(b, i)).concat(stepAlongHive(b, i)),
   spider: (b, i) => nStepsAlongHive(b, i, 3),
+  scorpion: (b, i) => nStepsAlongHive(b, i, 3),
   grasshopper,
 }

@@ -1,5 +1,7 @@
 import React from 'react'
+
 import withBoard from '../withBoard'
+import withConfig from '../../config'
 
 const getZ = (i, height) => {
   if (height < 4) {
@@ -36,16 +38,17 @@ const TileStack = ({ cell }) => {
   )
 }
 
-export default class BoardComponent extends React.Component {
+class BoardComponent extends React.Component {
   render() {
-    const { className = '', rows } = this.props
+    const { className = '', rows, config } = this.props
     if (rows.length === 0) {
       return null
     }
+    const { theme } = config.formData
     const W = rows[0].length
     const style = { '--columns': W }
     return (
-      <div className={'hex-grid ' + className} style={style}>
+      <div className={`hex-grid ${className} theme-${theme}`} style={style}>
         {rows.map((row, ir) => (
           <div className="row" key={ir}>
             {row.map((cell, ic) => (
@@ -57,3 +60,5 @@ export default class BoardComponent extends React.Component {
     )
   }
 }
+
+export default withConfig(BoardComponent)

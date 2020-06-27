@@ -35,6 +35,14 @@ $original: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spi
     }
   }
 
+  /* same as above but too bright for white*/
+  &.hex-player_1.type- {
+    &grasshopper:before {
+      filter: brightness(0.8);
+    }
+  }
+
+
   /* some bugs are off center and need to be shifted */
   &.hex.type- {
     &scorpion:before, &dragonfly:before {

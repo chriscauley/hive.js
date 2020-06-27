@@ -44,7 +44,7 @@ const uiSchema = {
 }
 
 export default withRouter((props) => {
-  const onSubmit = ({ formData }) => {
+  const onSubmit = (formData) => {
     const board = Board.new({ rules: formData })
     setTimeout(() => props.history.push(`/play/${board.id}/`), 100)
   }

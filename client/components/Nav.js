@@ -14,7 +14,11 @@ export default function Nav() {
       </section>
       <section className={css.nav.section('flex items-center')}>
         <Dropdown title={<i className={css.icon('gear')} />}>
-          <withConfig.Form className="p-4" />
+          <withConfig.Form
+            className="p-4"
+            customButton={true}
+            autosubmit={true}
+          />
         </Dropdown>
         <a
           className={css.icon('github mx-2 text-blue-500')}

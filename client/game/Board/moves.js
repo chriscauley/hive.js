@@ -210,6 +210,38 @@ const beetle = (b, i) => {
   return stepAlongHive(b, i).concat(stepOnHive(b, i))
 }
 
+const cockroach = (b, index) => {
+  const current_player = b.piece_owners[last(b.stacks[index])]
+  const friendly_onhive = []
+  const targets = [index]
+  const checked = {}
+  const geo = getGeo(b)
+  while (targets.length) {
+    const target = targets.pop()
+    checked[target] = true
+    geo.touching[target].forEach((target2) => {
+      if (!checked[target2] && b.stacks[target2]) {
+        const piece_id = last(b.stacks[target2])
+        const player_id = b.piece_owners[piece_id]
+        if (player_id === current_player) {
+          targets.push(target2)
+          friendly_onhive.push(target2)
+        }
+      }
+    })
+  }
+
+  const out = []
+  friendly_onhive.forEach((target) => {
+    stepOffHive(b, target).forEach((final_index) => {
+      if (final_index !== index && !out.includes(final_index)) {
+        out.push(final_index)
+      }
+    })
+  })
+  return out
+}
+
 const moves = {
   stepOnHive,
   stepOffHive,
@@ -221,6 +253,7 @@ const moves = {
   spider: (b, i) => nStepsAlongHive(b, i, 3),
   scorpion: (b, i) => nStepsAlongHive(b, i, 3),
   grasshopper,
+  cockroach,
   fly,
   wasp,
   getPlacement,

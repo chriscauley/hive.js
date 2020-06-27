@@ -86,7 +86,9 @@ const B = {
   },
 
   _markBoard: (b) => {
+    const geo = getGeo(b)
     b.onehive = {} // index: would break hive if moved
+    b.empty = {} // empty but next to onehive
     b.queens = {} // player: queen_index
     b.piece_types.forEach((type, id) => {
       const piece_index = b.reverse[id]
@@ -96,12 +98,12 @@ const B = {
       if (wouldBreakHive(b, piece_index)) {
         b.onehive[piece_index] = true
       }
+      geo.touching[piece_index].forEach((touched_index) => {
+        if (!b.stacks[touched_index]) {
+          b.empty[touched_index] = true
+        }
+      })
     })
-
-    b.piece_types
-      .map((type, id) => (type === 'queen' ? id : undefined))
-      .filter((id) => id !== undefined)
-      .forEach((id) => (b.queens[b.piece_owners[id]] = b.reverse[id]))
   },
 
   get: (id) => {

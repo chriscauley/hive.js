@@ -39,7 +39,7 @@ export default (board, { columns }) => {
         cell.player_id = board.piece_owners[piece_id]
       })
     } else {
-      cell.stack.push('piece hex hex-empty')
+      cell.stack.push('piece hex ' + (board.empty[index] ? 'hex-empty' : ''))
     }
     if (marked[index]) {
       const _i = cell.stack.length - 1

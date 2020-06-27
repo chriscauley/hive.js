@@ -66,10 +66,6 @@ const stepOnHive = (board, index, excludes = []) => {
 }
 
 const stepOffHive = (board, index, excludes = []) => {
-  if (board.stacks[index].length === 1) {
-    // not on hive, can't step off
-    return []
-  }
   const geo = getGeo(board)
   const touching = geo.touching[index]
   return touching.filter((target_index) => {
@@ -169,15 +165,34 @@ const wasp = (board, index) => {
   return getPlacement(board, player_id === 1 ? 2 : 1, [index])
 }
 
+const lady_bug = (board, index) => {
+  let moves = []
+  stepOnHive(board, index).forEach((on_index1) =>
+    stepOnHive(board, on_index1, [index]).forEach(
+      (on_index2) =>
+        (moves = moves.concat(stepOffHive(board, on_index2, [index]))),
+    ),
+  )
+  return moves
+}
+
 export default {
+  stepOnHive,
+  stepOffHive,
+
   queen: stepAlongHive,
   ant,
-  beetle: (b, i) =>
-    stepOffHive(b, i).concat(stepOnHive(b, i)).concat(stepAlongHive(b, i)),
+  beetle: (b, i) => {
+    if (b.stacks[i].length > 1) {
+      return stepOffHive(b, i).concat(stepOnHive(b, i))
+    }
+    return stepAlongHive(b, i).concat(stepOnHive(b, i))
+  },
   spider: (b, i) => nStepsAlongHive(b, i, 3),
   scorpion: (b, i) => nStepsAlongHive(b, i, 3),
   grasshopper,
   fly,
   wasp,
   getPlacement,
+  lady_bug,
 }

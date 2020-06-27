@@ -32,6 +32,7 @@ const fill_map = {
 }
 
 const border_map = {
+  yellow: '#F1C40F',
   green: '#4a4',
   red: '#a44',
   blue: '#84f',
@@ -78,7 +79,7 @@ export const makeSprites = (debug) => {
     player_1: 'white',
     player_2: 'black',
   }
-  const borders = [undefined, 'green', 'red', 'blue', 'gray']
+  const borders = [undefined, 'green', 'red', 'blue', 'gray', 'yellow']
   Object.entries(bgs).forEach(([bg_name, bg]) =>
     borders.forEach((border) => {
       makeHex(canvas, bg, border)

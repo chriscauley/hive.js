@@ -176,11 +176,20 @@ const lady_bug = (board, index) => {
   return moves
 }
 
+const mantis = (board, index) => {
+  if (board.stacks[index].length === 1) {
+    // mantis cannot move on ground
+    return []
+  }
+  return stepOnHive(board, index).concat(stepOffHive(board, index))
+}
+
 export default {
   stepOnHive,
   stepOffHive,
 
   queen: stepAlongHive,
+  pill_bug: stepAlongHive,
   ant,
   beetle: (b, i) => {
     if (b.stacks[i].length > 1) {
@@ -195,4 +204,5 @@ export default {
   wasp,
   getPlacement,
   lady_bug,
+  mantis,
 }

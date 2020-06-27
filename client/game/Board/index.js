@@ -1,8 +1,9 @@
 import Storage from '@unrest/storage'
-import { pick } from 'lodash'
+import { pick, last } from 'lodash'
 
 import { getGeo } from './Geo'
 import wouldBreakHive from './wouldBreakHive'
+import specials from './specials'
 import moves from './moves'
 
 const board_cache = {}
@@ -33,9 +34,23 @@ const moveStacks = (board, dx, dy) => {
   board.stacks = new_stacks
 }
 
+const mantisCheck = (b, index) => {
+  if (b.stacks[index].length > 1) {
+    // mantis on hive can always move
+    return true
+  }
+  // mantis's on the ground level can still perform their special if an adjacent piece
+  // would not break the hive
+  const geo = getGeo(b)
+  const touching = geo.touching[index]
+  return touching.filter((i2) => b.stacks[i2] && !b.onehive[i2]).length > 0
+}
+
 const B = {
   moves,
+  specials,
   wouldBreakHive,
+  mantisCheck,
   storage: new Storage('saved_games'),
   save: (b) => {
     // TODO currently saving on mouse move
@@ -88,18 +103,38 @@ const B = {
   _markBoard: (b) => {
     const geo = getGeo(b)
     b.onehive = {} // index: would break hive if moved
+    b.cantmove = {} // same as onehive, except for mantis
     b.empty = {} // empty but next to onehive
     b.empties = [] // sometimes useful to have empty as an array
     b.queens = {} // player: queen_index
-    b.piece_types.forEach((type, id) => {
-      const piece_index = b.reverse[id]
+    Object.entries(b.stacks).forEach(([index, stack]) => {
+      index = parseInt(index)
+      const piece_id = last(stack)
+      const type = b.piece_types[piece_id]
       if (type === 'queen') {
-        b.queens[b.piece_owners[id]] = piece_index
+        b.queens[b.piece_owners[piece_id]] = index
       }
-      if (wouldBreakHive(b, piece_index)) {
-        b.onehive[piece_index] = true
+      if (wouldBreakHive(b, index)) {
+        b.onehive[index] = true
+        b.cantmove[index] = true
       }
-      geo.touching[piece_index].forEach((touched_index) => {
+
+      if (type === 'mantis') {
+        if (mantisCheck(b, index)) {
+          delete b.onehive[index]
+          delete b.cantmove[index]
+        } else {
+          b.cantmove[index] = true
+        }
+      }
+
+      if (type === 'pill_bug' && b.cantmove[index]) {
+        if (mantisCheck(b, index)) {
+          delete b.cantmove[index]
+        }
+      }
+
+      geo.touching[index].forEach((touched_index) => {
         if (!b.stacks[touched_index]) {
           b.empty[touched_index] = true
           b.empties.push[touched_index]
@@ -117,9 +152,7 @@ const B = {
   },
   nextTurn: (b) => {
     b.turn++
-    b.hash = Math.random()
-    delete b.selected
-    delete b.error
+    B.unselect(b)
     B.save(b)
   },
   addPiece: (b, index, type, player_id) => {
@@ -139,18 +172,18 @@ const B = {
     b.stacks[index].push(piece_id)
     B.nextTurn(b)
   },
-  toJson: (b) =>
-    pick(b, [
-      'id',
-      'W',
-      'H',
-      'stacks',
-      'piece_types',
-      'piece_owners',
-      'hash',
-      'turn',
-      'rules',
-    ]),
+  json_fields: [
+    'id',
+    'W',
+    'H',
+    'stacks',
+    'piece_types',
+    'piece_owners',
+    'hash',
+    'turn',
+    'rules',
+  ],
+  toJson: (b) => pick(b, B.json_fields),
   new: (options) => {
     const board = {
       W: 4, // hex math only works with even boards
@@ -167,6 +200,13 @@ const B = {
     return board
   },
 
+  getSpecials: (board, piece_id) => {
+    const type = board.piece_types[piece_id]
+
+    const f = specials[type] || (() => [])
+    return f(board, piece_id)
+  },
+
   getMoves: (board, piece_id) => {
     const index = board.reverse[piece_id]
     const type = board.piece_types[piece_id]
@@ -178,24 +218,29 @@ const B = {
     const f = moves[type] || (() => [])
     return f(board, index)
   },
+
+  unselect: (b) => {
+    b.hash = Math.random()
+    b.special_args = []
+    delete b.selected
+    delete b.error
+  },
+
   select: (board, target) => {
+    B.unselect(board)
     if (target.piece_id === undefined) {
-      delete board.selected
       return
     }
-    if (board.onehive[target.index]) {
+    if (board.onehive[target.index] && !mantisCheck(board, target.index)) {
       board.error = 'Moving that piece would break the hive.'
-      delete board.selected
       return
     }
-    delete board.error
     board.selected = pick(target, [
       'player_id',
       'piece_id',
       'piece_type',
       'index',
     ])
-    board.hash = Math.random()
   },
   click: (board, target) => {
     const { rules, selected } = board
@@ -204,7 +249,7 @@ const B = {
       !selected || // no tile currently selected
       selected.player_id !== board.current_player || // currently selected enemy piece
       target.piece_id === 'new' || // clicked sidebar
-      board.onehive[selected.index]
+      board.cantmove[selected.index] // onehive or mantis/pillbug logic
     ) {
       // currently selected an enemy piece, select new target piece instead
       B.select(board, target)
@@ -224,12 +269,25 @@ const B = {
       return
     }
 
+    let special = B.getSpecials(board, selected.piece_id)
+    if (special.includes(target.index)) {
+      board.special_args.push(target.index)
+      special = B.getSpecials(board, selected.piece_id)
+      if (typeof special === 'function') {
+        special()
+        B.nextTurn(board)
+      }
+      return
+    }
+
     const moves = B.getMoves(board, selected.piece_id)
     if (no_rules || moves.includes(target.index)) {
       B.queenCheck(board) && B.move(board, selected.piece_id, target.index)
-    } else {
-      B.select(board, target)
+      return
     }
+
+    // fallback to selecting square if nothing else happened
+    B.select(board, target)
   },
   error: (board, message) => {
     board.error = message

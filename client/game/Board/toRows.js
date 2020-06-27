@@ -92,20 +92,24 @@ const columnize = (cells, columns) => {
 
 const getMarked = (board) => {
   const out = {}
-  Object.keys(board.onehive).forEach((index) => {
-    out[index] = 'gray'
-  })
+  Object.keys(board.cantmove).forEach((index) => (out[index] = 'gray'))
+
   if (!board.selected) {
     return out
   }
 
   const { piece_id, player_id } = board.selected
+
   const color = board.current_player === player_id ? ' green' : ' red'
-  let indexes
+  let indexes = []
   if (piece_id === 'new') {
     indexes = Board.moves.getPlacement(board, player_id)
   } else {
-    indexes = Board.getMoves(board, piece_id)
+    const specials = Board.getSpecials(board, piece_id)
+    specials.forEach((i) => (out[i] = ' yellow'))
+    if (board.special_args.length === 0) {
+      indexes = Board.getMoves(board, piece_id)
+    }
   }
   indexes.forEach((i) => (out[i] = color))
   return out

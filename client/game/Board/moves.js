@@ -122,6 +122,11 @@ const isScorpion = (board, target_index) => {
   return board.piece_types[piece_id] === 'scorpion'
 }
 
+const fly = (board, index) => {
+  const moves = stepAlongHive(board, index)
+  return moves.length ? moves : Object.keys(board.empty).map((i) => parseInt(i))
+}
+
 export default {
   queen: stepAlongHive,
   ant,
@@ -130,4 +135,5 @@ export default {
   spider: (b, i) => nStepsAlongHive(b, i, 3),
   scorpion: (b, i) => nStepsAlongHive(b, i, 3),
   grasshopper,
+  fly,
 }

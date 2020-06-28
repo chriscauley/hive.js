@@ -9,7 +9,7 @@ import Game from './game/Game'
 import withConfig from './config'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
-import Sprites, { PieceGenerator, Hexes } from './Sprites'
+import sprites from './sprites'
 import ReactTooltip from 'react-tooltip'
 
 const App = withConfig((props) => {
@@ -20,10 +20,8 @@ const App = withConfig((props) => {
         <Nav />
         <div className={classnames('app-content', { debug })}>
           <Route exact path="/" component={NewGame} />
-          <Route exact path="/sprites/" component={Sprites} />
-          <Route exact path="/sprites/hexes/" component={Hexes} />
-          <Route exact path="/sprites/pieces/" component={PieceGenerator} />
           <Route exact path="/play/:board_id/" component={Game} />
+          <Route path="/sprites/" component={sprites.Routes} />
         </div>
       </HashRouter>
       <ReactTooltip className="max-w-sm" />

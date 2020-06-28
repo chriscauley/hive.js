@@ -5,7 +5,7 @@ import Board from './Board'
 import toRows from './Board/toRows'
 import BoardComponent from './Board/Component'
 import withBoard from './withBoard'
-import { makeSprites } from '../Sprites'
+import sprites from '../sprites'
 
 const scrollRef = React.createRef()
 
@@ -13,7 +13,7 @@ class Game extends React.Component {
   state = {}
   render() {
     const board = Board.get(this.props.match.params.board_id)
-    makeSprites() // idempotent
+    sprites.makeSprites() // idempotent
     this.props.game.useBoard(board)
     const { rows, player_1, player_2 } = toRows(board, { columns: 2 })
     const scrollbox = scrollRef.current

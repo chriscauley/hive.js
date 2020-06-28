@@ -166,6 +166,11 @@ export default function Sprites() {
           Hive Swarm
         </a>
       </div>
+      <div>
+        {'This article on '}
+        <a href="https://www.redblobgames.com/grids/hexagons/">Hexagonal Grids</a>
+        {' by Red Blob Games was used frequently while writting this program.'}
+      </div>
       This is a page for viewing the sprites.
       <br />
       <a href="https://www.freepik.com/free-photos-vectors/texture">

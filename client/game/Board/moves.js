@@ -261,6 +261,7 @@ const moves = {
   stepOnHive,
   stepOffHive,
 
+  centipede: stepAlongHive,
   queen: stepAlongHive,
   pill_bug: stepAlongHive,
   ant,

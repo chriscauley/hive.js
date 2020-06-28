@@ -64,7 +64,11 @@ export default class Geo {
     this.dindexes = {
       0: [-1, -this.W, 1, this.W + 1, this.W, this.W - 1], // index is even
       1: [-this.W - 1, -this.W, -this.W + 1, 1, this.W, -1], // index is odd
+      dragonfly: {
+        0: [-this.W - 1, -this.W + 1, 2, -2, 2 * this.W + 1, 2 * this.W - 1],
+      },
     }
+    this.dindexes.dragonfly[1] = this.dindexes.dragonfly[0].map((di) => di * -1)
     this.touching = {}
     this.indexes.forEach((index) => {
       this.touching[index] = this.dindexes[index % 2].map((di) => index + di)

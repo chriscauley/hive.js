@@ -1,13 +1,14 @@
 import { getGeo } from './Geo'
 
-export default (board, indexes) => {
+export default (board, indexes, max_stack = 1) => {
   if (typeof indexes === 'number') {
     indexes = [indexes]
   }
 
   // if a stack is 2+ pieces high, moving top piece will not break hive
+  // for dragonfly's move, max_stack = 2 because the lower piece isn't moved if it breaks hive
   indexes = indexes.filter(
-    (i) => board.stacks[i] && board.stacks[i].length === 1,
+    (i) => board.stacks[i] && board.stacks[i].length <= max_stack,
   )
 
   let hive_count = 0

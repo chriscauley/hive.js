@@ -7,6 +7,8 @@ import pieces from './game/pieces'
 const append = (e) => document.querySelector('.sprite-box').appendChild(e)
 
 let style
+const SIZE = 100
+const LINE_WIDTH = (SIZE * Math.sqrt(3)) / 10 // 10% of height
 
 const _hex = (ctx, color, x, y, r) => {
   ctx.beginPath()
@@ -42,7 +44,6 @@ const makeHex = (canvas, fillStyle, strokeStyle) => {
   if (!fillStyle && !strokeStyle) {
     return
   }
-  const lineWidth = canvas.height / 10
   const outlineWidth = 1
   const ctx = canvas.getContext('2d')
   const x = canvas.width / 2
@@ -59,9 +60,20 @@ const makeHex = (canvas, fillStyle, strokeStyle) => {
   }
   if (strokeStyle) {
     _hex(ctx, border_map[strokeStyle] || strokeStyle, x, y, size)
-    size -= lineWidth
+    size -= LINE_WIDTH
   }
   _hex(ctx, fillStyle, x, y, size)
+}
+
+const toStyle = (className, canvas, debug) => {
+  const declaration = `background-image: url(${canvas.toDataURL()})`
+  if (debug) {
+    const div = document.createElement('div')
+    div.className = `debug ${className}`
+    append(div)
+  }
+
+  return `.${className.replace(/ /g, '.')} { ${declaration} }\n`
 }
 
 export const makeSprites = (debug) => {
@@ -71,9 +83,8 @@ export const makeSprites = (debug) => {
   const canvas = document.createElement('canvas')
   let style_text = ''
   debug && append(canvas)
-  const size = 100
-  canvas.width = 2 * size
-  canvas.height = Math.sqrt(3) * size
+  canvas.width = 2 * SIZE
+  canvas.height = Math.sqrt(3) * SIZE
   const bgs = {
     empty: 'rgba(128,128,128,0.5)',
     player_1: 'white',
@@ -82,14 +93,27 @@ export const makeSprites = (debug) => {
   const borders = [undefined, 'green', 'red', 'blue', 'gray', 'yellow']
   Object.entries(bgs).forEach(([bg_name, bg]) =>
     borders.forEach((border) => {
-      makeHex(canvas, bg, border)
-      const declaration = `background-image: url(${canvas.toDataURL()})`
+      makeHex(canvas, bg, border, debug)
       const cls = classNames('hex', 'hex-' + bg_name, border)
-      style_text += `.${cls.replace(/ /g, '.')} { ${declaration} }`
-      if (debug) {
-        const div = document.createElement('div')
-        div.className = `debug ${cls}`
-        append(div)
+      style_text += toStyle(cls, canvas, debug)
+
+      if (['red', 'green'].includes(border) && bg_name === 'empty') {
+        const size = SIZE - LINE_WIDTH * 1.5
+        _hex(
+          canvas.getContext('2d'),
+          border_map['blue'],
+          canvas.width / 2,
+          canvas.height / 2,
+          size,
+        )
+        _hex(
+          canvas.getContext('2d'),
+          bg,
+          canvas.width / 2,
+          canvas.height / 2,
+          size - LINE_WIDTH / 2,
+        )
+        style_text += toStyle(cls + ' extra--dragonfly', canvas, debug)
       }
     }),
   )

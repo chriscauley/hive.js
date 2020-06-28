@@ -1,5 +1,6 @@
 import { getGeo, mod } from './Geo'
 import { flatten, last } from 'lodash'
+import wouldBreakHive from './wouldBreakHive'
 
 const noop = () => []
 
@@ -242,6 +243,20 @@ const cockroach = (b, index) => {
   return out
 }
 
+const dragonfly = (board, index) => {
+  const geo = getGeo(board)
+  const parity = index % 2
+  return geo.dindexes.dragonfly[parity].map((di) => index + di)
+}
+
+const dragonflyExtra = (board, index, index2) => {
+  const match =
+    board.stacks[index].length > 1 &&
+    !board.stacks[index2] &&
+    !wouldBreakHive(board, index, 2)
+  return match ? ' extra--dragonfly' : ''
+}
+
 const moves = {
   stepOnHive,
   stepOffHive,
@@ -250,10 +265,11 @@ const moves = {
   pill_bug: stepAlongHive,
   ant,
   beetle,
+  cockroach,
+  dragonfly,
   spider: (b, i) => nStepsAlongHive(b, i, 3),
   scorpion: (b, i) => nStepsAlongHive(b, i, 3),
   grasshopper,
-  cockroach,
   fly,
   wasp,
   getPlacement,
@@ -261,6 +277,7 @@ const moves = {
   mantis,
   mosquito,
   noop,
+  dragonflyExtra,
 }
 
 export default moves

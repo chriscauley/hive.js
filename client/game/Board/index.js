@@ -165,11 +165,17 @@ const B = {
   },
   move: (b, piece_id, index) => {
     const old_index = b.reverse[piece_id]
+    const _mos =
+      b.piece_types[piece_id] === 'dragonfly' &&
+      moves.dragonflyExtra(b, old_index, index)
     if (old_index !== undefined) {
       piece_id = b.stacks[old_index].pop()
     }
     b.stacks[index] = b.stacks[index] || []
     b.stacks[index].push(piece_id)
+    if (_mos) {
+      b.stacks[index].unshift(b.stacks[old_index].pop())
+    }
     B.nextTurn(b)
   },
   json_fields: [

@@ -112,5 +112,11 @@ const getMarked = (board) => {
     }
   }
   indexes.forEach((i) => (out[i] = color))
+  if (board.piece_types[piece_id] === 'dragonfly') {
+    const index = board.reverse[piece_id]
+    indexes.forEach(
+      (i2) => (out[i2] += Board.moves.dragonflyExtra(board, index, i2)),
+    )
+  }
   return out
 }

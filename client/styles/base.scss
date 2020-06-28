@@ -16,9 +16,11 @@
   }
 }
 
-[data-index]:after {
-  content: attr(data-index);
-}
-.hex-player_2[data-index]:after {
-  background: rgba(255,255,255,0.45);
+.app-content.debug {
+  [data-index]:after {
+    content: attr(data-index);
+  }
+  .hex-player_2[data-index]:after {
+    background: rgba(255,255,255,0.45);
+  }
 }

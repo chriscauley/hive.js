@@ -8,11 +8,15 @@ const schema = {
       type: 'string',
       enum: ['classic', 'carbon'],
     },
+    debug: {
+      type: 'boolean',
+    },
   },
 }
 
 const initial = {
   theme: 'classic',
+  debug: false,
 }
 
 const actions = {}

@@ -141,6 +141,10 @@ const B = {
         }
       })
     })
+    if (b.empties.length === 0) {
+      b.empty[geo.center] = true
+      b.empties.push[geo.center]
+    }
   },
 
   get: (id) => {

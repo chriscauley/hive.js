@@ -159,7 +159,7 @@ const B = {
     B.unselect(b)
     B.save(b)
   },
-  addPiece: (b, index, type, player_id) => {
+  place: (b, index, type, player_id) => {
     const piece_id = b.piece_types.length
     b.piece_types.push(type)
     b.piece_owners.push(player_id)
@@ -241,9 +241,8 @@ const B = {
     if (target.piece_id === undefined) {
       return
     }
-    if (board.onehive[target.index] && !mantisCheck(board, target.index)) {
-      board.error = 'Moving that piece would break the hive.'
-      return
+    if (board.cantmove[target.index]) {
+      board.error = 'Moving this piece would break the hive.'
     }
     board.selected = pick(target, [
       'player_id',
@@ -254,10 +253,18 @@ const B = {
   },
   click: (board, target) => {
     const { rules, selected } = board
-    const { no_rules } = rules
+    const { player_id, piece_type } = selected || {}
+    if (selected && rules.no_rules) {
+      if (selected.piece_id === 'new') {
+        B.place(board, target.index, piece_type, player_id)
+      } else {
+        B.move(board, selected.piece_id, target.index)
+      }
+      return
+    }
     if (
       !selected || // no tile currently selected
-      selected.player_id !== board.current_player || // currently selected enemy piece
+      player_id !== board.current_player || // currently selected enemy piece
       target.piece_id === 'new' || // clicked sidebar
       board.cantmove[selected.index] // onehive or mantis/pillbug logic
     ) {
@@ -267,14 +274,13 @@ const B = {
     }
 
     if (selected.piece_id === 'new') {
-      const { player_id, piece_type } = selected
       const placements = B.moves.getPlacement(board, player_id)
-      if (no_rules || placements.includes(target.index)) {
+      if (placements.includes(target.index)) {
         B.queenCheck(board) &&
-          B.addPiece(board, target.index, piece_type, player_id)
+          B.place(board, target.index, piece_type, player_id)
       } else {
-        B.error(board, 'You cannot place next to an enemy tile.')
         B.select(board, target)
+        B.error(board, 'You cannot place next to an enemy tile.')
       }
       return
     }
@@ -291,7 +297,7 @@ const B = {
     }
 
     const moves = B.getMoves(board, selected.piece_id)
-    if (no_rules || moves.includes(target.index)) {
+    if (moves.includes(target.index)) {
       B.queenCheck(board) && B.move(board, selected.piece_id, target.index)
       return
     }

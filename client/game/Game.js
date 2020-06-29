@@ -7,6 +7,7 @@ import BoardComponent from './Board/Component'
 import withBoard from './withBoard'
 import sprites from '../sprites'
 import HelpText from './HelpText'
+import NoRules from './NoRules'
 
 const scrollRef = React.createRef()
 
@@ -36,14 +37,15 @@ class Game extends React.Component {
           </div>
         </div>
         {board.selected && <HelpText {...board.selected} board={board} />}
-        {board.error && (
-          <div className="absolute left-0 top-0">
+        <div className="absolute left-0 top-0">
+          {board.rules.no_rules && <NoRules />}
+          {!board.rules.no_rules && board.error && (
             <div className={css.alert.danger()}>
               <i className={css.icon('times-circle text-xl mr-2')} />
               {board.error}
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     )
   }

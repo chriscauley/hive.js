@@ -35,8 +35,10 @@ export default (board, { columns }) => {
     if (board.stacks[index]) {
       board.stacks[index].forEach((piece_id) => {
         cell.stack.push(pieceToClass(board, piece_id))
-        cell.piece_id = piece_id // last piece_id gets used here
+        // last piece_id gets used here
+        cell.piece_id = piece_id
         cell.player_id = board.piece_owners[piece_id]
+        cell.piece_type = board.piece_types[piece_id]
       })
     } else {
       cell.stack.push('piece hex ' + (board.empty[index] ? 'hex-empty' : ''))
@@ -62,7 +64,11 @@ export default (board, { columns }) => {
       piece_type: type, // TODO remove drag and drop and then this can be type
       type: 'cell',
     }
-    if (selected.piece_type === type && player_id === selected.player_id) {
+    if (
+      selected.piece_id === 'new' &&
+      selected.piece_type === type &&
+      player_id === selected.player_id
+    ) {
       const _i = cell.stack.length - 1
       cell.stack[_i] = cell.stack[_i] + ' blue'
     }

@@ -12,14 +12,13 @@ function HelpText(props) {
   if (!props.config.formData.show_help) {
     return (
       <div className="fixed left-0 bottom-0 m-4 HelpText">
-        <i
-          onClick={toggleHelp}
-          className={css.icon('question') + ' ' + css.button('circle')}
-        />
+        <div onClick={toggleHelp} className={css.button('circle')}>
+          <i className={css.icon('question')} />
+        </div>
       </div>
     )
   }
-  const { piece_type } = board.selected
+  const { piece_type, piece_id } = board.selected
   const unselect = () => {
     B.unselect(board)
     update()
@@ -30,13 +29,22 @@ function HelpText(props) {
       <div className={css.alert.info()}>
         <div>
           <ul className="browser-default">
+            {piece_id === 'new' && (
+              <li>
+                {
+                  'PLACEMENT: Place this piece in any empty space that only touches friendly tiles. After placed, this pieces moves are:'
+                }
+              </li>
+            )}
             {items.map((children, i) => (
-              <li key={i}>{children}</li>
+              <li key={i}>
+                {typeof children === 'function' ? children(board) : children}
+              </li>
             ))}
           </ul>
           <div>
-            <button onClick={unselect} className={css.button()}>
-              Cancel Selection
+            <button onClick={unselect} className={css.button('mr-2')}>
+              Unselect
             </button>
             <button onClick={toggleHelp} className={css.button()}>
               Hide Help

@@ -30,7 +30,7 @@ const actions = {
   toggleHelp: (store) => {
     const { formData } = store.state
     formData.show_help = !formData.show_help
-    store.setState({ formData })
+    store.actions.save({ formData })
   },
 }
 

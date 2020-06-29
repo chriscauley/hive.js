@@ -1,11 +1,23 @@
-const ifRule = (rule, text) => text
+import React from 'react'
+
+const ifRule = (rule, text) => (board) => {
+  const className = board.rules[rule] ? '' : 'line-through'
+  return (
+    <>
+      <span className={className}>{text}</span>
+      {' (this rule only applies if '}
+      <b>{rule}</b>
+      {' is enabled)'}
+    </>
+  )
+}
+
 const spiderwebs = ifRule(
   'spiderwebs',
   'If an ant touches a spider while moving around the board It must stop. This does not apply to spiders that ants are touching at the start of the turn.',
 )
 
 const special = (l) => l
-const passive = (l) => l
 
 const _along = (s) => `The ${s} can move one space around the hive.`
 const _spider = (s) => `The ${s} must move exactly 3 spaces along the hive.`
@@ -57,7 +69,7 @@ const fly = [
 
 const scorpion = [
   _spider('scorpion'),
-  passive('No piece can move on top of the scorpion, even temporarily.'),
+  'No piece can move on top of the scorpion, even temporarily.',
 ]
 
 const wasp = [

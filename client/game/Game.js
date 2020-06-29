@@ -1,4 +1,5 @@
 import React from 'react'
+import { HotKeys } from 'react-hotkeys'
 import css from '@unrest/css'
 
 import Board from './Board'
@@ -15,6 +16,12 @@ class Game extends React.Component {
   state = {}
   render() {
     const board = Board.get(this.props.match.params.board_id)
+    const handlers = {
+      UNSELECT: () => {
+        Board.unselect(board)
+        this.props.game.update()
+      },
+    }
     sprites.makeSprites() // idempotent
     this.props.game.useBoard(board)
     const { rows, player_1, player_2 } = toRows(board, { columns: 2 })
@@ -28,7 +35,7 @@ class Game extends React.Component {
       )
     }
     return (
-      <div className="Game">
+      <HotKeys handlers={handlers} className="Game">
         <BoardComponent rows={player_1} className="player_1 odd-q" />
         <BoardComponent rows={player_2} className="player_2 odd-q" />
         <div className="scroll-box" ref={scrollRef}>
@@ -36,7 +43,7 @@ class Game extends React.Component {
             <BoardComponent rows={rows} className="game_board" />
           </div>
         </div>
-        {board.selected && <HelpText {...board.selected} board={board} />}
+        <HelpText {...board.selected} board={board} />
         <div className="absolute left-0 top-0">
           {board.rules.no_rules && <NoRules />}
           {!board.rules.no_rules && board.error && (
@@ -46,7 +53,7 @@ class Game extends React.Component {
             </div>
           )}
         </div>
-      </div>
+      </HotKeys>
     )
   }
 }

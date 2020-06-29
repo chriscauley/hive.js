@@ -18,6 +18,13 @@ function HelpText(props) {
       </div>
     )
   }
+  if (!board.selected) {
+    return (
+      <div className="fixed left-0 bottom-0 m-4 HelpText">
+        <div className={css.alert.info()}>Select a Tile</div>
+      </div>
+    )
+  }
   const { piece_type, piece_id } = board.selected
   const unselect = () => {
     B.unselect(board)
@@ -44,7 +51,7 @@ function HelpText(props) {
           </ul>
           <div>
             <button onClick={unselect} className={css.button('mr-2')}>
-              Unselect
+              Deselect
             </button>
             <button onClick={toggleHelp} className={css.button()}>
               Hide Help

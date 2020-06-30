@@ -44,11 +44,12 @@ class BoardComponent extends React.Component {
     if (rows.length === 0) {
       return null
     }
-    const { theme } = config.formData
+    const { theme, hex_angle } = config.formData
     const W = rows[0].length
     const style = { '--columns': W }
+    const _class = `hex-grid hex-${hex_angle} ${className} theme-${theme}`
     return (
-      <div className={`hex-grid ${className} theme-${theme}`} style={style}>
+      <div className={_class} style={style}>
         {rows.map((row, ir) => (
           <div className="row" key={ir}>
             {row.map((cell, ic) => (

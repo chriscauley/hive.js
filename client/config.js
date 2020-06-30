@@ -17,10 +17,16 @@ const schema = {
       type: 'boolean',
       title: 'Show Help',
     },
+    hex_angle: {
+      type: 'string',
+      title: 'Hex Angle',
+      enum: ['flat', 'pointy'],
+    },
   },
 }
 
 const initial = {
+  hex_angle: 'flat',
   theme: 'classic',
   debug: false,
   show_help: true,

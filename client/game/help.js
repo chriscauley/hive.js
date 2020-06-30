@@ -19,7 +19,7 @@ const spiderwebs = ifRule(
 
 const special = (l) => l
 
-const _along = (s) => `The ${s} can move one space around the hive.`
+const _along = (s) => `The ${s} can move one space along the hive.`
 const _spider = (s) => `The ${s} must move exactly 3 spaces along the hive.`
 const queen = [_along('queen')]
 
@@ -34,7 +34,11 @@ const grasshopper = [
   'It jumps over the hive in a straight line to the next unoccupied space.',
 ]
 
-const spider = [_spider('spider'), spiderwebs]
+const spider = [
+  _spider('spider'),
+  "The spider can jump over a single occupied space into an empty one.",
+  spiderwebs,
+]
 
 const ant = [
   'The ant can move an unlimited amount of spaces around the hive.',
@@ -76,7 +80,7 @@ const wasp = [
   'The was can move to any unoccupied space provided the space only opponent pieces (the opposite of placement rules).',
 ]
 
-const cochroach = [
+const cockroach = [
   'The cockroach must step on the hive, move any number of spaces on the hive, then step on the ground.',
   'However, it cannot step onto enemy tiles.',
 ]
@@ -96,7 +100,23 @@ const centipede = [
   ),
 ]
 
+const basics = [
+  'To start, each player places a piece next to each other.',
+  'Each turn a player can either *place* one piece or move one piece.',
+  'The goal of the game is to surround the enemy queen on all sides.',
+  'Pieces can only be placed next to a friendly piece (except for the first two turns).',
+  'Other than during the placing phase, every piece moves differently.',
+]
+const onehive = [
+  'Each piece moves differently, but the board must always be "one hive".',
+  'A piece cannot move if moving that piece would break the hive (even temporarily).',
+  'Pieces that cannot be moved without violating this rule are grayed out.',
+]
+
+
 export default {
+  basics,
+  onehive,
   queen,
   beetle,
   grasshopper,
@@ -109,7 +129,7 @@ export default {
   fly,
   scorpion,
   wasp,
-  cochroach,
+  cockroach,
   dragonfly,
   centipede,
 }

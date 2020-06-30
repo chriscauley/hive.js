@@ -4,7 +4,7 @@ import S from 'string'
 import css from '@unrest/css'
 
 import boards from './boards'
-import copy from './copy'
+import captions from './captions'
 import BoardComponent from '../game/Board/Component'
 import toRows from '../game/Board/toRows'
 import B from '../game/Board'
@@ -24,7 +24,7 @@ export default class TutorialComponent extends React.Component {
       slug,
       title: S(slug.replace('_', '')).titleCase().s,
       help_items: help[slug] || [],
-      copy: listify(copy[slug]),
+      captions: listify(captions[slug]),
     }
     const b = (this.tutorial.board = boards[slug])
     if (b) {
@@ -43,7 +43,7 @@ export default class TutorialComponent extends React.Component {
     return this.tutorial
   }
   getLinks() {
-    const { slugs } = copy
+    const { slugs } = captions
     const index = slugs.indexOf(this.props.match.params.slug)
     const out_slugs = [slugs[index - 1], slugs[index + 1]]
     return out_slugs.map(
@@ -59,24 +59,26 @@ export default class TutorialComponent extends React.Component {
   state = {}
   render() {
     sprites.makeSprites() // idempotent
-    const { title, board, help_items, copy } = this.getTutorial() // idempotent
+    const { title, board, help_items, captions } = this.getTutorial() // idempotent
     return (
       <div className="max-w-2xl mx-auto">
         <h1>{title}</h1>
         <div>
           <div className="flex">
-            <ul className="browser-default mb-8">
-              {help_items.map((item, i) => (
-                <li key={i}>
-                  {typeof item === 'function' ? item(board) : item}
-                </li>
-              ))}
-              {copy.map((item, i) => (
-                <li key={i}>
-                  {typeof item === 'function' ? item(board) : item}
-                </li>
-              ))}
-            </ul>
+            <div>
+              <ul className="browser-default mb-8">
+                {help_items.map((item, i) => (
+                  <li key={i}>
+                    {typeof item === 'function' ? item(board) : item}
+                  </li>
+                ))}
+                {captions.map((item, i) => (
+                  <li key={i}>
+                    {typeof item === 'function' ? item(board) : item}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
           {board && <MiniBoard board={board} update={this._update} />}
         </div>

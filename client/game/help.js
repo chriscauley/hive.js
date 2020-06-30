@@ -100,22 +100,7 @@ const centipede = [
   ),
 ]
 
-const basics = [
-  'To start, each player places a piece next to each other.',
-  'Each turn a player can either *place* one piece or move one piece.',
-  'The goal of the game is to surround the enemy queen on all sides.',
-  'Pieces can only be placed next to a friendly piece (except for the first two turns).',
-  'Other than during the placing phase, every piece moves differently.',
-]
-const onehive = [
-  'Each piece moves differently, but the board must always be "one hive".',
-  'A piece cannot move if moving that piece would break the hive (even temporarily).',
-  'Pieces that cannot be moved without violating this rule are grayed out.',
-]
-
 export default {
-  basics,
-  onehive,
   queen,
   beetle,
   grasshopper,

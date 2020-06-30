@@ -1,6 +1,5 @@
 import React from 'react'
 
-import withBoard from '../withBoard'
 import withConfig from '../../config'
 
 const getZ = (i, height) => {
@@ -10,17 +9,18 @@ const getZ = (i, height) => {
   return Math.max(i - height + 4, 0)
 }
 
-const Tile = withBoard(({ className, target, index, z, game }) => {
+const Tile = ({ className, target, index, z, click }) => {
   return (
     <div
-      onClick={() => game.click(target)}
+      onClick={() => click(target)}
       className={className + ' stacked-' + z}
       data-index={index}
       data-piece_id={target.piece_id}
     />
   )
-})
-const TileStack = ({ cell }) => {
+}
+
+const TileStack = ({ cell, click }) => {
   return (
     <div className="item">
       <div className="content">
@@ -31,6 +31,7 @@ const TileStack = ({ cell }) => {
             z={getZ(i, cell.stack.length)}
             target={cell}
             index={cell.index}
+            click={click}
           />
         ))}
       </div>
@@ -40,7 +41,7 @@ const TileStack = ({ cell }) => {
 
 class BoardComponent extends React.Component {
   render() {
-    const { className = '', rows, config } = this.props
+    const { className = '', rows, config, click } = this.props
     if (rows.length === 0) {
       return null
     }
@@ -53,7 +54,7 @@ class BoardComponent extends React.Component {
         {rows.map((row, ir) => (
           <div className="row" key={ir}>
             {row.map((cell, ic) => (
-              <TileStack key={ic} cell={cell} />
+              <TileStack key={ic} cell={cell} click={click} />
             ))}
           </div>
         ))}

@@ -17,7 +17,7 @@ class Game extends React.Component {
   state = {}
   render() {
     const board = Board.get(this.props.match.params.board_id)
-    const { useBoard, update, deleteSelected } = this.props.game
+    const { useBoard, update, deleteSelected, click } = this.props.game
     useBoard(board) // idempotent
     sprites.makeSprites() // idempotent
     const handlers = {
@@ -40,11 +40,19 @@ class Game extends React.Component {
       get(board, 'selected.index') !== undefined ? deleteSelected : undefined
     return (
       <HotKeys handlers={handlers} className="Game">
-        <BoardComponent rows={player_1} className="player_1 odd-q" />
-        <BoardComponent rows={player_2} className="player_2 odd-q" />
+        <BoardComponent
+          rows={player_1}
+          className="player_1 odd-q"
+          click={click}
+        />
+        <BoardComponent
+          rows={player_2}
+          className="player_2 odd-q"
+          click={click}
+        />
         <div className="scroll-box" ref={scrollRef}>
           <div className="inner">
-            <BoardComponent rows={rows} className="game_board" />
+            <BoardComponent rows={rows} className="game_board" click={click} />
           </div>
         </div>
         <HelpText {...board.selected} board={board} />

@@ -25,35 +25,6 @@ piece_sets.expanded_custom = {
   centipede: 1,
 }
 
-const custom = [
-  'assasin_bug',
-  'dragonfly',
-  'earthworm',
-  'earwig',
-  'fly',
-  'firefly',
-  'mantis',
-  'scorpion',
-  'shield_bug',
-  'cockroach',
-  'tick',
-  'wasp',
-]
-
-const original = [
-  'ant',
-  'beetle',
-  'centipede',
-  'grasshopper',
-  'lady_bug',
-  'mosquito',
-  'pill_bug',
-  'queen',
-  'spider',
-]
-
-const all = original.concat(custom)
-
 const _defaultMode = (name) => () => piece_sets[name]
 
 const modes = {
@@ -102,8 +73,5 @@ export default {
   getNames,
   getAvailable,
   piece_sets,
-  original,
-  custom,
-  all,
   modes,
 }

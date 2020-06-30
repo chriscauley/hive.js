@@ -103,17 +103,20 @@ const nStepsAlongHive = (board, index, n_steps) => {
     .filter((i) => i !== undefined && i !== index)
 }
 
-const isTouchingEnemySpider = (board, owner, target_index) => {
+const isTouchingEnemySpider = (board, owner, start_index, target_index) => {
+  const geo = getGeo(board)
   if (!board.rules.spiderwebs) {
     return
   }
-  const fail_index = getGeo(board).touching[target_index].find(
-    (touch_index) => {
-      const touch_id = last(board.stacks[touch_index])
-      const touch_owner = board.piece_owners[touch_id]
-      return touch_owner !== owner && board.piece_types[touch_id] === 'spider'
-    },
-  )
+  const fail_index = geo.touching[target_index].find((touch_index) => {
+    if (geo.touching[start_index].includes(touch_index)) {
+      // don't count spiders that the and is touching in current position
+      return
+    }
+    const touch_id = last(board.stacks[touch_index])
+    const touch_owner = board.piece_owners[touch_id]
+    return touch_owner !== owner && board.piece_types[touch_id] === 'spider'
+  })
   return fail_index !== undefined
 }
 
@@ -124,7 +127,7 @@ const ant = (board, index) => {
     moves.map((current_index) => {
       const excludes = [index, current_index]
       const condition = (target_index) =>
-        isTouchingEnemySpider(board, owner, target_index)
+        isTouchingEnemySpider(board, owner, index, target_index)
       return _stepUntil(board, current_index, excludes, condition)
     }),
   )

@@ -1,4 +1,5 @@
 import React from 'react'
+import { get } from 'lodash'
 import { HotKeys } from 'react-hotkeys'
 import css from '@unrest/css'
 
@@ -16,14 +17,15 @@ class Game extends React.Component {
   state = {}
   render() {
     const board = Board.get(this.props.match.params.board_id)
+    const { useBoard, update, deleteSelected } = this.props.game
+    useBoard(board) // idempotent
+    sprites.makeSprites() // idempotent
     const handlers = {
       UNSELECT: () => {
         Board.unselect(board)
-        this.props.game.update()
+        update()
       },
     }
-    sprites.makeSprites() // idempotent
-    this.props.game.useBoard(board)
     const { rows, player_1, player_2 } = toRows(board, { columns: 2 })
     const scrollbox = scrollRef.current
     if (!this._scrolled && scrollbox) {
@@ -34,6 +36,8 @@ class Game extends React.Component {
         (scrollHeight - clientHeight) / 2,
       )
     }
+    const _delete =
+      get(board, 'selected.index') !== undefined ? deleteSelected : undefined
     return (
       <HotKeys handlers={handlers} className="Game">
         <BoardComponent rows={player_1} className="player_1 odd-q" />
@@ -45,7 +49,7 @@ class Game extends React.Component {
         </div>
         <HelpText {...board.selected} board={board} />
         <div className="absolute left-0 top-0">
-          {board.rules.no_rules && <NoRules />}
+          {board.rules.no_rules && <NoRules _delete={_delete} />}
           {!board.rules.no_rules && board.error && (
             <div className={css.alert.danger()}>
               <i className={css.icon('times-circle text-xl mr-2')} />

@@ -254,7 +254,7 @@ const B = {
   click: (board, target) => {
     const { rules, selected } = board
     const { player_id, piece_type } = selected || {}
-    if (selected && rules.no_rules) {
+    if (selected && rules.no_rules && target.index !== undefined) {
       if (selected.piece_id === 'new') {
         B.place(board, target.index, piece_type, player_id)
       } else {
@@ -321,6 +321,26 @@ const B = {
       return false
     }
     return true
+  },
+
+  deletePiece: (board, trash_id) => {
+    // remove from arrays
+    board.piece_types.splice(trash_id, 1)
+    board.piece_owners.splice(trash_id, 1)
+    Object.entries(board.stacks).forEach(([_, stack]) => {
+      stack.forEach((piece_id, i) => {
+        if (piece_id === trash_id) {
+          stack.splice(i, 1)
+        }
+      })
+      stack.forEach((piece_id, i) => {
+        if (piece_id > trash_id) {
+          stack[i] -= 1
+        }
+      })
+    })
+    B.unselect(board)
+    B.save(board)
   },
 }
 

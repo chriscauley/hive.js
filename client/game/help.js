@@ -36,7 +36,7 @@ const grasshopper = [
 
 const spider = [
   _spider('spider'),
-  "The spider can jump over a single occupied space into an empty one.",
+  'The spider can jump over a single occupied space into an empty one.',
   spiderwebs,
 ]
 
@@ -112,7 +112,6 @@ const onehive = [
   'A piece cannot move if moving that piece would break the hive (even temporarily).',
   'Pieces that cannot be moved without violating this rule are grayed out.',
 ]
-
 
 export default {
   basics,

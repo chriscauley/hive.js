@@ -43,10 +43,8 @@ function HelpText(props) {
                 }
               </li>
             )}
-            {items.map((children, i) => (
-              <li key={i}>
-                {typeof children === 'function' ? children(board) : children}
-              </li>
+            {items.map((item, i) => (
+              <li key={i}>{typeof item === 'function' ? item(board) : item}</li>
             ))}
           </ul>
           <div>

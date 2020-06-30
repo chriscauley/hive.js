@@ -2,6 +2,10 @@
 
 .hex-grid {
   font-size: 16px;
+  width: calc(var(--columns) * #{$cell_w + $buffer});
+  &.cut_first {
+    margin-left: -$hex_w;
+  }
   .row {
     display: flex;
   }

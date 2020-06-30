@@ -52,12 +52,7 @@ const B = {
   wouldBreakHive,
   mantisCheck,
   storage: new Storage('saved_games'),
-  save: (b) => {
-    // TODO currently saving on mouse move
-    if (b.reverse && B.current_hash === b.hash) {
-      return
-    }
-
+  rehydrate(b) {
     // get derrived state of board
     B.current_hash = b.hash
     b.reverse = {}
@@ -97,6 +92,14 @@ const B = {
 
     b.current_player = (b.turn % PLAYER_COUNT) + 1 // 1 on even, 2 on odd
     B._markBoard(b)
+  },
+  save: (b) => {
+    // TODO currently saving on mouse move
+    if (b.reverse && B.current_hash === b.hash) {
+      return
+    }
+
+    B.rehydrate(b)
     B.storage.set(b.id, B.toJson(b))
   },
 

@@ -13,7 +13,7 @@ const pieceToClass = (board, piece_id) => {
   return _class(player, type)
 }
 
-export default (board, { columns }) => {
+export default (board, { columns = 1 } = {}) => {
   const rows = []
   let row
   const marked = getMarked(board)

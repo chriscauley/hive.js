@@ -134,21 +134,27 @@ const ant = (board, index) => {
   return moves.filter((i) => i !== undefined && i !== index)
 }
 
-const grasshopper = (board, index) => {
+const grasshopper = (board, index, max_steps) => {
   const geo = getGeo(board)
   const moves = geo.touching[index].map((target_index, i_dir) => {
     // grasshopper must first step on hive
     if (!board.stacks[target_index]) {
       return
     }
+    let steps = 1
 
     // grasshopper travels in same direction until it falls off hive
     while (board.stacks[target_index]) {
+      if (max_steps && steps > max_steps) {
+        // for spider, max_steps = 1
+        return
+      }
       if (isScorpion(board, target_index)) {
         return
       }
       const dindex = geo.dindexes[mod(target_index, 2)][i_dir]
       target_index += dindex
+      steps++
     }
     return target_index
   })
@@ -271,7 +277,7 @@ const moves = {
   beetle,
   cockroach,
   dragonfly,
-  spider: (b, i) => nStepsAlongHive(b, i, 3),
+  spider: (b, i) => nStepsAlongHive(b, i, 3).concat(grasshopper(b, i, 1)),
   scorpion: (b, i) => nStepsAlongHive(b, i, 3),
   grasshopper,
   fly,

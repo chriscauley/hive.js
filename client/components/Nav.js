@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import css from '@unrest/css'
 import withConfig from '../config'
+import withBoard from '../game/withBoard'
 import { Dropdown } from '@unrest/core'
 
 export default function Nav() {
@@ -19,6 +20,7 @@ export default function Nav() {
             customButton={true}
             autosubmit={true}
           />
+          <withBoard.ImportExportButtons />
         </Dropdown>
         <a
           className={css.icon('github mx-2 text-blue-500')}

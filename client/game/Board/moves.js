@@ -104,7 +104,7 @@ const nStepsAlongHive = (board, index, n_steps) => {
 }
 
 const isTouchingEnemySpider = (board, owner, target_index) => {
-  if (!board.spider_traps_ant) {
+  if (!board.rules.spiderwebs) {
     return
   }
   const fail_index = getGeo(board).touching[target_index].find(

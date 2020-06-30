@@ -25,7 +25,7 @@ const schema = {
       uniqueItems: true,
       default: ['standard'],
     },
-    spider_web: {
+    spiderwebs: {
       title: 'Spider Web',
       type: 'boolean',
       //description: sw_description,

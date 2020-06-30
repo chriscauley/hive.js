@@ -194,6 +194,11 @@ const B = {
     'rules',
   ],
   toJson: (b) => pick(b, B.json_fields),
+  fromJson: (value) => {
+    const board = JSON.parse(value)
+    B.save(board)
+    window.location = `#/play/${board.id}/`
+  },
   new: (options) => {
     const board = {
       W: 4, // hex math only works with even boards

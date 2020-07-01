@@ -6,7 +6,7 @@
     "cp/img": "rm-rf dist/;mkdir dist;cp -r client/images dist",
     "build": "rm -rf docs; parcel build client/index.html -d docs --public-url /hive.js/",
     "develop": "parcel client/index.html -p 4483",
-    "lint": "yarn eslint client"
+    "lint": "yarn eslint client __tests__"
   },
   "repository": {
     "type": "git",
@@ -43,7 +43,7 @@
     "eslint-plugin-prettier": "^3.1.3",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.19.0",
-    "jest": "^26.0.1",
+    "jest": "^26.1.0",
     "prettier": "^2.0.5",
     "sass": "^1.26.3"
   }

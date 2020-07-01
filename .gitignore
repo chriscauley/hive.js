@@ -1,4 +1,5 @@
 # node related
+coverage
 .cache
 dist
 node_modules

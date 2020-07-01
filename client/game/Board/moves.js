@@ -204,7 +204,7 @@ const mosquito = (board, index) => {
   const geo = getGeo(board)
   geo.touching[index].forEach((i2) => {
     const target_id = last(board.stacks[i2])
-    if (!target_id) {
+    if (target_id === undefined) {
       return
     }
     const f = moves[board.piece_types[target_id]] || noop

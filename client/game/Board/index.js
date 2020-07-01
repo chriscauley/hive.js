@@ -54,6 +54,7 @@ const B = {
   storage: new Storage('saved_games'),
   rehydrate(b) {
     // get derrived state of board
+    b.special_args = b.special_args || []
     B.current_hash = b.hash
     b.reverse = {}
     const geo = getGeo(b)

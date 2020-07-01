@@ -70,7 +70,7 @@ export default {
   ],
   fly: [
     'The white fly can move to one of two spaces, like a queen.',
-    'The black fly\'s queen-like moves are restricted, so it can move anywhere.',
+    "The black fly's queen-like moves are restricted, so it can move anywhere.",
   ],
   scorpion: [
     'From this position the scorpion can move to one of two spaces.',
@@ -82,7 +82,7 @@ export default {
   ],
   cockroach: [
     'The black cockroach can step on any adjacent black piece, and then off the hive for a total of 8 possible moves.',
-    'The white cockroach is blocked by the enemy beetle and fly, and cannot move at all.'
+    'The white cockroach is blocked by the enemy beetle and fly, and cannot move at all.',
   ],
   dragonfly: [
     'The black dragonfly can move to one of four spaces.',

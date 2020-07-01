@@ -13,7 +13,7 @@ import help from '../game/help'
 import sprites from '../sprites'
 
 const listify = (arg) => (Array.isArray(arg) ? arg : [arg])
-export const unslugify = slug => S(slug.replace('_', '')).titleCase().s
+export const unslugify = (slug) => S(slug.replace('_', '')).titleCase().s
 
 export default class TutorialComponent extends React.Component {
   getTutorial() {

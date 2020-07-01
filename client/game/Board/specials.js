@@ -51,7 +51,7 @@ const centipede = (b, piece_id) => {
   if (args.length === 0) {
     const touching = geo.touching[index]
     return touching.filter((index2, i_touching) => {
-      if (!b.stacks[index2]) {
+      if (!b.stacks[index2] || b.stacks[index2].length > 1) {
         return
       }
       const left = b.stacks[touching[mod(i_touching - 1, 6)]]

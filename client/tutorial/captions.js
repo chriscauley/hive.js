@@ -2,6 +2,7 @@ export default {
   slugs: [
     'basics',
     'onehive',
+    'stacks',
     'queen',
     'beetle',
     'grasshopper',
@@ -27,61 +28,68 @@ export default {
   onehive: [
     'Each piece moves differently, but the board must always be "one hive".',
     'A piece cannot move if moving that piece would break the hive (even temporarily).',
-    'Pieces that cannot be moved without violating this rule are grayed out.',
+    'Pieces that cannot move or be moved without violating this rule are grayed out.',
+  ],
+  stacks: [
+    'Some pieces can move onto the hive.',
+    'For placing or similar purposes, only the color of the top piece matters.',
+    'Only the top piece on a stack can move or be moved.',
   ],
   queen: [
-    'From this position, the white Queen can move to one of two spaces.',
-    'The black queen cannot move without breaking the hive',
+    'From this position, the white queen can move to one of two spaces. It cannot move between the beetle and ant because it cannot fit.',
+    'The black queen cannot move without breaking the hive.',
   ],
   beetle: [
-    'From this position, the white Beetle can move to one of five spaces, three of them being on top the Hive.',
-    'From this position, on top the Black Grasshopper, the white Beetle can move to one of six spaces.',
+    'From on top of the hive, the white beetle can step down to one of four spaces or continue on the hive by moving onto one of two tiles.',
+    'From the ground, the black beetle can step along the hive or step on the hive for a total of five possible moves.',
   ],
-  grasshopper:
-    'From this position, the Grasshopper can move to one of two spaces',
+  grasshopper: [
+    'The black grasshopper can move to three different spaces.',
+    'The white grasshopper can move to two different spaces.',
+  ],
   spider:
-    'From this position, the white Spider can move to one of three spaces.',
+    'From this position, the white spider can move to one of three spaces.',
   ant: [
-    'Both ants can move to any open space on the board.',
+    'Normally, both ants can move to any open space on the board.',
     'If spiderwebs are enabled, the black ant can get trapped on the far spider.',
   ],
   lady_bug: [
-    'The black Ladybug can move to one of six open spaces, the white Ladybug five.',
+    'The black ladybug can move to one of five open spaces, the white ladybug eight.',
   ],
   mosquito: [
-    'From this position, the white Mosquito can move to one of five spaces. It can move as a Scorpion, Queen Bee, or Grasshopper.',
-    'On top of the hive, the black mosquito moves like a beetle.',
+    'From this position, the black mosquito can move to one of five spaces. It can move as a scorpion, queen, or grasshopper.',
+    'On top of the hive, the white mosquito moves like a beetle. It cannot step on the scorpion because have you ever stepped on a scorpion? It hurts.',
   ],
   pill_bug: [
-    'From this position, the Pill Bug can move to one of two spaces',
-    'Alternatively, it can move the white Queen Bee to one of three spaces.',
+    'From this position, the pill bug can move to one of two spaces.',
+    'Alternatively, it can move the white queen to one of three spaces.',
   ],
   mantis: [
-    'From this position, the Mantis can only move the white Queen Bee under itself.',
-    'From this position, on top of the white Queen Bee, the Mantis can move to  one of six spaces.',
+    'The white mantis can only move the white queen under itself.',
+    'From on top of the white ant, the black Mantis moves like a beetle.',
   ],
   fly: [
-    'From this position the white Fly can move to one of two spaces.',
-    'From this position the black Fly can move to one of fifteen spaces.',
+    'The white fly can move to one of two spaces, like a queen.',
+    'The black fly\'s queen-like moves are restricted, so it can move anywhere.',
   ],
   scorpion: [
-    'From this position the Scorpion can move to one of two spaces.',
-    'From this position the Grasshopper can move to one of two spaces. It cannot jump over the Scorpion.',
+    'From this position the scorpion can move to one of two spaces.',
+    'The beetle and grasshopper have their moves restricted by the adjacent scorpion.',
   ],
   wasp: [
-    'From this position the black Wasp can move to one of four spaces.',
-    'From this position the white Wasp can move to one of six spaces.',
+    'The black wasp can move to one of four spaces.',
+    'The white wasp can move to one of six spaces.',
   ],
   cockroach: [
-    'From this position the Cockroach can move to one of four spaces.',
-    'From this position the Cockroach cannot move.',
+    'The black cockroach can step on any adjacent black piece, and then off the hive for a total of 8 possible moves.',
+    'The white cockroach is blocked by the enemy beetle and fly, and cannot move at all.'
   ],
   dragonfly: [
-    'From this position the Dragonfly can move to one of three spaces.',
-    'From this position, on top of the black Beetle, the Dragonfly can move to one of four spaces. If it moves to one of the three unoccupied spaces, it must move the Beetle as well.',
+    'The black dragonfly can move to one of four spaces.',
+    'The white dragonfly has six possible moves. If it moves to one of the three unoccupied spaces, it must move the spider its on top of as well.',
   ],
   centipede: [
-    'From this position, the Centipede can move to one of two spaces.',
-    'Alternatively, it can switch places with the Grasshopper.',
+    'From this position, the centipede can move to one of two spaces.',
+    'Alternatively, it can switch places with the grasshopper.',
   ],
 }

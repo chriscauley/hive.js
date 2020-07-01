@@ -25,8 +25,8 @@ const queen = [_along('queen')]
 
 const beetle = [
   _along('beetle'),
-  'The beetle can step on the hive',
-  'If on the hive, the beetle can one space around the hive or step off the hive',
+  'The beetle can step on the hive.',
+  'If starting on the hive, it can move in any direction on or off the hive.',
 ]
 
 const grasshopper = [
@@ -62,7 +62,7 @@ const pill_bug = [
 ]
 
 const mantis = [
-  'If on the ground level, the mantis can grab an ajacent piece and move it underneath the mantis',
+  'If on the ground level, the mantis can grab an ajacent piece and move it underneath the mantis.',
   'Once on the hive the mantis can move one space on the hive or step off the hive.',
 ]
 
@@ -89,7 +89,7 @@ const dragonfly = [
   'The dragon fly must take one step in any direction, and then take another step in any other direction (without backtracking).',
   'This can also be thought of like taking a step in the "corner" direction of a hex.',
   special(
-    'If the dragon fly starts on top of a stack and would end on the ground, it moves the tile underneath it on the starting stack to the end (as long as it does not break the one-hive rule)',
+    'If the dragon fly starts on top of a stack and would end on the ground, it moves the tile underneath it on the starting stack to the end (as long as it does not break the one-hive rule).',
   ),
 ]
 

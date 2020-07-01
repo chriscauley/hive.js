@@ -9,7 +9,6 @@ import NewGame from './game/NewGame'
 import Game from './game/Game'
 import withConfig from './config'
 import sprites from './sprites'
-import tutorial from './tutorial'
 import ReactTooltip from 'react-tooltip'
 
 const keyMap = {
@@ -33,7 +32,6 @@ const App = withConfig((props) => {
         <Route exact path="/" component={NewGame} />
         <Route exact path="/play/:board_id/" component={Game} />
         <Route path="/sprites/" component={sprites.Routes} />
-        <Route path="/tutorial/" component={tutorial.Routes} />
       </HotKeys>
       <ReactTooltip className="max-w-sm" />
     </HashRouter>

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import css from '@unrest/css'
 import withConfig from '../config'
 import withBoard from '../game/withBoard'
+import tutorial from '../tutorial'
 import { Dropdown } from '@unrest/core'
 
 export default function Nav() {
@@ -22,6 +23,7 @@ export default function Nav() {
           />
           <withBoard.ImportExportButtons />
         </Dropdown>
+        <tutorial.NavButton />
         <a
           className={css.icon('github mx-2 text-blue-500')}
           href="https://github.com/chriscauley/hive.js/"

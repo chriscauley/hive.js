@@ -13,16 +13,17 @@ import help from '../game/help'
 import sprites from '../sprites'
 
 const listify = (arg) => (Array.isArray(arg) ? arg : [arg])
+export const unslugify = slug => S(slug.replace('_', '')).titleCase().s
 
 export default class TutorialComponent extends React.Component {
   getTutorial() {
-    const { slug } = this.props.match.params
+    const { slug } = this.props
     if (this.tutorial && this.tutorial.slug === slug) {
       return this.tutorial
     }
     this.tutorial = {
       slug,
-      title: S(slug.replace('_', '')).titleCase().s,
+      title: unslugify(slug),
       help_items: help[slug] || [],
       captions: listify(captions[slug]),
     }
@@ -42,26 +43,14 @@ export default class TutorialComponent extends React.Component {
 
     return this.tutorial
   }
-  getLinks() {
-    const { slugs } = captions
-    const index = slugs.indexOf(this.props.match.params.slug)
-    const out_slugs = [slugs[index - 1], slugs[index + 1]]
-    return out_slugs.map(
-      (slug) =>
-        slug && {
-          title: S(slug.replace('_', '')).titleCase().s,
-          slug,
-          url: `/tutorial/${slug}/`,
-        },
-    )
-  }
+
   _update = () => this.setState({ rando: Math.random() })
   state = {}
   render() {
     sprites.makeSprites() // idempotent
     const { title, board, help_items, captions } = this.getTutorial() // idempotent
     return (
-      <div className="max-w-2xl mx-auto">
+      <div>
         <h1>{title}</h1>
         <div>
           <div className="flex">
@@ -81,19 +70,6 @@ export default class TutorialComponent extends React.Component {
             </div>
           </div>
           {board && <MiniBoard board={board} update={this._update} />}
-        </div>
-        <div className="flex justify-between text-xl text-blue-400">
-          {this.getLinks().map((link, i) =>
-            link ? (
-              <Link to={link.url} key={link.slug}>
-                {i === 0 && '< '}
-                {link.title}
-                {i === 1 && ' >'}
-              </Link>
-            ) : (
-              <span key={i} />
-            ),
-          )}
         </div>
       </div>
     )

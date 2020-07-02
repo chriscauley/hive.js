@@ -1,6 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import S from 'string'
 import css from '@unrest/css'
 
 import boards from './boards'
@@ -13,7 +11,13 @@ import help from '../game/help'
 import sprites from '../sprites'
 
 const listify = (arg) => (Array.isArray(arg) ? arg : [arg])
-export const unslugify = (slug) => S(slug.replace('_', '')).titleCase().s
+function titleCase(string) {
+  const sentence = string.toLowerCase().split(' ')
+  for (let i = 0; i < sentence.length; i++) {
+    sentence[i] = sentence[i][0].toUpperCase() + sentence[i].slice(1)
+  }
+}
+export const unslugify = (slug) => titleCase(slug.replace('_', ' '))
 
 export default class TutorialComponent extends React.Component {
   getTutorial() {

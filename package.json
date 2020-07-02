@@ -33,7 +33,6 @@
     "react-router-dom": "^5.1.2",
     "react-tabs": "^3.1.1",
     "react-tooltip": "^4.2.7",
-    "string": "^3.3.3",
     "tailwindcss": "^1.4.5",
     "use-global-hook": "^0.1.12"
   },

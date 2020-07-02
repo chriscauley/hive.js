@@ -1,5 +1,4 @@
 import React from 'react'
-import { Switch, Route, useRouteMatch } from 'react-router-dom'
 import css from '@unrest/css'
 
 import captions from './captions'

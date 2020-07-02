@@ -11,6 +11,13 @@ import sprites from '../sprites'
 import HelpText from './HelpText'
 import NoRules from './NoRules'
 
+const keyMap = {
+  UNSELECT: 'escape',
+  TOGGLE_HELP: ['/', '?', 'shift+?'],
+  UNDO: ['ctrl+z'],
+  REDO: ['ctrl+y', 'ctrl+shift+y'],
+}
+
 const scrollRef = React.createRef()
 
 class Game extends React.Component {
@@ -25,6 +32,8 @@ class Game extends React.Component {
         Board.unselect(board)
         update()
       },
+      UNDO: () => this.props.game.undo(),
+      REDO: () => this.props.game.redo(),
     }
     const { rows, player_1, player_2 } = toRows(board, { columns: 2 })
     const scrollbox = scrollRef.current
@@ -42,7 +51,7 @@ class Game extends React.Component {
       get(board, 'selected.index') !== undefined ? deleteSelected : undefined
     return (
       <div className="Game">
-        <GlobalHotKeys handlers={handlers} keyMap={keyMap}/>
+        <GlobalHotKeys handlers={handlers} keyMap={keyMap} />
         <BoardComponent
           rows={player_1}
           className="player_1 odd-q"

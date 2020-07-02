@@ -13,41 +13,65 @@ const pieceToClass = (board, piece_id) => {
   return _class(player, type)
 }
 
+const sliceBoard = (board) => {
+  const geo = getGeo(board)
+  let max_x = -Infinity,
+    max_y = -Infinity,
+    min_x = Infinity,
+    min_y = Infinity
+  const indexes = Object.keys(board.stacks)
+  if (indexes.length === 0) {
+    indexes.push(geo.center)
+  }
+  indexes
+    .map((index) => parseInt(index))
+    .forEach((index) => {
+      const xy = geo.index2xy(index)
+      max_x = Math.max(max_x, xy[0] + 1)
+      max_y = Math.max(max_y, xy[1] + 1)
+      min_x = Math.min(min_x, xy[0] - 1)
+      min_y = Math.min(min_y, xy[1] - 1)
+    })
+  if (min_x % 2 !== 0) {
+    min_x -= 1
+  }
+  return range(min_y, max_y + 1).map((y) =>
+    range(min_x, max_x + 1).map((x) => ({
+      index: geo.xy2index([x, y]),
+      xy: [x, y],
+    })),
+  )
+}
+
 export default (board, { columns = 1 } = {}) => {
-  const rows = []
-  let row
   const marked = getMarked(board)
   const { selected = {} } = board
   if (selected.index !== undefined) {
     marked[selected.index] = ' blue'
   }
-  getGeo(board).indexes.forEach((index) => {
-    if (index % board.W === 0) {
-      row = []
-      rows.push(row)
-    }
-    const cell = {
-      index,
-      stack: [],
-      type: 'cell',
-    }
-    row.push(cell)
-    if (board.stacks[index]) {
-      board.stacks[index].forEach((piece_id) => {
-        cell.stack.push(pieceToClass(board, piece_id))
-        // last piece_id gets used here
-        cell.piece_id = piece_id
-        cell.player_id = board.piece_owners[piece_id]
-        cell.piece_type = board.piece_types[piece_id]
-      })
-    } else {
-      cell.stack.push('piece hex ' + (board.empty[index] ? 'hex-empty' : ''))
-    }
-    if (marked[index]) {
-      const _i = cell.stack.length - 1
-      cell.stack[_i] = cell.stack[_i] + marked[index]
-    }
-  })
+  const rows = sliceBoard(board)
+  rows.forEach((row) =>
+    row.forEach((cell) => {
+      cell.stack = []
+      if (board.stacks[cell.index]) {
+        board.stacks[cell.index].forEach((piece_id) => {
+          cell.stack.push(pieceToClass(board, piece_id))
+          // last piece_id gets used here
+          cell.piece_id = piece_id
+          cell.player_id = board.piece_owners[piece_id]
+          cell.piece_type = board.piece_types[piece_id]
+        })
+      } else {
+        cell.stack.push(
+          'piece hex ' + (board.empty[cell.index] ? 'hex-empty' : ''),
+        )
+      }
+      if (marked[cell.index]) {
+        const _i = cell.stack.length - 1
+        cell.stack[_i] = cell.stack[_i] + marked[cell.index]
+      }
+    }),
+  )
 
   const players = {
     1: [],

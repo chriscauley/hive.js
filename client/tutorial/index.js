@@ -6,7 +6,7 @@ import captions from './captions'
 import Tutorial, { unslugify } from './Component'
 
 class NavButton extends React.Component {
-  state = { open: true, index: 0 }
+  state = { open: false, index: 0 }
   open = () => this.setState({ open: true })
   close = () => this.setState({ open: false })
   toNext = () => this.setState({ index: this.state.index + 1 })

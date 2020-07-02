@@ -44,6 +44,13 @@ const mantis = (b, piece_id) => {
   }
 }
 
+const swap = (b, index1, index2) => {
+  const piece1 = b.stacks[index1].pop()
+  const piece2 = b.stacks[index2].pop()
+  b.stacks[index1].push(piece2)
+  b.stacks[index2].push(piece1)
+}
+
 const centipede = (b, piece_id) => {
   const geo = getGeo(b)
   const index = b.reverse[piece_id]
@@ -62,17 +69,26 @@ const centipede = (b, piece_id) => {
       return !wouldBreakHive(b, [index, index2])
     })
   }
-  return () => {
-    const piece1 = b.stacks[index].pop()
-    const piece2 = b.stacks[args[0]].pop()
-    b.stacks[index].push(piece2)
-    b.stacks[args[0]].push(piece1)
-  }
+  return () => swap(b, index, args[0])
 }
 
 export default {
+  move,
   selectNearby,
   pill_bug,
   mantis,
   centipede,
+  undo: {
+    pill_bug: (b, piece_id, args) => move(b, args[1], args[0]),
+    centipede: (b, piece_id, args) => {
+      const index = b.reverse[piece_id]
+      swap(args[0], index)
+    },
+    mantis: (b, piece_id, args) => {
+      const index = b.reverse[piece_id]
+      const target_id = b.stacks[index].shift()
+      b.stacks[args[0]] = b.stacks[args[0]] || []
+      b.stacks[args[0]].push(target_id)
+    },
+  },
 }

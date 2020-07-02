@@ -1,5 +1,5 @@
 import Storage from '@unrest/storage'
-import { pick, last } from 'lodash'
+import { pick, last, cloneDeep } from 'lodash'
 
 import { getGeo } from './Geo'
 import wouldBreakHive from './wouldBreakHive'
@@ -10,6 +10,7 @@ const board_cache = {}
 const PLAYER_COUNT = 2
 
 export const resize = (board, dx, dy) => {
+  board.actions = [] // TODO issue #1
   const old_geo = getGeo(board)
   board.W += dx
   board.H += dy
@@ -159,6 +160,7 @@ const B = {
     return b
   },
   nextTurn: (b) => {
+    delete b.frozen // undo information is now lost (if it existed)
     b.turn++
     B.unselect(b)
     B.save(b)
@@ -169,6 +171,7 @@ const B = {
     b.piece_owners.push(player_id)
     b.stacks[index] = b.stacks[index] || []
     b.stacks[index].push(piece_id)
+    b.actions.push(['place', index, type, player_id])
     B.nextTurn(b)
   },
   move: (b, piece_id, index) => {
@@ -176,17 +179,19 @@ const B = {
     const _mos =
       b.piece_types[piece_id] === 'dragonfly' &&
       moves.dragonflyExtra(b, old_index, index)
-    if (old_index !== undefined) {
-      piece_id = b.stacks[old_index].pop()
-    }
+    piece_id = b.stacks[old_index].pop()
     b.stacks[index] = b.stacks[index] || []
     b.stacks[index].push(piece_id)
     if (_mos) {
       b.stacks[index].unshift(b.stacks[old_index].pop())
+      b.actions.push(['dragonfly', old_index, index])
+    } else {
+      b.actions.push(['move', piece_id, index])
     }
     B.nextTurn(b)
   },
   json_fields: [
+    'actions',
     'id',
     'W',
     'H',
@@ -197,7 +202,7 @@ const B = {
     'turn',
     'rules',
   ],
-  toJson: (b) => pick(b, B.json_fields),
+  toJson: (b) => cloneDeep(pick(b, B.json_fields)),
   fromJson: (value) => {
     const board = JSON.parse(value)
     B.save(board)
@@ -205,14 +210,16 @@ const B = {
   },
   new: (options) => {
     const board = {
-      W: 4, // hex math only works with even boards
-      H: 3,
+      // TODO issue #1
+      W: 50, // hex math only works with even boards
+      H: 50,
       ...options,
       id: Math.random(),
       hash: Math.random(),
       piece_types: [],
       piece_owners: [],
       turn: 0,
+      actions: [],
     }
     board.stacks = {}
     B.save(board)
@@ -260,6 +267,51 @@ const B = {
       'index',
     ])
   },
+  freeze: (b) => {
+    b.frozen = b.frozen || B.toJson(b)
+  },
+  undo: (b) => {
+    B.freeze(b)
+    const move = b.actions.pop()
+    if (move[0] === 'dragonfly') {
+      const old_index = move[0]
+      const new_index = move[1]
+      const dragonfly = b.stacks[new_index].pop()
+      b.stacks[old_index] = b.stacks[old_index] || []
+      b.stacks[old_index].push(b.stacks[new_index].pop())
+      b.stacks[old_index].push(dragonfly)
+    } else if (move[0] === 'move') {
+      // using specials.move here because it doesn't increment turn
+      specials.move(b, b.reverse[move[1]], move[2])
+    } else if (move[0] === 'special') {
+      specials.undo[move[1]](b, move[2], move[3])
+    } else if (move[0] === 'place') {
+      b.piece_types.pop()
+      b.piece_owners.pop()
+      b.stacks[move[1]].pop()
+    }
+    b.turn--
+    B.rehydrate(b)
+  },
+  redo: (b) => {
+    const { frozen } = b
+    if (!frozen || frozen.actions.length === b.turn) {
+      return
+    }
+    const move = b.frozen.actions[b.turn]
+    if (move[0] === 'dragonfly' || move[0] === 'move') {
+      B.move(b, move[1], move[2])
+    } else if (move[0] === 'place') {
+      B.place(b, move[1], move[2], move[3])
+    } else if (move[0] === 'special') {
+      const special = B.getSpecials(b, move[1])
+      special()
+    }
+
+    B.nextTurn(b)
+    // nextTurn removes frozen, but because this is redo we didn't break the undo chain
+    b.frozen = frozen
+  },
   click: (board, target) => {
     const { rules, selected } = board
     const { player_id, piece_type } = selected || {}
@@ -299,6 +351,7 @@ const B = {
       board.special_args.push(target.index)
       special = B.getSpecials(board, selected.piece_id)
       if (typeof special === 'function') {
+        board.actions.push(['special', selected.piece_id, board.special_args])
         special()
         B.nextTurn(board)
       }

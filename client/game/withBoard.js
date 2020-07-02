@@ -32,6 +32,14 @@ const actions = {
     Board.deletePiece(board, piece_id)
     store.actions.update()
   },
+  undo: (store) => {
+    Board.undo(board)
+    store.actions.update()
+  },
+  redo: (store) => {
+    Board.redo(board)
+    store.actions.update()
+  },
 }
 
 const makeHook = globalHook(React, {}, actions)

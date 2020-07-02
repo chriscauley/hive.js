@@ -14,6 +14,8 @@ import ReactTooltip from 'react-tooltip'
 const keyMap = {
   UNSELECT: 'escape',
   TOGGLE_HELP: ['/', '?', 'shift+?'],
+  UNDO: ['ctrl+z'],
+  REDO: ['ctrl+y', 'ctrl+shift+y'],
 }
 
 const App = withConfig((props) => {
@@ -22,10 +24,8 @@ const App = withConfig((props) => {
     TOGGLE_HELP: props.config.actions.toggleHelp,
   }
   return (
-    <div
-      className={classnames('app-content', { debug })}
-    >
-      <GlobalHotKeys handlers={handlers} keyMap={keyMap}/>
+    <div className={classnames('app-content', { debug })}>
+      <GlobalHotKeys handlers={handlers} keyMap={keyMap} />
       <HashRouter>
         <Nav />
         <Route exact path="/" component={NewGame} />

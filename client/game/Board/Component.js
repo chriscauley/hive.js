@@ -9,12 +9,13 @@ const getZ = (i, height) => {
   return Math.max(i - height + 4, 0)
 }
 
-const Tile = ({ className, target, index, z, click }) => {
+const Tile = ({ xy, className, target, index, z, click }) => {
   return (
     <div
       onClick={() => click(target)}
       className={className + ' stacked-' + z}
       data-index={index}
+      data-xy={xy}
       data-piece_id={target.piece_id}
     />
   )
@@ -29,6 +30,7 @@ const TileStack = ({ cell, click }) => {
             className={item}
             key={i}
             z={getZ(i, cell.stack.length)}
+            xy={cell.xy}
             target={cell}
             index={cell.index}
             click={click}

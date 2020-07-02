@@ -19,24 +19,22 @@ const spiderwebs = ifRule(
 
 const special = (l) => l
 
-const _along = (s) => `The ${s} can move one space along the hive.`
-const _spider = (s) => `The ${s} must move exactly 3 spaces along the hive.`
+const _along = (s, e='') => `The ${s} can move one space along the hive${e}.`
+const _spider = (s, e='') => `The ${s} must move exactly 3 spaces along the hive${e}.`
 const queen = [_along('queen')]
 
 const beetle = [
-  _along('beetle'),
-  'The beetle can step on the hive.',
+  _along('beetle', ' or step on the hive'),
   'If starting on the hive, it can move in any direction on or off the hive.',
 ]
 
 const grasshopper = [
-  'The grasshopper cannot move around the hive.',
-  'It jumps over the hive in a straight line to the next unoccupied space.',
+  'The grassshoper jumps over the hive in a straight line.',
+  'It lands in the first unoccupied space.',
 ]
 
 const spider = [
-  _spider('spider'),
-  'The spider can jump over a single occupied space into an empty one.',
+  _spider('spider', ' or jump over a single tile into an empty space'),
   spiderwebs,
 ]
 

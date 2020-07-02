@@ -3,9 +3,11 @@
 .Game {
   @apply flex justify-center items-center;
   background: linear-gradient(135deg, #f5f2d0 10%, #e2dccd 100%);
-  height: 100%;
+  bottom: 0;
+  left: 0;
   position: absolute;
-  width: 100%;
+  right: 0;
+  top: 77px;
   .scroll-box {
     overflow: scroll;
     height: 100%;

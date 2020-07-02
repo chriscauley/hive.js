@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { HotKeys } from 'react-hotkeys'
+import { GlobalHotKeys } from 'react-hotkeys'
 import { HashRouter, Route } from 'react-router-dom'
 
 import Nav from './components/Nav'
@@ -22,19 +22,18 @@ const App = withConfig((props) => {
     TOGGLE_HELP: props.config.actions.toggleHelp,
   }
   return (
-    <HashRouter>
-      <Nav />
-      <HotKeys
-        handlers={handlers}
-        keyMap={keyMap}
-        className={classnames('app-content', { debug })}
-      >
+    <div
+      className={classnames('app-content', { debug })}
+    >
+      <GlobalHotKeys handlers={handlers} keyMap={keyMap}/>
+      <HashRouter>
+        <Nav />
         <Route exact path="/" component={NewGame} />
         <Route exact path="/play/:board_id/" component={Game} />
         <Route path="/sprites/" component={sprites.Routes} />
-      </HotKeys>
-      <ReactTooltip className="max-w-sm" />
-    </HashRouter>
+        <ReactTooltip className="max-w-sm" />
+      </HashRouter>
+    </div>
   )
 })
 

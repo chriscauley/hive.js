@@ -1,6 +1,6 @@
 import React from 'react'
 import { get } from 'lodash'
-import { HotKeys } from 'react-hotkeys'
+import { GlobalHotKeys } from 'react-hotkeys'
 import css from '@unrest/css'
 
 import Board from './Board'
@@ -36,10 +36,13 @@ class Game extends React.Component {
         (scrollHeight - clientHeight) / 2,
       )
     }
+    const player_id = board.current_player
+    const orientation = player_id === 1 ? 'left' : 'right'
     const _delete =
       get(board, 'selected.index') !== undefined ? deleteSelected : undefined
     return (
-      <HotKeys handlers={handlers} className="Game">
+      <div className="Game">
+        <GlobalHotKeys handlers={handlers} keyMap={keyMap}/>
         <BoardComponent
           rows={player_1}
           className="player_1 odd-q"
@@ -56,7 +59,8 @@ class Game extends React.Component {
           </div>
         </div>
         <HelpText {...board.selected} board={board} />
-        <div className="absolute left-0 top-0">
+        <div className={`absolute top-0 ${orientation}-0`}>
+          <div className={css.alert.info()}>turn: {board.turn}</div>
           {board.rules.no_rules && <NoRules _delete={_delete} />}
           {!board.rules.no_rules && board.error && (
             <div className={css.alert.danger()}>
@@ -65,7 +69,7 @@ class Game extends React.Component {
             </div>
           )}
         </div>
-      </HotKeys>
+      </div>
     )
   }
 }

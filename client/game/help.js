@@ -19,8 +19,9 @@ const spiderwebs = ifRule(
 
 const special = (l) => l
 
-const _along = (s, e='') => `The ${s} can move one space along the hive${e}.`
-const _spider = (s, e='') => `The ${s} must move exactly 3 spaces along the hive${e}.`
+const _along = (s, e = '') => `The ${s} can move one space along the hive${e}.`
+const _spider = (s, e = '') =>
+  `The ${s} must move exactly 3 spaces along the hive${e}.`
 const queen = [_along('queen')]
 
 const beetle = [

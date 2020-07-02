@@ -76,3 +76,25 @@ $original: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spi
     }
   }
 }
+
+.piece.type-basics,
+.piece.type-onehive,
+.piece.type-stacks {
+  @apply flex items-center justify-center;
+  &.hex-player_2 { color: white; }
+  &:before {
+    font-size: 3em;
+    height: unset;
+    width: unset;
+  }
+}
+
+.piece.type-basics:before {
+  content: "1";
+}
+.piece.type-onehive:before {
+  content: "2";
+}
+.piece.type-stacks:before {
+  content: "3";
+}

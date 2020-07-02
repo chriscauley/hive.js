@@ -15,7 +15,7 @@
     height: $hex_h + $buffer;
     margin: 0 $hex_w / 8;
     .content {
-      height: $hex_h;
+      height: calc(#{$hex_h} + 1px);
       left: 50%;
       position: absolute;
       top: 50%;
@@ -40,6 +40,7 @@
 
 .hex {
   background-size: contain;
+  background-repeat: no-repeat;
 }
 
 .hex.debug {

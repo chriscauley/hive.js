@@ -13,9 +13,7 @@ import sprites from '../sprites'
 const listify = (arg) => (Array.isArray(arg) ? arg : [arg])
 function titleCase(string) {
   const sentence = string.toLowerCase().split(' ')
-  for (let i = 0; i < sentence.length; i++) {
-    sentence[i] = sentence[i][0].toUpperCase() + sentence[i].slice(1)
-  }
+  return sentence.map((w) => w[0].toUpperCase() + w.slice(1)).join(' ')
 }
 export const unslugify = (slug) => titleCase(slug.replace('_', ' '))
 

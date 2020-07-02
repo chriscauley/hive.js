@@ -1,3 +1,4 @@
+import { range } from 'lodash'
 import React from 'react'
 import css from '@unrest/css'
 
@@ -10,6 +11,7 @@ class NavButton extends React.Component {
   close = () => this.setState({ open: false })
   toNext = () => this.setState({ index: this.state.index + 1 })
   toPrev = () => this.setState({ index: this.state.index - 1 })
+  toSlug = (slug) => this.setState({ index: captions.slugs.indexOf(slug) })
   render() {
     return (
       <>
@@ -20,6 +22,7 @@ class NavButton extends React.Component {
             toNext={this.toNext}
             toPrev={this.toPrev}
             index={this.state.index}
+            toSlug={this.toSlug}
           />
         )}
       </>
@@ -27,14 +30,44 @@ class NavButton extends React.Component {
   }
 }
 
+const NavTile = ({ slug, current, click }) => {
+  const player = current === slug ? 2 : 1
+  return (
+    <div className="item" onClick={() => click(slug)}>
+      <div className="content">
+        <div className={`hex hex-player_${player} type type-${slug} piece`} />
+      </div>
+    </div>
+  )
+}
+
+const TutorialNav = ({ current, click }) => {
+  const len = Math.ceil(captions.slugs.length)
+  const rows = range(1).map((ir) =>
+    captions.slugs.slice(ir * len, (ir + 1) * len),
+  )
+  return (
+    <div className="hex-grid TutorialNav">
+      {rows.map((row, ir) => (
+        <div className="row" key={ir}>
+          {row.map((s) => (
+            <NavTile key={s} slug={s} current={current} click={click} />
+          ))}
+        </div>
+      ))}
+    </div>
+  )
+}
+
 function Modal(props) {
-  const { index, toNext, toPrev, close } = props
+  const { index, toNext, toPrev, close, toSlug } = props
   const slug = captions.slugs[index]
   const [prev, next] = [-1, 1].map((i) => captions.slugs[i + index])
   return (
     <div className={css.modal.outer()}>
       <div className={css.modal.mask()} onClick={close} />
       <div className={css.modal.content.xl()}>
+        <TutorialNav current={slug} click={toSlug} />
         <Tutorial slug={slug} />
         <div className="text-xl">
           {prev && (

@@ -2,8 +2,6 @@ import { getGeo, mod } from './Geo'
 import { flatten, last } from 'lodash'
 import wouldBreakHive from './wouldBreakHive'
 
-const noop = () => []
-
 const getPlacement = (board, player_id, excludes = []) => {
   const geo = getGeo(board)
   if (board.turn === 0) {
@@ -84,6 +82,7 @@ const _stepUntil = (board, index, excludes, condition) => {
       break
     }
     excludes.push(index)
+    /* istanbul ignore next */
     if (_count++ > 200) {
       throw 'Overflow: could not find end of path after 200 steps'
     }
@@ -207,7 +206,7 @@ const mosquito = (board, index) => {
     if (target_id === undefined) {
       return
     }
-    const f = moves[board.piece_types[target_id]] || noop
+    const f = moves[board.piece_types[target_id]]
     out = out.concat(f(board, index))
   })
   return out
@@ -286,7 +285,6 @@ const moves = {
   lady_bug,
   mantis,
   mosquito,
-  noop,
   dragonflyExtra,
 }
 

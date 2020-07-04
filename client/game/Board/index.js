@@ -8,6 +8,7 @@ import moves from './moves'
 
 const board_cache = {}
 const PLAYER_COUNT = 2
+const noop = () => []
 
 export const resize = (board, dx, dy) => {
   board.actions = [] // TODO issue #1
@@ -229,7 +230,7 @@ const B = {
   getSpecials: (board, piece_id) => {
     const type = board.piece_types[piece_id]
 
-    const f = specials[type] || moves.noop
+    const f = specials[type] || noop
     return f(board, piece_id)
   },
 
@@ -241,7 +242,7 @@ const B = {
       return []
     }
 
-    const f = moves[type] || moves.noop
+    const f = moves[type] || noop
     return f(board, index)
   },
 

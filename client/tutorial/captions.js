@@ -65,8 +65,8 @@ export default {
     'Alternatively, it can move the white queen to one of three spaces.',
   ],
   mantis: [
-    'The white mantis can only move the white queen under itself.',
-    'From on top of the white ant, the black Mantis moves like a beetle.',
+    'The white mantis cannot move, but it can pull the queen or grasshopper under itself.',
+    'From on top of the hive, the black Mantis moves like a beetle.',
   ],
   fly: [
     'The white fly can move to one of two spaces, like a queen.',

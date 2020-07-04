@@ -7,7 +7,7 @@ window.GC = geo_cache
 
 export const getGeo = (board) => {
   const WH = `${board.W},${board.H}`
-  if (!geo_cache[board.WH]) {
+  if (!geo_cache[WH]) {
     geo_cache[WH] = new Geo(board, WH)
   }
   window.G = geo_cache[WH]
@@ -16,8 +16,9 @@ export const getGeo = (board) => {
 
 export default class Geo {
   constructor(options) {
-    if (!options.W) {
-      throw 'Geo requires a W (width)'
+    /* istanbul ignore next */
+    if (!options.W || !options.H) {
+      throw 'Geo requires a width and height (constructor options W and H)'
     }
     this.setSize(options)
     // html element for mouse event calculations
@@ -25,7 +26,7 @@ export default class Geo {
     this.element = options.element
   }
 
-  setSize({ W, H = W }) {
+  setSize({ W, H }) {
     this.W = W
     this.H = H
     this.WH = `${W},${H}`

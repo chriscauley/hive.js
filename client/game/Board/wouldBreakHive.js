@@ -1,5 +1,3 @@
-import { getGeo } from './Geo'
-
 export default (board, indexes, max_stack = 1) => {
   if (typeof indexes === 'number') {
     indexes = [indexes]
@@ -13,14 +11,13 @@ export default (board, indexes, max_stack = 1) => {
 
   let hive_count = 0
   const hive_map = {}
-  const geo = getGeo(board)
   Object.keys(board.stacks).forEach((index) => {
     index = parseInt(index)
     if (indexes.includes(index)) {
       return
     }
     let hive_no
-    geo.touching[index].forEach((touched_index) => {
+    board.geo.touching[index].forEach((touched_index) => {
       if (indexes.includes(touched_index)) {
         return
       }

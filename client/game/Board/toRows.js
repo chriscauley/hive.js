@@ -1,5 +1,4 @@
 /* Renders the board into a state that can be displayed */
-import { getGeo } from './Geo'
 import { range } from 'lodash'
 import pieces from '../pieces'
 import Board from './index'
@@ -14,19 +13,18 @@ const pieceToClass = (board, piece_id) => {
 }
 
 const sliceBoard = (board) => {
-  const geo = getGeo(board)
   let max_x = -Infinity,
     max_y = -Infinity,
     min_x = Infinity,
     min_y = Infinity
   const indexes = Object.keys(board.stacks)
   if (indexes.length === 0) {
-    indexes.push(geo.center)
+    indexes.push(board.geo.center)
   }
   indexes
     .map((index) => parseInt(index))
     .forEach((index) => {
-      const xy = geo.index2xy(index)
+      const xy = board.geo.index2xy(index)
       max_x = Math.max(max_x, xy[0] + 1)
       max_y = Math.max(max_y, xy[1] + 1)
       min_x = Math.min(min_x, xy[0] - 1)
@@ -37,7 +35,7 @@ const sliceBoard = (board) => {
   }
   return range(min_y, max_y + 1).map((y) =>
     range(min_x, max_x + 1).map((x) => ({
-      index: geo.xy2index([x, y]),
+      index: board.geo.xy2index([x, y]),
       xy: [x, y],
     })),
   )

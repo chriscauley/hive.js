@@ -1,7 +1,7 @@
 import Storage from '@unrest/storage'
 import { pick, last, cloneDeep } from 'lodash'
-
 import { getGeo } from './Geo'
+
 import wouldBreakHive from './wouldBreakHive'
 import specials from './specials'
 import moves from './moves'
@@ -12,26 +12,25 @@ const noop = () => []
 
 export const resize = (board, dx, dy) => {
   board.actions = [] // TODO issue #1
-  const old_geo = getGeo(board)
+  const old_geo = board(board)
   board.W += dx
   board.H += dy
+  board.geo = getGeo(board)
   const new_stacks = {}
-  const new_geo = getGeo(board)
   Object.entries(board.stacks).forEach(([index, stack]) => {
     const xy = old_geo.index2xy(index)
-    new_stacks[new_geo.xy2index(xy)] = stack
+    new_stacks[board.geo.xy2index(xy)] = stack
   })
   board.stacks = new_stacks
 }
 
 const moveStacks = (board, dx, dy) => {
-  const geo = getGeo(board)
   const new_stacks = {}
   Object.entries(board.stacks).forEach(([index, stack]) => {
-    const xy = geo.index2xy(index)
+    const xy = board.geo.index2xy(index)
     xy[0] += dx
     xy[1] += dy
-    new_stacks[geo.xy2index(xy)] = stack
+    new_stacks[board.geo.xy2index(xy)] = stack
   })
   board.stacks = new_stacks
 }
@@ -43,8 +42,7 @@ const mantisCheck = (b, index) => {
   }
   // mantis's on the ground level can still perform their special if an adjacent piece
   // would not break the hive
-  const geo = getGeo(b)
-  const touching = geo.touching[index]
+  const touching = b.geo.touching[index]
   return touching.filter((i2) => b.stacks[i2] && !b.onehive[i2]).length > 0
 }
 
@@ -55,11 +53,12 @@ const B = {
   mantisCheck,
   storage: new Storage('saved_games'),
   rehydrate(b) {
-    // get derrived state of board
+    // get derrived state of board, needs a better name than "rehydrate"
     b.special_args = b.special_args || []
+    b.actions = b.actions || []
     B.current_hash = b.hash
     b.reverse = {}
-    const geo = getGeo(b)
+    b.geo = getGeo(b)
     let x_max = 0,
       y_max = 0,
       x_min = Infinity,
@@ -73,7 +72,7 @@ const B = {
       stack.forEach((piece_id) => {
         b.reverse[piece_id] = parseInt(index)
       })
-      const [x, y] = geo.index2xy(index)
+      const [x, y] = b.geo.index2xy(index)
       x_min = Math.min(x_min, x)
       y_min = Math.min(y_min, y)
       x_max = Math.max(x_max, x)
@@ -107,7 +106,6 @@ const B = {
   },
 
   _markBoard: (b) => {
-    const geo = getGeo(b)
     b.onehive = {} // index: would break hive if moved
     b.cantmove = {} // same as onehive, except for mantis
     b.empty = {} // empty but next to onehive
@@ -140,7 +138,7 @@ const B = {
         }
       }
 
-      geo.touching[index].forEach((touched_index) => {
+      b.geo.touching[index].forEach((touched_index) => {
         if (!b.stacks[touched_index]) {
           b.empty[touched_index] = true
           b.empties.push[touched_index]
@@ -148,8 +146,8 @@ const B = {
       })
     })
     if (b.empties.length === 0) {
-      b.empty[geo.center] = true
-      b.empties.push[geo.center]
+      b.empty[b.geo.center] = true
+      b.empties.push[b.geo.center]
     }
   },
 
@@ -285,7 +283,9 @@ const B = {
       // using specials.move here because it doesn't increment turn
       specials.move(b, b.reverse[move[1]], move[2])
     } else if (move[0] === 'special') {
-      specials.undo[move[1]](b, move[2], move[3])
+      const [_, piece_id, special_args] = move
+      const piece_type = b.piece_types[piece_id]
+      specials.undo[piece_type](b, piece_id, special_args)
     } else if (move[0] === 'place') {
       b.piece_types.pop()
       b.piece_owners.pop()

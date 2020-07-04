@@ -1,14 +1,13 @@
-import { getGeo, mod } from './Geo'
+import { mod } from './Geo'
 import { flatten, last } from 'lodash'
 import wouldBreakHive from './wouldBreakHive'
 
 const getPlacement = (board, player_id, excludes = []) => {
-  const geo = getGeo(board)
   if (board.turn === 0) {
-    return [geo.center]
+    return [board.geo.center]
   }
   if (board.turn === 1) {
-    return [geo.center + 1]
+    return [board.geo.center + 1]
   }
 
   player_id = parseInt(player_id)
@@ -26,7 +25,7 @@ const getPlacement = (board, player_id, excludes = []) => {
       return
     }
     const player = board.piece_owners[piece_id]
-    geo.touching[index].forEach((index2) => {
+    board.geo.touching[index].forEach((index2) => {
       if (!board.stacks[index2]) {
         player_touching[player][index2] = true
       }
@@ -39,8 +38,7 @@ const getPlacement = (board, player_id, excludes = []) => {
 }
 
 const stepAlongHive = (board, index, excludes = []) => {
-  const geo = getGeo(board)
-  const touching = geo.touching[index]
+  const touching = board.geo.touching[index]
   return touching.filter((target_index, i) => {
     if (board.stacks[target_index] || excludes.includes(target_index)) {
       return
@@ -55,8 +53,7 @@ const stepAlongHive = (board, index, excludes = []) => {
 }
 
 const stepOnHive = (board, index, excludes = []) => {
-  const geo = getGeo(board)
-  const touching = geo.touching[index]
+  const touching = board.geo.touching[index]
   return touching.filter((target_index) => {
     return (
       board.stacks[target_index] &&
@@ -67,8 +64,7 @@ const stepOnHive = (board, index, excludes = []) => {
 }
 
 const stepOffHive = (board, index, excludes = []) => {
-  const geo = getGeo(board)
-  const touching = geo.touching[index]
+  const touching = board.geo.touching[index]
   return touching.filter((target_index) => {
     return !board.stacks[target_index] && !excludes.includes(target_index)
   })
@@ -103,12 +99,11 @@ const nStepsAlongHive = (board, index, n_steps) => {
 }
 
 const isTouchingEnemySpider = (board, owner, start_index, target_index) => {
-  const geo = getGeo(board)
   if (!board.rules.spiderwebs) {
     return
   }
-  const fail_index = geo.touching[target_index].find((touch_index) => {
-    if (geo.touching[start_index].includes(touch_index)) {
+  const fail_index = board.geo.touching[target_index].find((touch_index) => {
+    if (board.geo.touching[start_index].includes(touch_index)) {
       // don't count spiders that the and is touching in current position
       return
     }
@@ -134,8 +129,7 @@ const ant = (board, index) => {
 }
 
 const grasshopper = (board, index, max_steps) => {
-  const geo = getGeo(board)
-  const moves = geo.touching[index].map((target_index, i_dir) => {
+  const moves = board.geo.touching[index].map((target_index, i_dir) => {
     // grasshopper must first step on hive
     if (!board.stacks[target_index]) {
       return
@@ -151,7 +145,7 @@ const grasshopper = (board, index, max_steps) => {
       if (isScorpion(board, target_index)) {
         return
       }
-      const dindex = geo.dindexes[mod(target_index, 2)][i_dir]
+      const dindex = board.geo.dindexes[mod(target_index, 2)][i_dir]
       target_index += dindex
       steps++
     }
@@ -200,8 +194,7 @@ const mosquito = (board, index) => {
     return beetle(board, index)
   }
   let out = []
-  const geo = getGeo(board)
-  geo.touching[index].forEach((i2) => {
+  board.geo.touching[index].forEach((i2) => {
     const target_id = last(board.stacks[i2])
     if (target_id === undefined) {
       return
@@ -224,11 +217,10 @@ const cockroach = (b, index) => {
   const friendly_onhive = []
   const targets = [index]
   const checked = {}
-  const geo = getGeo(b)
   while (targets.length) {
     const target = targets.pop()
     checked[target] = true
-    geo.touching[target].forEach((target2) => {
+    b.geo.touching[target].forEach((target2) => {
       if (!checked[target2] && b.stacks[target2]) {
         const piece_id = last(b.stacks[target2])
         const player_id = b.piece_owners[piece_id]
@@ -252,9 +244,8 @@ const cockroach = (b, index) => {
 }
 
 const dragonfly = (board, index) => {
-  const geo = getGeo(board)
   const parity = index % 2
-  return geo.dindexes.dragonfly[parity].map((di) => index + di)
+  return board.geo.dindexes.dragonfly[parity].map((di) => index + di)
 }
 
 const dragonflyExtra = (board, index, index2) => {

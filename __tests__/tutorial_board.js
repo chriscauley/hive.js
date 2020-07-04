@@ -9,6 +9,8 @@ test('Board snapshots', () => {
   }
   const specials = {}
   Object.entries(boards).forEach(([slug, board]) => {
+    board = cloneDeep(board)
+    B.rehydrate(board)
     const p1 = B.moves.getPlacement(board, 1)
     const p2 = B.moves.getPlacement(board, 2)
     placements[slug] = `${p1}|${p2}`
@@ -20,9 +22,7 @@ test('Board snapshots', () => {
       if (type !== slug) {
         return
       }
-      board = cloneDeep(board)
       board.rules = {}
-      B.rehydrate(board)
       const s = piece_id + ':'
       moves[slug] += s + B.getMoves(board, piece_id).join(',') + '|'
       if (B.specials[slug]) {

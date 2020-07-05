@@ -19,9 +19,29 @@ const getTarget = (b, index) => {
   }
 }
 
+const findPiece = (board, { piece_id, index, player_id, piece_type }) => {
+  // look up a piece using one of 3 criteria
+  // if player_id provided, use that, other wise look up using other two criteria
+  if (index !== undefined) {
+    piece_id = last(board.stacks[index])
+  } else if (piece_type && player_id) {
+    board.piece_types.find((_type, id) => {
+      if (piece_type === _type && board.piece_owners[id] === player_id) {
+        piece_id = id
+        return true
+      }
+    })
+  }
+  return {
+    piece_id,
+    index: board.reverse[piece_id],
+    player_id: board.piece_owners[piece_id],
+    piece_type: board.piece_types[piece_id],
+  }
+}
+
 test('Play a game', () => {
   const b = B.new({
-    piece_sets: ['standard'],
     rules: { piece_sets: ['standard'] },
   })
   expect(B.moves.getPlacement(b, 1)).toEqual([b.geo.center])
@@ -60,4 +80,96 @@ test('replay-game', () => {
       B.redo(board)
     })
   })
+})
+
+test('Board.click', () => {
+  const b = B.new({
+    rules: { piece_sets: ['standard'] },
+  })
+  const center = b.geo.center
+  B.click(b, { piece_id: 'new', player_id: 1, piece_type: 'pill_bug' })
+  B.click(b, getTarget(b, center))
+
+  // Clicking an enemy tile after clicking "new piece" selects enemy tile
+  B.click(b, { piece_id: 'new', player_id: 2, piece_type: 'ant' })
+  B.click(b, getTarget(b, center))
+  expect(b.selected.piece_id).toBe(0)
+
+  // flush out a few more useful pieces
+  B.place(b, center + b.W, 'queen', 2)
+  B.place(b, center - 1, 'ant', 1)
+  B.move(b, center + b.W, center + b.W - 1)
+
+  const hash = B.getHash(b)
+
+  // // mis click special (click empty square when centipede should target enemies)
+  B.click(b, findPiece(b, { index: center }))
+  B.click(b, { index: center + 1 }) // empty square
+  expect(B.getHash(b)).toBe(hash)
+
+  // misclick second step of special
+  B.click(b, findPiece(b, { index: center }))
+  B.click(b, findPiece(b, { player_id: 2, piece_type: 'queen' }))
+  B.click(b, { index: center + 2 * b.W }) // invalid target to move queen to
+  expect(B.getHash(b)).toBe(hash)
+
+  // test successful special (pill_bug moves queen)
+  B.click(b, findPiece(b, { index: center }))
+  B.click(b, findPiece(b, { player_id: 2, piece_type: 'queen' }))
+  B.click(b, { index: center - b.W })
+  expect(findPiece(b, { player_id: 2, piece_type: 'queen' }).index).toBe(
+    center - b.W,
+  )
+
+  const queen = findPiece(b, { player_id: 2, piece_type: 'queen' })
+  B.click(b, queen)
+  B.click(b, { index: queen.index - 1 })
+
+  //B.click(b, findPiece(b, {player_id: 2, piece_type: 'queen'}))
+})
+
+test('Board.click +no rules', () => {
+  const b = B.new({
+    rules: { piece_sets: ['standard'], no_rules: true },
+  })
+  const center = b.geo.center
+
+  // with no rules you can place a piece anywhere
+  B.click(b, { piece_id: 'new', player_id: 1, piece_type: 'pill_bug' })
+  B.click(b, { index: center - b.W * 5 }) // five rows up from proper place
+  expect(b.stacks[center - b.W * 5][0]).toBe(0)
+
+  // you can also move that piece anywhere (out of turn even)
+  B.click(b, findPiece(b, { piece_id: 0 }))
+  B.click(b, { index: center })
+  expect(b.stacks[center][0]).toBe(0)
+})
+
+test('Board.deletePiece', () => {
+  const board = cloneDeep(STANDARD)
+  B.rehydrate(board)
+  const index_1 = board.reverse[1]
+  const index_2 = board.reverse[2]
+  B.deletePiece(board, 1)
+
+  // deleting piece 1 means all pieces > 1 are shifted down
+  expect(board.reverse[1]).toBe(index_2)
+
+  // the spot where index_1 was is gone
+  expect(board.stacks[index_1]).toBe(undefined)
+})
+
+test('Board.queenCheck', () => {
+  const b = B.new({
+    rules: { piece_sets: ['standard'] },
+  })
+  b.selected = { piece_type: 'ant' }
+  b.turn = 6
+  B.queenCheck(b, 1)
+  expect(b.error).not.toBe(undefined)
+
+  b.turn = 7
+  b.error = undefined
+  B.queenCheck(b, 2)
+  expect(b.error).not.toBe(undefined)
 })

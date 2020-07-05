@@ -24,6 +24,7 @@
     "classnames": "^2.2.6",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.11.0",
+    "object-hash": "^2.0.3",
     "parcel": "^1.12.4",
     "react": ">=16.0.0",
     "react-dom": ">=16.0.0",

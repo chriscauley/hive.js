@@ -1,6 +1,7 @@
 import Storage from '@unrest/storage'
 import { pick, last, cloneDeep } from 'lodash'
 import { getGeo } from './Geo'
+import objectHash from 'object-hash'
 
 import wouldBreakHive from './wouldBreakHive'
 import specials from './specials'
@@ -52,11 +53,12 @@ const B = {
   wouldBreakHive,
   mantisCheck,
   storage: new Storage('saved_games'),
+  getHash: (b) =>
+    objectHash(pick(b, ['stacks', 'piece_types', 'piece_owners'])),
   rehydrate(b) {
     // get derrived state of board, needs a better name than "rehydrate"
     b.special_args = b.special_args || []
     b.actions = b.actions || []
-    B.current_hash = b.hash
     b.reverse = {}
     b.geo = getGeo(b)
     let x_max = 0,
@@ -93,6 +95,7 @@ const B = {
     }
 
     b.current_player = (b.turn % PLAYER_COUNT) + 1 // 1 on even, 2 on odd
+    b.hash = B.current_hash = B.getHash(b)
     B._markBoard(b)
   },
   save: (b) => {
@@ -173,20 +176,21 @@ const B = {
     b.actions.push(['place', index, type, player_id])
     B.nextTurn(b)
   },
-  move: (b, piece_id, index) => {
-    const old_index = b.reverse[piece_id]
-    const _mos =
+  move: (b, old_index, new_index) => {
+    const piece_id = last(b.stacks[old_index])
+    const _df =
       b.piece_types[piece_id] === 'dragonfly' &&
-      moves.dragonflyExtra(b, old_index, index)
-    piece_id = b.stacks[old_index].pop()
-    b.stacks[index] = b.stacks[index] || []
-    b.stacks[index].push(piece_id)
-    if (_mos) {
-      b.stacks[index].unshift(b.stacks[old_index].pop())
-      b.actions.push(['dragonfly', old_index, index])
+      moves.dragonflyExtra(b, old_index, new_index)
+
+    b.stacks[old_index].pop()
+    b.stacks[new_index] = b.stacks[new_index] || []
+    if (_df) {
+      b.stacks[new_index].push(b.stacks[old_index].pop())
+      b.actions.push(['dragonfly', old_index, new_index])
     } else {
-      b.actions.push(['move', piece_id, index])
+      b.actions.push(['move', old_index, new_index])
     }
+    b.stacks[new_index].push(piece_id)
     B.nextTurn(b)
   },
   json_fields: [
@@ -214,12 +218,12 @@ const B = {
       H: 50,
       ...options,
       id: Math.random(),
-      hash: Math.random(),
       piece_types: [],
       piece_owners: [],
       turn: 0,
       actions: [],
     }
+    board.hash = B.getHash(board)
     board.stacks = {}
     B.save(board)
     return board
@@ -245,7 +249,7 @@ const B = {
   },
 
   unselect: (b) => {
-    b.hash = Math.random()
+    b.hash = B.getHash(b)
     b.special_args = []
     delete b.selected
     delete b.error
@@ -273,15 +277,15 @@ const B = {
     B.freeze(b)
     const move = b.actions.pop()
     if (move[0] === 'dragonfly') {
-      const old_index = move[0]
-      const new_index = move[1]
+      const [_, old_index, new_index] = move
       const dragonfly = b.stacks[new_index].pop()
       b.stacks[old_index] = b.stacks[old_index] || []
       b.stacks[old_index].push(b.stacks[new_index].pop())
       b.stacks[old_index].push(dragonfly)
     } else if (move[0] === 'move') {
       // using specials.move here because it doesn't increment turn
-      specials.move(b, b.reverse[move[1]], move[2])
+      const [_, old_index, new_index] = move
+      specials.move(b, new_index, old_index)
     } else if (move[0] === 'special') {
       const [_, piece_id, special_args] = move
       const piece_type = b.piece_types[piece_id]
@@ -305,11 +309,13 @@ const B = {
     } else if (move[0] === 'place') {
       B.place(b, move[1], move[2], move[3])
     } else if (move[0] === 'special') {
+      b.special_args = move[2]
       const special = B.getSpecials(b, move[1])
       special()
+      b.actions.push(['special', move[1], move[2]])
+      B.nextTurn(b)
     }
 
-    B.nextTurn(b)
     // nextTurn removes frozen, but because this is redo we didn't break the undo chain
     b.frozen = frozen
   },
@@ -320,7 +326,7 @@ const B = {
       if (selected.piece_id === 'new') {
         B.place(board, target.index, piece_type, player_id)
       } else {
-        B.move(board, selected.piece_id, target.index)
+        B.move(board, selected.index, target.index)
       }
       return
     }
@@ -361,7 +367,7 @@ const B = {
 
     const moves = B.getMoves(board, selected.piece_id)
     if (moves.includes(target.index)) {
-      B.queenCheck(board) && B.move(board, selected.piece_id, target.index)
+      B.queenCheck(board) && B.move(board, selected.index, target.index)
       return
     }
 

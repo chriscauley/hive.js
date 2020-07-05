@@ -78,13 +78,11 @@ export default {
   mantis,
   centipede,
   undo: {
-    pill_bug: (b, piece_id, args) => move(b, args[1], args[0]),
-    centipede: (b, piece_id, args) => {
-      const index = b.reverse[piece_id]
-      swap(args[0], index)
+    pill_bug: (b, piece_id, index, args) => move(b, args[1], args[0]),
+    centipede: (b, piece_id, index, args) => {
+      swap(b, args[0], index)
     },
-    mantis: (b, piece_id, args) => {
-      const index = b.reverse[piece_id]
+    mantis: (b, piece_id, index, args) => {
       const target_id = b.stacks[index].shift()
       b.stacks[args[0]] = b.stacks[args[0]] || []
       b.stacks[args[0]].push(target_id)

@@ -227,6 +227,9 @@ const B = {
     b.frozen = b.frozen || B.toJson(b)
   },
   undo: (b) => {
+    if (b.actions.length === 0) {
+      return
+    }
     B.freeze(b)
     const move = b.actions.pop()
     if (move[0] === 'dragonfly') {
@@ -240,9 +243,9 @@ const B = {
       const [_, old_index, new_index] = move
       specials.move(b, new_index, old_index)
     } else if (move[0] === 'special') {
-      const [_, piece_id, special_args] = move
+      const [_, piece_id, index, special_args] = move
       const piece_type = b.piece_types[piece_id]
-      specials.undo[piece_type](b, piece_id, special_args)
+      specials.undo[piece_type](b, piece_id, index, special_args)
     } else if (move[0] === 'place') {
       b.piece_types.pop()
       b.piece_owners.pop()
@@ -262,10 +265,11 @@ const B = {
     } else if (move[0] === 'place') {
       B.place(b, move[1], move[2], move[3])
     } else if (move[0] === 'special') {
-      b.special_args = move[2]
-      const special = B.getSpecials(b, move[1])
+      const [_, piece_id, _index, special_args] = move
+      b.special_args = special_args
+      const special = B.getSpecials(b, piece_id)
       special()
-      b.actions.push(['special', move[1], move[2]])
+      b.actions.push(move.slice())
       B.nextTurn(b)
     }
 
@@ -311,7 +315,13 @@ const B = {
       board.special_args.push(target.index)
       special = B.getSpecials(board, selected.piece_id)
       if (typeof special === 'function') {
-        board.actions.push(['special', selected.piece_id, board.special_args])
+        const index = board.reverse[selected.piece_id]
+        board.actions.push([
+          'special',
+          selected.piece_id,
+          index,
+          board.special_args,
+        ])
         special()
         B.nextTurn(board)
       }

@@ -13,7 +13,7 @@ const noop = () => []
 
 export const resize = (board, dx, dy) => {
   board.actions = [] // TODO issue #1
-  const old_geo = board(board)
+  const old_geo = board.geo
   board.W += dx
   board.H += dy
   board.geo = getGeo(board)
@@ -319,6 +319,7 @@ const B = {
     // nextTurn removes frozen, but because this is redo we didn't break the undo chain
     b.frozen = frozen
   },
+
   click: (board, target) => {
     const { rules, selected } = board
     const { player_id, piece_type } = selected || {}
@@ -348,7 +349,6 @@ const B = {
           B.place(board, target.index, piece_type, player_id)
       } else {
         B.select(board, target)
-        B.error(board, 'You cannot place next to an enemy tile.')
       }
       return
     }
@@ -377,14 +377,13 @@ const B = {
   error: (board, message) => {
     board.error = message
   },
-  findQueen: (board, player_id) => board.queens[player_id],
   queenCheck: (board) => {
     if (board.selected.piece_type === 'queen' || board.rules.no_rules) {
       // placing or moving queen, don't check anything else
       return true
     }
-    const fail1 = board.turn === 7 && B.findQueen(board, 2) === undefined
-    const fail2 = board.turn === 6 && B.findQueen(board, 1) === undefined
+    const fail1 = board.turn === 6 && board.queens[1] === undefined
+    const fail2 = board.turn === 7 && board.queens[2] === undefined
     if (fail1 || fail2) {
       B.error(board, 'You must place your queen on or before the 4th turn')
       return false

@@ -7,7 +7,11 @@ const STANDARD = {"actions":[["place",1274,"ant",1],["place",1275,"ant",2],["pla
 
 // This is really just testing mantis
 // eslint-disable-next-line
-const CUSTOM = {"actions":[["place",1274,"fly",1],["place",1275,"fly",2],["place",1273,"mantis",1],["place",1226,"queen",2],["place",1323,"fly",1],["place",1276,"mantis",2],["special",2,[1323]],["special",5,[1226]],["move",1273,1274],["move",1276,1226],["move",1274,1275],["special",5,[1275]]],"id":0.6966347699246405,"W":50,"H":50,"stacks":{"1226":[2,5],"1273":[4],"1274":[0],"1275":[1],"1276":[3]},"piece_types":["fly","fly","mantis","queen","fly","mantis"],"piece_owners":[1,2,1,2,1,2],"hash":"1046aab723253ec8551fe498fcb79781ed3743fb","turn":12,"rules":{"piece_sets":["custom"]}}
+const CUSTOM = {"actions":[["place",1274,"mantis",1],["place",1275,"fly",2],["place",1323,"queen",1],["move",1275,1224],["special",0,1274,[1323]]],"id":0.7017979038850923,"W":50,"H":50,"stacks":{"1224":[1],"1274":[2,0]},"piece_types":["mantis","fly","queen"],"piece_owners":[1,2,1],"hash":"04f115e3554f5024c96687ff1c9aeba4669a5cec","turn":5,"rules":{"piece_sets":["custom"]}}
+
+// Centipede and dragonfly
+// eslint-disable-next-line
+const CUSTOM_EXPANDED = {"actions":[["place",1274,"centipede",1],["place",1275,"queen",2],["place",1273,"queen",1],["move",1275,1224],["special",0,1274,[1273]],["place",1225,"dragonfly",2],["place",1272,"cockroach",1],["move",1225,1274],["place",1222,"dragonfly",1],["move",1274,1272],["move",1222,1224],["dragonfly",1272,1223]],"id":0.2752197114202486,"W":50,"H":50,"stacks":{"1223":[4,3],"1224":[1,5],"1273":[0],"1274":[2]},"piece_types":["centipede","queen","queen","dragonfly","cockroach","dragonfly"],"piece_owners":[1,2,1,2,1,1],"hash":"80132c67caa9175d4da8ab67c0d6511c9d62143f","turn":12,"rules":{"piece_sets":["expanded_custom"]}}
 
 const getTarget = (b, index) => {
   const piece_id = last(b.stacks[index])
@@ -64,7 +68,7 @@ test('Play a game', () => {
 })
 
 test('replay-game', () => {
-  const games = [STANDARD, CUSTOM]
+  const games = [STANDARD, CUSTOM, CUSTOM_EXPANDED]
   games.forEach((b) => {
     const board = cloneDeep(b)
     B.rehydrate(board)
@@ -102,7 +106,7 @@ test('Board.click', () => {
 
   const hash = B.getHash(b)
 
-  // // mis click special (click empty square when centipede should target enemies)
+  // // mis click special (click empty square when pill_bug should target enemies)
   B.click(b, findPiece(b, { index: center }))
   B.click(b, { index: center + 1 }) // empty square
   expect(B.getHash(b)).toBe(hash)

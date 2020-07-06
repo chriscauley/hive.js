@@ -25,7 +25,7 @@ class Game extends React.Component {
   state = {}
   render() {
     const board = Board.get(this.props.match.params.board_id)
-    const { useBoard, update, deleteSelected, click, restart } = this.props.game
+    const { useBoard, update, deleteSelected, click } = this.props.game
     useBoard(board) // idempotent
     sprites.makeSprites() // idempotent
     const handlers = {
@@ -70,6 +70,7 @@ class Game extends React.Component {
         </div>
         <HelpText {...board.selected} board={board} />
         <div className={`absolute top-0 ${orientation}-0`}>
+          <Winner board={board} />
           <div className={css.alert.info()}>turn: {board.turn}</div>
           {board.rules.no_rules && <NoRules _delete={_delete} />}
           {!board.rules.no_rules && board.error && (
@@ -79,7 +80,6 @@ class Game extends React.Component {
             </div>
           )}
         </div>
-        <Winner board={board} restart={restart} />
       </div>
     )
   }

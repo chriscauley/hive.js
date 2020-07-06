@@ -62,7 +62,7 @@ const centipede = (b, piece_id) => {
       }
       const left = b.stacks[touching[mod(i_touching - 1, 6)]]
       const right = b.stacks[touching[mod(i_touching + 1, 6)]]
-      if (!left && !right) {
+      if (left && right) {
         return
       }
       return !wouldBreakHive(b, [index, index2])

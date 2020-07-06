@@ -1,5 +1,6 @@
 import React from 'react'
 import globalHook from 'use-global-hook'
+import ModalLink from '../components/ModalLink'
 import css from '@unrest/css'
 
 import Board from './Board'
@@ -63,6 +64,46 @@ export default function withBoard(Component, _options = {}) {
   BoardProvider.WrappedComponent = Component
   return BoardProvider
 }
+
+const ImportForm = withBoard(function ImportForm({ game, close }) {
+  const load = (e) => game.loadJson(e.clipboardData.getData('text'))
+  return (
+    <div className={'form-group'}>
+      Paste the serialized version of a board to load it.
+      <textarea className="form-control" onPaste={load} />
+      <div className={css.button()} onClick={close}>
+        Close
+      </div>
+    </div>
+  )
+})
+
+const ExportForm = withBoard(function ExportForm({ game, close }) {
+  const json = JSON.stringify(Board.toJson(game.board))
+  return (
+    <div className={'form-group'}>
+      <div className="pb-4 mb-4 border-b">
+        The json representation of the current game is below. Copy the text or
+        download the file.
+        <textarea className="form-control" defaultValue={json} />
+      </div>
+      <div className={css.button()} onClick={close}>
+        Close
+      </div>
+    </div>
+  )
+})
+
+withBoard.ImportLink = withBoard(function ImportLink() {
+  return <ModalLink Content={ImportForm}>Import Game</ModalLink>
+})
+
+withBoard.ExportLink = withBoard(function ExportLink(props) {
+  if (!props.game.board) {
+    return <div className="text-gray-500">Export Game</div>
+  }
+  return <ModalLink Content={ExportForm}>Export Game</ModalLink>
+})
 
 function ImportExportButtons(props) {
   const toggle = props.game.toggleImportExport

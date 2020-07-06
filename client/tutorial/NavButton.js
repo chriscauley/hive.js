@@ -1,5 +1,4 @@
 import React from 'react'
-import css from '@unrest/css'
 
 import captions from './captions'
 import Modal from './Modal'
@@ -14,7 +13,7 @@ export default class NavButton extends React.Component {
   render() {
     return (
       <>
-        <i className={css.link(css.icon('question'))} onClick={this.open} />
+        <div onClick={this.open}>Tutorial</div>
         {this.state.open && (
           <Modal
             close={this.close}

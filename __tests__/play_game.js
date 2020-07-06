@@ -3,7 +3,7 @@ import { last, cloneDeep } from 'lodash'
 
 // no specials, but this is a shotgun approach to testing undo/redo
 // eslint-disable-next-line
-const STANDARD = {"actions":[["place",1274,"ant",1],["place",1275,"ant",2],["place",1323,"ant",1],["place",1276,"ant",2],["place",1272,"grasshopper",1],["place",1327,"ant",2],["place",1321,"queen",1],["place",1278,"queen",2],["move",1321,1322],["move",1278,1277],["move",1322,1373],["move",1277,1226],["move",1373,1324],["place",1225,"grasshopper",2],["move",1324,1325],["move",1327,1326],["move",1272,1324],["move",1225,1375]],"id":0.7769325665909139,"W":50,"H":50,"stacks":{"1226":[7],"1274":[0],"1275":[1],"1276":[3],"1323":[2],"1324":[4],"1325":[6],"1326":[5],"1375":[8]},"piece_types":["ant","ant","ant","ant","grasshopper","ant","queen","queen","grasshopper"],"piece_owners":[1,2,1,2,1,2,1,2,2],"hash":"07e212916268e59148350686697c30ed1a254d4a","turn":18,"rules":{"piece_sets":["standard"]}}
+const STANDARD = {"actions":[["place",1274,"queen",1],["place",1275,"queen",2],["place",1273,"ant",1],["place",1276,"ant",2],["place",1323,"ant",1],["place",1226,"ant",2],["place",1324,"beetle",1],["move",1276,1224],["move",1323,1325],["move",1226,1323]],"id":0.30906181765884133,"W":50,"H":50,"stacks":{"1224":[3],"1273":[2],"1274":[0],"1275":[1],"1323":[5],"1324":[6],"1325":[4]},"piece_types":["queen","queen","ant","ant","ant","ant","beetle"],"piece_owners":[1,2,1,2,1,2,1],"hash":"55f494538ab9589921836295aa62dcf82bf9eab0","turn":10,"rules":{"piece_sets":["standard"]}}
 
 // This is really just testing mantis
 // eslint-disable-next-line

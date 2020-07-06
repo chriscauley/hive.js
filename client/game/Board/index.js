@@ -22,6 +22,7 @@ const B = {
     // get derrived state of board
     b.special_args = b.special_args || []
     b.actions = b.actions || []
+    b.players = [1, 2]
     b.reverse = {}
     b.geo = getGeo(b)
     Object.entries(b.stacks).forEach(([index, stack]) => {
@@ -38,6 +39,7 @@ const B = {
     b.current_player = (b.turn % PLAYER_COUNT) + 1 // 1 on even, 2 on odd
     b.hash = B.current_hash = B.getHash(b)
     B._markBoard(b)
+    B.checkWinner(b)
   },
   save: (b) => {
     // TODO currently saving on mouse move
@@ -141,6 +143,7 @@ const B = {
     'hash',
     'turn',
     'rules',
+    'winner',
   ],
   toJson: (b) => cloneDeep(pick(b, B.json_fields)),
   fromJson: (value) => {
@@ -358,6 +361,19 @@ const B = {
     })
     B.unselect(board)
     B.save(board)
+  },
+
+  checkWinner: (b) => {
+    if (b.winner !== undefined) {
+      return
+    }
+    b.winner = b.players.find((player_id) => {
+      const index = b.queens[player_id]
+      return (
+        index !== undefined &&
+        b.geo.touching[index].filter((i2) => b.stacks[i2]).length === 6
+      )
+    })
   },
 }
 

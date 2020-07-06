@@ -10,7 +10,7 @@ test('Board snapshots', () => {
   const specials = {}
   Object.entries(boards).forEach(([slug, board]) => {
     board = cloneDeep(board)
-    B.rehydrate(board)
+    B.update(board)
     const p1 = B.moves.getPlacement(board, 1)
     const p2 = B.moves.getPlacement(board, 2)
     placements[slug] = `${p1}|${p2}`

@@ -75,7 +75,7 @@ test('replay-game', () => {
   const games = [STANDARD, CUSTOM, CUSTOM_EXPANDED, STANDARD_EXPANDED]
   games.forEach((b) => {
     const board = cloneDeep(b)
-    B.rehydrate(board)
+    B.update(board)
     const hashes = [board.hash]
     let count = 100
     while (board.turn !== 0 && count--) {
@@ -155,7 +155,7 @@ test('Board.click +no rules', () => {
 
 test('Board.deletePiece', () => {
   const board = cloneDeep(STANDARD)
-  B.rehydrate(board)
+  B.update(board)
   const index_1 = board.reverse[1]
   const index_2 = board.reverse[2]
   B.deletePiece(board, 1)

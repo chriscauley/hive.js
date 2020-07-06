@@ -30,8 +30,8 @@ const B = {
   storage: new Storage('saved_games'),
   getHash: (b) =>
     objectHash(pick(b, ['stacks', 'piece_types', 'piece_owners'])),
-  rehydrate(b) {
-    // get derrived state of board, needs a better name than "rehydrate"
+  update(b) {
+    // get derrived state of board
     b.special_args = b.special_args || []
     b.actions = b.actions || []
     b.reverse = {}
@@ -57,7 +57,7 @@ const B = {
       return
     }
 
-    B.rehydrate(b)
+    B.update(b)
     B.storage.set(b.id, B.toJson(b))
   },
 
@@ -252,7 +252,7 @@ const B = {
       b.stacks[move[1]].pop()
     }
     b.turn--
-    B.rehydrate(b)
+    B.update(b)
   },
   redo: (b) => {
     const { frozen } = b

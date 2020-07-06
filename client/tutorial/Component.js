@@ -31,7 +31,7 @@ export default class TutorialComponent extends React.Component {
     }
     const b = (this.tutorial.board = boards[slug])
     if (b) {
-      B.rehydrate(b)
+      B.update(b)
       const piece_id = b.piece_types.indexOf(slug)
       if (piece_id !== undefined) {
         B.select(b, {
@@ -109,7 +109,7 @@ const MiniBoard = withBoard(({ board, update, game }) => {
   pruneRows(rows)
   const click = (target) => {
     B.select(board, target)
-    B.rehydrate(board)
+    B.update(board)
     update()
   }
   const edit = () => game.loadJson(JSON.stringify(B.toJson(board)))

@@ -10,6 +10,7 @@ import withBoard from './withBoard'
 import sprites from '../sprites'
 import HelpText from './HelpText'
 import NoRules from './NoRules'
+import Winner from './Winner'
 
 const keyMap = {
   UNSELECT: 'escape',
@@ -24,7 +25,7 @@ class Game extends React.Component {
   state = {}
   render() {
     const board = Board.get(this.props.match.params.board_id)
-    const { useBoard, update, deleteSelected, click } = this.props.game
+    const { useBoard, update, deleteSelected, click, restart } = this.props.game
     useBoard(board) // idempotent
     sprites.makeSprites() // idempotent
     const handlers = {
@@ -78,6 +79,7 @@ class Game extends React.Component {
             </div>
           )}
         </div>
+        <Winner board={board} restart={restart} />
       </div>
     )
   }

@@ -15,7 +15,7 @@ const CUSTOM_EXPANDED = {"actions":[["place",1274,"centipede",1],["place",1275,"
 
 // pill_bug
 // eslint-disable-next-line
-const STANDARD_EXPANDED = {"actions":[["place",1274,"pill_bug",1],["place",1275,"lady_bug",2],["special",0,1274,[1275,1273]]],"id":0.41108693540369234,"W":50,"H":50,"stacks":{"1273":[1],"1274":[0]},"piece_types":["pill_bug","lady_bug"],"piece_owners":[1,2],"hash":"ee4c8ef463ce5d06a37096d95e69e13a8974dd2e","turn":3,"rules":{"piece_sets":["expanded_standard"]}}
+const STANDARD_EXPANDED = {"actions":[["place",1274,"pill_bug",1],["place",1275,"queen",2],["special",0,1274,[1275,1325]],["place",1326,"mosquito",2],["place",1273,"queen",1],["place",1377,"lady_bug",2],["place",1222,"lady_bug",1]],"id":0.7337746181174609,"W":50,"H":50,"stacks":{"1222":[5],"1273":[3],"1274":[0],"1325":[1],"1326":[2],"1377":[4]},"piece_types":["pill_bug","queen","mosquito","queen","lady_bug","lady_bug"],"piece_owners":[1,2,2,1,2,1],"hash":"1b48eb80fcad999841acdb2dd0c9637de0ff82e6","turn":7,"rules":{"piece_sets":["expanded_standard"]}}
 
 const getTarget = (b, index) => {
   const piece_id = last(b.stacks[index])
@@ -94,6 +94,7 @@ test('Board.click', () => {
   const b = B.new({
     rules: { piece_sets: ['standard'] },
   })
+  //B.update(b)
   const center = b.geo.center
   B.click(b, { piece_id: 'new', player_id: 1, piece_type: 'pill_bug' })
   B.click(b, getTarget(b, center))
@@ -187,20 +188,21 @@ test('edge cases', () => {
   const b = B.new({
     rules: { piece_sets: ['standard'], no_rules: true },
   })
+  B.update(b)
 
   // it's enough that these don't cause errors
   B.undo(b)
   B.redo(b)
   B.get(b.id)
-  expect(b.geo.index2xy(99)).toEqual([49, 1])
-  B.save(b)
-  B.fromJson('{}')
 
-  B.place(b, { index: b.geo.center, player_id: 1, piece_type: 'bearodactyl' })
-  B.place(b, {
-    index: b.geo.center + b.W,
-    player_id: 2,
-    piece_type: 'bearodactyl',
-  })
-  B.getMoves(b, 0)
+  // index2xy is used in toRows, but not in core engine
+  expect(b.geo.index2xy(99)).toEqual([49, 1])
+
+  // save/load aren't used in tests
+  B.save(b)
+  B.fromJson(JSON.stringify(STANDARD_EXPANDED))
+
+  const piece_type = 'bearodactyl'
+  B.place(b, b.geo.center - b.W, piece_type, 1)
+  B.getMoves(b, findPiece(b, { player_id: 1, piece_type }).piece_id)
 })

@@ -20,7 +20,8 @@ const actions = {
   loadJson: (store, value) => {
     let import_error = null
     try {
-      Board.fromJson(value)
+      board = Board.fromJson(value)
+      window.location = `#/play/${board.id}/`
     } catch (e) {
       console.error(e)
       import_error = 'An unknown error has occurred'

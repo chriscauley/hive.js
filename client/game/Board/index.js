@@ -11,22 +11,10 @@ const board_cache = {}
 const PLAYER_COUNT = 2
 const noop = () => []
 
-const mantisCheck = (b, index) => {
-  if (b.stacks[index].length > 1) {
-    // mantis on hive can always move
-    return true
-  }
-  // mantis's on the ground level can still perform their special if an adjacent piece
-  // would not break the hive
-  const touching = b.geo.touching[index]
-  return touching.filter((i2) => b.stacks[i2] && !b.onehive[i2]).length > 0
-}
-
 const B = {
   moves,
   specials,
   wouldBreakHive,
-  mantisCheck,
   storage: new Storage('saved_games'),
   getHash: (b) =>
     objectHash(pick(b, ['stacks', 'piece_types', 'piece_owners'])),
@@ -65,7 +53,6 @@ const B = {
     b.onehive = {} // index: would break hive if moved
     b.cantmove = {} // same as onehive, except for mantis
     b.empty = {} // empty but next to onehive
-    b.empties = [] // sometimes useful to have empty as an array
     b.queens = {} // player: queen_index
     Object.entries(b.stacks).forEach(([index, stack]) => {
       index = parseInt(index)
@@ -80,8 +67,7 @@ const B = {
       }
 
       if (type === 'mantis') {
-        if (mantisCheck(b, index)) {
-          delete b.onehive[index]
+        if (B.getSpecials(b, piece_id).length > 0) {
           delete b.cantmove[index]
         } else {
           b.cantmove[index] = true
@@ -89,7 +75,7 @@ const B = {
       }
 
       if (type === 'pill_bug' && b.cantmove[index]) {
-        if (mantisCheck(b, index)) {
+        if (B.getSpecials(b, piece_id).length > 0) {
           delete b.cantmove[index]
         }
       }
@@ -97,13 +83,11 @@ const B = {
       b.geo.touching[index].forEach((touched_index) => {
         if (!b.stacks[touched_index]) {
           b.empty[touched_index] = true
-          b.empties.push[touched_index]
         }
       })
     })
-    if (b.empties.length === 0) {
+    if (Object.keys(b.empty).length === 0) {
       b.empty[b.geo.center] = true
-      b.empties.push[b.geo.center]
     }
   },
 
@@ -161,8 +145,8 @@ const B = {
   toJson: (b) => cloneDeep(pick(b, B.json_fields)),
   fromJson: (value) => {
     const board = JSON.parse(value)
-    B.save(board) // not sure why but coverage doesn't get this window.location statement
-    /* istanbul ignore next */ window.location = `#/play/${board.id}/`
+    B.save(board)
+    return board
   },
   new: (options) => {
     const board = {
@@ -238,10 +222,6 @@ const B = {
       b.stacks[old_index] = b.stacks[old_index] || []
       b.stacks[old_index].push(b.stacks[new_index].pop())
       b.stacks[old_index].push(dragonfly)
-    } else if (move[0] === 'move') {
-      // using specials.move here because it doesn't increment turn
-      const [_, old_index, new_index] = move
-      specials.move(b, new_index, old_index)
     } else if (move[0] === 'special') {
       const [_, piece_id, index, special_args] = move
       const piece_type = b.piece_types[piece_id]
@@ -250,6 +230,11 @@ const B = {
       b.piece_types.pop()
       b.piece_owners.pop()
       b.stacks[move[1]].pop()
+    } else {
+      // move[0] === 'move'
+      // using specials.move here because it doesn't increment turn
+      const [_, old_index, new_index] = move
+      specials.move(b, new_index, old_index)
     }
     b.turn--
     B.update(b)
@@ -260,9 +245,7 @@ const B = {
       return
     }
     const move = b.frozen.actions[b.turn]
-    if (move[0] === 'dragonfly' || move[0] === 'move') {
-      B.move(b, move[1], move[2])
-    } else if (move[0] === 'place') {
+    if (move[0] === 'place') {
       B.place(b, move[1], move[2], move[3])
     } else if (move[0] === 'special') {
       const [_, piece_id, _index, special_args] = move
@@ -271,6 +254,9 @@ const B = {
       special()
       b.actions.push(move.slice())
       B.nextTurn(b)
+    } else {
+      // move[0] === 'move' or 'dragonfly'
+      B.move(b, move[1], move[2])
     }
 
     // nextTurn removes frozen, but because this is redo we didn't break the undo chain

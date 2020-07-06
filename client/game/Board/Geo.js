@@ -39,21 +39,6 @@ export default class Geo {
     this.center -= 1 // bias to lower size
   }
 
-  // needs to be converted from cartesian to hex
-  // pxy2xy = (pxy) => {
-  //   if (!this.element) {
-  //     return [-1, -1]
-  //   }
-  //   const { left, top, height } = this.element.getBoundingClientRect()
-  //   const w_px = height / this.W
-  //   const h_px = height / this.H
-  //   return [
-  //     Math.floor((pxy[0] - left) / h_px),
-  //     Math.floor((pxy[1] - top) / w_px),
-  //   ]
-  // }
-
-  // pxy2index = (pxy) => this.xy2index(this.pxy2xy(pxy))
   xy2index = (xy) => xy[0] + this.W * xy[1]
   index2xy = (index) => [index % this.W, Math.floor(index / this.W)]
 
@@ -68,11 +53,40 @@ export default class Geo {
       dragonfly: {
         0: [-this.W - 1, -this.W + 1, 2, -2, 2 * this.W + 1, 2 * this.W - 1],
       },
+      short: {
+        0: {},
+        1: {},
+      },
     }
+    const short_dirs = ['ul', 'u', 'ur', 'dr', 'd', 'dl']
+    short_dirs.forEach((s, si) => {
+      this.dindexes.short[0][s] = this.dindexes[0][s] = this.dindexes[0][si]
+      this.dindexes.short[1][s] = this.dindexes[1][s] = this.dindexes[1][si]
+    })
     this.dindexes.dragonfly[1] = this.dindexes.dragonfly[0].map((di) => di * -1)
     this.touching = {}
+    this.short_dindexes = {}
     this.indexes.forEach((index) => {
-      this.touching[index] = this.dindexes[index % 2].map((di) => index + di)
+      this.touching[index] = this.dindexes[mod(index, 2)].map(
+        (di) => index + di,
+      )
     })
   }
+
+  // These are geometry functions I planned on using but didn't. Leaving them here just in case
+  // getDindex = (index, short_dir) => this.dindexes.short[mod(index, 2)][short_dir]
+  // pxy2index = (pxy) => this.xy2index(this.pxy2xy(pxy))
+  // needs to be converted from cartesian to hex
+  // pxy2xy = (pxy) => {
+  //   if (!this.element) {
+  //     return [-1, -1]
+  //   }
+  //   const { left, top, height } = this.element.getBoundingClientRect()
+  //   const w_px = height / this.W
+  //   const h_px = height / this.H
+  //   return [
+  //     Math.floor((pxy[0] - left) / h_px),
+  //     Math.floor((pxy[1] - top) / w_px),
+  //   ]
+  // }
 }

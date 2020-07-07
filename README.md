@@ -11,6 +11,10 @@ yarn develop
 
 Hive should be running on http:localhost:4483
 
-#TODO
+## TODO
 
 * online multiplayer
+
+* minmax AI
+
+* add more variants from board game geek

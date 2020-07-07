@@ -1,31 +1,37 @@
 const piece_sets = {
   standard: {
-    beetle: 2,
-    grasshopper: 3,
-    ant: 3,
-    spider: 2,
+    pieces: {
+      beetle: 2,
+      grasshopper: 3,
+      ant: 3,
+      spider: 2,
+    },
   },
   custom: {
-    mantis: 2,
-    fly: 3,
-    wasp: 3,
-    scorpion: 2,
+    pieces: {
+      mantis: 2,
+      fly: 3,
+      wasp: 3,
+      scorpion: 2,
+    },
+  },
+  expanded_standard: {
+    pieces: {
+      lady_bug: 1,
+      mosquito: 1,
+      pill_bug: 1,
+    },
+  },
+  expanded_custom: {
+    pieces: {
+      dragonfly: 1,
+      cockroach: 1,
+      centipede: 1,
+    },
   },
 }
 
-piece_sets.expanded_standard = {
-  lady_bug: 1,
-  mosquito: 1,
-  pill_bug: 1,
-}
-
-piece_sets.expanded_custom = {
-  dragonfly: 1,
-  cockroach: 1,
-  centipede: 1,
-}
-
-const _defaultMode = (name) => () => piece_sets[name]
+const _defaultMode = (name) => () => piece_sets[name].pieces
 
 const modes = {
   ants: (_board, used) => {

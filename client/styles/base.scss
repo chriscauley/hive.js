@@ -31,3 +31,18 @@
   padding: 20px 0 0;
   font-size: 6.5px;
 }
+
+.rjsf {
+  .has-help {
+    @apply flex items-center;
+    label { @apply mr-2; }
+  }
+  #root_variants {
+    legend {
+      @apply block text-gray-600 text-sm font-bold mb-1;
+    }
+    .form-group {
+      @apply mb-0;
+    }
+  }
+}

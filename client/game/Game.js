@@ -71,7 +71,9 @@ class Game extends React.Component {
         <HelpText {...board.selected} board={board} />
         <div className={`absolute top-0 ${orientation}-0`}>
           <Winner board={board} />
-          <div className={css.alert.info()}>turn: {board.turn}</div>
+          <div className={css.alert.info()}>
+            Player {board.current_player}'s turn
+          </div>
           {board.rules.no_rules && <NoRules _delete={_delete} />}
           {!board.rules.no_rules && board.error && (
             <div className={css.alert.danger()}>

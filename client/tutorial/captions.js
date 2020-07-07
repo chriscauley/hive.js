@@ -24,6 +24,7 @@ export default {
     'The goal of the game is to surround the enemy queen on all sides.',
     'Pieces can only be placed next to a friendly piece (except for the first two turns).',
     'Other than during the placing phase, every piece moves differently.',
+    'Clicking on a piece shows all possible moves (even if it is the other players turn).',
   ],
   onehive: [
     'Each piece moves differently, but the board must always be "one hive".',

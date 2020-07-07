@@ -14,5 +14,3 @@ Hive should be running on http:localhost:4483
 #TODO
 
 * online multiplayer
-
-* instructions

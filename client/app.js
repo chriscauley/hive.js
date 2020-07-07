@@ -5,6 +5,7 @@ import { GlobalHotKeys } from 'react-hotkeys'
 import { HashRouter, Route } from 'react-router-dom'
 
 import Nav from './components/Nav'
+import About from './components/About'
 import NewGame from './game/NewGame'
 import Game from './game/Game'
 import withConfig from './config'
@@ -29,6 +30,7 @@ const App = withConfig((props) => {
       <HashRouter>
         <Nav />
         <Route exact path="/" component={NewGame} />
+        <Route exact path="/about/" component={About} />
         <Route exact path="/play/:board_id/" component={Game} />
         <Route path="/sprites/" component={sprites.Routes} />
         <ReactTooltip className="max-w-sm" />

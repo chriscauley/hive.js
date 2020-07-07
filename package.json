@@ -2,6 +2,7 @@
   "main": "client/index.html",
   "author": "chriscauley <chris@lablackey.com>",
   "license": "MIT",
+  "version": "1.0.0",
   "scripts": {
     "cp/img": "rm-rf dist/;mkdir dist;cp -r client/images dist",
     "build": "rm -rf docs; parcel build client/index.html -d docs --public-url /hive.js/",

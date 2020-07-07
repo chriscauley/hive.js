@@ -21,6 +21,9 @@ const GameDropdown = game.connect(function GameDropdown(props) {
   return (
     <Dropdown links={links} title="game">
       <div className={css.dropdown.item()}>
+        <Link to="/">New Game</Link>
+      </div>
+      <div className={css.dropdown.item()}>
         <game.ImportLink />
       </div>
       <div className={css.dropdown.item()}>
@@ -51,6 +54,9 @@ export default function Nav() {
         <Dropdown title={'help'}>
           <div className={css.dropdown.item()}>
             <tutorial.NavButton />
+          </div>
+          <div className={css.dropdown.item()}>
+            <Link to="/about/">About</Link>
           </div>
         </Dropdown>
         <a

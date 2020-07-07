@@ -1,4 +1,5 @@
 import React from 'react'
+import { get } from 'lodash'
 import globalHook from 'use-global-hook'
 
 import Board from './Board'
@@ -12,7 +13,7 @@ const actions = {
   },
   update: (store) => {
     // just need to trigger reflow, hash isn't used anywhere
-    store.setState({ hash: board.hash })
+    store.setState({ hash: board && board.hash })
   },
   toggleImportExport: (store) =>
     store.setState({ port_open: !store.state.port_open }),
@@ -54,7 +55,12 @@ export default function connect(Component, _options = {}) {
         ...state,
         ...actions,
         board,
-        useBoard: (b) => (board = b),
+        useBoard: (b) => {
+          if (get(b, 'id') !== get(board, 'id')) {
+            board = b
+            setTimeout(actions.update,0)
+          }
+        },
       },
     }
     return <Component {...connectedProps} />

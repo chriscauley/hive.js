@@ -23,6 +23,9 @@ const scrollRef = React.createRef()
 
 class Game extends React.Component {
   state = {}
+  componentWillUnmount() {
+    this.props.game.useBoard()
+  }
   render() {
     const board = Board.get(this.props.match.params.board_id)
     const { useBoard, update, deleteSelected, click } = this.props.game

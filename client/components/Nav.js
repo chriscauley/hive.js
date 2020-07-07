@@ -1,38 +1,46 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import css from '@unrest/css'
 import withConfig from '../config'
 import game from '../game'
 import tutorial from '../tutorial'
 import { Dropdown } from '@unrest/core'
 
-const GameDropdown = game.connect(function GameDropdown(props) {
-  const { undo, redo } = props.game
-  const links = [
-    {
-      children: 'Undo (ctrl+z)',
-      onClick: undo,
-    },
-    {
-      children: 'Redo (ctrl+y)',
-      onClick: redo,
-    },
-  ]
-  return (
-    <Dropdown links={links} title="game">
-      <div className={css.dropdown.item()}>
-        <Link to="/">New Game</Link>
-      </div>
-      <div className={css.dropdown.item()}>
-        <game.ImportLink />
-      </div>
-      <div className={css.dropdown.item()}>
-        <game.ExportLink />
-      </div>
-      <hr className="my-1" />
-    </Dropdown>
-  )
-})
+const GameDropdown = withRouter(
+  game.connect(function GameDropdown(props) {
+    const { undo, redo, board } = props.game
+    const links = [
+      {
+        children: 'Undo (ctrl+z)',
+        onClick: undo,
+      },
+      {
+        children: 'Redo (ctrl+y)',
+        onClick: redo,
+      },
+    ]
+    if (!board) {
+      links.forEach(link => {
+        delete link.onClick
+        link.className = css.dropdown.item('text-gray-500')
+      })
+    }
+    return (
+      <Dropdown links={links} title="game">
+        <div className={css.dropdown.item()}>
+          <Link to="/">New Game</Link>
+        </div>
+        <div className={css.dropdown.item()}>
+          <game.ImportLink />
+        </div>
+        <div className={css.dropdown.item()}>
+          <game.ExportLink />
+        </div>
+        <hr className="my-1" />
+      </Dropdown>
+    )
+  })
+)
 
 export default function Nav() {
   return (

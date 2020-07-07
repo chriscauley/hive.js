@@ -6,7 +6,7 @@ import captions from './captions'
 import BoardComponent from '../game/Board/Component'
 import toRows from '../game/Board/toRows'
 import B from '../game/Board'
-import withBoard from '../game/withBoard'
+import game from '../game'
 import help from '../game/help'
 import sprites from '../sprites'
 
@@ -104,7 +104,7 @@ const pruneRows = (_board) => {
   }
 }
 
-const MiniBoard = withBoard(({ board, update, game }) => {
+const MiniBoard = game.connect(({ board, update, game }) => {
   const rows = toRows(board, { prune: true })
   pruneRows(rows)
   const click = (target) => {

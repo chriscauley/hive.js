@@ -6,7 +6,7 @@ import css from '@unrest/css'
 import Board from './Board'
 import toRows from './Board/toRows'
 import BoardComponent from './Board/Component'
-import withBoard from './withBoard'
+import connect from './connect'
 import sprites from '../sprites'
 import HelpText from './HelpText'
 import NoRules from './NoRules'
@@ -85,4 +85,4 @@ class Game extends React.Component {
   }
 }
 
-export default withBoard(Game)
+export default connect(Game)

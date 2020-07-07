@@ -2,11 +2,11 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import css from '@unrest/css'
 import withConfig from '../config'
-import withBoard from '../game/withBoard'
+import game from '../game'
 import tutorial from '../tutorial'
 import { Dropdown } from '@unrest/core'
 
-const GameDropdown = withBoard(function GameDropdown(props) {
+const GameDropdown = game.connect(function GameDropdown(props) {
   const { undo, redo } = props.game
   const links = [
     {
@@ -21,10 +21,10 @@ const GameDropdown = withBoard(function GameDropdown(props) {
   return (
     <Dropdown links={links} title="game">
       <div className={css.dropdown.item()}>
-        <withBoard.ImportLink />
+        <game.ImportLink />
       </div>
       <div className={css.dropdown.item()}>
-        <withBoard.ExportLink />
+        <game.ExportLink />
       </div>
       <hr className="my-1" />
     </Dropdown>

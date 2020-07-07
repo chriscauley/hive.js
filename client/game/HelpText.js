@@ -1,7 +1,7 @@
 import React from 'react'
 import css from '@unrest/css'
 import B from './Board'
-import withBoard from './withBoard'
+import connect from './connect'
 import withConfig from '../config'
 
 import help from './help'
@@ -61,4 +61,4 @@ function HelpText(props) {
   )
 }
 
-export default withConfig(withBoard(HelpText))
+export default withConfig(connect(HelpText))

@@ -7,14 +7,19 @@ const client = new Colyseus.Client(endpoint)
 
 export default class Chat extends React.Component {
   state = {
-    open: false,
-    currentText: '',
+    open: true,
+    text: '',
     messages: [],
   }
 
   constructor() {
     super()
     this.ref = React.createRef()
+    this.joinRoom()
+  }
+
+  async joinRoom() {
+    await client.auth.login()
 
     client
       .joinOrCreate('chat', { channel: 'general' })
@@ -30,30 +35,19 @@ export default class Chat extends React.Component {
   }
 
   autoScroll = () => {
-    const domMessages = this.ref.current
-    domMessages.scrollTop = domMessages.scrollHeight
+    const messages = this.ref.current
+    if (messages) {
+      messages.scrollTop = messages.scrollHeight
+    }
   }
 
   open = () => this.setState({ open: true })
   close = () => this.setState({ open: false })
-  change = (e) => this.setState({ currentText: e.target.value })
+  change = (e) => this.setState({ text: e.target.value })
   submit = (e) => {
     e.preventDefault()
-    this.chatRoom.send('chat', { text: this.state.currentText })
+    this.chatRoom.send('chat', { text: this.state.text })
     this.setState({ text: '' })
-  }
-
-  getBadge = () => {
-    const className =
-      'absolute bottom-0 right-0 w-8 h-8 flex items-center justify-center text-xl rounded-full'
-    const { error } = this.state
-    if (error) {
-      return (
-        <span className={className + ' text-white bg-red-500'}>
-          <i className={css.icon('exclamation')} />
-        </span>
-      )
-    }
   }
 
   render() {
@@ -102,9 +96,9 @@ export default class Chat extends React.Component {
           />
         </div>
         <div className="p-4" ref={this.ref}>
-          {this.state.messages.map(({ client_id, text }, i) => (
+          {this.state.messages.map(({ username, text }, i) => (
             <p key={i}>
-              {client_id}: {text}
+              {username}: {text}
             </p>
           ))}
         </div>

@@ -20,7 +20,7 @@ const GameDropdown = withRouter(
       },
     ]
     if (!board) {
-      links.forEach(link => {
+      links.forEach((link) => {
         delete link.onClick
         link.className = css.dropdown.item('text-gray-500')
       })
@@ -39,7 +39,7 @@ const GameDropdown = withRouter(
         <hr className="my-1" />
       </Dropdown>
     )
-  })
+  }),
 )
 
 export default function Nav() {

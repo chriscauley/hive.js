@@ -58,7 +58,7 @@ export default function connect(Component, _options = {}) {
         useBoard: (b) => {
           if (get(b, 'id') !== get(board, 'id')) {
             board = b
-            setTimeout(actions.update,0)
+            setTimeout(actions.update, 0)
           }
         },
       },

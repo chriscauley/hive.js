@@ -16,9 +16,8 @@ const selectNearby = (b, i) => {
   )
 }
 
-const pill_bug = (b, piece_id) => {
+const pill_bug = (b, piece_id, args) => {
   const index = b.reverse[piece_id]
-  const args = b.special_args
   if (args.length === 0) {
     return selectNearby(b, index)
   } else if (args.length === 1) {
@@ -28,13 +27,12 @@ const pill_bug = (b, piece_id) => {
   }
 }
 
-const mantis = (b, piece_id) => {
+const mantis = (b, piece_id, args) => {
   const index = b.reverse[piece_id]
   if (b.stacks[index].length > 1) {
     // already on top of hive
     return []
   }
-  const args = b.special_args
   if (args.length === 0) {
     // select piece to pull under
     return selectNearby(b, index)
@@ -51,9 +49,8 @@ const swap = (b, index1, index2) => {
   b.stacks[index2].push(piece1)
 }
 
-const centipede = (b, piece_id) => {
+const centipede = (b, piece_id, args) => {
   const index = b.reverse[piece_id]
-  const args = b.special_args
   if (args.length === 0) {
     const touching = b.geo.touching[index]
     return touching.filter((index2, i_touching) => {

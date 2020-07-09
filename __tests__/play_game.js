@@ -7,15 +7,15 @@ const STANDARD = {"actions":[["place",1274,"queen",1],["place",1275,"queen",2],[
 
 // This is really just testing mantis
 // eslint-disable-next-line
-const CUSTOM = {"actions":[["place",1274,"mantis",1],["place",1275,"fly",2],["place",1323,"queen",1],["move",1275,1224],["special",0,1274,[1323]]],"id":0.7017979038850923,"W":50,"H":50,"stacks":{"1224":[1],"1274":[2,0]},"piece_types":["mantis","fly","queen"],"piece_owners":[1,2,1],"hash":"04f115e3554f5024c96687ff1c9aeba4669a5cec","turn":5,"rules":{"piece_sets":["custom"]}}
+const CUSTOM = {"actions":[["place",1274,"mantis",1],["place",1275,"fly",2],["place",1323,"queen",1],["move",1275,1224],["special",1274,0,[1323]]],"id":0.7017979038850923,"W":50,"H":50,"stacks":{"1224":[1],"1274":[2,0]},"piece_types":["mantis","fly","queen"],"piece_owners":[1,2,1],"hash":"04f115e3554f5024c96687ff1c9aeba4669a5cec","turn":5,"rules":{"piece_sets":["custom"]}}
 
 // centipede and dragonfly
 // eslint-disable-next-line
-const CUSTOM_EXPANDED = {"actions":[["place",1274,"centipede",1],["place",1275,"queen",2],["place",1273,"queen",1],["place",1276,"centipede",2],["move",1273,1224],["move",1276,1325],["place",1273,"dragonfly",1],["place",1276,"dragonfly",2],["special",0,1274,[1273]],["move",1276,1274],["move",1273,1223],["dragonfly",1274,1225]],"id":0.9562311194511488,"W":50,"H":50,"stacks":{"1223":[0],"1224":[2],"1225":[4,5],"1275":[1],"1325":[3]},"piece_types":["centipede","queen","queen","centipede","dragonfly","dragonfly"],"piece_owners":[1,2,1,2,1,2],"hash":"4d65a6dd939b9efbdb211b5315f98af06e2fa0d4","turn":12,"rules":{"piece_sets":["expanded_custom"]}}
+const CUSTOM_EXPANDED = {"actions":[["place",1274,"centipede",1],["place",1275,"queen",2],["place",1273,"queen",1],["place",1276,"centipede",2],["move",1273,1224],["move",1276,1325],["place",1273,"dragonfly",1],["place",1276,"dragonfly",2],["special",1274,0,[1273]],["move",1276,1274],["move",1273,1223],["dragonfly",1274,1225]],"id":0.9562311194511488,"W":50,"H":50,"stacks":{"1223":[0],"1224":[2],"1225":[4,5],"1275":[1],"1325":[3]},"piece_types":["centipede","queen","queen","centipede","dragonfly","dragonfly"],"piece_owners":[1,2,1,2,1,2],"hash":"4d65a6dd939b9efbdb211b5315f98af06e2fa0d4","turn":12,"rules":{"piece_sets":["expanded_custom"]}}
 
 // pill_bug
 // eslint-disable-next-line
-const STANDARD_EXPANDED = {"actions":[["place",1274,"pill_bug",1],["place",1275,"queen",2],["special",0,1274,[1275,1325]],["place",1326,"mosquito",2],["place",1273,"queen",1],["place",1377,"lady_bug",2],["place",1222,"lady_bug",1]],"id":0.7337746181174609,"W":50,"H":50,"stacks":{"1222":[5],"1273":[3],"1274":[0],"1325":[1],"1326":[2],"1377":[4]},"piece_types":["pill_bug","queen","mosquito","queen","lady_bug","lady_bug"],"piece_owners":[1,2,2,1,2,1],"hash":"1b48eb80fcad999841acdb2dd0c9637de0ff82e6","turn":7,"rules":{"piece_sets":["expanded_standard"]}}
+const STANDARD_EXPANDED = {"actions":[["place",1274,"pill_bug",1],["place",1275,"queen",2],["special",1274,0,[1275,1325]],["place",1326,"mosquito",2],["place",1273,"queen",1],["place",1377,"lady_bug",2],["place",1222,"lady_bug",1]],"id":0.7337746181174609,"W":50,"H":50,"stacks":{"1222":[5],"1273":[3],"1274":[0],"1325":[1],"1326":[2],"1377":[4]},"piece_types":["pill_bug","queen","mosquito","queen","lady_bug","lady_bug"],"piece_owners":[1,2,2,1,2,1],"hash":"1b48eb80fcad999841acdb2dd0c9637de0ff82e6","turn":7,"rules":{"piece_sets":["expanded_standard"]}}
 
 const getTarget = (b, index) => {
   const piece_id = last(b.stacks[index])
@@ -53,9 +53,9 @@ test('Play a game', () => {
     rules: { piece_sets: ['standard'] },
   })
   expect(B.moves.getPlacement(b, 1)).toEqual([b.geo.center])
-  B.place(b, b.geo.center, 'ant', 1)
+  B.doAction(b, ['place', b.geo.center, 'ant', 1])
   expect(B.moves.getPlacement(b, 1)).toEqual([b.geo.center + 1])
-  B.place(b, b.geo.center + 1, 'ant', 2)
+  B.doAction(b, ['place', b.geo.center + 1, 'ant', 2])
 
   // select and place the white queen
   const white_queen = { piece_id: 'new', piece_type: 'queen', player_id: 1 }
@@ -105,9 +105,9 @@ test('Board.click', () => {
   expect(b.selected.piece_id).toBe(0)
 
   // flush out a few more useful pieces
-  B.place(b, center + b.W, 'queen', 2)
-  B.place(b, center - 1, 'ant', 1)
-  B.move(b, center + b.W, center + b.W - 1)
+  B.doAction(b, ['place', center + b.W, 'queen', 2])
+  B.doAction(b, ['place', center - 1, 'ant', 1])
+  B.doAction(b, ['move', center + b.W, center + b.W - 1])
 
   const hash = B.getHash(b)
 
@@ -202,7 +202,12 @@ test('edge cases', () => {
   B.save(b)
   B.fromJson(JSON.stringify(STANDARD_EXPANDED))
 
+  // type of piece with no possible moves
   const piece_type = 'bearodactyl'
-  B.place(b, b.geo.center - b.W, piece_type, 1)
+  B.doAction(b, ['place', b.geo.center - b.W, piece_type, 1])
   B.getMoves(b, findPiece(b, { player_id: 1, piece_type }).piece_id)
+
+  B.doAction(b, ['place', b.geo.center + b.W, 'ant', 1])
+  const ant_id = findPiece(b, { player_id: 1, piece_type }).piece_id
+  expect(() => B.doAction(b, ['special', ant_id, b.geo.center, []])).toThrow()
 })

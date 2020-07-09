@@ -69,7 +69,7 @@ const B = {
       }
 
       if (type === 'mantis') {
-        if (B.getSpecials(b, piece_id).length > 0) {
+        if (B.getSpecials(b, piece_id, b.special_args).length > 0) {
           delete b.cantmove[index]
         } else {
           b.cantmove[index] = true
@@ -77,7 +77,7 @@ const B = {
       }
 
       if (type === 'pill_bug' && b.cantmove[index]) {
-        if (B.getSpecials(b, piece_id).length > 0) {
+        if (B.getSpecials(b, piece_id, b.special_args).length > 0) {
           delete b.cantmove[index]
         }
       }
@@ -106,32 +106,46 @@ const B = {
     B.unselect(b)
     B.save(b)
   },
-  place: (b, index, type, player_id) => {
-    const piece_id = b.piece_types.length
-    b.piece_types.push(type)
-    b.piece_owners.push(player_id)
-    b.stacks[index] = b.stacks[index] || []
-    b.stacks[index].push(piece_id)
-    b.actions.push(['place', index, type, player_id])
-    B.nextTurn(b)
-  },
-  move: (b, old_index, new_index) => {
-    const piece_id = last(b.stacks[old_index])
-    const _df =
-      b.piece_types[piece_id] === 'dragonfly' &&
-      moves.dragonflyExtra(b, old_index, new_index)
 
-    b.stacks[old_index].pop()
-    b.stacks[new_index] = b.stacks[new_index] || []
-    if (_df) {
-      b.stacks[new_index].push(b.stacks[old_index].pop())
-      b.actions.push(['dragonfly', old_index, new_index])
+  doAction: (b, args) => {
+    let action_type = args[0]
+    const index = args[1]
+    if (action_type === 'place') {
+      const piece_id = b.piece_types.length
+      const piece_type = args[2]
+      const player_id = args[3]
+      b.piece_types.push(piece_type)
+      b.piece_owners.push(player_id)
+      b.stacks[index] = b.stacks[index] || []
+      b.stacks[index].push(piece_id)
+    } else if (action_type === 'special') {
+      const piece_id = args[2]
+      const special_args = args[3]
+      const special = B.getSpecials(b, piece_id, special_args)
+      if (typeof special !== 'function') {
+        throw 'Attempting to doAction on an incomplete special'
+      }
+      special()
     } else {
-      b.actions.push(['move', old_index, new_index])
+      // action_type === "move" || type === "dragonfly"
+      const new_index = args[2]
+      const piece_id = last(b.stacks[index])
+      const _df =
+        b.piece_types[piece_id] === 'dragonfly' &&
+        moves.dragonflyExtra(b, index, new_index)
+
+      b.stacks[index].pop()
+      b.stacks[new_index] = b.stacks[new_index] || []
+      if (_df) {
+        b.stacks[new_index].push(b.stacks[index].pop())
+        action_type = 'dragonfly'
+      }
+      b.stacks[new_index].push(piece_id)
     }
-    b.stacks[new_index].push(piece_id)
+    b.actions.push(args)
     B.nextTurn(b)
   },
+
   json_fields: [
     'actions',
     'id',
@@ -169,11 +183,11 @@ const B = {
     return board
   },
 
-  getSpecials: (board, piece_id) => {
+  getSpecials: (board, piece_id, args) => {
     const type = board.piece_types[piece_id]
 
     const f = specials[type] || noop
-    return f(board, piece_id)
+    return f(board, piece_id, args)
   },
 
   getMoves: (board, piece_id) => {
@@ -226,7 +240,7 @@ const B = {
       b.stacks[old_index].push(b.stacks[new_index].pop())
       b.stacks[old_index].push(dragonfly)
     } else if (move[0] === 'special') {
-      const [_, piece_id, index, special_args] = move
+      const [_, index, piece_id, special_args] = move
       const piece_type = b.piece_types[piece_id]
       specials.undo[piece_type](b, piece_id, index, special_args)
     } else if (move[0] === 'place') {
@@ -247,20 +261,7 @@ const B = {
     if (!frozen || frozen.actions.length === b.turn) {
       return
     }
-    const move = b.frozen.actions[b.turn]
-    if (move[0] === 'place') {
-      B.place(b, move[1], move[2], move[3])
-    } else if (move[0] === 'special') {
-      const [_, piece_id, _index, special_args] = move
-      b.special_args = special_args
-      const special = B.getSpecials(b, piece_id)
-      special()
-      b.actions.push(move.slice())
-      B.nextTurn(b)
-    } else {
-      // move[0] === 'move' or 'dragonfly'
-      B.move(b, move[1], move[2])
-    }
+    B.doAction(b, b.frozen.actions[b.turn])
 
     // nextTurn removes frozen, but because this is redo we didn't break the undo chain
     b.frozen = frozen
@@ -271,9 +272,9 @@ const B = {
     const { player_id, piece_type } = selected || {}
     if (selected && rules.no_rules && target.index !== undefined) {
       if (selected.piece_id === 'new') {
-        B.place(board, target.index, piece_type, player_id)
+        B.doAction(board, ['place', target.index, piece_type, player_id])
       } else {
-        B.move(board, selected.index, target.index)
+        B.doAction(board, ['move', selected.index, target.index])
       }
       return
     }
@@ -292,43 +293,44 @@ const B = {
       const placements = B.moves.getPlacement(board, player_id)
       if (placements.includes(target.index)) {
         B.queenCheck(board) &&
-          B.place(board, target.index, piece_type, player_id)
+          B.doAction(board, ['place', target.index, piece_type, player_id])
       } else {
         B.select(board, target)
       }
       return
     }
 
-    let special = B.getSpecials(board, selected.piece_id)
+    let special = B.getSpecials(board, selected.piece_id, board.special_args)
     if (special.includes(target.index)) {
       board.special_args.push(target.index)
-      special = B.getSpecials(board, selected.piece_id)
+      special = B.getSpecials(board, selected.piece_id, board.special_args)
       if (typeof special === 'function') {
         const index = board.reverse[selected.piece_id]
-        board.actions.push([
+        B.doAction(board, [
           'special',
-          selected.piece_id,
           index,
+          selected.piece_id,
           board.special_args,
         ])
-        special()
-        B.nextTurn(board)
       }
       return
     }
 
     const moves = B.getMoves(board, selected.piece_id)
     if (moves.includes(target.index)) {
-      B.queenCheck(board) && B.move(board, selected.index, target.index)
+      B.queenCheck(board) &&
+        B.doAction(board, ['move', selected.index, target.index])
       return
     }
 
     // fallback to selecting square if nothing else happened
     B.select(board, target)
   },
+
   error: (board, message) => {
     board.error = message
   },
+
   queenCheck: (board) => {
     if (board.selected.piece_type === 'queen' || board.rules.no_rules) {
       // placing or moving queen, don't check anything else

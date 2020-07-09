@@ -26,7 +26,9 @@ test('Board snapshots', () => {
       const s = piece_id + ':'
       moves[slug] += s + B.getMoves(board, piece_id).join(',') + '|'
       if (B.specials[slug]) {
-        specials[slug] += s + B.getSpecials(board, piece_id).join(',') + '|'
+        const args = board.special_args
+        specials[slug] +=
+          s + B.getSpecials(board, piece_id, args).join(',') + '|'
       }
       if (slug === 'ant') {
         board.rules.spiderwebs = true

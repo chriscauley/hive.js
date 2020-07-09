@@ -133,7 +133,7 @@ const getMarked = (board) => {
   if (piece_id === 'new') {
     indexes = Board.moves.getPlacement(board, player_id)
   } else {
-    const specials = Board.getSpecials(board, piece_id)
+    const specials = Board.getSpecials(board, piece_id, board.special_args)
     specials.forEach((i) => (out[i] = ' yellow'))
     if (board.special_args.length === 0) {
       indexes = Board.getMoves(board, piece_id)

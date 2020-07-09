@@ -37,7 +37,6 @@ class ChatRoom extends Room {
       ],
     })
     this.onMessage('chat', (client, message) => {
-      console.log(client.auth)
       message.username = client.auth.username
       this.state.messages.push(message)
     })

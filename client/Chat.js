@@ -1,41 +1,21 @@
 import React from 'react'
 import css from '@unrest/css'
-import * as Colyseus from 'colyseus.js'
+import colyseus from './colyseus'
 
-const endpoint = process.env.COLYSEUS_URL || 'ws://localhost:2567'
-const client = new Colyseus.Client(endpoint)
-
-export default class Chat extends React.Component {
+class Chat extends React.Component {
   state = {
     open: true,
-    text: '',
-    messages: [],
   }
 
-  constructor() {
-    super()
-    this.ref = React.createRef()
-    this.joinRoom()
-  }
-
-  async joinRoom() {
-    await client.auth.login()
-
-    client
-      .joinOrCreate('chat', { channel: 'general' })
-      .then((room) => {
-        this.chatRoom = room
-        room.onStateChange(this.onUpdateRemote)
-      })
-      .catch((error) => this.setState({ error }))
-  }
-
-  onUpdateRemote = (newState) => {
-    this.setState(newState, this.autoScroll)
+  constructor(props) {
+    super(props)
+    this.listRef = React.createRef()
+    this.textRef = React.createRef()
+    this.props.colyseus.joinRoom('general')
   }
 
   autoScroll = () => {
-    const messages = this.ref.current
+    const messages = this.listRef.current
     if (messages) {
       messages.scrollTop = messages.scrollHeight
     }
@@ -46,12 +26,16 @@ export default class Chat extends React.Component {
   change = (e) => this.setState({ text: e.target.value })
   submit = (e) => {
     e.preventDefault()
-    this.chatRoom.send('chat', { text: this.state.text })
+    this.props.colyseus.send('general', 'chat', { text: this.textRef.current.textContent })
     this.setState({ text: '' })
   }
 
   render() {
     const { text, open, error } = this.state
+    const { user } = this.props.colyseus
+    if (!user) {
+      return null
+    }
     if (!open) {
       const icon = css.icon(error ? 'exclamation-triangle' : 'comments')
       const button = css.button[error ? 'warning' : 'primary']('circle text-lg')
@@ -84,6 +68,8 @@ export default class Chat extends React.Component {
       )
     }
 
+    this.autoScroll()
+    const { messages=[] } = this.props.colyseus
     return (
       <div
         className="fixed bottom-0 right-0 border bg--bg"
@@ -96,18 +82,20 @@ export default class Chat extends React.Component {
           />
         </div>
         <div className="p-4" ref={this.ref}>
-          {this.state.messages.map(({ username, text }, i) => (
+          {messages.map(({ username, text }, i) => (
             <p key={i}>
               {username}: {text}
             </p>
           ))}
         </div>
 
-        <form id="form" onSubmit={this.submit}>
-          <input type="text" onChange={this.change} value={text} />
-          <button type="submit">send</button>
+        <form id="form" onSubmit={this.submit} className="mb-0 border-t flex justify-between">
+          <span className="block w-full" ref={this.textRef} contentEditable="true"/>
+          <button type="submit" className={css.icon('send')}></button>
         </form>
       </div>
     )
   }
 }
+
+export default colyseus.connect(Chat)

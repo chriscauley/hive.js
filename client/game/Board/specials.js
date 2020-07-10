@@ -2,6 +2,7 @@
 // if board.special_args is long enough, return a function to execute as the move
 // other wise return potential indexes for the next argument
 import { mod } from './Geo'
+import { last } from 'lodash'
 import wouldBreakHive from './wouldBreakHive'
 
 // TODO might be mergeable with B.move. Maybe switch to moves.move to simplify imports?
@@ -34,8 +35,11 @@ const mantis = (b, piece_id, args) => {
     return []
   }
   if (args.length === 0) {
-    // select piece to pull under
-    return selectNearby(b, index)
+    // select piece to pull under, no scorpions
+    return selectNearby(b, index).filter(target_index => {
+      const piece_id = last(b.stacks[target_index])
+      return b.piece_types[piece_id] !== 'scorpion'
+    })
   } else {
     // pull under
     return () => b.stacks[index].unshift(b.stacks[args[0]].pop())

@@ -159,17 +159,6 @@ const isScorpion = (board, target_index) => {
   return board.piece_types[piece_id] === 'scorpion'
 }
 
-const fly = (board, index) => {
-  const moves = stepAlongHive(board, index)
-  return moves.length ? moves : Object.keys(board.empty).map((i) => parseInt(i))
-}
-
-const wasp = (board, index) => {
-  const piece_id = last(board.stacks[index])
-  const player_id = board.piece_owners[piece_id]
-  return getPlacement(board, player_id === 1 ? 2 : 1, [index])
-}
-
 const lady_bug = (board, index) => {
   let moves = []
   stepOnHive(board, index).forEach((on_index1) =>
@@ -245,21 +234,41 @@ const notScorpion = (b, index) => {
   return b.piece_types[piece_id] !== 'scorpion'
 }
 
+const stepOffSubhive = (b, subhive, filter = () => true) => {
+  const out = []
+  subhive.forEach((target) => {
+    stepOffHive(b, target).forEach((final_index) => {
+      if (filter(b, final_index) && !out.includes(final_index)) {
+        out.push(final_index)
+      }
+    })
+  })
+  return out
+}
+
 const cockroach = (b, index) => {
   const current_player = b.piece_owners[last(b.stacks[index])]
   const friendly_hive = getSubhive(b, index, [
     notScorpion,
     isPlayer(current_player),
   ])
-  const out = []
-  friendly_hive.forEach((target) => {
-    stepOffHive(b, target).forEach((final_index) => {
-      if (final_index !== index && !out.includes(final_index)) {
-        out.push(final_index)
-      }
-    })
-  })
-  return out
+  return stepOffSubhive(b, friendly_hive).filter((i2) => i2 !== index)
+}
+
+const fly = (b, index) => {
+  const moves = stepAlongHive(b, index)
+  if (moves.length !== 0) {
+    return moves
+  }
+  const subhive = getSubhive(b, index, [notScorpion])
+  return stepOffSubhive(b, subhive).filter((i2) => i2 !== index)
+}
+
+const wasp = (b, index) => {
+  const current_player = b.piece_owners[last(b.stacks[index])]
+  const subhive = getSubhive(b, index, [notScorpion])
+  const placements = getPlacement(b, current_player === 1 ? 2 : 1, [index])
+  return stepOffSubhive(b, subhive).filter((i) => placements.includes(i))
 }
 
 const dragonfly = (board, index) => {

@@ -13,8 +13,10 @@ export default class Modal extends React.Component {
       linkClass,
     } = this.props
     return (
-      <div className={linkClass} onClick={this.toggle}>
-        {children}
+      <>
+        <div className={linkClass} onClick={this.toggle}>
+          {children}
+        </div>
         {this.state.open && (
           <div className={css.modal.outer()}>
             <div className={css.modal.mask()} onClick={this.toggle} />
@@ -24,7 +26,7 @@ export default class Modal extends React.Component {
             </div>
           </div>
         )}
-      </div>
+      </>
     )
   }
 }

@@ -212,28 +212,47 @@ const beetle = (b, i) => {
   return stepAlongHive(b, i).concat(stepOnHive(b, i))
 }
 
-const cockroach = (b, index) => {
-  const current_player = b.piece_owners[last(b.stacks[index])]
-  const friendly_onhive = []
+const getSubhive = (b, index, filters) => {
+  // create a map of places that can be stepped on the hive given a filter
+  const subhive = []
   const targets = [index]
   const checked = {}
   while (targets.length) {
     const target = targets.pop()
     checked[target] = true
     b.geo.touching[target].forEach((target2) => {
-      if (!checked[target2] && b.stacks[target2]) {
-        const piece_id = last(b.stacks[target2])
-        const player_id = b.piece_owners[piece_id]
-        if (player_id === current_player) {
-          targets.push(target2)
-          friendly_onhive.push(target2)
-        }
+      if (checked[target2] || !b.stacks[target2]) {
+        return
+      }
+      const piece_id = last(b.stacks[target2])
+      const player_id = b.piece_owners[piece_id]
+      if (!filters.find((f) => !f(b, target2))) {
+        targets.push(target2)
+        subhive.push(target2)
       }
     })
   }
+  return subhive
+}
 
+const isPlayer = (player_id) => (b, index) => {
+  const piece_id = last(b.stacks[index])
+  return b.piece_owners[piece_id] === player_id
+}
+
+const notScorpion = (b, index) => {
+  const piece_id = last(b.stacks[index])
+  return b.piece_types[piece_id] !== 'scorpion'
+}
+
+const cockroach = (b, index) => {
+  const current_player = b.piece_owners[last(b.stacks[index])]
+  const friendly_hive = getSubhive(b, index, [
+    notScorpion,
+    isPlayer(current_player),
+  ])
   const out = []
-  friendly_onhive.forEach((target) => {
+  friendly_hive.forEach((target) => {
     stepOffHive(b, target).forEach((final_index) => {
       if (final_index !== index && !out.includes(final_index)) {
         out.push(final_index)

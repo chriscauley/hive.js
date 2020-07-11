@@ -128,30 +128,33 @@ const ant = (board, index) => {
   return moves.filter((i) => i !== undefined && i !== index)
 }
 
-const grasshopper = (board, index, max_steps) => {
-  const moves = board.geo.touching[index].map((target_index, i_dir) => {
-    // grasshopper must first step on hive
-    if (!board.stacks[target_index]) {
-      return
-    }
-    let steps = 1
+const grasshopper = (board, index) => {
+  const targets = [index]
+  const moves = []
+  while (targets.length) {
+    const target_index = targets.pop()
+    board.geo.touching[target_index].map((target_index, i_dir) => {
+      if (!board.stacks[target_index]) {
+        // grasshopper must first step on hive and cannot step over itself
+        return
+      }
 
-    // grasshopper travels in same direction until it falls off hive
-    while (board.stacks[target_index]) {
-      if (max_steps && steps > max_steps) {
-        // for spider, max_steps = 1
-        return
+      // grasshopper travels in same direction until it falls off hive
+      while (board.stacks[target_index]) {
+        // cannot step over scorpion or starting index
+        if (isScorpion(board, target_index) || target_index === index) {
+          return
+        }
+        const dindex = board.geo.dindexes[mod(target_index, 2)][i_dir]
+        target_index += dindex
       }
-      if (isScorpion(board, target_index)) {
-        return
+      if (board.rules.super_grasshopper && !moves.includes(target_index)) {
+        targets.push(target_index)
       }
-      const dindex = board.geo.dindexes[mod(target_index, 2)][i_dir]
-      target_index += dindex
-      steps++
-    }
-    return target_index
-  })
-  return moves.filter((i) => i !== undefined)
+      moves.push(target_index)
+    })
+  }
+  return moves
 }
 
 const isScorpion = (board, target_index) => {
@@ -213,8 +216,6 @@ const getSubhive = (b, index, filters) => {
       if (checked[target2] || !b.stacks[target2]) {
         return
       }
-      const piece_id = last(b.stacks[target2])
-      const player_id = b.piece_owners[piece_id]
       if (!filters.find((f) => !f(b, target2))) {
         targets.push(target2)
         subhive.push(target2)
@@ -272,7 +273,7 @@ const wasp = (b, index) => {
 }
 
 const dragonfly = (board, index) => {
-  const parity = index % 2
+  const parity = mod(index, 2)
   return board.geo.dindexes.dragonfly[parity].map((di) => index + di)
 }
 
@@ -295,7 +296,22 @@ const moves = {
   beetle,
   cockroach,
   dragonfly,
-  spider: (b, i) => nStepsAlongHive(b, i, 3).concat(grasshopper(b, i, 1)),
+  spider: (b, i) => {
+    const moves = nStepsAlongHive(b, i, 3)
+    b.geo.dindexes[mod(i, 2)].forEach((dindex, i_dir) => {
+      const index2 = i + dindex
+      if (!b.stacks[index2] || b.layers.type[index2] === 'scorpion') {
+        // cannot "jump" an empty space or a scorpion
+        return
+      }
+      const index3 = index2 + b.geo.dindexes[mod(index2, 2)][i_dir]
+      if (!b.stacks[index3]) {
+        // Can jump to next space if empty
+        moves.push(index3)
+      }
+    })
+    return moves
+  },
   scorpion: (b, i) => nStepsAlongHive(b, i, 3),
   grasshopper,
   fly,

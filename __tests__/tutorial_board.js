@@ -6,6 +6,7 @@ test('Board snapshots', () => {
   const placements = {}
   const moves = {
     spiderwebs: '',
+    super_grasshopper: '',
   }
   const specials = {}
   Object.entries(boards).forEach(([slug, board]) => {
@@ -33,6 +34,11 @@ test('Board snapshots', () => {
       if (slug === 'ant') {
         board.rules.spiderwebs = true
         moves.spiderwebs += s + B.getMoves(board, piece_id).join(',') + '|'
+      }
+      if (slug === 'grasshopper') {
+        board.rules.super_grasshopper = true
+        moves.super_grasshopper +=
+          s + B.getMoves(board, piece_id).join(',') + '|'
       }
     })
   })

@@ -46,10 +46,16 @@ const schema = {
           title: 'No Rules',
           type: 'boolean',
         },
+        super_grasshopper: {
+          title: 'Super Grasshoppper',
+          type: 'boolean',
+        },
       },
     },
   },
 }
+
+const _help = (s) => <i className="fa fa-question-circle-o" data-tip={s} />
 
 const uiSchema = {
   piece_sets: {
@@ -58,28 +64,28 @@ const uiSchema = {
   variants: {
     no_rules: {
       classNames: 'has-help',
-      'ui:help': (
-        <i
-          className="fa fa-question-circle-o"
-          data-tip="UI will still display legal moves, but any piece can be moved to any space."
-        />
+      'ui:help': _help(
+        'UI will still display legal moves, but any piece can be moved to any space.',
       ),
     },
     spiderwebs: {
       classNames: 'has-help',
-      'ui:help': (
-        <i
-          className="fa fa-question-circle-o"
-          data-tip="Ants stop moving if they collide with an enemy spider."
-        />
+      'ui:help': _help(
+        'Ants stop moving if they collide with an enemy spider.',
       ),
+    },
+    super_grasshopper: {
+      classNames: 'has-help',
+      'ui:help': _help('The grasshopper can make unlimited jumps per turn.'),
     },
   },
 }
 
 export default withRouter((props) => {
   const onSubmit = (formData) => {
-    const board = Board.new({ rules: formData })
+    const { variants, ...rules } = formData
+    Object.assign(rules, variants)
+    const board = Board.new({ rules })
     setTimeout(() => props.history.push(`/play/${board.id}/`), 100)
   }
   return (

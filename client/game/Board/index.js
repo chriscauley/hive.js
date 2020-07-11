@@ -20,6 +20,10 @@ const B = {
     objectHash(pick(b, ['stacks', 'piece_types', 'piece_owners'])),
   update(b) {
     // get derrived state of board
+    b.layers = {
+      type: {},
+      player: {},
+    }
     b.special_args = b.special_args || []
     b.actions = b.actions || []
     b.players = [1, 2]
@@ -33,6 +37,9 @@ const B = {
       }
       stack.forEach((piece_id) => {
         b.reverse[piece_id] = parseInt(index)
+        // these two only count for the last entry in stacks
+        b.layers.type[index] = b.piece_types[piece_id]
+        b.layers.player[index] = b.piece_owners[piece_id]
       })
     })
 

@@ -26,7 +26,9 @@ class Chat extends React.Component {
   change = (e) => this.setState({ text: e.target.value })
   submit = (e) => {
     e.preventDefault()
-    this.props.colyseus.send('general', 'chat', { text: this.textRef.current.textContent })
+    this.props.colyseus.send('general', 'chat', {
+      text: this.textRef.current.textContent,
+    })
     this.setState({ text: '' })
   }
 
@@ -69,7 +71,7 @@ class Chat extends React.Component {
     }
 
     this.autoScroll()
-    const { messages=[] } = this.props.colyseus
+    const { messages = [] } = this.props.colyseus
     return (
       <div
         className="fixed bottom-0 right-0 border bg--bg"
@@ -89,8 +91,16 @@ class Chat extends React.Component {
           ))}
         </div>
 
-        <form id="form" onSubmit={this.submit} className="mb-0 border-t flex justify-between">
-          <span className="block w-full" ref={this.textRef} contentEditable="true"/>
+        <form
+          id="form"
+          onSubmit={this.submit}
+          className="mb-0 border-t flex justify-between"
+        >
+          <span
+            className="block w-full"
+            ref={this.textRef}
+            contentEditable="true"
+          />
           <button type="submit" className={css.icon('send')}></button>
         </form>
       </div>

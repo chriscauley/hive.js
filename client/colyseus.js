@@ -11,18 +11,22 @@ const ROOMS = {}
 const actions = {
   init: (store) => {
     if (!store.state.user && !store.state.loading) {
-      store.setState({loading: true})
-      client.auth.login().then(() => store.setState({
-        user: {...client.auth},
-        loading: false,
-      }))
+      store.setState({ loading: true })
+      client.auth.login().then(() =>
+        store.setState({
+          user: { ...client.auth },
+          loading: false,
+        }),
+      )
     }
   },
   saveUser(store, data) {
     Object.assign(client.auth.user, data)
-    client.auth.user.save().then(() => store.setState({
-      user: {...client.auth},
-    }))
+    client.auth.user.save().then(() =>
+      store.setState({
+        user: { ...client.auth },
+      }),
+    )
   },
   joinRoom(store, channel) {
     client
@@ -35,7 +39,7 @@ const actions = {
   },
   send(store, room, type, data) {
     ROOMS[room].send(type, data)
-  }
+  },
 }
 const makeHook = globalHook(React, {}, actions)
 
@@ -47,7 +51,7 @@ function connect(Component, _options = {}) {
       ...state,
       ...actions,
     }
-    return <Component {...props } colyseus={colyseus} />
+    return <Component {...props} colyseus={colyseus} />
   }
 
   ColyseusProvider.WrappedComponent = Component
@@ -55,5 +59,5 @@ function connect(Component, _options = {}) {
 }
 
 export default {
-  connect
+  connect,
 }

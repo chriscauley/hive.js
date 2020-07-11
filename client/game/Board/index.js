@@ -69,15 +69,15 @@ const B = {
       }
 
       if (type === 'mantis') {
-        if (B.getSpecials(b, piece_id, b.special_args).length > 0) {
+        if (B.getSpecials(b, piece_id, []).length > 0) {
           delete b.cantmove[index]
-        } else {
+        } else if (B.getMoves(b, piece_id).length === 0) {
           b.cantmove[index] = true
         }
       }
 
       if (type === 'pill_bug' && b.cantmove[index]) {
-        if (B.getSpecials(b, piece_id, b.special_args).length > 0) {
+        if (B.getSpecials(b, piece_id, []).length > 0) {
           delete b.cantmove[index]
         }
       }

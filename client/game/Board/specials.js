@@ -36,7 +36,7 @@ const mantis = (b, piece_id, args) => {
   }
   if (args.length === 0) {
     // select piece to pull under, no scorpions
-    return selectNearby(b, index).filter(target_index => {
+    return selectNearby(b, index).filter((target_index) => {
       const piece_id = last(b.stacks[target_index])
       return b.piece_types[piece_id] !== 'scorpion'
     })

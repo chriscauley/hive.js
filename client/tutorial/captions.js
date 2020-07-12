@@ -47,6 +47,7 @@ export default {
   grasshopper: [
     'The black grasshopper can move to three different spaces.',
     'The white grasshopper can move to two different spaces.',
+    'With super_grasshopper turned on the black and white pieces can move to 6 and 7 spaces respectively',
   ],
   spider:
     'From this position, the white spider can move to one of three spaces.',

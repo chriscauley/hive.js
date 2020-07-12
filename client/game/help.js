@@ -5,9 +5,9 @@ const ifRule = (rule, text) => (board) => {
   return (
     <>
       <span className={className}>{text}</span>
-      {' (this rule only applies if '}
+      {' ('}
       <b>{rule}</b>
-      {' is enabled)'}
+      {' mode only)'}
     </>
   )
 }
@@ -32,6 +32,10 @@ const beetle = [
 const grasshopper = [
   'The grassshoper jumps over the hive in a straight line.',
   'It lands in the first unoccupied space.',
+  ifRule(
+    'super_grasshopper',
+    'The grasshopper can make unlimited jumps in a single turn',
+  )
 ]
 
 const spider = [
@@ -67,7 +71,7 @@ const mantis = [
 
 const fly = [
   _along('fly'),
-  'If there fly has no available moves, it can move to any empty space,',
+  'If there fly has no available moves, it can move on the hive and then land in any empty space.',
 ]
 
 const scorpion = [
@@ -76,7 +80,7 @@ const scorpion = [
 ]
 
 const wasp = [
-  'The was can move to any unoccupied space provided the space only opponent pieces (the opposite of placement rules).',
+  'The wasp takes unlimited steps on top of the hive and then steps off to any space not touching friendly tiles (opposite of placement).'
 ]
 
 const cockroach = [

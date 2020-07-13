@@ -15,9 +15,10 @@
   },
   "dependencies": {
     "@babel/core": "^7.0.0-0",
-    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
     "@babel/plugin-transform-runtime": "^7.10.4",
-    "@babel/preset-env": "^7.9.5",
+    "@babel/preset-env": "^7.10.4",
+    "@babel/preset-react": "^7.10.4",
     "@unrest/core": "^0.0.1",
     "@unrest/css": "chriscauley/unrest-css",
     "@unrest/react-config-hook": "^0.0.3",
@@ -41,7 +42,6 @@
     "use-global-hook": "^0.1.12"
   },
   "devDependencies": {
-    "@babel/preset-react": "^7.9.4",
     "babel-eslint": "^10.1.0",
     "eslint-plugin-prettier": "^3.1.3",
     "eslint-plugin-promise": "^4.2.1",

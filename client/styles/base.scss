@@ -1,6 +1,10 @@
-@import './Game.scss';
+/* Game pieces */
 @import './hex.scss';
 @import './pieces.scss';
+
+/* Components */
+@import './Game.scss';
+@import './Chat.scss';
 @import './z-index.scss';
 
 .app-content {

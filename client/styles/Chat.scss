@@ -1,0 +1,32 @@
+@import "./var.scss";
+
+.Chat {
+  @apply fixed bottom-0 right-0 border bg--bg flex flex-col;
+  top: 77px;
+  width: $chat_w;
+}
+
+.Chat .menu-bar {
+  @apply bg-gray-200 py-1 px-2 text-right;
+}
+
+.Chat .room_list {
+  @apply border-b p-2 mb-2;
+  .room {
+    @apply cursor-pointer;
+    &.current {
+      @apply font-bold;
+    }
+  }
+}
+
+.Chat .message-list {
+  @apply p-4 flex flex-col flex-grow justify-end;
+}
+
+.Chat .text-box {
+  @apply mb-0 border-t flex justify-between;
+  .input {
+    @apply block px-2 py-1 w-full;
+  }
+}

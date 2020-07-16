@@ -40,6 +40,6 @@
     left: $size / 2;
   }
   .player_2 {
-    right: $size / 2;
+    right: calc(#{$chat_w} + #{$size / 2});
   }
 }

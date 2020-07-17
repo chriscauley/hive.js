@@ -54,11 +54,12 @@ class Chat extends React.Component {
   open = () => this.setState({ open: true })
   close = () => this.setState({ open: false })
   submit = (e) => {
+    const { current } = this.textRef
+    const text = current.textContent
     e.preventDefault()
-    this.props.colyseus.send('general', 'chat', {
-      text: this.textRef.current.textContent,
-    })
-    this.textRef.current.textContent = ''
+    this.props.colyseus.send('general', 'chat', { text })
+    current.textContent = ''
+    current.focus()
   }
 
   render() {
@@ -77,32 +78,28 @@ class Chat extends React.Component {
     this.autoScroll()
     const room = this.props.colyseus[current_room] || {}
     const { messages = [] } = room
-    const room_list = Object.keys(rooms).sort()
-    const _list = (n) =>
-      `cursor-pointer ${n === current_room ? 'font-bold' : ''}`
+    const room_entries = Object.entries(rooms).sort()
+    const _list = (n) => `room ${n === current_room ? 'current' : ''}`
     return (
-      <div
-        className="fixed bottom-0 right-0 border bg--bg"
-        style={{ width: 320 }}
-      >
-        <ul className="border-b p-2 mb-2">
-          {room_list.map((name) => (
+      <div className="Chat">
+        <div className="menu-bar">
+          <button
+            className={css.icon('minus')}
+            onClick={this.close}
+          />
+        </div>
+        <ul className="room_list">
+          {room_entries.map(([name, room]) => (
             <li
               key={name}
               className={_list(name)}
               onClick={() => this.setState({ current_room: name })}
             >
               {name === current_room && '* '}
-              {name}
+              {room.state.clients && `(${room.state.clients.length}) ${name}`}
             </li>
           ))}
         </ul>
-        <div className="bg-gray-200 py-1 px-2 text-right">
-          <i
-            className={css.icon('minus cursor-pointer')}
-            onClick={this.close}
-          />
-        </div>
         <Messages
           submit={this.submit}
           textRef={this.textRef}
@@ -116,7 +113,7 @@ class Chat extends React.Component {
 
 const Messages = ({ messages, submit, textRef, listRef }) => (
   <>
-    <div className="p-4" ref={listRef}>
+    <div className="message-list" ref={listRef}>
       {messages.map(({ username, text }, i) => (
         <p key={i}>
           {username}: {text}
@@ -124,8 +121,13 @@ const Messages = ({ messages, submit, textRef, listRef }) => (
       ))}
     </div>
 
-    <form onSubmit={submit} className="mb-0 border-t flex justify-between">
-      <span className="block w-full" ref={textRef} contentEditable="true" />
+    <form onSubmit={submit} className="text-box">
+      <span
+        className="input"
+        ref={textRef}
+        contentEditable="true"
+        onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && submit(e)}
+      />
       <button type="submit" className={css.icon('send')}></button>
     </form>
   </>

@@ -30,3 +30,11 @@
     @apply block px-2 py-1 w-full;
   }
 }
+
+.ChatError {
+  @apply fixed bottom-0 right-0 border bg--bg;
+  width: $chat_w;
+  .fa {
+    @apply text-yellow-900 mr-2;
+  }
+}

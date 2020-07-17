@@ -2,30 +2,10 @@ import React from 'react'
 import css from '@unrest/css'
 import colyseus from './colyseus'
 
-const Minimized = ({ error, open }) => {
-  const icon = css.icon(error ? 'exclamation-triangle' : 'comments')
-  const button = css.button[error ? 'warning' : 'primary']('circle text-lg')
-  return (
-    <div className="fixed bottom-0 right-0 m-4">
-      <button
-        onClick={open}
-        className={button}
-        style={{ width: '2em', height: '2em' }}
-      >
-        <i className={icon} />
-      </button>
-    </div>
-  )
-}
-
-const Error = ({ close }) => (
-  <div
-    className="fixed bottom-0 right-0 border bg--bg"
-    style={{ width: 320 }}
-    onClick={close}
-  >
+const ChatError = () => (
+  <div className="ChatError">
     <div className="p-4">
-      <i className={css.icon('exclamation-triangle text-yellow-900 mr-2')} />
+      <i className={css.icon('exclamation-triangle')} />
       Unable to connect to server. Offline play only.
     </div>
   </div>
@@ -33,7 +13,6 @@ const Error = ({ close }) => (
 
 class Chat extends React.Component {
   state = {
-    open: true,
     current_room: 'general',
   }
 
@@ -51,8 +30,6 @@ class Chat extends React.Component {
     }
   }
 
-  open = () => this.setState({ open: true })
-  close = () => this.setState({ open: false })
   submit = (e) => {
     const { current } = this.textRef
     const text = current.textContent
@@ -63,16 +40,13 @@ class Chat extends React.Component {
   }
 
   render() {
-    const { open, error, current_room } = this.state
+    const { error, current_room } = this.state
     const { user, rooms } = this.props.colyseus
     if (!user) {
       return null
     }
-    if (!open) {
-      return <Minimized open={this.open} error={error} />
-    }
     if (error) {
-      return <Error close={this.close} />
+      return <ChatError />
     }
 
     this.autoScroll()
@@ -82,12 +56,6 @@ class Chat extends React.Component {
     const _list = (n) => `room ${n === current_room ? 'current' : ''}`
     return (
       <div className="Chat">
-        <div className="menu-bar">
-          <button
-            className={css.icon('minus')}
-            onClick={this.close}
-          />
-        </div>
         <ul className="room_list">
           {room_entries.map(([name, room]) => (
             <li

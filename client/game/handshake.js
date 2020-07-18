@@ -3,16 +3,17 @@ import Board from './Board'
 
 export default (Component) => {
   function HandshakeProvider(props) {
-    const { game, colyseus, match } = props
+    const { colyseus, match } = props
     const { board_id, players } = match.params
+    const board = Board.get(board_id)
 
     // local players don't have to worry about any of this
     // if they are already in the room, continue
-    if (players === 'local' || colyseus.rooms[board_id]) {
-      const board =
-        Board.get(board_id) ||
-        Board.save(colyseus.rooms[board_id].state.initial_board)
-      game.useBoard(board) // idempotent
+    if (players === 'local') {
+      return <Component {...props} board={board} />
+    }
+
+    if (board && colyseus.rooms[board_id]) {
       return <Component {...props} board={board} />
     }
 
@@ -21,28 +22,27 @@ export default (Component) => {
       return null
     }
 
-    const board = Board.get(board_id)
-    if (board && board.host === colyseus.user_id) {
-      // host should create room
-      colyseus.joinOrCreateRoom({
-        channel: board.id,
-        board: Board.toJson(board),
-      })
+    if (!colyseus.rooms[board_id]) {
+      // host will already have board in local storage and should create room using that board
+      if (board && board.host === colyseus.user_id) {
+        colyseus.joinOrCreateRoom({
+          channel: board.id,
+          board: Board.toJson(board),
+        })
+      } else {
+        colyseus.joinRoom(board_id)
+      }
       return null
     }
 
-    if (!colyseus.available_rooms) {
-      colyseus.refreshRooms()
-      return null
-    }
-
-    const room = colyseus.available_rooms.find(
-      (r) => r.metadata && r.metadata.channel === board_id,
-    )
-    if (room) {
-      colyseus.joinRoom(board_id)
-    } else {
-      colyseus.useRooms()
+    if (
+      colyseus.rooms[board_id] &&
+      colyseus.rooms[board_id].state.initial_board
+    ) {
+      const board =
+        Board.get(board_id) ||
+        Board.save(colyseus.rooms[board_id].state.initial_board)
+      return <Component {...props} board={board} />
     }
     return null
   }

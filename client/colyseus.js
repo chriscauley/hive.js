@@ -26,13 +26,16 @@ const actions = {
   init: (store) => {
     if (!store.state.user && !store.state.loading) {
       store.setState({ loading: true, error: null })
-      client.auth.login().then(() =>
-        store.setState({
-          user: { ...client.auth },
-          user_id: client.auth._id,
-          loading: false,
-        }),
-      ).catch((error) => store.setState({ error }))
+      client.auth
+        .login()
+        .then(() =>
+          store.setState({
+            user: { ...client.auth },
+            user_id: client.auth._id,
+            loading: false,
+          }),
+        )
+        .catch((error) => store.setState({ error }))
     }
   },
   saveUser(store, data) {
@@ -43,12 +46,27 @@ const actions = {
       }),
     )
   },
-  joinRoom(store, channel) {
+  joinRoom: (store, channel) => {
+    if (LOADING[channel]) {
+      return
+    }
     LOADING[channel] = true
     client
       .join('chat', { channel })
       .then((room) => _bindRoom(store, channel, room))
-      .catch((error) => store.setState({ error }))
+      .catch((error) => {
+        if (error.message === 'no rooms found with provided criteria') {
+          // room does not exist, yet. This should only happen during development due to HMR refresh
+          console.warn(`failed to join room "${channel}"`)
+          setTimeout(() => {
+            delete LOADING[channel]
+            store.actions.joinRoom(channel)
+          }, 300)
+        } else {
+          delete LOADING[channel]
+          store.setState({ error })
+        }
+      })
   },
   joinOrCreateRoom(store, options) {
     const { channel } = options
@@ -57,7 +75,10 @@ const actions = {
       client
         .joinOrCreate('chat', options)
         .then((room) => _bindRoom(store, channel, room))
-        .catch((error) => store.setState({ error }))
+        .catch((error) => {
+          delete LOADING[channel]
+          store.setState({ error })
+        })
     }
   },
   send(store, room, type, data) {

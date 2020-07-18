@@ -32,8 +32,9 @@ class Game extends React.Component {
   render() {
     sprites.makeSprites() // idempotent
     const { board, colyseus } = this.props // board set by handshake
+    const { update, deleteSelected, click, useBoard } = this.props.game
+    useBoard(board)
     colyseus.sync(board, colyseus)
-    const { update, deleteSelected, click } = this.props.game
     const handlers = {
       UNSELECT: () => {
         Board.unselect(board)

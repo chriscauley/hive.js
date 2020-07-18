@@ -4,10 +4,10 @@ import colyseus from './colyseus'
 
 const ChatError = () => (
   <div className="ChatError">
-    <div className="p-4">
-      <i className={css.icon('exclamation-triangle')} />
-      Unable to connect to server. Offline play only.
-    </div>
+    <i
+      className={css.icon('exclamation-triangle')}
+      title="Unable to connect to server. Offline play only."
+    />
   </div>
 )
 
@@ -40,13 +40,12 @@ class Chat extends React.Component {
   }
 
   render() {
-    const { error, current_room } = this.state
-    const { user, rooms } = this.props.colyseus
-    if (!user) {
-      return null
-    }
+    const { user, rooms, current_room, error } = this.props.colyseus
     if (error) {
       return <ChatError />
+    }
+    if (!user) {
+      return null
     }
 
     this.autoScroll()
@@ -56,18 +55,20 @@ class Chat extends React.Component {
     const _list = (n) => `room ${n === current_room ? 'current' : ''}`
     return (
       <div className="Chat">
-        <ul className="room_list">
-          {room_entries.map(([name, room]) => (
-            <li
-              key={name}
-              className={_list(name)}
-              onClick={() => this.setState({ current_room: name })}
-            >
-              {name === current_room && '* '}
-              {room.state.clients && `(${room.state.clients.length}) ${name}`}
-            </li>
-          ))}
-        </ul>
+        {room_entries.length > 1 && (
+          <ul className="room_list">
+            {room_entries.map(([name, room]) => (
+              <li
+                key={name}
+                className={_list(name)}
+                onClick={() => colyseus.setState({ current_room: name })}
+              >
+                {name === current_room && '* '}
+                {room.state.clients && `(${room.state.clients.length}) ${name}`}
+              </li>
+            ))}
+          </ul>
+        )}
         <Messages
           submit={this.submit}
           textRef={this.textRef}

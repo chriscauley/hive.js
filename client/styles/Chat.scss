@@ -32,9 +32,8 @@
 }
 
 .ChatError {
-  @apply fixed bottom-0 right-0 border bg--bg;
-  width: $chat_w;
+  @apply fixed bottom-0 right-0 flex m-8;
   .fa {
-    @apply text-yellow-900 mr-2;
+    @apply text-yellow-900;
   }
 }

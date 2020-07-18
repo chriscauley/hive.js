@@ -1,8 +1,9 @@
 import React from 'react'
-import { get } from 'lodash'
 import { GlobalHotKeys } from 'react-hotkeys'
+import { get } from 'lodash'
 import css from '@unrest/css'
 
+import handshake from './handshake'
 import Board from './Board'
 import toRows from './Board/toRows'
 import BoardComponent from './Board/Component'
@@ -11,6 +12,8 @@ import sprites from '../sprites'
 import HelpText from './HelpText'
 import NoRules from './NoRules'
 import Winner from './Winner'
+import colyseus from '../colyseus'
+import Lobby from './Lobby'
 
 const keyMap = {
   UNSELECT: 'escape',
@@ -27,10 +30,10 @@ class Game extends React.Component {
     this.props.game.useBoard()
   }
   render() {
-    const board = Board.get(this.props.match.params.board_id)
-    const { useBoard, update, deleteSelected, click } = this.props.game
-    useBoard(board) // idempotent
     sprites.makeSprites() // idempotent
+    const { board, colyseus } = this.props // board set by handshake
+    colyseus.sync(board, colyseus)
+    const { update, deleteSelected, click } = this.props.game
     const handlers = {
       UNSELECT: () => {
         Board.unselect(board)
@@ -45,7 +48,7 @@ class Game extends React.Component {
       this._scrolled = true
       const { scrollWidth, scrollHeight, clientWidth, clientHeight } = scrollbox
       scrollbox.scroll(
-        (scrollWidth - clientWidth) / 2,
+        (scrollWidth - clientWidth + 320) / 2, // 320 is to compensate for the chat
         (scrollHeight - clientHeight) / 2,
       )
     }
@@ -55,6 +58,7 @@ class Game extends React.Component {
       get(board, 'selected.index') !== undefined ? deleteSelected : undefined
     return (
       <div className="Game">
+        <Lobby />
         <GlobalHotKeys handlers={handlers} keyMap={keyMap} />
         <BoardComponent
           rows={player_1}
@@ -90,4 +94,4 @@ class Game extends React.Component {
   }
 }
 
-export default connect(Game)
+export default connect(colyseus.connect(handshake(Game)))

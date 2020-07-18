@@ -15,6 +15,7 @@ const B = {
   moves,
   specials,
   wouldBreakHive,
+  PLAYER_COUNT,
   storage: new Storage('saved_games'),
   getHash: (b) =>
     objectHash(pick(b, ['stacks', 'piece_types', 'piece_owners'])),
@@ -26,7 +27,7 @@ const B = {
     }
     b.special_args = b.special_args || []
     b.actions = b.actions || []
-    b.players = [1, 2]
+    b.player_list = [1, 2]
     b.reverse = {}
     b.geo = getGeo(b)
     Object.entries(b.stacks).forEach(([index, stack]) => {
@@ -51,11 +52,12 @@ const B = {
   save: (b) => {
     // TODO currently saving on mouse move
     if (b.reverse && B.current_hash === b.hash) {
-      return
+      return b
     }
 
     B.update(b)
     B.storage.set(b.id, B.toJson(b))
+    return b
   },
 
   _markBoard: (b) => {
@@ -102,9 +104,11 @@ const B = {
 
   get: (id) => {
     const b = board_cache[id] || B.storage.get(id)
-    board_cache[id] = b
-    window.b = b
-    B.save(b)
+    if (b) {
+      board_cache[id] = b
+      window.b = b
+      B.save(b)
+    }
     return b
   },
   nextTurn: (b) => {
@@ -165,6 +169,8 @@ const B = {
     'turn',
     'rules',
     'winner',
+    'players',
+    'host',
   ],
   toJson: (b) => cloneDeep(pick(b, B.json_fields)),
   fromJson: (value) => {
@@ -178,7 +184,7 @@ const B = {
       W: 50, // hex math only works with even boards
       H: 50,
       ...options,
-      id: Math.random(),
+      id: Math.random().toString(),
       piece_types: [],
       piece_owners: [],
       turn: 0,
@@ -274,6 +280,13 @@ const B = {
     b.frozen = frozen
   },
 
+  isUsersTurn: (board) => {
+    if (!board.local_player) {
+      return true
+    }
+    return board.current_player === board.local_player
+  },
+
   click: (board, target) => {
     const { rules, selected } = board
     const { player_id, piece_type } = selected || {}
@@ -289,7 +302,8 @@ const B = {
       !selected || // no tile currently selected
       player_id !== board.current_player || // currently selected enemy piece
       target.piece_id === 'new' || // clicked sidebar
-      board.cantmove[selected.index] // onehive or mantis/pillbug logic
+      board.cantmove[selected.index] || // onehive or mantis/pillbug logic
+      !B.isUsersTurn(board) // for remote multiplayer
     ) {
       // currently selected an enemy piece, select new target piece instead
       B.select(board, target)
@@ -376,7 +390,7 @@ const B = {
     if (b.winner !== undefined) {
       return
     }
-    b.winner = b.players.find((player_id) => {
+    b.winner = b.player_list.find((player_id) => {
       const index = b.queens[player_id]
       return (
         index !== undefined &&

@@ -35,7 +35,7 @@ const grasshopper = [
   ifRule(
     'super_grasshopper',
     'The grasshopper can make unlimited jumps in a single turn',
-  )
+  ),
 ]
 
 const spider = [
@@ -80,7 +80,7 @@ const scorpion = [
 ]
 
 const wasp = [
-  'The wasp takes unlimited steps on top of the hive and then steps off to any space not touching friendly tiles (opposite of placement).'
+  'The wasp takes unlimited steps on top of the hive and then steps off to any space not touching friendly tiles (opposite of placement).',
 ]
 
 const cockroach = [

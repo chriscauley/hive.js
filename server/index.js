@@ -21,7 +21,7 @@ const gameServer = new colyseus.Server({
 // Expose the "lobby" room.
 gameServer.define('lobby', colyseus.LobbyRoom)
 // register your room handlers
-gameServer.define('chat', ChatRoom).filterBy(['channel'])
+gameServer.define('chat', ChatRoom).filterBy(['channel', 'id', 'piece_sets'])
 
 app.use("/", socialRoutes);
 

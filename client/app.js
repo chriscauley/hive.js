@@ -32,10 +32,10 @@ const App = withConfig((props) => {
         <Nav />
         <Route exact path="/" component={NewGame} />
         <Route exact path="/about/" component={About} />
-        <Route exact path="/play/:board_id/" component={Game} />
+        <Route exact path="/play/:players/:board_id/" component={Game} />
         <Route path="/sprites/" component={sprites.Routes} />
-        <ReactTooltip className="max-w-sm" />
         <Chat />
+        <ReactTooltip className="max-w-sm" />
       </HashRouter>
     </div>
   )

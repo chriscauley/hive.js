@@ -2,13 +2,13 @@ import React from 'react'
 import { get } from 'lodash'
 import globalHook from 'use-global-hook'
 
-import Board from './Board'
+import B from './Board'
 
 let board
 
 const actions = {
   click: (store, target) => {
-    Board.click(board, target)
+    B.click(board, target)
     store.actions.update()
   },
   update: (store) => {
@@ -20,7 +20,7 @@ const actions = {
   loadJson: (store, value) => {
     let import_error = null
     try {
-      board = Board.fromJson(value)
+      board = B.fromJson(value)
       window.location = `#/play/${board.id}/`
     } catch (e) {
       console.error(e)
@@ -30,15 +30,15 @@ const actions = {
   },
   deleteSelected: (store) => {
     const { piece_id } = board.selected
-    Board.deletePiece(board, piece_id)
+    B.deletePiece(board, piece_id)
     store.actions.update()
   },
   undo: (store) => {
-    Board.undo(board)
+    B.undo(board)
     store.actions.update()
   },
   redo: (store) => {
-    Board.redo(board)
+    B.redo(board)
     store.actions.update()
   },
 }

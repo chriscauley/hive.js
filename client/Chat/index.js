@@ -1,6 +1,6 @@
 import React from 'react'
 import css from '@unrest/css'
-import colyseus from './colyseus'
+import colyseus from '../colyseus'
 
 const ChatError = () => (
   <div className="ChatError">

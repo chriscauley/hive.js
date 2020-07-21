@@ -39,12 +39,10 @@ const actions = {
     }
   },
   saveUser(store, data) {
-    Object.assign(client.auth.user, data)
-    client.auth.user.save().then(() =>
-      store.setState({
-        user: { ...client.auth },
-      }),
-    )
+    Object.assign(client.auth, data)
+    return client.auth
+      .save()
+      .then(() => store.setState({ user: { ...client.auth } }))
   },
   joinRoom: (store, channel) => {
     if (LOADING[channel]) {

@@ -1,6 +1,7 @@
 import React from 'react'
 import css from '@unrest/css'
 import colyseus from '../colyseus'
+import Settings from './Settings'
 
 const ChatError = () => (
   <div className="ChatError">
@@ -54,28 +55,40 @@ class Chat extends React.Component {
     const room_entries = Object.entries(rooms).sort()
     const _list = (n) => `room ${n === current_room ? 'current' : ''}`
     return (
-      <div className="Chat">
-        {room_entries.length > 1 && (
-          <ul className="room_list">
-            {room_entries.map(([name, room]) => (
-              <li
-                key={name}
-                className={_list(name)}
-                onClick={() => colyseus.setState({ current_room: name })}
-              >
-                {name === current_room && '* '}
-                {room.state.clients && `(${room.state.clients.length}) ${name}`}
-              </li>
-            ))}
-          </ul>
+      <>
+        {this.state.settings_open && (
+          <Settings close={() => this.setState({ settings_open: false })} />
         )}
-        <Messages
-          submit={this.submit}
-          textRef={this.textRef}
-          listRef={this.listRef}
-          messages={messages}
-        />
-      </div>
+        <div className="Chat">
+          <div className="bg-gray-400 text-right">
+            <i
+              className={css.icon('gear cursor-pointer')}
+              onClick={() => this.setState({ settings_open: true })}
+            />
+          </div>
+          {room_entries.length > 1 && (
+            <ul className="room_list">
+              {room_entries.map(([name, room]) => (
+                <li
+                  key={name}
+                  className={_list(name)}
+                  onClick={() => colyseus.setState({ current_room: name })}
+                >
+                  {name === current_room && '* '}
+                  {room.state.clients &&
+                    `(${room.state.clients.length}) ${name}`}
+                </li>
+              ))}
+            </ul>
+          )}
+          <Messages
+            submit={this.submit}
+            textRef={this.textRef}
+            listRef={this.listRef}
+            messages={messages}
+          />
+        </div>
+      </>
     )
   }
 }

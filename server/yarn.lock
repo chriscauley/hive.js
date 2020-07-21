@@ -28,10 +28,9 @@
   resolved "https://registry.yarnpkg.com/@colyseus/schema/-/schema-0.5.40.tgz#e1784daedf1c39328d621a4ce60a8d1d331dbb5c"
   integrity sha512-4Zp955wcux52qNe1Ctc8yf9FiRNM5BPTDPGCgfB4PYqfKKCyUlHuN5sG7IMO017CTPqA4XBAx7//cJqbJmeR0Q==
 
-"@colyseus/social@^0.11.6":
-  version "0.11.6"
-  resolved "https://registry.yarnpkg.com/@colyseus/social/-/social-0.11.6.tgz#12751f1a86e65acf1f32789de0d17a4f712a7a62"
-  integrity sha512-BNZaf2elZzcR92yw14rLQ9LKfyfwQQ7peBvBaK2jxyNbEIKWe4Y4lAi1igNY/2qpmsaosxmvnji8QOKUm5aI2g==
+"@colyseus/social@chriscauley/colyseus-social":
+  version "0.11.5"
+  resolved "https://codeload.github.com/chriscauley/colyseus-social/tar.gz/b8aadbdf1651e246d2400fbefa7e1dbd603bdb3a"
   dependencies:
     "@types/mongoose" "^5.3.27"
     debug "^4.1.1"

@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@colyseus/monitor": "^0.12.2",
-    "@colyseus/social": "^0.11.6",
+    "@colyseus/social": "chriscauley/colyseus-social",
     "colyseus": "^0.13.0",
     "cors": "^2.8.5",
     "express": "^4.16.4",

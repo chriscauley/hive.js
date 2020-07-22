@@ -24,6 +24,9 @@ const _bindRoom = (store, channel, room) => {
 
 const actions = {
   init: (store) => {
+    if (store.state.auth_error) {
+      return
+    }
     if (!store.state.user && !store.state.loading) {
       store.setState({ loading: true, error: null })
       client.auth
@@ -45,7 +48,7 @@ const actions = {
       .then(() => store.setState({ user: { ...client.auth } }))
   },
   joinRoom: (store, channel) => {
-    if (LOADING[channel]) {
+    if (LOADING[channel] || store.state.auth_error) {
       return
     }
     LOADING[channel] = true
@@ -110,6 +113,11 @@ const actions = {
     while (remote_actions.length > board.actions.length) {
       B.doAction(board, remote_actions[board.actions.length])
     }
+  },
+  rename(store, room, value) {
+    ROOMS[room]._name = value
+    store.setState({ rando: Math.random() })
+    store.actions.send(room, 'rename', value)
   },
 }
 const makeHook = globalHook(React, {}, actions)

@@ -3,11 +3,11 @@ import css from '@unrest/css'
 import colyseus from '../colyseus'
 import Settings from './Settings'
 
-const ChatError = () => (
+const ChatError = ({ error }) => (
   <div className="ChatError">
     <i
       className={css.icon('exclamation-triangle')}
-      title="Unable to connect to server. Offline play only."
+      title={`Unable to connect to server. Offline play only. Error was: ${error}`}
     />
   </div>
 )
@@ -43,7 +43,7 @@ class Chat extends React.Component {
   render() {
     const { user, rooms, current_room, error } = this.props.colyseus
     if (error) {
-      return <ChatError />
+      return <ChatError error={error} />
     }
     if (!user) {
       return null

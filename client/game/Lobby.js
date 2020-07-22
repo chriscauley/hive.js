@@ -74,6 +74,16 @@ function Lobby(props) {
       <div className={css.modal.mask()} />
       <div className={css.modal.content()}>
         <Tag colyseus={props.colyseus} board={board} />
+        {board.host === user_id && (
+          <div className="form-group">
+            While you're waiting, you can change the game name here:
+            <input
+              className="form-control"
+              value={room._name || ''}
+              onChange={(e) => props.colyseus.rename(board.id, e.target.value)}
+            />
+          </div>
+        )}
       </div>
     </div>
   )

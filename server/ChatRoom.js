@@ -4,6 +4,9 @@ const { shuffle } = require('lodash')
 
 class ChatRoom extends Room {
   async onAuth(client, options) {
+    if (!options.token) {
+      return
+    }
     // verify token authenticity
     const token = verifyToken(options.token);
 

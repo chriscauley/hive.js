@@ -36,6 +36,7 @@ class ChatRoom extends Room {
     const state = {
       clients: [],
       channel,
+      name: channel,
       afk: {},
       messages: [
         {
@@ -46,6 +47,7 @@ class ChatRoom extends Room {
     }
 
     board && Object.assign(state, {
+      name: 'unnamed game',
       ready: {},
       actions: board.actions,
       hash: undefined,
@@ -80,13 +82,15 @@ class ChatRoom extends Room {
       this.state.hash = hash
       this.state.actions.push(action)
     })
+    this.onMessage('rename', (client, name) => {
+      this.state.name = name
+    })
   }
 
   onJoin(client) {
     const id = client.auth._id.toString()
     delete this.state.afk[id]
     if (!this.state.clients.includes(id)) {
-      // console.log(client.auth.username, 'joined ChatRoom')
       this.state.clients.push(id)
       this.state.messages.push({
         username: 'admin',
@@ -97,7 +101,9 @@ class ChatRoom extends Room {
 
   onLeave(client) {
     const id = client.auth._id.toString()
-    this.state.afk[id] = new Date().valueOf()
+    if (this.state.afk) {
+      this.state.afk[id] = new Date().valueOf()
+    }
 
     // if they leave, remove "ready" state, so that they can't be "ready" and gone at the same time
     if (this.state.ready) {

@@ -68,15 +68,15 @@ class Chat extends React.Component {
           </div>
           {room_entries.length > 1 && (
             <ul className="room_list">
-              {room_entries.map(([name, room]) => (
+              {room_entries.map(([channel, room]) => (
                 <li
-                  key={name}
-                  className={_list(name)}
-                  onClick={() => colyseus.setState({ current_room: name })}
+                  key={channel}
+                  className={_list(channel)}
+                  onClick={() => colyseus.setState({ current_room: channel })}
                 >
-                  {name === current_room && '* '}
+                  {channel === current_room && '* '}
                   {room.state.clients &&
-                    `(${room.state.clients.length}) ${name}`}
+                    `(${room.state.clients.length}) ${room.state.name}`}
                 </li>
               ))}
             </ul>

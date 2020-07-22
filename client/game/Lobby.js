@@ -20,7 +20,7 @@ const NeedsPlayers = ({ board }) => (
 
 const NeedsReady = ({ colyseus, board }) => (
   <>
-    <h2>Please click Ready</h2>
+    <h2>Please click ready</h2>
     <button
       className={css.button()}
       onClick={() => colyseus.send(board.id, 'ready')}
@@ -79,7 +79,7 @@ function Lobby(props) {
             While you're waiting, you can change the game name here:
             <input
               className="form-control"
-              value={room._name || ''}
+              defaultValue={room.state.name}
               onChange={(e) => props.colyseus.rename(board.id, e.target.value)}
             />
           </div>

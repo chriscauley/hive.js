@@ -55,12 +55,12 @@ const schema = {
           title: 'Spider Web',
           type: 'boolean',
         },
-        no_rules: {
-          title: 'No Rules',
-          type: 'boolean',
-        },
         super_grasshopper: {
           title: 'Super Grasshoppper',
+          type: 'boolean',
+        },
+        no_rules: {
+          title: 'No Rules',
           type: 'boolean',
         },
       },
@@ -122,7 +122,7 @@ export default colyseus.connect(
             <div key={room.roomId}>
               <Link to={`/play/${room.metadata.channel}`}>
                 <i className={css.icon('user mr-2')} />
-                {room.clients}
+                {`(${room.clients}) ${room.metadata.name}`}
               </Link>
             </div>
           ))}

@@ -2,6 +2,8 @@ const Room = require('colyseus').Room
 const { User, FriendRequest, verifyToken, hooks } = require("@colyseus/social")
 const { shuffle } = require('lodash')
 
+const DEFAULT_NAME = 'unnamed game'
+
 class ChatRoom extends Room {
   async onAuth(client, options) {
     if (!options.token) {
@@ -47,7 +49,7 @@ class ChatRoom extends Room {
     }
 
     board && Object.assign(state, {
-      name: 'unnamed game',
+      name: DEFAULT_NAME,
       ready: {},
       actions: board.actions,
       hash: undefined,
@@ -55,7 +57,7 @@ class ChatRoom extends Room {
     })
     this.setState(state)
 
-    this.setMetadata({channel})
+    this.setMetadata({channel, name: DEFAULT_NAME, rules: board && board.rules})
     this.onMessage('chat', (client, message) => {
       message.username = client.auth.username
       this.state.messages.push(message)
@@ -83,6 +85,7 @@ class ChatRoom extends Room {
       this.state.actions.push(action)
     })
     this.onMessage('rename', (client, name) => {
+      this.setMetadata({...this.metadata, channel, name })
       this.state.name = name
     })
   }

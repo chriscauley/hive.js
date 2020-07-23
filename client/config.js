@@ -26,10 +26,12 @@ const schema = {
 }
 
 const initial = {
-  hex_angle: 'flat',
-  theme: 'classic',
-  debug: false,
-  show_help: true,
+  formData: {
+    hex_angle: 'flat',
+    theme: 'classic',
+    debug: false,
+    show_help: true,
+  },
 }
 
 const actions = {

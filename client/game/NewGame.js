@@ -5,7 +5,6 @@ import Form from '@unrest/react-jsonschema-form'
 import { unslugify } from '../tutorial/Component'
 import colyseus from '../colyseus'
 import Board from './Board'
-import RoomList from '../components/RoomList'
 import pieces from './pieces'
 
 const piece_enum = Object.keys(pieces.piece_sets)
@@ -110,11 +109,8 @@ export default colyseus.connect(
       )
     }
     return (
-      <div className="flex justify-center">
-        <RoomList />
-        <div className="border p-4 mt-8 shadowed max-w-md mx-2">
-          <Form schema={schema} uiSchema={uiSchema} onSubmit={onSubmit} />
-        </div>
+      <div className="border p-4 mt-8 shadowed max-w-md mx-2">
+        <Form schema={schema} uiSchema={uiSchema} onSubmit={onSubmit} />
       </div>
     )
   }),

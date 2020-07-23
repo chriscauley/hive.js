@@ -6,12 +6,12 @@ import { HashRouter, Route } from 'react-router-dom'
 
 import Nav from './components/Nav'
 import About from './components/About'
-import NewGame from './game/NewGame'
 import Game from './game/Game'
 import withConfig from './config'
 import sprites from './sprites'
 import ReactTooltip from 'react-tooltip'
 import Chat from './Chat'
+import screens from './screens'
 
 const keyMap = {
   UNSELECT: 'escape',
@@ -30,7 +30,7 @@ const App = withConfig((props) => {
       <GlobalHotKeys handlers={handlers} keyMap={keyMap} />
       <HashRouter>
         <Nav />
-        <Route exact path="/" component={NewGame} />
+        <Route exact path="/" component={screens.Home} />
         <Route exact path="/about/" component={About} />
         <Route exact path="/play/:players/:board_id/" component={Game} />
         <Route path="/sprites/" component={sprites.Routes} />

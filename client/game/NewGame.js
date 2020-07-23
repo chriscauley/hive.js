@@ -1,11 +1,11 @@
 import React from 'react'
-import { Link, withRouter } from 'react-router-dom'
-import css from '@unrest/css'
+import { withRouter } from 'react-router-dom'
 import Form from '@unrest/react-jsonschema-form'
 
 import { unslugify } from '../tutorial/Component'
 import colyseus from '../colyseus'
 import Board from './Board'
+import RoomList from '../components/RoomList'
 import pieces from './pieces'
 
 const piece_enum = Object.keys(pieces.piece_sets)
@@ -100,8 +100,6 @@ const uiSchema = {
 
 export default colyseus.connect(
   withRouter((props) => {
-    props.colyseus.useRooms()
-    const { available_rooms = [] } = props.colyseus
     const onSubmit = (formData) => {
       const { variants, ...rules } = formData
       Object.assign(rules, variants)
@@ -113,19 +111,9 @@ export default colyseus.connect(
     }
     return (
       <div className="flex justify-center">
+        <RoomList />
         <div className="border p-4 mt-8 shadowed max-w-md mx-2">
           <Form schema={schema} uiSchema={uiSchema} onSubmit={onSubmit} />
-        </div>
-        <div className="border p-4 mt-8 shadowed max-w-md w-64 mx-2">
-          <h2>Join a Game</h2>
-          {available_rooms.map((room) => (
-            <div key={room.roomId}>
-              <Link to={`/play/${room.metadata.channel}`}>
-                <i className={css.icon('user mr-2')} />
-                {`(${room.clients}) ${room.metadata.name}`}
-              </Link>
-            </div>
-          ))}
         </div>
       </div>
     )

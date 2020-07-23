@@ -12,28 +12,6 @@ Object.entries(pieces.piece_sets).forEach(([key, { pieces }]) => {
   piece_map[key] = Object.keys(pieces)
 })
 
-export default colyseus.connect(
-  withRouter((props) => {
-    sprites.makeSprites() // idempotent
-    props.colyseus.useRooms()
-    const { available_rooms = [] } = props.colyseus
-    return (
-      <div className="border p-4 mt-8 shadowed max-w-md w-64 mx-2">
-        <h2>Join a Game</h2>
-        {available_rooms.map((room) => (
-          <div key={room.roomId} className="border m-1 p-2">
-            <Link to={`/play/${room.metadata.channel}`}>
-              <i className={css.icon('user mr-2')} />
-              {`(${room.clients}) ${room.metadata.name}`}
-              <Rules rules={room.metadata.rules} />
-            </Link>
-          </div>
-        ))}
-      </div>
-    )
-  }),
-)
-
 const Piece = ({ piece_type, set, player }) => (
   <div className="item">
     <div className="content">
@@ -71,3 +49,29 @@ const Rules = ({ rules }) => {
     </div>
   )
 }
+
+export default colyseus.connect(
+  withRouter((props) => {
+    sprites.makeSprites() // idempotent
+    props.colyseus.useRooms()
+    let { available_rooms = [] } = props.colyseus
+    available_rooms = available_rooms.filter(r => r.metadata.channel !== 'general')
+    return (
+      <div className="border p-4 mt-8 shadowed max-w-md w-64 mx-2">
+        <h2>Join a Game</h2>
+        {available_rooms.map((room) => (
+          <div key={room.roomId} className="border m-1 p-2">
+            <Link to={`/play/${room.metadata.channel}`}>
+              <i className={css.icon('user mr-2')} />
+              {`(${room.clients}) ${room.metadata.name}`}
+              <Rules rules={room.metadata.rules} />
+            </Link>
+          </div>
+        ))}
+        {available_rooms.length === 0 && (
+          "No available games."
+        )}
+      </div>
+    )
+  }),
+)

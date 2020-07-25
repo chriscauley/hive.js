@@ -22,7 +22,6 @@ class Chat extends React.Component {
     super(props)
     this.listRef = React.createRef()
     this.textRef = React.createRef()
-    this.props.colyseus.joinOrCreateRoom({ channel: 'general' })
   }
 
   autoScroll = () => {
@@ -60,6 +59,7 @@ class Chat extends React.Component {
       return null
     }
 
+    this.props.colyseus.joinOrCreateRoom({ channel: 'general' }) // idempotent
     this.autoScroll()
     const room = this.props.colyseus[current_room] || {}
     const { messages = [] } = room

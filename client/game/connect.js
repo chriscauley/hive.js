@@ -34,6 +34,10 @@ const actions = {
     store.actions.update()
   },
   undo: (store) => {
+    if (board.rules.players !== 'local') {
+      // TODO temporarily disabling undo for online play
+      return
+    }
     B.undo(board)
     store.actions.update()
   },

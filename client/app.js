@@ -30,12 +30,14 @@ const App = withConfig((props) => {
       <GlobalHotKeys handlers={handlers} keyMap={keyMap} />
       <HashRouter>
         <Nav />
-        <Route exact path="/" component={screens.Home} />
-        <Route exact path="/about/" component={About} />
-        <Route exact path="/play/:players/:board_id/" component={Game} />
-        <Route path="/sprites/" component={sprites.Routes} />
-        <Chat />
-        <ReactTooltip className="max-w-sm" />
+        <div className="app-inner flex">
+          <Route exact path="/" component={screens.Home} />
+          <Route exact path="/about/" component={About} />
+          <Route exact path="/play/:players/:board_id/" component={Game} />
+          <Route path="/sprites/" component={sprites.Routes} />
+          <Chat />
+          <ReactTooltip className="max-w-sm" />
+        </div>
       </HashRouter>
     </div>
   )

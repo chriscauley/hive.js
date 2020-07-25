@@ -49,7 +49,7 @@ class Game extends React.Component {
       this._scrolled = true
       const { scrollWidth, scrollHeight, clientWidth, clientHeight } = scrollbox
       scrollbox.scroll(
-        (scrollWidth - clientWidth + 320) / 2, // 320 is to compensate for the chat
+        (scrollWidth - clientWidth) / 2,
         (scrollHeight - clientHeight) / 2,
       )
     }

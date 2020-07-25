@@ -15,6 +15,7 @@ const ChatError = ({ error }) => (
 class Chat extends React.Component {
   state = {
     current_room: 'general',
+    open: true,
   }
 
   constructor(props) {
@@ -42,6 +43,16 @@ class Chat extends React.Component {
 
   render() {
     const { user, rooms, current_room, error } = this.props.colyseus
+    if (!this.state.open) {
+      return (
+        <div
+          className="Chat-collapsed"
+          onClick={() => this.setState({ open: true })}
+        >
+          <i className="fa fa-comment" />
+        </div>
+      )
+    }
     if (error) {
       return <ChatError error={error} />
     }
@@ -60,10 +71,14 @@ class Chat extends React.Component {
           <Settings close={() => this.setState({ settings_open: false })} />
         )}
         <div className="Chat">
-          <div className="bg-gray-400 text-right">
+          <div className="bg-gray-400 text-right py-1">
             <i
-              className={css.icon('gear cursor-pointer')}
+              className={css.icon('gear cursor-pointer mx-1')}
               onClick={() => this.setState({ settings_open: true })}
+            />
+            <i
+              className={css.icon('minus cursor-pointer mx-1')}
+              onClick={() => this.setState({ open: false })}
             />
           </div>
           {room_entries.length > 1 && (

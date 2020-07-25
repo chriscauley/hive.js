@@ -55,7 +55,9 @@ export default colyseus.connect(
     sprites.makeSprites() // idempotent
     props.colyseus.useRooms()
     let { available_rooms = [] } = props.colyseus
-    available_rooms = available_rooms.filter(r => r.metadata.channel !== 'general')
+    available_rooms = available_rooms.filter(
+      (r) => r.metadata.channel !== 'general',
+    )
     return (
       <div className="border p-4 mt-8 shadowed max-w-md w-64 mx-2">
         <h2>Join a Game</h2>
@@ -68,9 +70,7 @@ export default colyseus.connect(
             </Link>
           </div>
         ))}
-        {available_rooms.length === 0 && (
-          "No available games."
-        )}
+        {available_rooms.length === 0 && 'No available games.'}
       </div>
     )
   }),

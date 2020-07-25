@@ -1,13 +1,10 @@
 @import "./var.scss";
 
 .Game {
-  @apply flex justify-center items-center;
   background: linear-gradient(135deg, #f5f2d0 10%, #e2dccd 100%);
-  bottom: 0;
-  left: 0;
-  position: absolute;
-  right: 0;
-  top: 77px;
+  overflow: hidden;
+  flex-shrink: 1;
+  position: relative;
   .scroll-box {
     overflow: scroll;
     height: 100%;
@@ -40,6 +37,6 @@
     left: $size / 2;
   }
   .player_2 {
-    right: calc(#{$chat_w} + #{$size / 2});
+    right: #{$size / 2};
   }
 }

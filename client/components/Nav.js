@@ -19,7 +19,7 @@ const GameDropdown = withRouter(
         onClick: redo,
       },
     ]
-    if (!board) {
+    if (!board || board.rules.players !== 'local') {
       links.forEach((link) => {
         delete link.onClick
         link.className = css.dropdown.item('text-gray-500')

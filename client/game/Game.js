@@ -80,7 +80,11 @@ class Game extends React.Component {
         <div className={`absolute top-0 ${orientation}-0`}>
           <Winner board={board} />
           <div className={css.alert.info()}>
-            Player {board.current_player}'s turn
+            {board.rules.players === 'local'
+              ? `Player {board.current_player}'s turn`
+              : Board.isUsersTurn(board)
+              ? 'Your turn'
+              : "Opponent's turn"}
           </div>
           {board.rules.no_rules && <NoRules _delete={_delete} />}
           {!board.rules.no_rules && board.error && (

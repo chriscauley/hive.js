@@ -223,8 +223,9 @@ const B = {
   },
 
   select: (board, target) => {
+    const { selected={} } = board
     B.unselect(board)
-    if (target.piece_id === undefined) {
+    if (target.piece_id === undefined || selected.piece_id === target.piece_id) {
       return
     }
     if (board.cantmove[target.index]) {

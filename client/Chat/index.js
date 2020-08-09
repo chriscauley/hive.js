@@ -3,6 +3,31 @@ import css from '@unrest/css'
 import colyseus from '../colyseus'
 import Settings from './Settings'
 
+const useAutoScroll = (_default = true, behavior = 'smooth', block = 'end') => {
+  const ref = React.useRef()
+  const [{ enabled, first }, setState] = React.useState({
+    enabled: _default,
+    first: !_default,
+  })
+  const e = ref.current
+  const scroll = () => {
+    if (!first) {
+      e.scrollIntoView({ block })
+    } else {
+      e.scrollIntoView({ behavior, block })
+    }
+  }
+  e && enabled && setTimeout(scroll, 0)
+  const onScroll = ({ target }) => {
+    const { scrollHeight, scrollTop, clientHeight } = target
+    const new_enabled = scrollHeight === scrollTop + clientHeight
+    if (!first || new_enabled !== enabled) {
+      setState({ enabled: new_enabled, first: true })
+    }
+  }
+  return { enabled, ref, onScroll }
+}
+
 const ChatError = ({ error }) => (
   <div className="ChatError">
     <i
@@ -12,100 +37,80 @@ const ChatError = ({ error }) => (
   </div>
 )
 
-class Chat extends React.Component {
-  state = {
-    current_room: 'general',
-    open: true,
+function Chat({ colyseus }) {
+  const [state, setState] = React.useState({ open: true })
+  const autoscroll = useAutoScroll()
+  const textRef = React.useRef()
+
+  const { user, rooms, current_room, error } = colyseus
+
+  if (!state.open) {
+    return (
+      <div className="Chat-collapsed" onClick={() => setState({ open: true })}>
+        <i className="fa fa-comment" />
+      </div>
+    )
+  }
+  if (error) {
+    return <ChatError error={error} />
+  }
+  if (!user) {
+    return null
   }
 
-  constructor(props) {
-    super(props)
-    this.endRef = React.createRef()
-    this.textRef = React.createRef()
-  }
-
-  autoScroll = () => {
-    const { current } = this.endRef
-    const scroll = () =>
-      current.scrollIntoView({ behavior: 'smooth', block: 'end' })
-    current && setTimeout(scroll, 0)
-  }
-
-  submit = (e) => {
+  colyseus.joinOrCreateRoom({ channel: 'general' }) // idempotent
+  const room = colyseus[current_room] || {}
+  const { messages = [] } = room
+  const room_entries = Object.entries(rooms).sort()
+  const _list = (n) => `room ${n === current_room ? 'current' : ''}`
+  const submit = (e) => {
     e.preventDefault()
-    const { current } = this.textRef
-    const { current_room } = this.props.colyseus
+    const { current } = textRef
+    const { current_room } = colyseus
     const text = current.textContent
-    this.props.colyseus.send(current_room, 'chat', { text })
+    colyseus.send(current_room, 'chat', { text })
     current.textContent = ''
     current.focus()
   }
 
-  render() {
-    const { colyseus } = this.props
-    const { user, rooms, current_room, error } = colyseus
-    if (!this.state.open) {
-      return (
-        <div
-          className="Chat-collapsed"
-          onClick={() => this.setState({ open: true })}
-        >
-          <i className="fa fa-comment" />
-        </div>
-      )
-    }
-    if (error) {
-      return <ChatError error={error} />
-    }
-    if (!user) {
-      return null
-    }
-
-    colyseus.joinOrCreateRoom({ channel: 'general' }) // idempotent
-    this.autoScroll()
-    const room = colyseus[current_room] || {}
-    const { messages = [] } = room
-    const room_entries = Object.entries(rooms).sort()
-    const _list = (n) => `room ${n === current_room ? 'current' : ''}`
-    return (
-      <>
-        {this.state.settings_open && (
-          <Settings close={() => this.setState({ settings_open: false })} />
-        )}
-        <div className="Chat">
-          <div className="flex flex-col h-full">
-            <div className="bg-gray-400 text-right py-1">
-              <i
-                className={css.icon('gear cursor-pointer mx-1')}
-                onClick={() => this.setState({ settings_open: true })}
-              />
-              <i
-                className={css.icon('minus cursor-pointer mx-1')}
-                onClick={() => this.setState({ open: false })}
-              />
-            </div>
-            {room_entries.length > 1 && (
-              <ul className="room_list">
-                {room_entries.map(([channel, room]) => (
-                  <li
-                    key={channel}
-                    className={_list(channel)}
-                    onClick={() => colyseus.switchRoom(channel)}
-                  >
-                    {channel === current_room && '* '}
-                    {room.state.clients &&
-                      `(${room.state.clients.length}) ${room.state.name}`}
-                  </li>
-                ))}
-              </ul>
-            )}
-            <MessageList endRef={this.endRef} messages={messages} />
-            <MessageForm submit={this.submit} textRef={this.textRef} />
+  return (
+    <>
+      {state.settings_open && (
+        <Settings close={() => setState({ settings_open: false })} />
+      )}
+      <div className="Chat">
+        <div className="flex flex-col h-full">
+          <div className="bg-gray-400 text-right py-1">
+            <i
+              className={css.icon('gear cursor-pointer mx-1')}
+              onClick={() => setState({ settings_open: true })}
+            />
+            <i
+              className={css.icon('minus cursor-pointer mx-1')}
+              onClick={() => setState({ open: false })}
+            />
           </div>
+          {room_entries.length > 1 && (
+            <ul className="room_list">
+              {room_entries.map(([channel, room]) => (
+                <li
+                  key={channel}
+                  className={_list(channel)}
+                  onClick={() => colyseus.switchRoom(channel)}
+                >
+                  {channel === current_room && '* '}
+                  {room.state.clients &&
+                    `(${room.state.clients.length}) ${room.state.name}`}
+                </li>
+              ))}
+            </ul>
+          )}
+          <MessageList autoscroll={autoscroll} messages={messages} />
+          <MessageForm submit={submit} textRef={textRef} />
         </div>
-      </>
-    )
-  }
+      </div>
+    </>
+  )
 }
 
 const MessageForm = ({ submit, textRef }) => (
@@ -120,14 +125,14 @@ const MessageForm = ({ submit, textRef }) => (
   </form>
 )
 
-const MessageList = ({ messages, endRef }) => (
-  <div className="message-list">
+const MessageList = ({ messages, autoscroll }) => (
+  <div className="message-list" onScroll={autoscroll.onScroll}>
     {messages.map(({ username, text }, i) => (
       <p key={i}>
         {username}: {text}
       </p>
     ))}
-    <div ref={endRef} />
+    <div ref={autoscroll.ref} />
   </div>
 )
 

@@ -26,7 +26,7 @@ const _hex = (ctx, color, x, y, r) => {
 }
 
 const fill_map = {
-  white: '#f8f8f8',
+  white: '#FCFBF7', // eggshell lighten 10%
   black: '#333',
 }
 
@@ -35,6 +35,7 @@ const border_map = {
   green: '#4a4',
   red: '#a44',
   blue: '#84f',
+  white: '#FFFEFE', // eggshell lighten 12%
 }
 
 const makeHex = (canvas, fillStyle, strokeStyle) => {

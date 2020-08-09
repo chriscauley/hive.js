@@ -4,10 +4,11 @@
   "license": "MIT",
   "version": "1.0.0",
   "scripts": {
-    "cp/img": "rm-rf dist/;mkdir dist;cp -r client/images dist",
     "build": "rm -rf docs; parcel build client/index.html -d docs --public-url /hive.js/",
+    "cp/img": "rm-rf dist/;mkdir dist;cp -r client/images dist",
     "develop": "parcel client/index.html -p 4483",
-    "lint": "yarn eslint client __tests__"
+    "lint": "yarn eslint client __tests__",
+    "test": "yarn jest --coverage"
   },
   "repository": {
     "type": "git",

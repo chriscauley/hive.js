@@ -22,7 +22,7 @@
 }
 
 .Chat .message-list {
-  @apply p-4 flex flex-col flex-grow justify-end;
+  @apply p-4 overflow-y-scroll flex-initial;
 }
 
 .Chat .text-box {

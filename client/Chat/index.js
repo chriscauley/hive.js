@@ -20,22 +20,23 @@ class Chat extends React.Component {
 
   constructor(props) {
     super(props)
-    this.listRef = React.createRef()
+    this.endRef = React.createRef()
     this.textRef = React.createRef()
   }
 
   autoScroll = () => {
-    const messages = this.listRef.current
-    if (messages) {
-      messages.scrollTop = messages.scrollHeight
-    }
+    const { current } = this.endRef
+    const scroll = () =>
+      current.scrollIntoView({ behavior: 'smooth', block: 'end' })
+    current && setTimeout(scroll, 0)
   }
 
   submit = (e) => {
-    const { current } = this.textRef
-    const text = current.textContent
     e.preventDefault()
-    this.props.colyseus.send('general', 'chat', { text })
+    const { current } = this.textRef
+    const { current_room } = this.props.colyseus
+    const text = current.textContent
+    this.props.colyseus.send(current_room, 'chat', { text })
     current.textContent = ''
     current.focus()
   }
@@ -72,63 +73,62 @@ class Chat extends React.Component {
           <Settings close={() => this.setState({ settings_open: false })} />
         )}
         <div className="Chat">
-          <div className="bg-gray-400 text-right py-1">
-            <i
-              className={css.icon('gear cursor-pointer mx-1')}
-              onClick={() => this.setState({ settings_open: true })}
-            />
-            <i
-              className={css.icon('minus cursor-pointer mx-1')}
-              onClick={() => this.setState({ open: false })}
-            />
+          <div className="flex flex-col h-full">
+            <div className="bg-gray-400 text-right py-1">
+              <i
+                className={css.icon('gear cursor-pointer mx-1')}
+                onClick={() => this.setState({ settings_open: true })}
+              />
+              <i
+                className={css.icon('minus cursor-pointer mx-1')}
+                onClick={() => this.setState({ open: false })}
+              />
+            </div>
+            {room_entries.length > 1 && (
+              <ul className="room_list">
+                {room_entries.map(([channel, room]) => (
+                  <li
+                    key={channel}
+                    className={_list(channel)}
+                    onClick={() => colyseus.switchRoom(channel)}
+                  >
+                    {channel === current_room && '* '}
+                    {room.state.clients &&
+                      `(${room.state.clients.length}) ${room.state.name}`}
+                  </li>
+                ))}
+              </ul>
+            )}
+            <MessageList endRef={this.endRef} messages={messages} />
+            <MessageForm submit={this.submit} textRef={this.textRef} />
           </div>
-          {room_entries.length > 1 && (
-            <ul className="room_list">
-              {room_entries.map(([channel, room]) => (
-                <li
-                  key={channel}
-                  className={_list(channel)}
-                  onClick={() => colyseus.switchRoom(channel)}
-                >
-                  {channel === current_room && '* '}
-                  {room.state.clients &&
-                    `(${room.state.clients.length}) ${room.state.name}`}
-                </li>
-              ))}
-            </ul>
-          )}
-          <Messages
-            submit={this.submit}
-            textRef={this.textRef}
-            listRef={this.listRef}
-            messages={messages}
-          />
         </div>
       </>
     )
   }
 }
 
-const Messages = ({ messages, submit, textRef, listRef }) => (
-  <>
-    <div className="message-list" ref={listRef}>
-      {messages.map(({ username, text }, i) => (
-        <p key={i}>
-          {username}: {text}
-        </p>
-      ))}
-    </div>
+const MessageForm = ({ submit, textRef }) => (
+  <form onSubmit={submit} className="text-box">
+    <span
+      className="input"
+      ref={textRef}
+      contentEditable="true"
+      onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && submit(e)}
+    />
+    <button type="submit" className={css.icon('send')}></button>
+  </form>
+)
 
-    <form onSubmit={submit} className="text-box">
-      <span
-        className="input"
-        ref={textRef}
-        contentEditable="true"
-        onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && submit(e)}
-      />
-      <button type="submit" className={css.icon('send')}></button>
-    </form>
-  </>
+const MessageList = ({ messages, endRef }) => (
+  <div className="message-list">
+    {messages.map(({ username, text }, i) => (
+      <p key={i}>
+        {username}: {text}
+      </p>
+    ))}
+    <div ref={endRef} />
+  </div>
 )
 
 export default colyseus.connect(Chat)

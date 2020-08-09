@@ -71,7 +71,13 @@ export default class TutorialComponent extends React.Component {
               </ul>
             </div>
           </div>
-          {board && <MiniBoard board={board} update={this._update} />}
+          {board && (
+            <MiniBoard
+              board={board}
+              update={this._update}
+              close={this.props.close}
+            />
+          )}
         </div>
       </div>
     )
@@ -104,7 +110,7 @@ const pruneRows = (_board) => {
   }
 }
 
-const MiniBoard = game.connect(({ board, update, game }) => {
+const MiniBoard = game.connect(({ board, update, game, close }) => {
   const rows = toRows(board, { prune: true })
   pruneRows(rows)
   const click = (target) => {
@@ -112,7 +118,13 @@ const MiniBoard = game.connect(({ board, update, game }) => {
     B.update(board)
     update()
   }
-  const edit = () => game.loadJson(JSON.stringify(B.toJson(board)))
+  const edit = () => {
+    const b = B.toJson(board)
+    b.turn = 0
+    b.rules.players = 'local'
+    game.loadJson(JSON.stringify(b))
+    close()
+  }
   return (
     <div className="flex relative justify-center mb-4">
       <BoardComponent {...rows} click={click} />

@@ -21,7 +21,7 @@ const actions = {
     let import_error = null
     try {
       board = B.fromJson(value)
-      window.location = `#/play/${board.id}/`
+      window.location = `#/play/${board.rules.players}/${board.id}/`
     } catch (e) {
       console.error(e)
       import_error = 'An unknown error has occurred'
@@ -34,7 +34,7 @@ const actions = {
     store.actions.update()
   },
   undo: (store) => {
-    if (board.rules.players) {
+    if (board.rules.players !== 'local') {
       // TODO temporarily disabling undo for online play
       return
     }

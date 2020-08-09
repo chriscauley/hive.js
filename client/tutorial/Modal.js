@@ -39,7 +39,7 @@ export default function Modal(props) {
       <div className={css.modal.mask()} onClick={close} />
       <div className={css.modal.content.xl()}>
         <TutorialNav current={slug} click={toSlug} />
-        <Tutorial slug={slug} />
+        <Tutorial slug={slug} close={close} />
         <div className="text-xl">
           {prev && (
             <div className={css.link('float-left')} onClick={toPrev}>

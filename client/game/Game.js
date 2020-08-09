@@ -81,7 +81,7 @@ class Game extends React.Component {
           <Winner board={board} />
           <div className={css.alert.info()}>
             {board.rules.players === 'local'
-              ? `Player {board.current_player}'s turn`
+              ? `Player ${board.current_player}'s turn`
               : Board.isUsersTurn(board)
               ? 'Your turn'
               : "Opponent's turn"}

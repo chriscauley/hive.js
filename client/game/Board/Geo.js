@@ -58,8 +58,8 @@ export default class Geo {
         1: {},
       },
     }
-    const short_dirs = ['ul', 'u', 'ur', 'dr', 'd', 'dl']
-    short_dirs.forEach((s, si) => {
+    this.short_dirs = ['ul', 'u', 'ur', 'dr', 'd', 'dl']
+    this.short_dirs.forEach((s, si) => {
       this.dindexes.short[0][s] = this.dindexes[0][s] = this.dindexes[0][si]
       this.dindexes.short[1][s] = this.dindexes[1][s] = this.dindexes[1][si]
     })
@@ -72,6 +72,8 @@ export default class Geo {
       )
     })
   }
+
+  // shift = (index, dir) => index + this.dindexes.short[mod(index, 2)][dir]
 
   // These are geometry functions I planned on using but didn't. Leaving them here just in case
   // getDindex = (index, short_dir) => this.dindexes.short[mod(index, 2)][short_dir]

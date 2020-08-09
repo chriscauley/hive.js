@@ -50,6 +50,8 @@ const Rules = ({ rules }) => {
   )
 }
 
+const url = ({channel, rules}) => `/play/${rules.players}/${channel}/`
+
 export default colyseus.connect(
   withRouter((props) => {
     sprites.makeSprites() // idempotent
@@ -63,7 +65,7 @@ export default colyseus.connect(
         <h2>Join a Game</h2>
         {available_rooms.map((room) => (
           <div key={room.roomId} className="border m-1 p-2">
-            <Link to={`/play/${room.metadata.channel}`}>
+            <Link to={url(room.metadata)}>
               <i className={css.icon('user mr-2')} />
               {`(${room.clients}) ${room.metadata.name}`}
               <Rules rules={room.metadata.rules} />

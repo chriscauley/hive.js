@@ -274,7 +274,9 @@ const wasp = (b, index) => {
 
 const dragonfly = (board, index) => {
   const parity = mod(index, 2)
-  return board.geo.dindexes.dragonfly[parity].map((di) => index + di)
+  return board.geo.dindexes.dragonfly[parity]
+    .map((di) => index + di)
+    .filter((i) => notScorpion(board, i))
 }
 
 const dragonflyExtra = (board, index, index2) => {

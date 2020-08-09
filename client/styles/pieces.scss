@@ -29,9 +29,16 @@ $original: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spi
   cursor: pointer;
 
   /* a few bugs are too dark on the black tiles. This is overwritten by invert in carbon theme */
-  &.hex-player_2.type-{
+  &.hex-player_2.type- {
     &spider:before, &scorpion:before, &fly:before, &pill_bug:before {
       filter: brightness(1.75);
+    }
+  }
+  &.hex-player_2.type-scorpion.gray{
+    filter: grayscale(0.5);
+    &:before {
+      opacity: 1;
+      filter: brightness(2);
     }
   }
 
@@ -70,9 +77,9 @@ $original: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spi
   }
 
   &.gray {
-    filter: grayscale(0.75);
+    filter: grayscale(0.5);
     &:before {
-      opacity: 0.75;
+      opacity: 0.85;
     }
   }
 }

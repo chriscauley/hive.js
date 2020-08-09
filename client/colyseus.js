@@ -47,6 +47,7 @@ const actions = {
       .save()
       .then(() => store.setState({ user: { ...client.auth } }))
   },
+  switchRoom: (store, channel) => store.setState({ current_room: channel }),
   joinRoom: (store, channel) => {
     if (LOADING[channel] || store.state.auth_error) {
       return

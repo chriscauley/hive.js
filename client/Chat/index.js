@@ -41,7 +41,8 @@ class Chat extends React.Component {
   }
 
   render() {
-    const { user, rooms, current_room, error } = this.props.colyseus
+    const { colyseus } = this.props
+    const { user, rooms, current_room, error } = colyseus
     if (!this.state.open) {
       return (
         <div
@@ -59,9 +60,9 @@ class Chat extends React.Component {
       return null
     }
 
-    this.props.colyseus.joinOrCreateRoom({ channel: 'general' }) // idempotent
+    colyseus.joinOrCreateRoom({ channel: 'general' }) // idempotent
     this.autoScroll()
-    const room = this.props.colyseus[current_room] || {}
+    const room = colyseus[current_room] || {}
     const { messages = [] } = room
     const room_entries = Object.entries(rooms).sort()
     const _list = (n) => `room ${n === current_room ? 'current' : ''}`
@@ -87,7 +88,7 @@ class Chat extends React.Component {
                 <li
                   key={channel}
                   className={_list(channel)}
-                  onClick={() => colyseus.setState({ current_room: channel })}
+                  onClick={() => colyseus.switchRoom(channel)}
                 >
                   {channel === current_room && '* '}
                   {room.state.clients &&

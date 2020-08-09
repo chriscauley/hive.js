@@ -50,7 +50,7 @@ const Rules = ({ rules }) => {
   )
 }
 
-const url = ({channel, rules}) => `/play/${rules.players}/${channel}/`
+const url = ({ channel, rules }) => `/play/${rules.players}/${channel}/`
 
 export default colyseus.connect(
   withRouter((props) => {

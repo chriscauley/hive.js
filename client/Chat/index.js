@@ -1,32 +1,9 @@
 import React from 'react'
 import css from '@unrest/css'
+import { useAutoScroll } from '@unrest/core'
+
 import colyseus from '../colyseus'
 import Settings from './Settings'
-
-const useAutoScroll = (_default = true, behavior = 'smooth', block = 'end') => {
-  const ref = React.useRef()
-  const [{ enabled, first }, setState] = React.useState({
-    enabled: _default,
-    first: !_default,
-  })
-  const e = ref.current
-  const scroll = () => {
-    if (!first) {
-      e.scrollIntoView({ block })
-    } else {
-      e.scrollIntoView({ behavior, block })
-    }
-  }
-  e && enabled && setTimeout(scroll, 0)
-  const onScroll = ({ target }) => {
-    const { scrollHeight, scrollTop, clientHeight } = target
-    const new_enabled = scrollHeight === scrollTop + clientHeight
-    if (!first || new_enabled !== enabled) {
-      setState({ enabled: new_enabled, first: true })
-    }
-  }
-  return { enabled, ref, onScroll }
-}
 
 const ChatError = ({ error }) => (
   <div className="ChatError">

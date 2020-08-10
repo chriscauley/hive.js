@@ -40,7 +40,7 @@ export const ImportLink = connect(function ImportLink() {
 
 export const ExportLink = connect(function ExportLink(props) {
   if (!props.game.board) {
-    return <div className="text-gray-500">Export Game</div>
+    return <div className="opacity-50 cursor-not-allowed">Export Game</div>
   }
   return <ModalLink Content={ExportForm}>Export Game</ModalLink>
 })

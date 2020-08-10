@@ -10,35 +10,21 @@ const GameDropdown = withRouter(
   game.connect(function GameDropdown(props) {
     const { undo, redo, board } = props.game
     const links = [
+      { to: '/', children: 'New Game' },
+      { children: <game.ImportLink /> },
+      { children: <game.ExportLink /> },
       {
         children: 'Undo (ctrl+z)',
         onClick: undo,
+        disabled: !board || board.rules.players !== 'local',
       },
       {
         children: 'Redo (ctrl+y)',
         onClick: redo,
+        disabled: !board || board.rules.players !== 'local',
       },
     ]
-    if (!board || board.rules.players !== 'local') {
-      links.forEach((link) => {
-        delete link.onClick
-        link.className = css.dropdown.item('text-gray-500')
-      })
-    }
-    return (
-      <Dropdown links={links} title="game">
-        <div className={css.dropdown.item()}>
-          <Link to="/">New Game</Link>
-        </div>
-        <div className={css.dropdown.item()}>
-          <game.ImportLink />
-        </div>
-        <div className={css.dropdown.item()}>
-          <game.ExportLink />
-        </div>
-        <hr className="my-1" />
-      </Dropdown>
-    )
+    return <Dropdown title="game" links={links} />
   }),
 )
 

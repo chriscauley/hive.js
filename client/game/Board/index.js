@@ -343,8 +343,13 @@ const B = {
 
     const moves = B.getMoves(board, selected.piece_id)
     if (moves.includes(target.index)) {
-      B.queenCheck(board) &&
+      if (!B.queenCheck(board)) {
+        board.error = 'You must place your queen before the 4th turn'
+      } else if (!board.queens[board.current_player]) {
+        board.error = 'You cannot move any piece before placing your queen'
+      } else {
         B.doAction(board, ['move', selected.index, target.index])
+      }
       return
     }
 

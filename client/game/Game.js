@@ -57,6 +57,7 @@ class Game extends React.Component {
     const orientation = player_id === 1 ? 'left' : 'right'
     const _delete =
       get(board, 'selected.index') !== undefined ? deleteSelected : undefined
+    const error = !board.rules.no_rules && board.error
     return (
       <div className="Game">
         <Lobby />
@@ -79,18 +80,19 @@ class Game extends React.Component {
         <HelpText {...board.selected} board={board} />
         <div className={`absolute top-0 ${orientation}-0`}>
           <Winner board={board} />
-          <div className={css.alert.info()}>
-            {board.rules.players === 'local'
-              ? `Player ${board.current_player}'s turn`
-              : Board.isUsersTurn(board)
-              ? 'Your turn'
-              : "Opponent's turn"}
-          </div>
           {board.rules.no_rules && <NoRules _delete={_delete} />}
-          {!board.rules.no_rules && board.error && (
+          {error ? (
             <div className={css.alert.danger()}>
               <i className={css.icon('times-circle text-xl mr-2')} />
               {board.error}
+            </div>
+          ) : (
+            <div className={css.alert.info()}>
+              {board.rules.players === 'local'
+                ? `Player ${board.current_player}'s turn`
+                : Board.isUsersTurn(board)
+                ? 'Your turn'
+                : "Opponent's turn"}
             </div>
           )}
         </div>

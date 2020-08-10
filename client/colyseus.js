@@ -102,6 +102,14 @@ const actions = {
     if (!room || !room.state.actions) {
       return
     }
+    if (!board.players && room.state.players) {
+      board.players = room.state.players
+      board.local_player = parseInt(
+        Object.keys(board.players).find((key) => {
+          return board.players[key] === client.auth._id
+        }),
+      )
+    }
     const remote_actions = room.state.actions
     const diff = remote_actions.length - board.actions.length
     if (diff < -1) {

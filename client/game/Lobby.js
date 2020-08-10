@@ -46,21 +46,13 @@ function Lobby(props) {
   const { board } = props.game
   const { user_id, rooms } = props.colyseus
   const room = rooms[board.id]
+  if (board.rules.players === 'local') {
+    return null
+  }
   if (!room || !room.state.clients) {
     return null // TODO loading modal?
   }
-  if (board.rules.players === 'local' || board.players) {
-    return null
-  }
   if (room.state.players) {
-    // not sure where else to put this
-    // TODO move to handshake
-    board.players = room.state.players
-    board.local_player = parseInt(
-      Object.keys(board.players).find((key) => {
-        return board.players[key] === user_id
-      }),
-    )
     return null
   }
   const full = room.state.clients.length >= 2

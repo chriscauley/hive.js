@@ -105,3 +105,23 @@ $original: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spi
 .piece.type-stacks:before {
   content: "3";
 }
+
+.piece.type-super_grasshopper:before {
+  background-image: url('../images/blockchain.png');
+}
+
+.piece.type-spiderwebs:before {
+  background-image: url('../images/trap.png');
+}
+
+.piece.type-no_rules:before {
+  background-image: url('../images/cancel.png');
+}
+
+.piece.type- {
+  &super_grasshopper, &spiderwebs, &no_rules {
+    &:before {
+      filter: invert(1);
+    }
+  }
+}

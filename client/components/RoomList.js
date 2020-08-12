@@ -12,14 +12,14 @@ Object.entries(pieces.piece_sets).forEach(([key, { pieces }]) => {
   piece_map[key] = Object.keys(pieces)
 })
 
-const Piece = ({ piece_type, set, player }) => (
+const _class = (player, type) => `hex hex-player_${(player % 2) + 1} type type-${type} piece`
+
+const Piece = ({ piece_type, set, player, title }) => (
   <div className="item">
     <div className="content">
       <div
-        title={`${unslugify(piece_type)} from the ${unslugify(set)} set`}
-        className={`hex hex-player_${
-          (player % 2) + 1
-        } type type-${piece_type} piece`}
+        title={title || `${unslugify(piece_type)} from the ${unslugify(set)} set`}
+        className={_class(player, piece_type)}
       />
     </div>
   </div>
@@ -30,6 +30,7 @@ const Rules = ({ rules }) => {
     return null
   }
   const { piece_sets } = rules
+  const variants = ['no_rules', 'super_grasshopper', 'spiderwebs'].filter(v => rules[v])
   return (
     <div className="mt-4">
       {piece_sets.map((set, irow) => (
@@ -46,6 +47,20 @@ const Rules = ({ rules }) => {
           </div>
         </span>
       ))}
+      {variants.length > 0 && (
+        <span className="hex-grid TutorialNav">
+          <div className="row">
+            {variants.map(v => (
+              <Piece
+                piece_type={v}
+                player={piece_sets.length}
+                title={`"${v}" rule enabled`}
+                key={v}
+              />
+            ))}
+          </div>
+        </span>
+      )}
     </div>
   )
 }

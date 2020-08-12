@@ -59,25 +59,15 @@ export default class TutorialComponent extends React.Component {
             <div>
               <ul className="browser-default mb-8">
                 {help_items.map((item, i) => (
-                  <li key={i}>
-                    {typeof item === 'function' ? item(board) : item}
-                  </li>
+                  <li key={i}>{typeof item === 'function' ? item(board) : item}</li>
                 ))}
                 {captions.map((item, i) => (
-                  <li key={i}>
-                    {typeof item === 'function' ? item(board) : item}
-                  </li>
+                  <li key={i}>{typeof item === 'function' ? item(board) : item}</li>
                 ))}
               </ul>
             </div>
           </div>
-          {board && (
-            <MiniBoard
-              board={board}
-              update={this._update}
-              close={this.props.close}
-            />
-          )}
+          {board && <MiniBoard board={board} update={this._update} close={this.props.close} />}
         </div>
       </div>
     )
@@ -86,9 +76,7 @@ export default class TutorialComponent extends React.Component {
 
 const pruneRows = (_board) => {
   // Because the tutorial boards aren't absolutely placed, remove dead space
-  _board.rows = _board.rows.filter((row) =>
-    row.find((cell) => cell.stack[0].includes('hex-empty')),
-  )
+  _board.rows = _board.rows.filter((row) => row.find((cell) => cell.stack[0].includes('hex-empty')))
   let cut_first = true,
     cut_last = true
   _board.rows.forEach((row) => {
@@ -101,11 +89,7 @@ const pruneRows = (_board) => {
   if (cut_last) {
     _board.rows.forEach((r) => r.pop())
   }
-  if (
-    _board.rows[0].find(
-      (cell, i) => i % 2 === 1 && cell.stack[0].includes('hex-empty'),
-    )
-  ) {
+  if (_board.rows[0].find((cell, i) => i % 2 === 1 && cell.stack[0].includes('hex-empty'))) {
     _board.className += ' mt-4'
   }
 }

@@ -5,10 +5,8 @@ import colyseus from '../colyseus'
 import connect from './connect'
 
 const text = {
-  public:
-    'Players can see this game from the lobby or join directly if you share the url.',
-  private:
-    'This game is private. The only way to get players to join is to share the url',
+  public: 'Players can see this game from the lobby or join directly if you share the url.',
+  private: 'This game is private. The only way to get players to join is to share the url',
 }
 
 const NeedsPlayers = ({ board }) => (
@@ -21,10 +19,7 @@ const NeedsPlayers = ({ board }) => (
 const NeedsReady = ({ colyseus, board }) => (
   <>
     <h2>Please click ready</h2>
-    <button
-      className={css.button()}
-      onClick={() => colyseus.send(board.id, 'ready')}
-    >
+    <button className={css.button()} onClick={() => colyseus.send(board.id, 'ready')}>
       I'm ready
     </button>
   </>
@@ -33,10 +28,7 @@ const NeedsReady = ({ colyseus, board }) => (
 const IsReady = ({ colyseus, board }) => (
   <>
     <h2>Waiting for other players to press ready</h2>
-    <button
-      className={css.button()}
-      onClick={() => colyseus.send(board.id, 'notready')}
-    >
+    <button className={css.button()} onClick={() => colyseus.send(board.id, 'notready')}>
       Wait, I'm not ready!
     </button>
   </>

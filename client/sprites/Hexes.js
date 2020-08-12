@@ -97,13 +97,7 @@ export const makeSprites = (debug) => {
 
       if (['red', 'green'].includes(border) && bg_name === 'empty') {
         const size = SIZE - LINE_WIDTH * 1.5
-        _hex(
-          canvas.getContext('2d'),
-          border_map['blue'],
-          canvas.width / 2,
-          canvas.height / 2,
-          size,
-        )
+        _hex(canvas.getContext('2d'), border_map['blue'], canvas.width / 2, canvas.height / 2, size)
         _hex(
           canvas.getContext('2d'),
           bg,
@@ -125,9 +119,8 @@ export default function Hexes() {
   setTimeout(() => makeSprites(true), 100)
   return (
     <div>
-      This is a page for viewing the sprites. These are generated every time the
-      browser loads and are used as the background for <code>.hex</code>{' '}
-      elements
+      This is a page for viewing the sprites. These are generated every time the browser loads and
+      are used as the background for <code>.hex</code> elements
       <div className="sprite-box" />
     </div>
   )

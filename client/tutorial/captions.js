@@ -50,15 +50,12 @@ export default {
     'The white grasshopper can move to two different spaces.',
     'With super_grasshopper turned on the black and white pieces can move to 6 and 7 spaces respectively',
   ],
-  spider:
-    'From this position, the white spider can move to one of three spaces.',
+  spider: 'From this position, the white spider can move to one of three spaces.',
   ant: [
     'Normally, both ants can move to any open space on the board.',
     'If spiderwebs are enabled, the black ant can get trapped on the far spider.',
   ],
-  lady_bug: [
-    'The black ladybug can move to one of five open spaces, the white ladybug eight.',
-  ],
+  lady_bug: ['The black ladybug can move to one of five open spaces, the white ladybug eight.'],
   mosquito: [
     'From this position, the black mosquito can move to one of five spaces. It can move as a scorpion, queen, or grasshopper.',
     'On top of the hive, the white mosquito moves like a beetle. It cannot step on the scorpion because have you ever stepped on a scorpion? It hurts.',

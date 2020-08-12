@@ -126,9 +126,7 @@ test('Board.click', () => {
   B.click(b, findPiece(b, { index: center }))
   B.click(b, findPiece(b, { player_id: 2, piece_type: 'queen' }))
   B.click(b, { index: center - b.W })
-  expect(findPiece(b, { player_id: 2, piece_type: 'queen' }).index).toBe(
-    center - b.W,
-  )
+  expect(findPiece(b, { player_id: 2, piece_type: 'queen' }).index).toBe(center - b.W)
 
   const queen = findPiece(b, { player_id: 2, piece_type: 'queen' })
   B.click(b, queen)

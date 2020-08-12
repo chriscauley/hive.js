@@ -17,8 +17,7 @@ const B = {
   wouldBreakHive,
   PLAYER_COUNT,
   storage: new Storage('saved_games'),
-  getHash: (b) =>
-    objectHash(pick(b, ['stacks', 'piece_types', 'piece_owners'])),
+  getHash: (b) => objectHash(pick(b, ['stacks', 'piece_types', 'piece_owners'])),
   update(b) {
     // get derrived state of board
     b.layers = {
@@ -142,8 +141,7 @@ const B = {
       const new_index = args[2]
       const piece_id = last(b.stacks[index])
       const _df =
-        b.piece_types[piece_id] === 'dragonfly' &&
-        moves.dragonflyExtra(b, index, new_index)
+        b.piece_types[piece_id] === 'dragonfly' && moves.dragonflyExtra(b, index, new_index)
 
       b.stacks[index].pop()
       b.stacks[new_index] = b.stacks[new_index] || []
@@ -225,21 +223,13 @@ const B = {
   select: (board, target) => {
     const { selected = {} } = board
     B.unselect(board)
-    if (
-      target.piece_id === undefined ||
-      selected.piece_id === target.piece_id
-    ) {
+    if (target.piece_id === undefined || selected.piece_id === target.piece_id) {
       return
     }
     if (board.cantmove[target.index]) {
       board.error = 'Moving this piece would break the hive.'
     }
-    board.selected = pick(target, [
-      'player_id',
-      'piece_id',
-      'piece_type',
-      'index',
-    ])
+    board.selected = pick(target, ['player_id', 'piece_id', 'piece_type', 'index'])
   },
   freeze: (b) => {
     b.frozen = b.frozen || B.toJson(b)
@@ -317,8 +307,7 @@ const B = {
     if (selected.piece_id === 'new') {
       const placements = B.moves.getPlacement(board, player_id)
       if (placements.includes(target.index)) {
-        B.queenCheck(board) &&
-          B.doAction(board, ['place', target.index, piece_type, player_id])
+        B.queenCheck(board) && B.doAction(board, ['place', target.index, piece_type, player_id])
       } else {
         B.select(board, target)
       }
@@ -331,12 +320,7 @@ const B = {
       special = B.getSpecials(board, selected.piece_id, board.special_args)
       if (typeof special === 'function') {
         const index = board.reverse[selected.piece_id]
-        B.doAction(board, [
-          'special',
-          index,
-          selected.piece_id,
-          board.special_args,
-        ])
+        B.doAction(board, ['special', index, selected.piece_id, board.special_args])
       }
       return
     }
@@ -401,10 +385,7 @@ const B = {
     }
     b.winner = b.player_list.find((player_id) => {
       const index = b.queens[player_id]
-      return (
-        index !== undefined &&
-        b.geo.touching[index].filter((i2) => b.stacks[i2]).length === 6
-      )
+      return index !== undefined && b.geo.touching[index].filter((i2) => b.stacks[i2]).length === 6
     })
   },
 }

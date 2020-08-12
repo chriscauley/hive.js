@@ -15,8 +15,7 @@ const actions = {
     // just need to trigger reflow, hash isn't used anywhere
     store.setState({ hash: board && board.hash })
   },
-  toggleImportExport: (store) =>
-    store.setState({ port_open: !store.state.port_open }),
+  toggleImportExport: (store) => store.setState({ port_open: !store.state.port_open }),
   loadJson: (store, value) => {
     let import_error = null
     try {

@@ -39,11 +39,7 @@ export default function Nav() {
       <section className={css.nav.section('flex items-center')}>
         <GameDropdown />
         <Dropdown title={'config'}>
-          <withConfig.Form
-            className="p-4"
-            customButton={true}
-            autosubmit={true}
-          />
+          <withConfig.Form className="p-4" customButton={true} autosubmit={true} />
         </Dropdown>
         <Dropdown title={'help'}>
           <div className={css.dropdown.item()}>

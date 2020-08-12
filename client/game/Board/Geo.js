@@ -32,10 +32,7 @@ export default class Geo {
     this.WH = `${W},${H}`
     this.AREA = W * H
     this.preCache()
-    this.center = this.xy2index([
-      Math.floor(this.W / 2),
-      Math.floor(this.H / 2),
-    ])
+    this.center = this.xy2index([Math.floor(this.W / 2), Math.floor(this.H / 2)])
     this.center -= 1 // bias to lower size
   }
 
@@ -67,9 +64,7 @@ export default class Geo {
     this.touching = {}
     this.short_dindexes = {}
     this.indexes.forEach((index) => {
-      this.touching[index] = this.dindexes[mod(index, 2)].map(
-        (di) => index + di,
-      )
+      this.touching[index] = this.dindexes[mod(index, 2)].map((di) => index + di)
     })
   }
 

@@ -28,12 +28,7 @@ export default colyseus.connect(function Settings(props) {
     <div className={css.modal.outer()}>
       <div className={css.modal.mask()} onClick={props.close} />
       <div className={css.modal.content.xs()}>
-        <Form
-          onSubmit={onSubmit}
-          initial={initial}
-          schema={schema}
-          cancel={props.close}
-        />
+        <Form onSubmit={onSubmit} initial={initial} schema={schema} cancel={props.close} />
       </div>
     </div>
   )

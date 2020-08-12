@@ -48,9 +48,7 @@ function processPiece(name) {
       continue
     }
     const v_diff = image_data.data[i * 4 + i_diff] // value to calculate alpha off of
-    image_data.data[i * 4 + 3] = Math.floor(
-      (255 * (255 - v_diff)) / (255 - n_diff),
-    )
+    image_data.data[i * 4 + 3] = Math.floor((255 * (255 - v_diff)) / (255 - n_diff))
     image_data.data[i * 4] = r
     image_data.data[i * 4 + 1] = g
     image_data.data[i * 4 + 2] = b
@@ -87,10 +85,7 @@ export default function PieceGenerator() {
     <div style={{ background: 'black' }}>
       {names.map((name) => (
         <div key={name} id={`piece__${name}`} className="cursor-pointer flex">
-          <img
-            src={`images/pieces/${name}.png`}
-            onLoad={() => processPiece(name)}
-          />
+          <img src={`images/pieces/${name}.png`} onLoad={() => processPiece(name)} />
         </div>
       ))}
     </div>

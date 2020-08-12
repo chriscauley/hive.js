@@ -29,6 +29,7 @@
       "singleQuote": true,
       "trailingComma": "all",
       "semi": false,
+      "printWidth": 100,
     }],
     "no-var": 2,
     "no-console": [2, { "allow": ["warn", "error"] }],

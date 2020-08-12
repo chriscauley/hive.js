@@ -3,8 +3,7 @@ import { range } from 'lodash'
 import pieces from '../pieces'
 import Board from './index'
 
-const _class = (player, type) =>
-  `piece hex-player_${player} type type-${type} hex `
+const _class = (player, type) => `piece hex-player_${player} type type-${type} hex `
 
 const pieceToClass = (board, piece_id) => {
   const type = board.piece_types[piece_id]
@@ -60,9 +59,7 @@ export default (board, { columns = 1 } = {}) => {
           cell.piece_type = board.piece_types[piece_id]
         })
       } else {
-        cell.stack.push(
-          'piece hex ' + (board.empty[cell.index] ? 'hex-empty' : ''),
-        )
+        cell.stack.push('piece hex ' + (board.empty[cell.index] ? 'hex-empty' : ''))
       }
       if (marked[cell.index]) {
         const _i = cell.stack.length - 1
@@ -142,9 +139,7 @@ const getMarked = (board) => {
   indexes.forEach((i) => (out[i] = color))
   if (board.piece_types[piece_id] === 'dragonfly') {
     const index = board.reverse[piece_id]
-    indexes.forEach(
-      (i2) => (out[i2] += Board.moves.dragonflyExtra(board, index, i2)),
-    )
+    indexes.forEach((i2) => (out[i2] += Board.moves.dragonflyExtra(board, index, i2)))
   }
   return out
 }

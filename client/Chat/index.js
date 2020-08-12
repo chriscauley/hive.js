@@ -52,9 +52,7 @@ function Chat({ colyseus }) {
 
   return (
     <>
-      {state.settings_open && (
-        <Settings close={() => setState({ settings_open: false })} />
-      )}
+      {state.settings_open && <Settings close={() => setState({ settings_open: false })} />}
       <div className="Chat">
         <div className="flex flex-col h-full">
           <div className="bg-gray-400 text-right py-1">
@@ -76,8 +74,7 @@ function Chat({ colyseus }) {
                   onClick={() => colyseus.switchRoom(channel)}
                 >
                   {channel === current_room && '* '}
-                  {room.state.clients &&
-                    `(${room.state.clients.length}) ${room.state.name}`}
+                  {room.state.clients && `(${room.state.clients.length}) ${room.state.name}`}
                 </li>
               ))}
             </ul>

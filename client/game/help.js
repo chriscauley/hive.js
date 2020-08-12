@@ -20,8 +20,7 @@ const spiderwebs = ifRule(
 const special = (l) => l
 
 const _along = (s, e = '') => `The ${s} can move one space along the hive${e}.`
-const _spider = (s, e = '') =>
-  `The ${s} must move exactly 3 spaces along the hive${e}.`
+const _spider = (s, e = '') => `The ${s} must move exactly 3 spaces along the hive${e}.`
 const queen = [_along('queen')]
 
 const beetle = [
@@ -32,25 +31,14 @@ const beetle = [
 const grasshopper = [
   'The grassshoper jumps over the hive in a straight line.',
   'It lands in the first unoccupied space.',
-  ifRule(
-    'super_grasshopper',
-    'The grasshopper can make unlimited jumps in a single turn',
-  ),
+  ifRule('super_grasshopper', 'The grasshopper can make unlimited jumps in a single turn'),
 ]
 
-const spider = [
-  _spider('spider', ' or jump over a single tile into an empty space'),
-  spiderwebs,
-]
+const spider = [_spider('spider', ' or jump over a single tile into an empty space'), spiderwebs]
 
-const ant = [
-  'The ant can move an unlimited amount of spaces around the hive.',
-  spiderwebs,
-]
+const ant = ['The ant can move an unlimited amount of spaces around the hive.', spiderwebs]
 
-const lady_bug = [
-  'The lady bug must take two steps on the hive and then step off the hive.',
-]
+const lady_bug = ['The lady bug must take two steps on the hive and then step off the hive.']
 
 const mosquito = [
   'The mosquito copies the movement of any (top most) adjacent bug at the start of its turn.',

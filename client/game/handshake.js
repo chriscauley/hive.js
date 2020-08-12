@@ -35,13 +35,8 @@ export default (Component) => {
       return null
     }
 
-    if (
-      colyseus.rooms[board_id] &&
-      colyseus.rooms[board_id].state.initial_board
-    ) {
-      const board =
-        Board.get(board_id) ||
-        Board.save(colyseus.rooms[board_id].state.initial_board)
+    if (colyseus.rooms[board_id] && colyseus.rooms[board_id].state.initial_board) {
+      const board = Board.get(board_id) || Board.save(colyseus.rooms[board_id].state.initial_board)
       return <Component {...props} board={board} />
     }
     return null

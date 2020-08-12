@@ -28,8 +28,7 @@ test('Board snapshots', () => {
       moves[slug] += s + B.getMoves(board, piece_id).join(',') + '|'
       if (B.specials[slug]) {
         const args = board.special_args
-        specials[slug] +=
-          s + B.getSpecials(board, piece_id, args).join(',') + '|'
+        specials[slug] += s + B.getSpecials(board, piece_id, args).join(',') + '|'
       }
       if (slug === 'ant') {
         board.rules.spiderwebs = true
@@ -37,8 +36,7 @@ test('Board snapshots', () => {
       }
       if (slug === 'grasshopper') {
         board.rules.super_grasshopper = true
-        moves.super_grasshopper +=
-          s + B.getMoves(board, piece_id).join(',') + '|'
+        moves.super_grasshopper += s + B.getMoves(board, piece_id).join(',') + '|'
       }
     })
   })

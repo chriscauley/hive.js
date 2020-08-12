@@ -86,9 +86,7 @@ const uiSchema = {
     },
     spiderwebs: {
       classNames: 'has-help',
-      'ui:help': _help(
-        'Ants stop moving if they collide with an enemy spider.',
-      ),
+      'ui:help': _help('Ants stop moving if they collide with an enemy spider.'),
     },
     super_grasshopper: {
       classNames: 'has-help',
@@ -103,10 +101,7 @@ export default colyseus.connect(
       const { variants, ...rules } = formData
       Object.assign(rules, variants)
       const board = Board.new({ rules, host: props.colyseus.user_id })
-      setTimeout(
-        () => props.history.push(`/play/${rules.players}/${board.id}/`),
-        100,
-      )
+      setTimeout(() => props.history.push(`/play/${rules.players}/${board.id}/`), 100)
     }
     return (
       <div className="border p-4 mt-8 shadowed max-w-md mx-2">

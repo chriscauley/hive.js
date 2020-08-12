@@ -12,9 +12,7 @@ const move = (b, i1, i2) => {
 }
 
 const selectNearby = (b, i) => {
-  return b.geo.touching[i].filter(
-    (i2) => b.stacks[i2] && !wouldBreakHive(b, i2),
-  )
+  return b.geo.touching[i].filter((i2) => b.stacks[i2] && !wouldBreakHive(b, i2))
 }
 
 const pill_bug = (b, piece_id, args) => {

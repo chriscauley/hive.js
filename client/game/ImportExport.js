@@ -23,8 +23,7 @@ const ExportForm = connect(function ExportForm({ game, close }) {
   return (
     <div className={'form-group'}>
       <div className="pb-4 mb-4 border-b">
-        The json representation of the current game is below. Copy the text or
-        download the file.
+        The json representation of the current game is below. Copy the text or download the file.
         <textarea className="form-control" defaultValue={json} />
       </div>
       <div className={css.button()} onClick={close}>

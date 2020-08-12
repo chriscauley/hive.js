@@ -30,19 +30,14 @@ const Rules = ({ rules }) => {
     return null
   }
   const { piece_sets } = rules
-  const variants = ['no_rules', 'super_grasshopper', 'spiderwebs'].filter(v => rules[v])
+  const variants = ['no_rules', 'super_grasshopper', 'spiderwebs'].filter((v) => rules[v])
   return (
     <div className="mt-4">
       {piece_sets.map((set, irow) => (
         <span key={set} className="hex-grid TutorialNav">
           <div className="row">
             {piece_map[set].map((piece_type) => (
-              <Piece
-                piece_type={piece_type}
-                player={irow}
-                set={set}
-                key={piece_type}
-              />
+              <Piece piece_type={piece_type} player={irow} set={set} key={piece_type} />
             ))}
           </div>
         </span>
@@ -50,7 +45,7 @@ const Rules = ({ rules }) => {
       {variants.length > 0 && (
         <span className="hex-grid TutorialNav">
           <div className="row">
-            {variants.map(v => (
+            {variants.map((v) => (
               <Piece
                 piece_type={v}
                 player={piece_sets.length}
@@ -72,9 +67,7 @@ export default colyseus.connect(
     sprites.makeSprites() // idempotent
     props.colyseus.useRooms()
     let { available_rooms = [] } = props.colyseus
-    available_rooms = available_rooms.filter(
-      (r) => r.metadata.channel !== 'general',
-    )
+    available_rooms = available_rooms.filter((r) => r.metadata.channel !== 'general')
     return (
       <div className="border p-4 mt-8 shadowed max-w-md w-64 mx-2">
         <h2>Join a Game</h2>

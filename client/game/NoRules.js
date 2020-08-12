@@ -11,9 +11,8 @@ export default class NoRules extends React.Component {
         <div className={css.modal.content()}>
           <h2>No Rules Mode</h2>
           <div>
-            This game was created with rules off. The board will still display
-            legal moves for a selected piece, but pieces can be moved anywhere
-            whether the rules allow it or not.
+            This game was created with rules off. The board will still display legal moves for a
+            selected piece, but pieces can be moved anywhere whether the rules allow it or not.
           </div>
           <div className="text-center mt-4">
             <button className={css.button()} onClick={this.toggle}>
@@ -24,10 +23,7 @@ export default class NoRules extends React.Component {
       </div>
     ) : (
       <div>
-        <span
-          onClick={this.toggle}
-          className={css.alert.warning('cursor-pointer')}
-        >
+        <span onClick={this.toggle} className={css.alert.warning('cursor-pointer')}>
           {'¯\\_(ツ)_/¯ No Rules'}
         </span>
         {this.props._delete && (

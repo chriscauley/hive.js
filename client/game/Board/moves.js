@@ -120,8 +120,7 @@ const ant = (board, index) => {
   moves = flatten(
     moves.map((current_index) => {
       const excludes = [index, current_index]
-      const condition = (target_index) =>
-        isTouchingEnemySpider(board, owner, index, target_index)
+      const condition = (target_index) => isTouchingEnemySpider(board, owner, index, target_index)
       return _stepUntil(board, current_index, excludes, condition)
     }),
   )
@@ -166,8 +165,7 @@ const lady_bug = (board, index) => {
   let moves = []
   stepOnHive(board, index).forEach((on_index1) =>
     stepOnHive(board, on_index1, [index]).forEach(
-      (on_index2) =>
-        (moves = moves.concat(stepOffHive(board, on_index2, [index]))),
+      (on_index2) => (moves = moves.concat(stepOffHive(board, on_index2, [index]))),
     ),
   )
   return moves
@@ -249,10 +247,7 @@ const stepOffSubhive = (b, subhive, filter = () => true) => {
 
 const cockroach = (b, index) => {
   const current_player = b.piece_owners[last(b.stacks[index])]
-  const friendly_hive = getSubhive(b, index, [
-    notScorpion,
-    isPlayer(current_player),
-  ])
+  const friendly_hive = getSubhive(b, index, [notScorpion, isPlayer(current_player)])
   return stepOffSubhive(b, friendly_hive).filter((i2) => i2 !== index)
 }
 
@@ -281,9 +276,7 @@ const dragonfly = (board, index) => {
 
 const dragonflyExtra = (board, index, index2) => {
   const match =
-    board.stacks[index].length > 1 &&
-    !board.stacks[index2] &&
-    !wouldBreakHive(board, index, 2)
+    board.stacks[index].length > 1 && !board.stacks[index2] && !wouldBreakHive(board, index, 2)
   return match ? ' extra--dragonfly' : ''
 }
 

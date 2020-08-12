@@ -5,9 +5,7 @@ export default (board, indexes, max_stack = 1) => {
 
   // if a stack is 2+ pieces high, moving top piece will not break hive
   // for dragonfly's move, max_stack = 2 because the lower piece isn't moved if it breaks hive
-  indexes = indexes.filter(
-    (i) => board.stacks[i] && board.stacks[i].length <= max_stack,
-  )
+  indexes = indexes.filter((i) => board.stacks[i] && board.stacks[i].length <= max_stack)
 
   let hive_count = 0
   const hive_map = {}

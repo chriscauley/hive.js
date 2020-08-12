@@ -17,9 +17,7 @@ export default function Tiles() {
               <div key={name}>
                 {players.map((player) => (
                   <div className="relative dummy_piece" key={player}>
-                    <div
-                      className={`piece hex hex-${player} type type-${name}`}
-                    />
+                    <div className={`piece hex hex-${player} type type-${name}`} />
                   </div>
                 ))}
               </div>

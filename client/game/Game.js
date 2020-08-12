@@ -48,30 +48,18 @@ class Game extends React.Component {
     if (!this._scrolled && scrollbox) {
       this._scrolled = true
       const { scrollWidth, scrollHeight, clientWidth, clientHeight } = scrollbox
-      scrollbox.scroll(
-        (scrollWidth - clientWidth) / 2,
-        (scrollHeight - clientHeight) / 2,
-      )
+      scrollbox.scroll((scrollWidth - clientWidth) / 2, (scrollHeight - clientHeight) / 2)
     }
     const player_id = board.current_player
     const orientation = player_id === 1 ? 'left' : 'right'
-    const _delete =
-      get(board, 'selected.index') !== undefined ? deleteSelected : undefined
+    const _delete = get(board, 'selected.index') !== undefined ? deleteSelected : undefined
     const error = !board.rules.no_rules && board.error
     return (
       <div className="Game">
         <Lobby />
         <GlobalHotKeys handlers={handlers} keyMap={keyMap} />
-        <BoardComponent
-          rows={player_1}
-          className="player_1 odd-q"
-          click={click}
-        />
-        <BoardComponent
-          rows={player_2}
-          className="player_2 odd-q"
-          click={click}
-        />
+        <BoardComponent rows={player_1} className="player_1 odd-q" click={click} />
+        <BoardComponent rows={player_2} className="player_2 odd-q" click={click} />
         <div className="scroll-box" ref={scrollRef}>
           <div className="inner">
             <BoardComponent rows={rows} className="game_board" click={click} />

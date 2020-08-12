@@ -43,9 +43,7 @@ const actions = {
   },
   saveUser(store, data) {
     Object.assign(client.auth, data)
-    return client.auth
-      .save()
-      .then(() => store.setState({ user: { ...client.auth } }))
+    return client.auth.save().then(() => store.setState({ user: { ...client.auth } }))
   },
   switchRoom: (store, channel) => store.setState({ current_room: channel }),
   joinRoom: (store, channel) => {

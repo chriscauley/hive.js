@@ -44,6 +44,7 @@ const makeHex = (canvas, fillStyle, strokeStyle) => {
     return
   }
   const outlineWidth = 1
+  let borderWidth = LINE_WIDTH
   const ctx = canvas.getContext('2d')
   const x = canvas.width / 2
   const y = canvas.height / 2
@@ -58,8 +59,24 @@ const makeHex = (canvas, fillStyle, strokeStyle) => {
     fillStyle = fill_map[fillStyle]
   }
   if (strokeStyle) {
-    _hex(ctx, border_map[strokeStyle] || strokeStyle, x, y, size)
-    size -= LINE_WIDTH
+    const [color, style] = strokeStyle.split('-')
+    _hex(ctx, border_map[color] || color, x, y, size)
+    if (style === 'dashed') {
+      borderWidth *= 0.75
+      ctx.fillStyle = fillStyle.replace('0.5', '1')
+      // if (fillStyle.includes('rgba')) {
+      //   ctx.globalCompositeOperation = 'destination-out'
+      // }
+      for (let i = 0; i < 6; i++) {
+        const w = x / 2
+        ctx.translate(canvas.width / 2, canvas.height / 2)
+        ctx.rotate(Math.PI / 3)
+        ctx.translate(-canvas.width / 2, -canvas.height / 2)
+        ctx.fillRect(canvas.width / 2 - w / 2, 0, w, LINE_WIDTH, 0)
+      }
+      ctx.restore()
+    }
+    size -= borderWidth
   }
   _hex(ctx, fillStyle, x, y, size)
 }
@@ -89,7 +106,7 @@ export const makeSprites = (debug) => {
     player_1: 'white',
     player_2: 'black',
   }
-  const borders = [undefined, 'green', 'red', 'purple', 'gray', 'yellow', 'blue']
+  const borders = [undefined, 'green', 'red', 'purple', 'gray', 'yellow', 'blue', 'blue-dashed']
   Object.entries(bgs).forEach(([bg_name, bg]) =>
     borders.forEach((border) => {
       makeHex(canvas, bg, border, debug)

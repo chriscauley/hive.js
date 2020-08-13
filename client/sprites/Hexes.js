@@ -35,7 +35,7 @@ const border_map = {
   green: '#4a4',
   red: '#a44',
   purple: '#84f',
-  blue: '#44f',
+  blue: '#4af',
   white: '#F6F3E7', // eggshell lighten 5%
 }
 
@@ -62,7 +62,7 @@ const makeHex = (canvas, fillStyle, strokeStyle) => {
     const [color, style] = strokeStyle.split('-')
     _hex(ctx, border_map[color] || color, x, y, size)
     if (style === 'dashed') {
-      borderWidth *= 0.75
+      borderWidth *= 0.5
       ctx.fillStyle = fillStyle.replace('0.5', '1')
       // if (fillStyle.includes('rgba')) {
       //   ctx.globalCompositeOperation = 'destination-out'

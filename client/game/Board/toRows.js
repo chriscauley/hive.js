@@ -45,6 +45,16 @@ export default (board, { columns = 1 } = {}) => {
   const { selected = {} } = board
   if (selected.index !== undefined) {
     marked[selected.index] = ' purple'
+  } else if (board.last) {
+    if (board.last.from) {
+      marked[board.last.from] = ' blue-dashed'
+    }
+    if (board.last.to) {
+      marked[board.last.to] = ' blue'
+    }
+    if (board.last.special) {
+      marked[board.last.special] = ' yellow'
+    }
   }
   const rows = sliceBoard(board)
   rows.forEach((row) =>

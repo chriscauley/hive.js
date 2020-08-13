@@ -6,9 +6,10 @@ import { last } from 'lodash'
 import wouldBreakHive from './wouldBreakHive'
 
 // TODO might be mergeable with B.move. Maybe switch to moves.move to simplify imports?
-const move = (b, i1, i2) => {
+const move = (b, i1, i2, special) => {
   b.stacks[i2] = b.stacks[i2] || []
   b.stacks[i2].push(b.stacks[i1].pop())
+  return { from: i1, to: i2, special }
 }
 
 const selectNearby = (b, i) => {
@@ -22,7 +23,7 @@ const pill_bug = (b, piece_id, args) => {
   } else if (args.length === 1) {
     return b.geo.touching[index].filter((i) => !b.stacks[i])
   } else {
-    return () => move(b, args[0], args[1])
+    return () => move(b, args[0], args[1], index)
   }
 }
 
@@ -40,7 +41,14 @@ const mantis = (b, piece_id, args) => {
     })
   } else {
     // pull under
-    return () => b.stacks[index].unshift(b.stacks[args[0]].pop())
+    return () => {
+      b.stacks[index].unshift(b.stacks[args[0]].pop())
+      return {
+        special: index,
+        from: args[0],
+        to: index,
+      }
+    }
   }
 }
 
@@ -67,7 +75,13 @@ const centipede = (b, piece_id, args) => {
       return !wouldBreakHive(b, [index, index2])
     })
   }
-  return () => swap(b, index, args[0])
+  return () => {
+    swap(b, index, args[0])
+    return {
+      from: index,
+      special: args[0],
+    }
+  }
 }
 
 export default {
@@ -78,9 +92,7 @@ export default {
   centipede,
   undo: {
     pill_bug: (b, piece_id, index, args) => move(b, args[1], args[0]),
-    centipede: (b, piece_id, index, args) => {
-      swap(b, args[0], index)
-    },
+    centipede: (b, piece_id, index, args) => swap(b, args[0], index),
     mantis: (b, piece_id, index, args) => {
       const target_id = b.stacks[index].shift()
       b.stacks[args[0]] = b.stacks[args[0]] || []

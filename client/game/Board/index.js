@@ -68,9 +68,6 @@ const B = {
       index = parseInt(index)
       const piece_id = last(stack)
       const type = b.piece_types[piece_id]
-      if (type === 'queen') {
-        b.queens[b.piece_owners[piece_id]] = index
-      }
       if (wouldBreakHive(b, index)) {
         b.onehive[index] = true
         b.cantmove[index] = true
@@ -95,6 +92,11 @@ const B = {
           b.empty[touched_index] = true
         }
       })
+    })
+    b.piece_types.forEach((type, id) => {
+      if (type === 'queen') {
+        b.queens[b.piece_owners[id]] = b.reverse[id]
+      }
     })
     if (Object.keys(b.empty).length === 0) {
       b.empty[b.geo.center] = true
@@ -128,6 +130,7 @@ const B = {
       b.piece_owners.push(player_id)
       b.stacks[index] = b.stacks[index] || []
       b.stacks[index].push(piece_id)
+      b.last = { to: index }
     } else if (action_type === 'special') {
       const piece_id = args[2]
       const special_args = args[3]
@@ -135,7 +138,7 @@ const B = {
       if (typeof special !== 'function') {
         throw 'Attempting to doAction on an incomplete special'
       }
-      special()
+      b.last = special()
     } else {
       // action_type === "move" || type === "dragonfly"
       const new_index = args[2]
@@ -150,6 +153,10 @@ const B = {
         action_type = 'dragonfly'
       }
       b.stacks[new_index].push(piece_id)
+      b.last = {
+        from: index,
+        to: new_index,
+      }
     }
     b.actions.push(args)
     B.nextTurn(b)
@@ -169,6 +176,7 @@ const B = {
     'winner',
     'players',
     'host',
+    'last',
   ],
   toJson: (b) => cloneDeep(pick(b, B.json_fields)),
   fromJson: (value) => {
@@ -238,6 +246,7 @@ const B = {
     if (b.actions.length === 0) {
       return
     }
+    delete b.last
     B.freeze(b)
     const move = b.actions.pop()
     if (move[0] === 'dragonfly') {

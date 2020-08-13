@@ -34,7 +34,8 @@ const border_map = {
   yellow: '#F1C40F',
   green: '#4a4',
   red: '#a44',
-  blue: '#84f',
+  purple: '#84f',
+  blue: '#44f',
   white: '#F6F3E7', // eggshell lighten 5%
 }
 
@@ -88,7 +89,7 @@ export const makeSprites = (debug) => {
     player_1: 'white',
     player_2: 'black',
   }
-  const borders = [undefined, 'green', 'red', 'blue', 'gray', 'yellow']
+  const borders = [undefined, 'green', 'red', 'purple', 'gray', 'yellow', 'blue']
   Object.entries(bgs).forEach(([bg_name, bg]) =>
     borders.forEach((border) => {
       makeHex(canvas, bg, border, debug)
@@ -97,7 +98,13 @@ export const makeSprites = (debug) => {
 
       if (['red', 'green'].includes(border) && bg_name === 'empty') {
         const size = SIZE - LINE_WIDTH * 1.5
-        _hex(canvas.getContext('2d'), border_map['blue'], canvas.width / 2, canvas.height / 2, size)
+        _hex(
+          canvas.getContext('2d'),
+          border_map['purple'],
+          canvas.width / 2,
+          canvas.height / 2,
+          size,
+        )
         _hex(
           canvas.getContext('2d'),
           bg,

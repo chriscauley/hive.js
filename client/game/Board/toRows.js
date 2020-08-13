@@ -44,7 +44,7 @@ export default (board, { columns = 1 } = {}) => {
   const marked = getMarked(board)
   const { selected = {} } = board
   if (selected.index !== undefined) {
-    marked[selected.index] = ' blue'
+    marked[selected.index] = ' purple'
   }
   const rows = sliceBoard(board)
   rows.forEach((row) =>
@@ -89,7 +89,7 @@ export default (board, { columns = 1 } = {}) => {
       player_id === selected.player_id
     ) {
       const _i = cell.stack.length - 1
-      cell.stack[_i] = cell.stack[_i] + ' blue'
+      cell.stack[_i] = cell.stack[_i] + ' purple'
     }
     players[player_id].push(cell)
   })

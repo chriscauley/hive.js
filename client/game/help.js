@@ -14,7 +14,7 @@ const ifRule = (rule, text) => (board) => {
 
 const spiderwebs = ifRule(
   'spiderwebs',
-  'If an ant touches a spider while moving around the board It must stop. This does not apply to spiders that ants are touching at the start of the turn.',
+  'If an ant touches a spider while moving around the board It must stop. This does not apply to spiders that ants are touching at the start of the turn. The ant must take the shorter path.',
 )
 
 const special = (l) => l

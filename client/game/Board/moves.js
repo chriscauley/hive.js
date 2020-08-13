@@ -70,7 +70,7 @@ const stepOffHive = (board, index, excludes = []) => {
   })
 }
 
-const _stepUntil = (board, index, excludes, condition) => {
+const _stepUntil = (board, index, excludes, condition = () => false) => {
   let _count = 0
   while (!condition(index, excludes)) {
     index = stepAlongHive(board, index, excludes)[0]
@@ -116,14 +116,24 @@ const isTouchingEnemySpider = (board, owner, start_index, target_index) => {
 
 const ant = (board, index) => {
   const owner = board.piece_owners[last(board.stacks[index])]
+  // left and right spaces from ant
   let moves = stepAlongHive(board, index)
-  moves = flatten(
-    moves.map((current_index) => {
-      const excludes = [index, current_index]
-      const condition = (target_index) => isTouchingEnemySpider(board, owner, index, target_index)
-      return _stepUntil(board, current_index, excludes, condition)
-    }),
-  )
+  moves = moves.map((current_index) => {
+    const excludes = [index, current_index]
+    let targets = _stepUntil(board, current_index, excludes)
+    // ant has to take the shortest route, this means cutting two routes in half
+    targets = targets.slice(0, Math.ceil(targets.length / 2) + 1)
+    const first_spider = targets.find((target) =>
+      isTouchingEnemySpider(board, owner, index, target),
+    )
+    if (first_spider) {
+      targets = targets.slice(0, targets.indexOf(first_spider) + 1)
+    }
+    return targets
+  })
+
+  // at this point moves is two paths, flatten into one
+  moves = flatten(moves)
   return moves.filter((i) => i !== undefined && i !== index)
 }
 

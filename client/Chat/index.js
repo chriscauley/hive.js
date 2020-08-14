@@ -1,6 +1,6 @@
 import React from 'react'
 import css from '@unrest/css'
-import { useAutoScroll } from '@unrest/core'
+import { useAutoScroll, Modal } from '@unrest/core'
 
 import colyseus from '../colyseus'
 import Settings from './Settings'
@@ -39,6 +39,7 @@ function Chat({ colyseus }) {
   const room = colyseus[current_room] || {}
   const { messages = [] } = room
   const room_entries = Object.entries(rooms).sort()
+  const close = () => setState({ settings_open: false })
   const _list = (n) => `room ${n === current_room ? 'current' : ''}`
   const submit = (e) => {
     e.preventDefault()
@@ -52,7 +53,11 @@ function Chat({ colyseus }) {
 
   return (
     <>
-      {state.settings_open && <Settings close={() => setState({ settings_open: false })} />}
+      {state.settings_open && (
+        <Modal close={close}>
+          <Settings cancel={close} />
+        </Modal>
+      )}
       <div className="Chat">
         <div className="flex flex-col h-full">
           <div className="bg-gray-400 text-right py-1">

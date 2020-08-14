@@ -2,7 +2,7 @@ import React from 'react'
 import css from '@unrest/css'
 import Form from '@unrest/react-jsonschema-form'
 
-import colyseus from '../colyseus'
+import { useColyseus } from '../colyseus'
 
 const schema = {
   title: 'User Settings',
@@ -15,21 +15,22 @@ const schema = {
   },
 }
 
-export default colyseus.connect(function Settings(props) {
-  const onSubmit = (data) =>
-    props.colyseus
-      .saveUser(data)
-      .then(() => props.close())
-      .catch((e) => e.data)
-  const initial = {
-    displayName: props.colyseus.user.displayName,
+export default function Settings(props) {
+  const { user, saveUser } = useColyseus()
+  if (!user) {
+    return null
   }
+  const { displayName } = user
+  const onSubmit = (data) =>
+    saveUser(data)
+      .then(() => props.close && props.close())
+      .catch((e) => e.data)
   return (
-    <div className={css.modal.outer()}>
-      <div className={css.modal.mask()} onClick={props.close} />
-      <div className={css.modal.content.xs()}>
-        <Form onSubmit={onSubmit} initial={initial} schema={schema} cancel={props.close} />
-      </div>
-    </div>
+    <Form
+      onSubmit={onSubmit}
+      initial={{ displayName }}
+      schema={schema}
+      {...props}
+    />
   )
-})
+}

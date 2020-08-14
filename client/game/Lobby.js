@@ -1,7 +1,7 @@
 import React from 'react'
 import css from '@unrest/css'
 
-import { useColyseus } from '../colyseus'
+import useColyseus from '../useColyseus'
 import connect from './connect'
 
 const text = {

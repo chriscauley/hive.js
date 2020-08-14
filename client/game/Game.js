@@ -12,7 +12,7 @@ import sprites from '../sprites'
 import HelpText from './HelpText'
 import NoRules from './NoRules'
 import Winner from './Winner'
-import { useColyseus } from '../colyseus'
+import useColyseus from '../useColyseus'
 import Lobby from './Lobby'
 
 const keyMap = {

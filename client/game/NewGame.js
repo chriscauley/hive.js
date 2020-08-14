@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom'
 import Form from '@unrest/react-jsonschema-form'
 
 import { unslugify } from '../tutorial/Component'
-import { useColyseus } from '../colyseus'
+import useColyseus from '../useColyseus'
 import Board from './Board'
 import pieces from './pieces'
 

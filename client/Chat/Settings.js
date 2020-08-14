@@ -1,7 +1,7 @@
 import React from 'react'
 import Form from '@unrest/react-jsonschema-form'
 
-import { useColyseus } from '../colyseus'
+import useColyseus from '../useColyseus'
 
 const schema = {
   title: 'User Settings',

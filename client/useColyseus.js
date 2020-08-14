@@ -128,7 +128,7 @@ const actions = {
   },
 }
 const makeHook = globalHook(React, {}, actions)
-export const useColyseus = () => {
+export default () => {
   const [state, actions] = makeHook()
   actions.init()
   return (window._colyseus = {
@@ -136,18 +136,4 @@ export const useColyseus = () => {
     ...actions,
     rooms: ROOMS,
   })
-}
-
-function connect(Component, _options = {}) {
-  function ColyseusProvider(props) {
-    return <Component {...props} colyseus={useColyseus()} />
-  }
-
-  ColyseusProvider.WrappedComponent = Component
-  return ColyseusProvider
-}
-
-export default {
-  connect,
-  use: useColyseus,
 }

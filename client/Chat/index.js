@@ -2,7 +2,7 @@ import React from 'react'
 import css from '@unrest/css'
 import { useAutoScroll, Modal } from '@unrest/core'
 
-import { useColyseus } from '../colyseus'
+import useColyseus from '../useColyseus'
 import Settings from './Settings'
 
 const ChatError = ({ error }) => (

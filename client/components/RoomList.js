@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import css from '@unrest/css'
 
 import { unslugify } from '../tutorial/Component'
-import { useColyseus } from '../colyseus'
+import useColyseus from '../useColyseus'
 import pieces from '../game/pieces'
 import sprites from '../sprites'
 

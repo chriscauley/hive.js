@@ -2,7 +2,7 @@ import React from 'react'
 import css from '@unrest/css'
 
 import useColyseus from '../useColyseus'
-import connect from './connect'
+import useGame from './useGame'
 
 const text = {
   public: 'Players can see this game from the lobby or join directly if you share the url.',
@@ -34,8 +34,8 @@ const IsReady = ({ colyseus, board }) => (
   </>
 )
 
-function Lobby(props) {
-  const { board } = props.game
+export default function Lobby() {
+  const { board } = useGame()
   const colyseus = useColyseus()
   const { user_id, rooms } = colyseus
   const room = rooms[board.id]
@@ -73,5 +73,3 @@ function Lobby(props) {
     </div>
   )
 }
-
-export default connect(Lobby)

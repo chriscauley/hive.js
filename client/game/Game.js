@@ -7,7 +7,7 @@ import handshake from './handshake'
 import Board from './Board'
 import toRows from './Board/toRows'
 import BoardComponent from './Board/Component'
-import connect from './connect'
+import useGame from './useGame'
 import sprites from '../sprites'
 import HelpText from './HelpText'
 import NoRules from './NoRules'
@@ -26,15 +26,15 @@ let _scrolled // TODO was on component as this.scrolled. Should be in use effect
 
 const scrollRef = React.createRef()
 
-function Game(props) {
+export default function Game(props) {
   sprites.makeSprites() // idempotent
   const colyseus = useColyseus()
+  const { update, deleteSelected, click, useBoard, undo, redo } = useGame()
   const { board_id, players } = props.match.params
   const board = handshake({ colyseus, board_id, players })
   if (!board) {
     return null
   }
-  const { update, deleteSelected, click, useBoard } = props.game
   useBoard(board)
   colyseus.sync(board, colyseus)
   const handlers = {
@@ -42,8 +42,8 @@ function Game(props) {
       Board.unselect(board)
       update()
     },
-    UNDO: () => props.game.undo(),
-    REDO: () => props.game.redo(),
+    UNDO: undo,
+    REDO: redo,
   }
   const { rows, player_1, player_2 } = toRows(board, { columns: 2 })
   const scrollbox = scrollRef.current
@@ -89,5 +89,3 @@ function Game(props) {
     </div>
   )
 }
-
-export default connect(Game)

@@ -47,27 +47,18 @@ const actions = {
 }
 
 const makeHook = globalHook(React, {}, actions)
+export default () => {
+  const [state, actions] = makeHook()
 
-export default function connect(Component, _options = {}) {
-  function BoardProvider(props) {
-    const [state, actions] = makeHook()
-
-    const connectedProps = {
-      ...props,
-      game: {
-        ...state,
-        ...actions,
-        board,
-        useBoard: (b) => {
-          if (get(b, 'id') !== get(board, 'id')) {
-            board = b
-            setTimeout(actions.update, 0)
-          }
-        },
-      },
-    }
-    return <Component {...connectedProps} />
+  return {
+    ...state,
+    ...actions,
+    board,
+    useBoard: (b) => {
+      if (get(b, 'id') !== get(board, 'id')) {
+        board = b
+        setTimeout(actions.update, 0)
+      }
+    },
   }
-  BoardProvider.WrappedComponent = Component
-  return BoardProvider
 }

@@ -5,8 +5,8 @@ import boards from './boards'
 import captions from './captions'
 import BoardComponent from '../game/Board/Component'
 import toRows from '../game/Board/toRows'
+import useGame from '../game/useGame'
 import B from '../game/Board'
-import game from '../game'
 import help from '../game/help'
 import sprites from '../sprites'
 
@@ -94,7 +94,8 @@ const pruneRows = (_board) => {
   }
 }
 
-const MiniBoard = game.connect(({ board, update, game, close }) => {
+const MiniBoard = ({ board, update, close }) => {
+  const { loadJson } = useGame()
   const rows = toRows(board, { prune: true })
   pruneRows(rows)
   const click = (target) => {
@@ -106,7 +107,7 @@ const MiniBoard = game.connect(({ board, update, game, close }) => {
     const b = B.toJson(board)
     b.turn = 0
     b.rules.players = 'local'
-    game.loadJson(JSON.stringify(b))
+    loadJson(JSON.stringify(b))
     close()
   }
   return (
@@ -119,4 +120,4 @@ const MiniBoard = game.connect(({ board, update, game, close }) => {
       )}
     </div>
   )
-})
+}

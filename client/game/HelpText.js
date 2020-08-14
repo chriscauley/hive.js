@@ -1,14 +1,14 @@
 import React from 'react'
 import css from '@unrest/css'
 import B from './Board'
-import connect from './connect'
+import useGame from './useGame'
 import withConfig from '../config'
 
 import help from './help'
 
 function HelpText(props) {
   const { toggleHelp } = props.config.actions
-  const { board, update } = props.game
+  const { board, update } = useGame()
   if (!props.config.formData.show_help) {
     return (
       <div className="fixed left-0 bottom-0 m-4 HelpText">
@@ -61,4 +61,4 @@ function HelpText(props) {
   )
 }
 
-export default withConfig(connect(HelpText))
+export default withConfig(HelpText)

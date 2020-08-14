@@ -1,32 +1,31 @@
 import React from 'react'
-import { Link, withRouter } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import css from '@unrest/css'
 import withConfig from '../config'
+import useGame from '../game/useGame'
 import game from '../game'
 import tutorial from '../tutorial'
 import { Dropdown } from '@unrest/core'
 
-const GameDropdown = withRouter(
-  game.connect(function GameDropdown(props) {
-    const { undo, redo, board } = props.game
-    const links = [
-      { to: '/', children: 'New Game' },
-      { children: <game.ImportLink /> },
-      { children: <game.ExportLink /> },
-      {
-        children: 'Undo (ctrl+z)',
-        onClick: undo,
-        disabled: !board || board.rules.players !== 'local',
-      },
-      {
-        children: 'Redo (ctrl+y)',
-        onClick: redo,
-        disabled: !board || board.rules.players !== 'local',
-      },
-    ]
-    return <Dropdown title="game" links={links} />
-  }),
-)
+function GameDropdown() {
+  const { undo, redo, board } = useGame()
+  const links = [
+    { to: '/', children: 'New Game' },
+    { children: <game.ImportLink /> },
+    { children: <game.ExportLink /> },
+    {
+      children: 'Undo (ctrl+z)',
+      onClick: undo,
+      disabled: !board || board.rules.players !== 'local',
+    },
+    {
+      children: 'Redo (ctrl+y)',
+      onClick: redo,
+      disabled: !board || board.rules.players !== 'local',
+    },
+  ]
+  return <Dropdown title="game" links={links} />
+}
 
 export default function Nav() {
   return (

@@ -1,9 +1,9 @@
 import React from 'react'
-import { withRouter } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import Form from '@unrest/react-jsonschema-form'
 
 import { unslugify } from '../tutorial/Component'
-import colyseus from '../colyseus'
+import { useColyseus } from '../colyseus'
 import Board from './Board'
 import pieces from './pieces'
 
@@ -95,18 +95,18 @@ const uiSchema = {
   },
 }
 
-export default colyseus.connect(
-  withRouter((props) => {
-    const onSubmit = (formData) => {
-      const { variants, ...rules } = formData
-      Object.assign(rules, variants)
-      const board = Board.new({ rules, host: props.colyseus.user_id })
-      setTimeout(() => props.history.push(`/play/${rules.players}/${board.id}/`), 100)
-    }
-    return (
-      <div className="border p-4 mt-8 shadowed max-w-md mx-2">
-        <Form schema={schema} uiSchema={uiSchema} onSubmit={onSubmit} />
-      </div>
-    )
-  }),
-)
+export default function newGame() {
+  const { user_id } = useColyseus()
+  const history = useHistory()
+  const onSubmit = (formData) => {
+    const { variants, ...rules } = formData
+    Object.assign(rules, variants)
+    const board = Board.new({ rules, host: user_id })
+    setTimeout(() => history.push(`/play/${rules.players}/${board.id}/`), 100)
+  }
+  return (
+    <div className="border p-4 mt-8 shadowed max-w-md mx-2">
+      <Form schema={schema} uiSchema={uiSchema} onSubmit={onSubmit} />
+    </div>
+  )
+}

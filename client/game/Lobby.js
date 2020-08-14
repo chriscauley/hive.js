@@ -1,7 +1,7 @@
 import React from 'react'
 import css from '@unrest/css'
 
-import colyseus from '../colyseus'
+import { useColyseus } from '../colyseus'
 import connect from './connect'
 
 const text = {
@@ -36,7 +36,8 @@ const IsReady = ({ colyseus, board }) => (
 
 function Lobby(props) {
   const { board } = props.game
-  const { user_id, rooms } = props.colyseus
+  const colyseus = useColyseus()
+  const { user_id, rooms } = colyseus
   const room = rooms[board.id]
   if (board.rules.players === 'local') {
     return null
@@ -57,14 +58,14 @@ function Lobby(props) {
     <div className={css.modal.outer()}>
       <div className={css.modal.mask()} />
       <div className={css.modal.content()}>
-        <Tag colyseus={props.colyseus} board={board} />
+        <Tag colyseus={colyseus} board={board} />
         {board.host === user_id && (
           <div className="form-group">
             While you're waiting, you can change the game name here:
             <input
               className="form-control"
               defaultValue={room.state.name}
-              onChange={(e) => props.colyseus.rename(board.id, e.target.value)}
+              onChange={(e) => colyseus.rename(board.id, e.target.value)}
             />
           </div>
         )}
@@ -73,4 +74,4 @@ function Lobby(props) {
   )
 }
 
-export default connect(colyseus.connect(Lobby))
+export default connect(Lobby)

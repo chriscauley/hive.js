@@ -2,7 +2,7 @@ import React from 'react'
 import css from '@unrest/css'
 import { useAutoScroll, Modal } from '@unrest/core'
 
-import colyseus from '../colyseus'
+import { useColyseus } from '../colyseus'
 import Settings from './Settings'
 
 const ChatError = ({ error }) => (
@@ -14,7 +14,8 @@ const ChatError = ({ error }) => (
   </div>
 )
 
-function Chat({ colyseus }) {
+export default function Chat() {
+  const colyseus = useColyseus()
   const [state, setState] = React.useState({ open: true })
   const autoscroll = useAutoScroll()
   const textRef = React.useRef()
@@ -114,5 +115,3 @@ const MessageList = ({ messages, autoscroll }) => (
     <div ref={autoscroll.ref} />
   </div>
 )
-
-export default colyseus.connect(Chat)

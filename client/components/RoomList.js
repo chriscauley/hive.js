@@ -1,9 +1,9 @@
 import React from 'react'
-import { Link, withRouter } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import css from '@unrest/css'
 
 import { unslugify } from '../tutorial/Component'
-import colyseus from '../colyseus'
+import { useColyseus } from '../colyseus'
 import pieces from '../game/pieces'
 import sprites from '../sprites'
 
@@ -62,26 +62,24 @@ const Rules = ({ rules }) => {
 
 const url = ({ channel, rules }) => `/play/${rules.players}/${channel}/`
 
-export default colyseus.connect(
-  withRouter((props) => {
-    sprites.makeSprites() // idempotent
-    props.colyseus.useRooms()
-    let { available_rooms = [] } = props.colyseus
-    available_rooms = available_rooms.filter((r) => r.metadata.channel !== 'general')
-    return (
-      <div className="border p-4 mt-8 shadowed max-w-md w-64 mx-2">
-        <h2>Join a Game</h2>
-        {available_rooms.map((room) => (
-          <div key={room.roomId} className="border m-1 p-2">
-            <Link to={url(room.metadata)}>
-              <i className={css.icon('user mr-2')} />
-              {`(${room.clients}) ${room.metadata.name}`}
-              <Rules rules={room.metadata.rules} />
-            </Link>
-          </div>
-        ))}
-        {available_rooms.length === 0 && 'No available games.'}
-      </div>
-    )
-  }),
-)
+export default function RoomList() {
+  const { useRooms, available_rooms = [] } = useColyseus()
+  sprites.makeSprites() // idempotent
+  useRooms()
+  const rooms = available_rooms.filter((r) => r.metadata.channel !== 'general')
+  return (
+    <div className="border p-4 mt-8 shadowed max-w-md w-64 mx-2">
+      <h2>Join a Game</h2>
+      {rooms.map((room) => (
+        <div key={room.roomId} className="border m-1 p-2">
+          <Link to={url(room.metadata)}>
+            <i className={css.icon('user mr-2')} />
+            {`(${room.clients}) ${room.metadata.name}`}
+            <Rules rules={room.metadata.rules} />
+          </Link>
+        </div>
+      ))}
+      {available_rooms.length === 0 && 'No available games.'}
+    </div>
+  )
+}

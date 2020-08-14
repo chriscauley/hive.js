@@ -1,5 +1,4 @@
 import React from 'react'
-import css from '@unrest/css'
 import Form from '@unrest/react-jsonschema-form'
 
 import { useColyseus } from '../colyseus'
@@ -25,12 +24,5 @@ export default function Settings(props) {
     saveUser(data)
       .then(() => props.close && props.close())
       .catch((e) => e.data)
-  return (
-    <Form
-      onSubmit={onSubmit}
-      initial={{ displayName }}
-      schema={schema}
-      {...props}
-    />
-  )
+  return <Form onSubmit={onSubmit} initial={{ displayName }} schema={schema} {...props} />
 }

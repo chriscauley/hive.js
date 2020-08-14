@@ -61,7 +61,7 @@ const actions = {
           setTimeout(() => {
             delete LOADING[channel]
             store.actions.joinRoom(channel)
-          }, 300)
+          }, 500)
         } else {
           delete LOADING[channel]
           store.setState({ error })
@@ -86,7 +86,7 @@ const actions = {
   },
   useRooms(store) {
     clearTimeout(timeout)
-    const delay = store.state.available_rooms ? 1000 : 0
+    const delay = store.state.available_rooms ? 3000 : 0
     timeout = setTimeout(store.actions.refreshRooms, delay)
   },
   refreshRooms(store) {
@@ -128,18 +128,19 @@ const actions = {
   },
 }
 const makeHook = globalHook(React, {}, actions)
+export const useColyseus = () => {
+  const [state, actions] = makeHook()
+  actions.init()
+  return (window._colyseus = {
+    ...state,
+    ...actions,
+    rooms: ROOMS,
+  })
+}
 
 function connect(Component, _options = {}) {
   function ColyseusProvider(props) {
-    const [state, actions] = makeHook()
-    actions.init()
-    const colyseus = {
-      ...state,
-      ...actions,
-      rooms: ROOMS,
-    }
-    window._colyseus = colyseus
-    return <Component {...props} colyseus={colyseus} />
+    return <Component {...props} colyseus={useColyseus()} />
   }
 
   ColyseusProvider.WrappedComponent = Component
@@ -148,4 +149,5 @@ function connect(Component, _options = {}) {
 
 export default {
   connect,
+  use: useColyseus,
 }

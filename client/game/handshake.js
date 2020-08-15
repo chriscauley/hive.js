@@ -1,11 +1,10 @@
 import Board from './Board'
 
-export default ({ colyseus, board_id, players }) => {
+export default ({ colyseus, board_id, room_name }) => {
   const board = Board.get(board_id)
 
-  // local players don't have to worry about any of this
-  // if they are already in the room, continue
-  if (players === 'local') {
+  // local room_name don't have to worry about any of this
+  if (room_name === 'local') {
     return board
   }
 

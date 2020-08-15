@@ -36,7 +36,7 @@ export default function Chat() {
     return null
   }
 
-  colyseus.joinOrCreateRoom({ channel: 'general' }) // idempotent
+  colyseus.joinOrCreateRoom('general') // idempotent
   const room = colyseus[current_room] || {}
   const { messages = [] } = room
   const room_entries = Object.entries(rooms).sort()

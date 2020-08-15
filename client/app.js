@@ -6,7 +6,6 @@ import { HashRouter, Route } from 'react-router-dom'
 
 import Nav from './components/Nav'
 import About from './components/About'
-import Game from './game/Game'
 import withConfig from './config'
 import sprites from './sprites'
 import ReactTooltip from 'react-tooltip'
@@ -32,8 +31,9 @@ const App = withConfig((props) => {
         <Nav />
         <div className="app-inner flex">
           <Route exact path="/" component={screens.Home} />
+          <Route exact path="/local/" component={screens.Local} />
+          <Route path="/u/:room_name/" component={screens.Table} />
           <Route exact path="/about/" component={About} />
-          <Route exact path="/play/:players/:board_id/" component={Game} />
           <Route path="/sprites/" component={sprites.Routes} />
           <Chat />
           <ReactTooltip className="max-w-sm" />

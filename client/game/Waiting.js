@@ -1,9 +1,6 @@
 import React from 'react'
 import css from '@unrest/css'
 
-import useColyseus from '../useColyseus'
-import useGame from './useGame'
-
 const text = {
   public: 'Players can see this game from the lobby or join directly if you share the url.',
   private: 'This game is private. The only way to get players to join is to share the url',
@@ -19,7 +16,7 @@ const NeedsPlayers = ({ board }) => (
 const NeedsReady = ({ colyseus, board }) => (
   <>
     <h2>Please click ready</h2>
-    <button className={css.button()} onClick={() => colyseus.send(board.id, 'ready')}>
+    <button className={css.button()} onClick={() => colyseus.send(board.room_name, 'ready')}>
       I'm ready
     </button>
   </>
@@ -28,26 +25,15 @@ const NeedsReady = ({ colyseus, board }) => (
 const IsReady = ({ colyseus, board }) => (
   <>
     <h2>Waiting for other players to press ready</h2>
-    <button className={css.button()} onClick={() => colyseus.send(board.id, 'notready')}>
+    <button className={css.button()} onClick={() => colyseus.send(board.room_name, 'notready')}>
       Wait, I'm not ready!
     </button>
   </>
 )
 
-export default function Lobby() {
-  const { board } = useGame()
-  const colyseus = useColyseus()
+export default function Lobby({ colyseus, board }) {
   const { user_id, rooms } = colyseus
-  const room = rooms[board.id]
-  if (board.rules.players === 'local') {
-    return null
-  }
-  if (!room || !room.state.clients) {
-    return null // TODO loading modal?
-  }
-  if (room.state.players) {
-    return null
-  }
+  const room = rooms[board.room_name]
   const full = room.state.clients.length >= 2
   const ready = room.state.ready[user_id]
   let Tag = NeedsPlayers
@@ -59,16 +45,6 @@ export default function Lobby() {
       <div className={css.modal.mask()} />
       <div className={css.modal.content()}>
         <Tag colyseus={colyseus} board={board} />
-        {board.host === user_id && (
-          <div className="form-group">
-            While you're waiting, you can change the game name here:
-            <input
-              className="form-control"
-              defaultValue={room.state.name}
-              onChange={(e) => colyseus.rename(board.id, e.target.value)}
-            />
-          </div>
-        )}
       </div>
     </div>
   )

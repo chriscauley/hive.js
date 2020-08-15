@@ -112,6 +112,9 @@ const B = {
     }
     return b
   },
+
+  getUrl: (b) => `#/${b.room_name}/`,
+
   nextTurn: (b) => {
     delete b.frozen // undo information is now lost (if it existed)
     b.turn++
@@ -177,6 +180,7 @@ const B = {
     'players',
     'host',
     'last',
+    'room_name',
   ],
   toJson: (b) => cloneDeep(pick(b, B.json_fields)),
   fromJson: (value) => {

@@ -68,12 +68,11 @@ const actions = {
         }
       })
   },
-  joinOrCreateRoom(store, options) {
-    const { channel } = options
+  joinOrCreateRoom(store, channel, options = {}) {
     if (!ROOMS[channel] && !LOADING[channel]) {
       LOADING[channel] = true
       client
-        .joinOrCreate('chat', options)
+        .joinOrCreate('chat', { channel, ...options })
         .then((room) => _bindRoom(store, channel, room))
         .catch((error) => {
           delete LOADING[channel]
@@ -81,8 +80,8 @@ const actions = {
         })
     }
   },
-  send(store, room, type, data) {
-    ROOMS[room].send(type, data)
+  send(store, room_name, type, data) {
+    ROOMS[room_name].send(type, data)
   },
   useRooms(store) {
     clearTimeout(timeout)
@@ -96,7 +95,7 @@ const actions = {
     })
   },
   sync(store, board = {}) {
-    const room = ROOMS[board.id]
+    const room = ROOMS[board.room_name]
     if (!room || !room.state.actions) {
       return
     }
@@ -135,5 +134,6 @@ export default () => {
     ...state,
     ...actions,
     rooms: ROOMS,
+    isHost: (b) => b.room_name === client.auth.displayName,
   })
 }

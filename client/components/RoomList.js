@@ -60,8 +60,6 @@ const Rules = ({ rules }) => {
   )
 }
 
-const url = ({ channel, rules }) => `/play/${rules.players}/${channel}/`
-
 export default function RoomList() {
   const { useRooms, available_rooms = [] } = useColyseus()
   sprites.makeSprites() // idempotent
@@ -72,7 +70,7 @@ export default function RoomList() {
       <h2>Join a Game</h2>
       {rooms.map((room) => (
         <div key={room.roomId} className="border m-1 p-2">
-          <Link to={url(room.metadata)}>
+          <Link to={`/u/${room.metadata.channel}/`}>
             <i className={css.icon('user mr-2')} />
             {`(${room.clients}) ${room.metadata.name}`}
             <Rules rules={room.metadata.rules} />

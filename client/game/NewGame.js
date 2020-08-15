@@ -1,9 +1,8 @@
 import React from 'react'
-import { useHistory } from 'react-router-dom'
 import Form from '@unrest/react-jsonschema-form'
 
 import { unslugify } from '../tutorial/Component'
-import useColyseus from '../useColyseus'
+import useGame from '../game/useGame'
 import Board from './Board'
 import pieces from './pieces'
 
@@ -21,50 +20,48 @@ const enumNames = piece_enum.map((name) => {
   )
 })
 
-const schema = {
-  type: 'object',
-  properties: {
-    piece_sets: {
-      type: 'array',
-      title: 'Piece Sets',
-      items: {
-        type: 'string',
-        enum: piece_enum,
-        enumNames,
+const getSchema = (room_name) => {
+  const schema = {
+    type: 'object',
+    properties: {
+      piece_sets: {
+        type: 'array',
+        title: 'Piece Sets',
+        items: {
+          type: 'string',
+          enum: piece_enum,
+          enumNames,
+        },
+        uniqueItems: true,
+        default: ['standard'],
       },
-      uniqueItems: true,
-      default: ['standard'],
-    },
-    players: {
-      title: 'Players',
-      type: 'string',
-      default: 'local',
-      enum: ['local', 'public', 'private'],
-      enumNames: [
-        'Local (pass and play)',
-        'Public (visible on homescreen)',
-        'Private (requires url to join)',
-      ],
-    },
-    variants: {
-      title: 'Variants',
-      type: 'object',
-      properties: {
-        spiderwebs: {
-          title: 'Spider Web',
-          type: 'boolean',
-        },
-        super_grasshopper: {
-          title: 'Super Grasshoppper',
-          type: 'boolean',
-        },
-        no_rules: {
-          title: 'No Rules',
-          type: 'boolean',
+      variants: {
+        title: 'Variants',
+        type: 'object',
+        properties: {
+          spiderwebs: {
+            title: 'Spider Web',
+            type: 'boolean',
+          },
+          super_grasshopper: {
+            title: 'Super Grasshoppper',
+            type: 'boolean',
+          },
+          no_rules: {
+            title: 'No Rules',
+            type: 'boolean',
+          },
         },
       },
     },
-  },
+  }
+  if (room_name !== 'local') {
+    schema.properties.private = {
+      title: 'Private',
+      type: 'boolean',
+    }
+  }
+  return schema
 }
 
 const _help = (s) => <i className="fa fa-question-circle-o" data-tip={s} />
@@ -73,9 +70,10 @@ const uiSchema = {
   piece_sets: {
     'ui:widget': 'checkboxes',
   },
-  players: {
-    // TODO
-    // 'ui:enumDisabled': ['public', 'private'],
+  private: {
+    'ui:help': _help(
+      'Private games will not appear in the list, but players can still join if they have the url.',
+    ),
   },
   variants: {
     no_rules: {
@@ -95,18 +93,18 @@ const uiSchema = {
   },
 }
 
-export default function newGame() {
-  const { user_id } = useColyseus()
-  const history = useHistory()
+export default function newGame({ room_name }) {
+  const game = useGame()
   const onSubmit = (formData) => {
     const { variants, ...rules } = formData
     Object.assign(rules, variants)
-    const board = Board.new({ rules, host: user_id })
-    setTimeout(() => history.push(`/play/${rules.players}/${board.id}/`), 100)
+    game.setRoomBoard(room_name, Board.new({ rules, room_name }))
   }
   return (
-    <div className="border p-4 mt-8 shadowed max-w-md mx-2">
-      <Form schema={schema} uiSchema={uiSchema} onSubmit={onSubmit} />
+    <div className="flex-grow flex items-center justify-center">
+      <div className="border p-4 mt-8 shadowed max-w-md mx-2">
+        <Form schema={getSchema(room_name)} uiSchema={uiSchema} onSubmit={onSubmit} />
+      </div>
     </div>
   )
 }

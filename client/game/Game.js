@@ -3,7 +3,6 @@ import { GlobalHotKeys } from 'react-hotkeys'
 import { get } from 'lodash'
 import css from '@unrest/css'
 
-import handshake from './handshake'
 import Board from './Board'
 import toRows from './Board/toRows'
 import BoardComponent from './Board/Component'
@@ -12,7 +11,6 @@ import sprites from '../sprites'
 import HelpText from './HelpText'
 import NoRules from './NoRules'
 import Winner from './Winner'
-import useColyseus from '../useColyseus'
 import Lobby from './Lobby'
 
 const keyMap = {
@@ -26,17 +24,15 @@ let _scrolled // TODO was on component as this.scrolled. Should be in use effect
 
 const scrollRef = React.createRef()
 
-export default function Game(props) {
+export default function Game({ room_name }) {
   sprites.makeSprites() // idempotent
-  const colyseus = useColyseus()
-  const { update, deleteSelected, click, useBoard, undo, redo } = useGame()
-  const { board_id, players } = props.match.params
-  const board = handshake({ colyseus, board_id, players })
+  const { update, deleteSelected, click, undo, redo, board } = useGame()
   if (!board) {
     return null
   }
-  useBoard(board)
-  colyseus.sync(board, colyseus)
+  // TODO remove next two lines after 8/1
+  // this is to stop boards created before room_name was a thing from breaking
+  board.room_name = room_name
   const handlers = {
     UNSELECT: () => {
       Board.unselect(board)
@@ -58,7 +54,7 @@ export default function Game(props) {
   const error = !board.rules.no_rules && board.error
   return (
     <div className="Game">
-      <Lobby />
+      {room_name !== 'local' && <Lobby board={board} />}
       <GlobalHotKeys handlers={handlers} keyMap={keyMap} />
       <BoardComponent rows={player_1} className="player_1 odd-q" click={click} />
       <BoardComponent rows={player_2} className="player_2 odd-q" click={click} />
@@ -69,7 +65,7 @@ export default function Game(props) {
       </div>
       <HelpText {...board.selected} board={board} />
       <div className={`absolute top-0 ${orientation}-0`}>
-        <Winner board={board} />
+        <Winner board={board} room_name={room_name} />
         {board.rules.no_rules && <NoRules _delete={_delete} />}
         {error ? (
           <div className={css.alert.danger()}>
@@ -77,15 +73,16 @@ export default function Game(props) {
             {board.error}
           </div>
         ) : (
-          <div className={css.alert.info()}>
-            {board.rules.players === 'local'
-              ? `Player ${board.current_player}'s turn`
-              : Board.isUsersTurn(board)
-              ? 'Your turn'
-              : "Opponent's turn"}
-          </div>
+          <div className={css.alert.info()}>{getTurnText(board)}</div>
         )}
       </div>
     </div>
   )
+}
+
+const getTurnText = (board) => {
+  if (board.room_name === 'local') {
+    return `Player ${board.current_player}'s turn`
+  }
+  return Board.isUsersTurn(board) ? 'Your turn' : "Opponent's turn"
 }

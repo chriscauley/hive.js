@@ -1,26 +1,25 @@
 import React from 'react'
-import { get } from 'lodash'
 import globalHook from 'use-global-hook'
 
 import B from './Board'
 
-let board
+let BOARD
 
 const actions = {
   click: (store, target) => {
-    B.click(board, target)
+    B.click(BOARD, target)
     store.actions.update()
   },
   update: (store) => {
     // just need to trigger reflow, hash isn't used anywhere
-    store.setState({ hash: board && board.hash })
+    store.setState({ hash: BOARD && BOARD.hash })
   },
   toggleImportExport: (store) => store.setState({ port_open: !store.state.port_open }),
   loadJson: (store, value) => {
     let import_error = null
     try {
-      board = B.fromJson(value)
-      window.location = `#/play/${board.rules.players}/${board.id}/`
+      BOARD = B.fromJson(value)
+      window.location = B.getUrl(BOARD)
     } catch (e) {
       console.error(e)
       import_error = 'An unknown error has occurred'
@@ -28,37 +27,43 @@ const actions = {
     store.setState({ import_error })
   },
   deleteSelected: (store) => {
-    const { piece_id } = board.selected
-    B.deletePiece(board, piece_id)
+    const { piece_id } = BOARD.selected
+    B.deletePiece(BOARD, piece_id)
     store.actions.update()
   },
   undo: (store) => {
-    if (board.rules.players !== 'local') {
+    if (BOARD.rules.players !== 'local') {
       // TODO temporarily disabling undo for online play
       return
     }
-    B.undo(board)
+    B.undo(BOARD)
     store.actions.update()
   },
   redo: (store) => {
-    B.redo(board)
+    B.redo(BOARD)
     store.actions.update()
+  },
+  setRoomBoard: (store, room_name, board) => {
+    BOARD = board
+    B.storage.set(room_name, board ? board.id : null)
+    store.setState({ current_room: room_name })
+    store.actions.update()
+  },
+  endGame: (store) => {
+    store.actions.setRoomBoard(BOARD.room_name, null)
   },
 }
 
 const makeHook = globalHook(React, {}, actions)
-export default () => {
+export default (room_name) => {
   const [state, actions] = makeHook()
+  if (!BOARD && room_name) {
+    BOARD = B.get(B.storage.get(room_name))
+  }
 
   return {
     ...state,
     ...actions,
-    board,
-    useBoard: (b) => {
-      if (get(b, 'id') !== get(board, 'id')) {
-        board = b
-        setTimeout(actions.update, 0)
-      }
-    },
+    board: BOARD,
   }
 }

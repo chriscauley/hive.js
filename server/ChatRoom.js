@@ -26,12 +26,27 @@ class ChatRoom extends Room {
     return options.channel === this.channel
   }
 
-  onCreate(options) {
-    const { channel, board } = options
-    this.channel = options.channel
+  clearBoard() {
+  }
+
+  setBoard(board) {
+  }
+
+  togglePrivate(value) {
+    // TODO this should no longer be part of board
     if (board && board.rules && board.rules.players === 'private') {
       this.setPrivate()
     }
+  }
+
+  onCreate(options) {
+    const { channel } = options
+    const hostOnly = (client) => {
+      if (client.auth.displayName !== channel) {
+        throw "Only the host can do this"
+      }
+    }
+    this.channel = options.channel
 
     this.setPatchRate(1000 / 20)
 
@@ -48,16 +63,23 @@ class ChatRoom extends Room {
       ],
     }
 
-    board && Object.assign(state, {
-      name: DEFAULT_NAME,
-      ready: {},
-      actions: board.actions,
-      hash: undefined,
-      initial_board: board,
-    })
     this.setState(state)
 
-    this.setMetadata({channel, name: DEFAULT_NAME, rules: board && board.rules})
+    this.setMetadata({channel, name: DEFAULT_NAME})
+    this.onMessage('setBoard', (client, board) => {
+      hostOnly(client)
+      this.state.board_id = board.id
+      this.state.ready = {}
+      this.state.actions = board.actions
+      this.state.hash = board.hash
+      this.state.initial_board = board
+    })
+    this.onMessage('clearBoard', (client) => {
+      hostOnly(client)
+      this.state.cleared_board_id = this.state.board_id
+      const fields = ['board_id', 'name', 'ready', 'actions', 'hash', 'initial_board']
+      fields.forEach(field => (delete this.state[field]))
+    })
     this.onMessage('chat', (client, message) => {
       message.username = client.auth.username
       this.state.messages.push(message)
@@ -97,7 +119,7 @@ class ChatRoom extends Room {
       this.state.clients.push(id)
       this.state.messages.push({
         username: 'admin',
-        text: `${client.auth.username} joined.`,
+        text: `${client.auth.displayName} joined.`,
       })
     }
   }

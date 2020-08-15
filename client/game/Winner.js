@@ -2,26 +2,25 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import css from '@unrest/css'
 
-export default class Winner extends React.Component {
-  state = { open: true }
-  toggle = () => this.setState({ open: !this.state.open })
-  render() {
-    const { winner } = this.props.board
-    if (winner === undefined) {
+export default function Winner({ board }) {
+    const [ open, setOpen] = React.useState(true)
+    const { winner } = board
+    if (!winner) {
       return null
     }
+    const toggle = () => setOpen({ open: !open })
     return (
       <>
-        <div className={css.alert.info('cursor-pointer')} onClick={this.toggle}>
+        <div className={css.alert.info('cursor-pointer')} onClick={toggle}>
           Player {winner} has won the game.
         </div>
-        {this.state.open && (
+        {open && (
           <div className={css.modal.outer('text-center')}>
-            <div className={css.modal.mask()} onClick={this.toggle} />
+            <div className={css.modal.mask()} onClick={toggle} />
             <div className={css.modal.content.xs()}>
               <div className={css.h2()}>Player {winner} wins!</div>
               <div className="mb-2">
-                <button className={css.button()} onClick={this.toggle}>
+                <button className={css.button()} onClick={toggle}>
                   Keep Playing
                 </button>
               </div>
@@ -36,4 +35,3 @@ export default class Winner extends React.Component {
       </>
     )
   }
-}

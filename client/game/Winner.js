@@ -11,8 +11,8 @@ export default function Winner() {
   const can_end = board.room_name === 'local' || is_host
 
   const newGame = () => {
-    endGame()
     is_host && colyseus.send(board.room_name, 'clearBoard')
+    endGame()
   }
 
   if (board) {

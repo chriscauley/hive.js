@@ -15,9 +15,9 @@ window.ROOMS = ROOMS
 
 const _bindRoom = (store, channel, room) => {
   ROOMS[channel] = room
-  // TODO I think in some places we're using state and in others ROOMS
-  // default to only ROOMS since it's available globally (and manually call store.actions.update()
-  room.onStateChange((state) => store.setState({ [channel]: state }))
+  // This room object has the state and actions used elsewhere
+  // so setting react state with room state would be redundant
+  room.onStateChange((_state) => store.setState({ rando: Math.random() }))
   store.setState({ current_room: channel })
   delete LOADING[channel]
 }

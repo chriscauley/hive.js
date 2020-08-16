@@ -26,12 +26,6 @@ class ChatRoom extends Room {
     return options.channel === this.channel
   }
 
-  clearBoard() {
-  }
-
-  setBoard(board) {
-  }
-
   togglePrivate(value) {
     // TODO this should no longer be part of board
     if (board && board.rules && board.rules.players === 'private') {

@@ -11,7 +11,6 @@ import sprites from '../sprites'
 import HelpText from './HelpText'
 import NoRules from './NoRules'
 import Winner from './Winner'
-import Lobby from './Lobby'
 
 const keyMap = {
   UNSELECT: 'escape',
@@ -54,7 +53,6 @@ export default function Game({ room_name }) {
   const error = !board.rules.no_rules && board.error
   return (
     <div className="Game">
-      {room_name !== 'local' && <Lobby board={board} />}
       <GlobalHotKeys handlers={handlers} keyMap={keyMap} />
       <BoardComponent rows={player_1} className="player_1 odd-q" click={click} />
       <BoardComponent rows={player_2} className="player_2 odd-q" click={click} />

@@ -7,7 +7,7 @@ export default function Winner() {
   const [open, setOpen] = React.useState(true)
   const { board, endGame } = useGame()
   const colyseus = useColyseus()
-  const is_host = colyseus.isHost(board)
+  const is_host = colyseus.isHost(board.room_name)
   const can_end = board.room_name === 'local' || is_host
 
   const newGame = () => {

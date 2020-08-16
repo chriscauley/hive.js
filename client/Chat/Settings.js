@@ -6,10 +6,10 @@ import useColyseus from '../useColyseus'
 const schema = {
   title: 'User Settings',
   type: 'object',
-  required: ['displayName'],
+  required: ['username'],
   properties: {
-    displayName: {
-      title: 'DisplayName',
+    username: {
+      title: 'Username',
       type: 'string',
     },
   },
@@ -20,17 +20,17 @@ export default function Settings({ close = () => {}, ...props }) {
   if (!user) {
     return null
   }
-  const { displayName } = user
+  const { username } = user
   const onSubmit = (data) => {
-    if (!data.displayName.match(/^\w+$/)) {
+    if (!data.username.match(/^\w+$/)) {
       throw 'Display name can only be letters, numbers, and underscorses.'
     }
-    if (data.displayName === 'general') {
+    if (data.username === 'general') {
       throw 'You have chosen a forbidden display name.'
     }
     return saveUser(data)
       .then(close)
       .catch((e) => e.data)
   }
-  return <Form onSubmit={onSubmit} initial={{ displayName }} schema={schema} {...props} />
+  return <Form onSubmit={onSubmit} initial={{ username }} schema={schema} {...props} />
 }

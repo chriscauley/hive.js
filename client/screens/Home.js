@@ -15,7 +15,7 @@ export default function Home() {
           <div className="text-center">
             {user && (
               <>
-                <Link to={`/u/${user.displayName}/`} className={css.button()}>
+                <Link to={`/u/${user.username}/`} className={css.button()}>
                   Start Online Game
                 </Link>
                 <div className="font-bold font-xl my-4">-- OR --</div>

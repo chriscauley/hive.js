@@ -27,7 +27,7 @@ export default function Table({ match }) {
     return <Modal>Connecting to server...</Modal>
   }
 
-  const is_host = colyseus.user.displayName === room_name
+  const is_host = colyseus.user.username === room_name
   if (!room) {
     const f = is_host ? 'joinOrCreateRoom' : 'joinRoom'
     const m = is_host ? 'Creating room...' : `Waiting for ${room_name} to come online`

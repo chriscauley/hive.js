@@ -134,6 +134,6 @@ export default () => {
     ...state,
     ...actions,
     rooms: ROOMS,
-    isHost: (room_name) => room_name === client.auth.displayName,
+    isHost: (room_name) => room_name === client.auth.username,
   })
 }

@@ -36,7 +36,7 @@ class ChatRoom extends Room {
   onCreate(options) {
     const { channel } = options
     const hostOnly = (client) => {
-      if (client.auth.displayName !== channel) {
+      if (client.auth.username !== channel) {
         throw "Only the host can do this"
       }
     }
@@ -75,7 +75,7 @@ class ChatRoom extends Room {
       fields.forEach(field => (delete this.state[field]))
     })
     this.onMessage('chat', (client, message) => {
-      message.username = client.auth.displayName
+      message.username = client.auth.username
       this.state.messages.push(message)
     })
     this.onMessage('ready', (client) => {
@@ -113,7 +113,7 @@ class ChatRoom extends Room {
       this.state.clients.push(id)
       this.state.messages.push({
         username: 'admin',
-        text: `${client.auth.displayName} joined.`,
+        text: `${client.auth.username} joined.`,
       })
     }
   }

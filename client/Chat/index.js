@@ -38,8 +38,8 @@ export default function Chat() {
   }
 
   colyseus.joinOrCreateRoom('general') // idempotent
-  const room = colyseus[current_room] || {}
-  const { messages = [] } = room
+  const room = colyseus.rooms[current_room] || {state:{}}
+  const { messages = [] } = room.state
   const room_entries = Object.entries(rooms).sort()
   const close = () => setSettingsOpen(false)
   const _list = (n) => `room ${n === current_room ? 'current' : ''}`

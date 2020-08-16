@@ -75,7 +75,7 @@ class ChatRoom extends Room {
       fields.forEach(field => (delete this.state[field]))
     })
     this.onMessage('chat', (client, message) => {
-      message.username = client.auth.username
+      message.username = client.auth.displayName
       this.state.messages.push(message)
     })
     this.onMessage('ready', (client) => {

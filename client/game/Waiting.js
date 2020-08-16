@@ -31,7 +31,7 @@ const IsReady = ({ colyseus, board }) => (
   </>
 )
 
-export default function Lobby({ colyseus, board }) {
+export default function Waiting({ colyseus, board }) {
   const { user_id, rooms } = colyseus
   const room = rooms[board.room_name]
   const full = room.state.clients.length >= 2
@@ -41,11 +41,6 @@ export default function Lobby({ colyseus, board }) {
     Tag = ready ? IsReady : NeedsReady
   }
   return (
-    <div className={css.modal.outer()}>
-      <div className={css.modal.mask()} />
-      <div className={css.modal.content()}>
-        <Tag colyseus={colyseus} board={board} />
-      </div>
-    </div>
+    <Tag colyseus={colyseus} board={board} />
   )
 }

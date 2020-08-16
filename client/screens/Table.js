@@ -1,10 +1,21 @@
 import React from 'react'
+import css from '@unrest/css'
+
 import Board from '../game/Board'
 import Game from '../game/Game'
 import useGame from '../game/useGame'
 import NewGame from '../game/NewGame'
 import Waiting from '../game/Waiting'
 import useColyseus from '../useColyseus'
+
+const MessageModal = ({children}) => (
+  <div className="flex-grow flex items-center justify-center relative">
+    <div className={css.modal.outer('absolute')}>
+      <div className={css.modal.mask('cursor-default')}/>
+      <div className={css.modal.content.sm()}>{children}</div>
+    </div>
+  </div>
+)
 
 export default function Table({ match }) {
   const { room_name } = match.params
@@ -13,14 +24,15 @@ export default function Table({ match }) {
   const room = colyseus.rooms[room_name]
 
   if (!colyseus.user_id) {
-    return null
+    return <MessageModal children="Connecting to server..." />
   }
 
   const is_host = colyseus.user.displayName === room_name
   if (!room) {
     const f = is_host ? 'joinOrCreateRoom' : 'joinRoom'
+    const m = is_host ? 'Creating room...' : `Waiting for ${room_name} to come online`
     colyseus[f](room_name)
-    return null // TODO loading modal?
+    return <MessageModal children={m}/>
   }
 
   if (!board) {
@@ -30,7 +42,8 @@ export default function Table({ match }) {
     if (room.state.initial_board) {
       setTimeout(() => setRoomBoard(room_name, Board.save(room.state.initial_board)), 0)
     }
-    return 'Waiting for host to pick game settings' // TODO another loading modal
+    const m = 'Waiting for host to pick game settings'
+    return <MessageModal children={m}/>
   }
 
   if (!room.state.initial_board) {
@@ -41,7 +54,7 @@ export default function Table({ match }) {
   }
 
   if (!room.state.players) {
-    return <Waiting {...{ colyseus, board, is_host }} />
+    return <MessageModal children={<Waiting {...{ colyseus, board, is_host }} />} />
   }
 
   if (room.state.cleared_board_id === board.id) {

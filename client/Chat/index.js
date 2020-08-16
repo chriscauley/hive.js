@@ -16,15 +16,16 @@ const ChatError = ({ error }) => (
 
 export default function Chat() {
   const colyseus = useColyseus()
-  const [state, setState] = React.useState({ open: true })
+  const [open, setOpen] = React.useState(true)
+  const [settings_open, setSettingsOpen] = React.useState(false)
   const autoscroll = useAutoScroll()
   const textRef = React.useRef()
 
   const { user, rooms, current_room, error } = colyseus
 
-  if (!state.open) {
+  if (!open) {
     return (
-      <div className="Chat-collapsed" onClick={() => setState({ open: true })}>
+      <div className="Chat-collapsed" onClick={() => setOpen(true)}>
         <i className="fa fa-comment" />
       </div>
     )
@@ -40,7 +41,7 @@ export default function Chat() {
   const room = colyseus[current_room] || {}
   const { messages = [] } = room
   const room_entries = Object.entries(rooms).sort()
-  const close = () => setState({ settings_open: false })
+  const close = () => setSettingsOpen(false)
   const _list = (n) => `room ${n === current_room ? 'current' : ''}`
   const submit = (e) => {
     e.preventDefault()
@@ -54,7 +55,7 @@ export default function Chat() {
 
   return (
     <>
-      {state.settings_open && (
+      {settings_open && (
         <Modal close={close}>
           <Settings cancel={close} />
         </Modal>
@@ -64,12 +65,9 @@ export default function Chat() {
           <div className="bg-gray-400 text-right py-1">
             <i
               className={css.icon('gear cursor-pointer mx-1')}
-              onClick={() => setState({ settings_open: true })}
+              onClick={() => setSettingsOpen(true)}
             />
-            <i
-              className={css.icon('minus cursor-pointer mx-1')}
-              onClick={() => setState({ open: false })}
-            />
+            <i className={css.icon('minus cursor-pointer mx-1')} onClick={() => setOpen(false)} />
           </div>
           {room_entries.length > 1 && (
             <ul className="room_list">

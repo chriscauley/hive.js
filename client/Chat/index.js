@@ -38,7 +38,7 @@ export default function Chat() {
   }
 
   colyseus.joinOrCreateRoom('general') // idempotent
-  const room = colyseus.rooms[current_room] || {state:{}}
+  const room = colyseus.rooms[current_room] || { state: {} }
   const { messages = [] } = room.state
   const room_entries = Object.entries(rooms).sort()
   const close = () => setSettingsOpen(false)

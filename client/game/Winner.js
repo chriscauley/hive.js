@@ -15,9 +15,6 @@ export default function Winner() {
     endGame()
   }
 
-  if (board) {
-    board.winner = board.actions.length
-  }
   if (!(board && board.winner)) {
     return null
   }

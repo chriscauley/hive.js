@@ -1,7 +1,7 @@
 import React from 'react'
 import css from '@unrest/css'
 
-export default class Modal extends React.Component {
+export default class ModalLink extends React.Component {
   state = {}
   toggle = () => this.setState({ open: !this.state.open })
   render() {

@@ -40,7 +40,5 @@ export default function Waiting({ colyseus, board }) {
   if (full) {
     Tag = ready ? IsReady : NeedsReady
   }
-  return (
-    <Tag colyseus={colyseus} board={board} />
-  )
+  return <Tag colyseus={colyseus} board={board} />
 }

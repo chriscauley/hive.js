@@ -8,10 +8,10 @@ import NewGame from '../game/NewGame'
 import Waiting from '../game/Waiting'
 import useColyseus from '../useColyseus'
 
-const MessageModal = ({children}) => (
+const Modal = ({ children }) => (
   <div className="flex-grow flex items-center justify-center relative">
     <div className={css.modal.outer('absolute')}>
-      <div className={css.modal.mask('cursor-default')}/>
+      <div className={css.modal.mask('cursor-default')} />
       <div className={css.modal.content.sm()}>{children}</div>
     </div>
   </div>
@@ -24,7 +24,7 @@ export default function Table({ match }) {
   const room = colyseus.rooms[room_name]
 
   if (!colyseus.user_id) {
-    return <MessageModal children="Connecting to server..." />
+    return <Modal>Connecting to server...</Modal>
   }
 
   const is_host = colyseus.user.displayName === room_name
@@ -32,7 +32,7 @@ export default function Table({ match }) {
     const f = is_host ? 'joinOrCreateRoom' : 'joinRoom'
     const m = is_host ? 'Creating room...' : `Waiting for ${room_name} to come online`
     colyseus[f](room_name)
-    return <MessageModal children={m}/>
+    return <Modal>{m}</Modal>
   }
 
   if (!board) {
@@ -43,7 +43,7 @@ export default function Table({ match }) {
       setTimeout(() => setRoomBoard(room_name, Board.save(room.state.initial_board)), 0)
     }
     const m = 'Waiting for host to pick game settings'
-    return <MessageModal children={m}/>
+    return <Modal>{m}</Modal>
   }
 
   if (!room.state.initial_board) {
@@ -54,7 +54,11 @@ export default function Table({ match }) {
   }
 
   if (!room.state.players) {
-    return <MessageModal children={<Waiting {...{ colyseus, board, is_host }} />} />
+    return (
+      <Modal>
+        <Waiting {...{ colyseus, board, is_host }} />
+      </Modal>
+    )
   }
 
   if (room.state.cleared_board_id === board.id) {

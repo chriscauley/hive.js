@@ -13,7 +13,7 @@ function ModalLink({ render, text }) {
     <>
       <div onClick={toggle}>{text}</div>
       {open && (
-        <div className={css.modal.outer.sm()}>
+        <div className={css.modal.outer()}>
           <div className={css.modal.mask()} onClick={toggle} />
           <div className={css.modal.content()}>{render({ close: toggle })}</div>
         </div>

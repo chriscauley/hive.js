@@ -51,6 +51,10 @@ const getSchema = (room_name) => {
             title: 'No Rules',
             type: 'boolean',
           },
+          unlimited: {
+            title: 'Unlimited Pieces',
+            type: 'boolean',
+          }
         },
       },
     },
@@ -89,6 +93,10 @@ const uiSchema = {
     super_grasshopper: {
       classNames: 'has-help',
       'ui:help': _help('The grasshopper can make unlimited jumps per turn.'),
+    },
+    unlimited: {
+      classNames: 'has-help',
+      'ui:help': _help('You can place as many pieces as you want.'),
     },
   },
 }

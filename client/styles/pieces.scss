@@ -1,4 +1,4 @@
-$types: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spider hive;
+$types: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spider dragonfly fly mantis wasp scorpion cockroach;
 
 @each $type in $types {
   .piece.type-#{$type}:before {

@@ -42,6 +42,7 @@ const modes = {
 Object.keys(piece_sets).forEach((name) => (modes[name] = _defaultMode(name)))
 
 const getAvailable = (board) => {
+  const { unlimited } = board.rules
   const used = {
     1: {},
     2: {},
@@ -52,15 +53,16 @@ const getAvailable = (board) => {
   })
 
   const available = []
-  const piece_set = { queen: 1 }
+  const piece_set = { blank: 0, queen: 1 }
   board.rules.piece_sets.forEach((name) => {
     Object.assign(piece_set, modes[name](board, used))
   })
   Object.entries(used).forEach(([player_id, used_pieces]) => {
     Object.entries(piece_set).forEach(([type, total]) => {
       used_pieces[type] = used_pieces[type] || 0
-      if (total - used_pieces[type] > 0) {
-        available.push({ type, player_id, count: total - used_pieces[type] })
+      const count = unlimited ? 1 : total - used_pieces[type]
+      if (count > 0) {
+        available.push({ type, player_id, count })
       }
     })
   })

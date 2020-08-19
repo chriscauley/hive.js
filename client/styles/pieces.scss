@@ -1,16 +1,6 @@
-$custom: dragonfly fly mantis wasp scorpion cockroach;
-$original: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spider;
+$types: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spider hive;
 
-@each $type in $original {
-  .piece.type-#{$type}:before {
-    background-image: url(../images/pieces/#{$type}.png);
-    .theme-carbon & {
-      background-image: url(../images/pieces/#{$type}_dark.png);
-    }
-  }
-}
-
-@each $type in $custom {
+@each $type in $types {
   .piece.type-#{$type}:before {
     background-image: url(../images/pieces/#{$type}.png);
     .theme-carbon & {
@@ -49,6 +39,9 @@ $original: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spi
     }
   }
 
+  &.hex-player_2.type-hive:before {
+    filter: invert(0.8);
+  }
 
   /* some bugs are off center and need to be shifted */
   &.hex.type- {

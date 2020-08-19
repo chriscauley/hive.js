@@ -91,6 +91,10 @@ const centipede = [
   ),
 ]
 
+const hive = [
+  'An inert tile that cannot move',
+]
+
 export default {
   queen,
   beetle,
@@ -107,4 +111,5 @@ export default {
   cockroach,
   dragonfly,
   centipede,
+  hive,
 }

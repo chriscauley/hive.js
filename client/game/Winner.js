@@ -18,17 +18,19 @@ export default function Winner() {
   if (!(board && board.winner)) {
     return null
   }
+  const text =
+    board.winner === 'tie' ? 'The game is a draw' : `Player ${board.winner} has won the game.`
   const toggle = () => setOpen(!open)
   return (
     <>
       <div className={css.alert.info('cursor-pointer')} onClick={toggle}>
-        Player {board.winner} has won the game.
+        {text}
       </div>
       {open && (
         <div className={css.modal.outer('text-center')}>
           <div className={css.modal.mask()} onClick={toggle} />
           <div className={css.modal.content.xs()}>
-            <div className={css.h2()}>Player {board.winner} wins!</div>
+            <div className={css.h2()}>{text}</div>
             <div className="mb-2">
               <button className={css.button()} onClick={toggle}>
                 Keep Playing

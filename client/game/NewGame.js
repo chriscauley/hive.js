@@ -54,7 +54,7 @@ const getSchema = (room_name) => {
           unlimited: {
             title: 'Unlimited Pieces',
             type: 'boolean',
-          }
+          },
         },
       },
     },

@@ -91,9 +91,7 @@ const centipede = [
   ),
 ]
 
-const blank = [
-  'An inert tile that cannot move',
-]
+const blank = ['An inert tile that cannot move']
 
 export default {
   queen,

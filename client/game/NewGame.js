@@ -47,6 +47,10 @@ const getSchema = (room_name) => {
             title: 'Super Grasshoppper',
             type: 'boolean',
           },
+          venom_centipede: {
+            title: 'Venom Centipede',
+            type: 'boolean',
+          },
           no_rules: {
             title: 'No Rules',
             type: 'boolean',
@@ -93,6 +97,12 @@ const uiSchema = {
     super_grasshopper: {
       classNames: 'has-help',
       'ui:help': _help('The grasshopper can make unlimited jumps per turn.'),
+    },
+    venom_centipede: {
+      classNames: 'has-help',
+      'ui:help': _help(
+        'The centipede swaps with a piece 3 on-hive tiles away (Hive Venom variant).',
+      ),
     },
     unlimited: {
       classNames: 'has-help',

@@ -12,6 +12,18 @@ const ifRule = (rule, text) => (board) => {
   )
 }
 
+const ifNotRule = (rule, text) => (board) => {
+  const className = board.rules[rule] ? 'line-through' : ''
+  return (
+    <>
+      <span className={className}>{text}</span>
+      {' (without '}
+      <b>{rule}</b>
+      {')'}
+    </>
+  )
+}
+
 const spiderwebs = ifRule(
   'spiderwebs',
   'If an ant touches a spider while moving around the board It must stop. This does not apply to spiders that ants are touching at the start of the turn. The ant must take the shorter path.',
@@ -85,9 +97,16 @@ const dragonfly = [
 ]
 
 const centipede = [
-  _along('centipede'),
-  special(
-    'The centipede can swap spaces with an adjacent piece as long as removing both pieces would not break the one-hive rule.',
+  ifNotRule('venom_centipede', _along('centipede')),
+  ifNotRule(
+    'venom_centipede',
+    special(
+      'The centipede can swap spaces with an adjacent piece as long as removing both pieces would not break the one-hive rule.',
+    ),
+  ),
+  ifRule(
+    'venom_centipede',
+    special('The centipede swaps can swap with any piece 3 tiles away which is not in a stack.'),
   ),
 ]
 

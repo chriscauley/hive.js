@@ -7,7 +7,7 @@ export default function About() {
       <ul className="browser-default">
         <li>
           {
-            'Game rules and (most) design elements originated from the borad game Hive by Jhon Yianni.'
+            'Game rules and (most) design elements originated from the borad game Hive by Jhon Yianni. '
           }
           <a href="https://boardgamegeek.com/forums/thing/2655/hive">
             Learn more at Board Game Geek
@@ -47,12 +47,8 @@ export default function About() {
           <a href="https://www.flaticon.com/" title="Flaticon">
             www.flaticon.com
           </a>
-          {' (spider webs and super grasshopper icons respectively)'}
+          {' (spiderweb/mobius-strip and super grasshopper icons respectively)'}
         </li>
-        {/* Might eventually switch to "marble" tiles... not sure */}
-        {/* <a href="https://www.freepik.com/free-photos-vectors/texture"> */}
-        {/*   Texture photos created by freepik - www.freepik.com */}
-        {/* </a> */}
       </ul>
     </div>
   )

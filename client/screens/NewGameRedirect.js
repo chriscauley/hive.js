@@ -1,12 +1,11 @@
 import React from 'react'
 import { Redirect } from 'react-router-dom'
-import Form from '@unrest/react-jsonschema-form'
 
 import useGame from '../game/useGame'
 import useColyseus from '../useColyseus'
 import Wrapper from './Wrapper'
 
-export default function NewGameRedirect({match}) {
+export default function NewGameRedirect({ match }) {
   const { room_name } = match.params
   const { board, endGame } = useGame(room_name)
   const colyseus = useColyseus()
@@ -17,7 +16,6 @@ export default function NewGameRedirect({match}) {
     is_host && colyseus.send(room_name, 'clearBoard')
     endGame()
   }
-  console.log(board)
   if (!board) {
     return <Redirect to={url} />
   }

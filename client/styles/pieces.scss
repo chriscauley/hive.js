@@ -67,6 +67,8 @@ $types: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spider
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
+    position: relative;
+    z-index: 1;
   }
 
   &.gray {
@@ -75,6 +77,48 @@ $types: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spider
       opacity: 0.85;
     }
   }
+}
+
+.rule-venom_centipede .piece.type-centipede:before,
+.type-venom_centipede:before {
+  background-image: url(../images/pieces/venom_centipede.png);
+}
+
+.theme-carbon {
+  &.rule-venom_centipede .piece.type-centipede:before,
+  .type-venom_centipede:before {
+    background-image: url(../images/pieces/venom_centipede_dark.png);
+  }
+}
+
+.rule-spiderwebs .piece.type-spider:after,
+.rule-super_grasshopper .piece.type-grasshopper:after {
+  content: '';
+  display: block;
+  width: 80%;
+  height: 80%;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.1;
+}
+
+.rule-spiderwebs .hex-player_2.piece.type-spider:after,
+.rule-super_grasshopper .hex-player_2.piece.type-grasshopper:after {
+  filter: invert(1);
+  opacity: 0.15;
+}
+
+.rule-spiderwebs .piece.type-spider:after {
+  background-image: url('../images/trap.png');
+}
+
+.rule-super_grasshopper .piece.type-grasshopper:after {
+  background-image: url('../images/blockchain.png');
 }
 
 .piece.type-basics,
@@ -111,8 +155,12 @@ $types: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spider
   background-image: url('../images/cancel.png');
 }
 
-.piece.type- {
-  &super_grasshopper, &spiderwebs, &no_rules {
+.piece.type-unlimited:before {
+  background-image: url('../images/endless.png');
+}
+
+.hex-player_2.piece.type- {
+  &super_grasshopper, &spiderwebs, &no_rules, &unlimited {
     &:before {
       filter: invert(1);
     }

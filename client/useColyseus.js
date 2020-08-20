@@ -120,11 +120,6 @@ const actions = {
       B.doAction(board, remote_actions[board.actions.length])
     }
   },
-  rename(store, room, value) {
-    ROOMS[room]._name = value
-    store.setState({ rando: Math.random() })
-    store.actions.send(room, 'rename', value)
-  },
 }
 const makeHook = globalHook(React, {}, actions)
 export default () => {

@@ -100,10 +100,6 @@ class ChatRoom extends Room {
       this.state.hash = hash
       this.state.actions.push(action)
     })
-    this.onMessage('rename', (client, name) => {
-      this.setMetadata({...this.metadata, channel, name })
-      this.state.name = name
-    })
   }
 
   onJoin(client) {

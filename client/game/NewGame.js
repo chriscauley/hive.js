@@ -1,7 +1,7 @@
 import React from 'react'
 import Form from '@unrest/react-jsonschema-form'
 
-import { RuleList } from '../components/RoomList'
+import RuleList from '../components/RuleList'
 import { unslugify } from '../tutorial/Component'
 import useGame from '../game/useGame'
 import Board from './Board'
@@ -112,7 +112,7 @@ const uiSchema = {
   },
 }
 
-export default function newGame({ room_name }) {
+export default function NewGame({ room_name }) {
   const [rules, setRules] = React.useState()
   const game = useGame()
   const onSubmit = ({ variants, ...rules }) => {

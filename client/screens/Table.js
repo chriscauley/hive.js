@@ -7,14 +7,13 @@ import useGame from '../game/useGame'
 import NewGame from '../game/NewGame'
 import Waiting from '../game/Waiting'
 import useColyseus from '../useColyseus'
+import Wrapper from './Wrapper'
 
 const Modal = ({ children }) => (
-  <div className="flex-grow flex items-center justify-center relative">
-    <div className={css.modal.outer('absolute')}>
-      <div className={css.modal.mask('cursor-default')} />
-      <div className={css.modal.content.sm()}>{children}</div>
-    </div>
-  </div>
+  <Wrapper>
+    <div className={css.modal.mask('cursor-default')} />
+    <div className={css.modal.content.sm()}>{children}</div>
+  </Wrapper>
 )
 
 export default function Table({ match }) {
@@ -50,7 +49,7 @@ export default function Table({ match }) {
     if (is_host) {
       colyseus.send(room_name, 'setBoard', Board.toJson(board))
     }
-    return null // TODO loading modal?
+    return <Wrapper /> // TODO loading modal?
   }
 
   if (!room.state.players) {
@@ -64,7 +63,7 @@ export default function Table({ match }) {
   if (room.state.cleared_board_id === board.id) {
     // host cleared board
     setTimeout(endGame, 0)
-    return null
+    return <Wrapper />
   }
 
   colyseus.sync(board)

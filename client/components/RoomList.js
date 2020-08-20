@@ -70,7 +70,7 @@ export default function RoomList() {
       <h2>Join a Game</h2>
       {rooms.map((room) => (
         <div key={room.roomId} className="border m-1 p-2">
-          <Link to={`/u/${room.metadata.channel}/`}>
+          <Link to={`/play/${room.metadata.channel}/`}>
             <i className={css.icon('user mr-2')} />
             {`(${room.clients}) ${room.metadata.name}`}
             <Rules rules={room.metadata.rules} />

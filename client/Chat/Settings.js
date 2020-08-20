@@ -15,6 +15,8 @@ const schema = {
   },
 }
 
+const forbidden = ['general', 'local', 'admin']
+
 export default function Settings({ close = () => {}, ...props }) {
   const { user, saveUser } = useColyseus()
   if (!user) {
@@ -25,8 +27,8 @@ export default function Settings({ close = () => {}, ...props }) {
     if (!data.username.match(/^\w+$/)) {
       throw 'Display name can only be letters, numbers, and underscorses.'
     }
-    if (data.username === 'general') {
-      throw 'You have chosen a forbidden display name.'
+    if (forbidden.includes(data.username)) {
+      throw 'You have chosen a forbidden username.'
     }
     return saveUser(data)
       .then(close)

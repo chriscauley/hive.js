@@ -32,7 +32,8 @@ const App = withConfig((props) => {
         <div className="app-inner flex">
           <Route exact path="/" component={screens.Home} />
           <Route exact path="/local/" component={screens.Local} />
-          <Route path="/u/:room_name/" component={screens.Table} />
+          <Route path="/play/:room_name/" component={screens.Table} />
+          <Route path="/new/:room_name/" component={screens.NewGameRedirect} />
           <Route exact path="/about/" component={About} />
           <Route path="/sprites/" component={sprites.Routes} />
           <Chat />

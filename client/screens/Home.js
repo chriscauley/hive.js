@@ -15,13 +15,13 @@ export default function Home() {
           <div className="text-center">
             {user && (
               <>
-                <Link to={`/u/${user.username}/`} className={css.button()}>
+                <Link to={`/new/${user.username}/`} className={css.button()}>
                   Start Online Game
                 </Link>
                 <div className="font-bold font-xl my-4">-- OR --</div>
               </>
             )}
-            <Link to="/local/" className={css.button()}>
+            <Link to="/new/local/" className={css.button()}>
               Start Local Game
             </Link>
           </div>

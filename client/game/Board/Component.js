@@ -1,6 +1,7 @@
 import React from 'react'
 
 import withConfig from '../../config'
+import useGame from '../useGame'
 
 const getZ = (i, height) => {
   if (height < 4) {
@@ -41,28 +42,28 @@ const TileStack = ({ cell, click }) => {
   )
 }
 
-class BoardComponent extends React.Component {
-  render() {
-    const { className = '', rows, config, click } = this.props
-    if (rows.length === 0) {
-      return null
-    }
-    const { theme, hex_angle } = config.formData
-    const W = rows[0].length
-    const style = { '--columns': W }
-    const _class = `hex-grid hex-${hex_angle} ${className} theme-${theme}`
-    return (
-      <div className={_class} style={style}>
-        {rows.map((row, ir) => (
-          <div className="row" key={ir}>
-            {row.map((cell, ic) => (
-              <TileStack key={ic} cell={cell} click={click} />
-            ))}
-          </div>
-        ))}
-      </div>
-    )
+function BoardComponent(props) {
+  const { board = {} } = useGame()
+  const { className = '', rows, config, click } = props
+  if (rows.length === 0) {
+    return null
   }
+  const _rules = ''
+  const { theme, hex_angle } = config.formData
+  const W = rows[0].length
+  const style = { '--columns': W }
+  const _class = `hex-grid hex-${hex_angle} ${className} theme-${theme} ${board.rules_class}`
+  return (
+    <div className={_class} style={style}>
+      {rows.map((row, ir) => (
+        <div className="row" key={ir}>
+          {row.map((cell, ic) => (
+            <TileStack key={ic} cell={cell} click={click} />
+          ))}
+        </div>
+      ))}
+    </div>
+  )
 }
 
 export default withConfig(BoardComponent)

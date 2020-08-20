@@ -10,8 +10,10 @@ import moves from './moves'
 const board_cache = {}
 const PLAYER_COUNT = 2
 const noop = () => []
+const RULES = ['super_grasshopper', 'spiderwebs', 'venom_centipede', 'no_rules', 'unlimited']
 
 const B = {
+  RULES,
   moves,
   specials,
   wouldBreakHive,
@@ -60,6 +62,8 @@ const B = {
   },
 
   _markBoard: (b) => {
+    b.rules_list = RULES.filter((r) => b.rules[r])
+    b.rules_class = b.rules_list.map((r) => `rule-${r}`).join(' ')
     b.onehive = {} // index: would break hive if moved
     b.cantmove = {} // same as onehive, except for mantis
     b.empty = {} // empty but next to onehive

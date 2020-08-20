@@ -5,6 +5,7 @@ import css from '@unrest/css'
 import { unslugify } from '../tutorial/Component'
 import useColyseus from '../useColyseus'
 import pieces from '../game/pieces'
+import Board from '../game/Board'
 import sprites from '../sprites'
 
 const piece_map = {}
@@ -25,12 +26,14 @@ const Piece = ({ piece_type, set, player, title }) => (
   </div>
 )
 
-const Rules = ({ rules }) => {
+// TODO this should be in a separate file
+export const RuleList = ({ rules }) => {
+  sprites.makeSprites() // idempotent
   if (!rules) {
     return null
   }
   const { piece_sets } = rules
-  const variants = ['no_rules', 'super_grasshopper', 'spiderwebs'].filter((v) => rules[v])
+  const variants = Board.RULES.filter((v) => rules[v])
   return (
     <div className="mt-4">
       {piece_sets.map((set, irow) => (
@@ -62,7 +65,6 @@ const Rules = ({ rules }) => {
 
 export default function RoomList() {
   const { useRooms, available_rooms = [] } = useColyseus()
-  sprites.makeSprites() // idempotent
   useRooms()
   const rooms = available_rooms.filter((r) => r.metadata.channel !== 'general')
   return (
@@ -73,7 +75,7 @@ export default function RoomList() {
           <Link to={`/play/${room.metadata.channel}/`}>
             <i className={css.icon('user mr-2')} />
             {`(${room.clients}) ${room.metadata.name}`}
-            <Rules rules={room.metadata.rules} />
+            <RuleList rules={room.metadata.rules} />
           </Link>
         </div>
       ))}

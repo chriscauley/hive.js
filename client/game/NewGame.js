@@ -1,6 +1,7 @@
 import React from 'react'
 import Form from '@unrest/react-jsonschema-form'
 
+import { RuleList } from '../components/RoomList'
 import { unslugify } from '../tutorial/Component'
 import useGame from '../game/useGame'
 import Board from './Board'
@@ -112,16 +113,26 @@ const uiSchema = {
 }
 
 export default function newGame({ room_name }) {
+  const [rules, setRules] = React.useState()
   const game = useGame()
-  const onSubmit = (formData) => {
-    const { variants, ...rules } = formData
+  const onSubmit = ({ variants, ...rules }) => {
     Object.assign(rules, variants)
     game.setRoomBoard(room_name, Board.new({ rules, room_name }))
   }
+  const onChange = ({ variants, ...rules }) => {
+    Object.assign(rules, variants)
+    setRules(rules)
+  }
   return (
     <div className="flex-grow flex items-center justify-center">
-      <div className="border p-4 mt-8 shadowed max-w-md mx-2">
-        <Form schema={getSchema(room_name)} uiSchema={uiSchema} onSubmit={onSubmit} />
+      <div className="NewGame border p-4 mt-8 shadowed max-w-md mx-2">
+        <Form
+          schema={getSchema(room_name)}
+          uiSchema={uiSchema}
+          onSubmit={onSubmit}
+          onChange={onChange}
+        />
+        <RuleList rules={rules} />
       </div>
     </div>
   )

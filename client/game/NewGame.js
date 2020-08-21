@@ -125,7 +125,7 @@ export default function NewGame({ room_name }) {
   }
   return (
     <div className="flex-grow flex items-center justify-center">
-      <div className="NewGame border p-4 mt-8 shadowed max-w-md mx-2">
+      <div className="NewGame">
         <Form
           schema={getSchema(room_name)}
           uiSchema={uiSchema}

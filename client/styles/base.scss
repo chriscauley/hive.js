@@ -21,15 +21,6 @@
   }
 }
 
-.rjsf {
-  .checkboxes {
-    @apply flex flex-wrap;
-    .checkbox {
-      @apply pr-4 w-1/2;
-    }
-  }
-}
-
 .app-content.debug {
   [data-index]:after {
     background: rgba(255,255,255,0.45);
@@ -59,7 +50,18 @@
 }
 
 .NewGame {
-  .TutorialNav {
-    font-size: 12px;
+  @apply flex border p-4 mt-8 shadow max-w-xl mx-2 flex-wrap;
+  .rjsf {
+    margin-right: 30px;
+    width: 200px;
+  }
+  .RuleList {
+    padding-left: 10px;
+    width: 300px;
+    @apply mt-8;
+    .TutorialNav {
+      font-size: 12px;
+      flex-basis: 300px;
+    }
   }
 }

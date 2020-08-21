@@ -31,7 +31,7 @@ export default function RuleList({ rules }) {
   const { piece_sets } = rules
   const variants = Board.RULES.filter((v) => rules[v])
   return (
-    <div className="mt-4">
+    <div className="RuleList mt-4">
       {piece_sets.map((set, irow) => (
         <span key={set} className="hex-grid TutorialNav">
           <div className="row">

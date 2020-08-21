@@ -4,6 +4,7 @@
 import { mod } from './Geo'
 import { last } from 'lodash'
 import wouldBreakHive from './wouldBreakHive'
+import { stepOnHive } from './moves'
 
 // TODO might be mergeable with B.move. Maybe switch to moves.move to simplify imports?
 const move = (b, i1, i2, special) => {
@@ -62,6 +63,19 @@ const swap = (b, index1, index2) => {
 const centipede = (b, piece_id, args) => {
   const index = b.reverse[piece_id]
   if (args.length === 0) {
+    if (b.rules.venom_centipede) {
+      let moves = []
+      stepOnHive(b, index).forEach((on_index1) =>
+        stepOnHive(b, on_index1, [index]).forEach(
+          (on_index2) => (moves = moves.concat(stepOnHive(b, on_index2, [index, on_index1]))),
+        ),
+      )
+      return moves.filter(
+        (swap_index) =>
+          !wouldBreakHive(b, [index, swap_index]) && b.stacks[swap_index].length === 1,
+      )
+    }
+
     const touching = b.geo.touching[index]
     return touching.filter((index2, i_touching) => {
       if (!b.stacks[index2] || b.stacks[index2].length > 1) {

@@ -52,7 +52,7 @@ const stepAlongHive = (board, index, excludes = []) => {
   })
 }
 
-const stepOnHive = (board, index, excludes = []) => {
+export const stepOnHive = (board, index, excludes = []) => {
   const touching = board.geo.touching[index]
   return touching.filter((target_index) => {
     return (
@@ -290,11 +290,18 @@ const dragonflyExtra = (board, index, index2) => {
   return match ? ' extra--dragonfly' : ''
 }
 
+const centipede = (board, index) => {
+  if (board.rules.venom_centipede) {
+    return []
+  }
+  return stepAlongHive(board, index)
+}
+
 const moves = {
   stepOnHive,
   stepOffHive,
 
-  centipede: stepAlongHive,
+  centipede,
   queen: stepAlongHive,
   pill_bug: stepAlongHive,
   ant,

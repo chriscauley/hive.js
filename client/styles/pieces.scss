@@ -15,7 +15,7 @@ $types: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spider
 }
 
 .piece {
-  @apply flex items-center justify-center absolute w-full h-full;
+  @apply flex items-center justify-center absolute w-full h-full z-0;
   cursor: pointer;
 
   /* a few bugs are too dark on the black tiles. This is overwritten by invert in carbon theme */

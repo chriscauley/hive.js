@@ -108,7 +108,7 @@ const initial = {formData: {piece_sets: ['standard']}}
 const config = ConfigHook('new-game', {schema, uiSchema, actions: {}, initial})
 
 export default function NewGame({ room_name }) {
-  const { formData, ...props } = config.useConfig()
+  const { formData, actions } = config.useConfig()
   const { piece_sets, variants } = formData
   const game = useGame()
   const onSubmit = ({ formData }) => {
@@ -117,8 +117,8 @@ export default function NewGame({ room_name }) {
     game.setRoomBoard(room_name, Board.new({ rules, room_name }))
   }
   const onChange = (formData) => {
-    const { variants, ...rules } = formData
-    Object.assign(rules, variants)
+    // TODO make config hook auto save and this won't be necessary any more
+    actions.save({ formData })
   }
   return (
     <div className="flex-grow flex items-center justify-center">

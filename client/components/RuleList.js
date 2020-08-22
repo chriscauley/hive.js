@@ -28,7 +28,7 @@ export default function RuleList({ rules }) {
   if (!rules) {
     return null
   }
-  const { piece_sets } = rules
+  const { piece_sets=[] } = rules
   const variants = Board.RULES.filter((v) => rules[v])
   return (
     <div className="RuleList mt-4">

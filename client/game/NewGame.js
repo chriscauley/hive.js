@@ -1,5 +1,6 @@
 import React from 'react'
 import Form from '@unrest/react-jsonschema-form'
+import ConfigHook from '@unrest/react-config-hook'
 
 import RuleList from '../components/RuleList'
 import { unslugify } from '../tutorial/Component'
@@ -21,56 +22,46 @@ const enumNames = piece_enum.map((name) => {
   )
 })
 
-const getSchema = (room_name) => {
-  const schema = {
-    type: 'object',
-    properties: {
-      piece_sets: {
-        type: 'array',
-        title: 'Piece Sets',
-        items: {
-          type: 'string',
-          enum: piece_enum,
-          enumNames,
-        },
-        uniqueItems: true,
-        default: ['standard'],
+const schema = {
+  type: 'object',
+  properties: {
+    piece_sets: {
+      type: 'array',
+      title: 'Piece Sets',
+      items: {
+        type: 'string',
+        enum: piece_enum,
+        enumNames,
       },
-      variants: {
-        title: 'Variants',
-        type: 'object',
-        properties: {
-          spiderwebs: {
-            title: 'Spider Web',
-            type: 'boolean',
-          },
-          super_grasshopper: {
-            title: 'Super Grasshoppper',
-            type: 'boolean',
-          },
-          venom_centipede: {
-            title: 'Venom Centipede',
-            type: 'boolean',
-          },
-          no_rules: {
-            title: 'No Rules',
-            type: 'boolean',
-          },
-          unlimited: {
-            title: 'Unlimited Pieces',
-            type: 'boolean',
-          },
+      uniqueItems: true,
+    },
+    variants: {
+      title: 'Variants',
+      type: 'object',
+      properties: {
+        spiderwebs: {
+          title: 'Spider Web',
+          type: 'boolean',
+        },
+        super_grasshopper: {
+          title: 'Super Grasshoppper',
+          type: 'boolean',
+        },
+        venom_centipede: {
+          title: 'Venom Centipede',
+          type: 'boolean',
+        },
+        no_rules: {
+          title: 'No Rules',
+          type: 'boolean',
+        },
+        unlimited: {
+          title: 'Unlimited Pieces',
+          type: 'boolean',
         },
       },
     },
-  }
-  if (room_name !== 'local') {
-    schema.properties.private = {
-      title: 'Private',
-      type: 'boolean',
-    }
-  }
-  return schema
+  },
 }
 
 const _help = (s) => <i className="fa fa-question-circle-o" data-tip={s} />
@@ -112,27 +103,31 @@ const uiSchema = {
   },
 }
 
+const initial = {formData: {piece_sets: ['standard']}}
+
+const config = ConfigHook('new-game', {schema, uiSchema, actions: {}, initial})
+
 export default function NewGame({ room_name }) {
-  const [rules, setRules] = React.useState()
+  const { formData, ...props } = config.useConfig()
+  const { piece_sets, variants } = formData
   const game = useGame()
-  const onSubmit = ({ variants, ...rules }) => {
+  const onSubmit = ({ formData }) => {
+    const { variants, ...rules } = formData
     Object.assign(rules, variants)
     game.setRoomBoard(room_name, Board.new({ rules, room_name }))
   }
-  const onChange = ({ variants, ...rules }) => {
+  const onChange = (formData) => {
+    const { variants, ...rules } = formData
     Object.assign(rules, variants)
-    setRules(rules)
   }
   return (
     <div className="flex-grow flex items-center justify-center">
       <div className="NewGame">
-        <Form
-          schema={getSchema(room_name)}
-          uiSchema={uiSchema}
+        <config.Form
           onSubmit={onSubmit}
           onChange={onChange}
         />
-        <RuleList rules={rules} />
+        <RuleList rules={{...variants, piece_sets}} />
       </div>
     </div>
   )

@@ -71,7 +71,7 @@ class ChatRoom extends Room {
     this.onMessage('clearBoard', (client) => {
       hostOnly(client)
       this.state.cleared_board_id = this.state.board_id
-      const fields = ['board_id', 'name', 'ready', 'actions', 'hash', 'initial_board']
+      const fields = ['board_id', 'name', 'ready', 'actions', 'hash', 'initial_board', 'players']
       fields.forEach(field => (delete this.state[field]))
     })
     this.onMessage('chat', (client, message) => {

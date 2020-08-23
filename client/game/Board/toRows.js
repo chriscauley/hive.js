@@ -4,6 +4,16 @@ import pieces from '../pieces'
 import Board from './index'
 
 const _class = (player, type) => `piece hex-player_${player} type type-${type} hex `
+const empty = (board, index) => {
+  const cls = 'piece hex'
+  if (!board.empty[index]) {
+    // hexes far away from the hive are "invisible"
+    return cls
+  }
+  const colors = ['r', 'g', 'b', 'r']
+  const r_i = (board.geo.index2xy(index)[1] % 3) + (index % 2)
+  return cls + ' hex-empty_' + colors[r_i]
+}
 
 const pieceToClass = (board, piece_id) => {
   const type = board.piece_types[piece_id]
@@ -69,7 +79,7 @@ export default (board, { columns = 1 } = {}) => {
           cell.piece_type = board.piece_types[piece_id]
         })
       } else {
-        cell.stack.push('piece hex ' + (board.empty[cell.index] ? 'hex-empty' : ''))
+        cell.stack.push(empty(board, cell.index))
       }
       if (marked[cell.index]) {
         const _i = cell.stack.length - 1

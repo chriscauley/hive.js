@@ -101,8 +101,13 @@ export const makeSprites = (debug) => {
   debug && append(canvas)
   canvas.width = 2 * SIZE
   canvas.height = Math.sqrt(3) * SIZE
+  const a = 128
+  const b = 112
   const bgs = {
-    empty: 'rgba(128,128,128,0.5)',
+    empty: `rgba(${a},${a},${a},0.5)`,
+    empty_r: `rgba(${a},${b},${b},0.5)`,
+    empty_g: `rgba(${b},${a},${b},0.5)`,
+    empty_b: `rgba(${b},${b},${a},0.5)`,
     player_1: 'white',
     player_2: 'black',
   }

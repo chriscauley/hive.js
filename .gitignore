@@ -3,3 +3,7 @@ coverage
 .cache
 dist
 node_modules
+
+# python
+server/settings/local.py
+__pycache__

@@ -48,11 +48,10 @@ function BoardComponent(props) {
   if (rows.length === 0) {
     return null
   }
-  const _rules = ''
   const { theme, hex_angle } = config.formData
   const W = rows[0].length
   const style = { '--columns': W }
-  const _class = `hex-grid hex-${hex_angle} ${className} theme-${theme} ${board.rules_class}`
+  const _class = `hex-grid hex-${hex_angle} ${className} theme-${theme} ${board._class}`
   return (
     <div className={_class} style={style}>
       {rows.map((row, ir) => (

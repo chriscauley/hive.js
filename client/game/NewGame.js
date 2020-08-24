@@ -7,6 +7,7 @@ import { unslugify } from '../tutorial/Component'
 import useGame from '../game/useGame'
 import Board from './Board'
 import pieces from './pieces'
+import variants from './variants'
 
 const piece_enum = Object.keys(pieces.piece_sets)
 const enumNames = piece_enum.map((name) => {
@@ -35,72 +36,15 @@ const schema = {
       },
       uniqueItems: true,
     },
-    variants: {
-      title: 'Variants',
-      type: 'object',
-      properties: {
-        spiderwebs: {
-          title: 'Spider Web',
-          type: 'boolean',
-        },
-        super_grasshopper: {
-          title: 'Super Grasshoppper',
-          type: 'boolean',
-        },
-        venom_centipede: {
-          title: 'Venom Centipede',
-          type: 'boolean',
-        },
-        no_rules: {
-          title: 'No Rules',
-          type: 'boolean',
-        },
-        unlimited: {
-          title: 'Unlimited Pieces',
-          type: 'boolean',
-        },
-      },
-    },
+    variants: variants.schema,
   },
 }
-
-const _help = (s) => <i className="fa fa-question-circle-o" data-tip={s} />
 
 const uiSchema = {
   piece_sets: {
     'ui:widget': 'checkboxes',
   },
-  private: {
-    'ui:help': _help(
-      'Private games will not appear in the list, but players can still join if they have the url.',
-    ),
-  },
-  variants: {
-    no_rules: {
-      classNames: 'has-help',
-      'ui:help': _help(
-        'UI will still display legal moves, but any piece can be moved to any space.',
-      ),
-    },
-    spiderwebs: {
-      classNames: 'has-help',
-      'ui:help': _help('Ants stop moving if they collide with an enemy spider.'),
-    },
-    super_grasshopper: {
-      classNames: 'has-help',
-      'ui:help': _help('The grasshopper can make unlimited jumps per turn.'),
-    },
-    venom_centipede: {
-      classNames: 'has-help',
-      'ui:help': _help(
-        'The centipede swaps with a piece 3 on-hive tiles away (Hive Venom variant).',
-      ),
-    },
-    unlimited: {
-      classNames: 'has-help',
-      'ui:help': _help('You can place as many pieces as you want.'),
-    },
-  },
+  variants: variants.uiSchema,
 }
 
 const initial = {formData: {piece_sets: ['standard']}}

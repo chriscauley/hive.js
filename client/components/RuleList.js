@@ -3,6 +3,7 @@ import React from 'react'
 import { unslugify } from '../tutorial/Component'
 import pieces from '../game/pieces'
 import Board from '../game/Board'
+import variants from '../game/variants'
 import sprites from '../sprites'
 
 const piece_map = {}
@@ -29,7 +30,8 @@ export default function RuleList({ rules }) {
     return null
   }
   const { piece_sets=[] } = rules
-  const variants = Board.RULES.filter((v) => rules[v])
+  const selected_variants = variants.list.filter((v) => rules[v.slug])
+  console.log(variants.list)
   return (
     <div className="RuleList mt-4">
       {piece_sets.map((set, irow) => (
@@ -41,15 +43,15 @@ export default function RuleList({ rules }) {
           </div>
         </span>
       ))}
-      {variants.length > 0 && (
+      {selected_variants.length > 0 && (
         <span className="hex-grid TutorialNav">
           <div className="row">
-            {variants.map((v) => (
+            {selected_variants.map((v) => (
               <Piece
-                piece_type={v}
+                piece_type={v.slug}
                 player={piece_sets.length}
-                title={`"${v}" rule enabled`}
-                key={v}
+                title={`"${v.name}" rule enabled`}
+                key={v.slug}
               />
             ))}
           </div>

@@ -102,7 +102,7 @@ export const makeSprites = (debug) => {
   canvas.width = 2 * SIZE
   canvas.height = Math.sqrt(3) * SIZE
   const a = 128
-  const b = 112
+  const b = 96
   const bgs = {
     empty: `rgba(${a},${a},${a},0.5)`,
     empty_r: `rgba(${a},${b},${b},0.5)`,

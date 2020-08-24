@@ -6,6 +6,7 @@ import objectHash from 'object-hash'
 import wouldBreakHive from './wouldBreakHive'
 import specials from './specials'
 import moves from './moves'
+import variants from '../variants'
 
 const board_cache = {}
 const PLAYER_COUNT = 2
@@ -62,8 +63,7 @@ const B = {
   },
 
   _markBoard: (b) => {
-    b.rules_list = RULES.filter((r) => b.rules[r])
-    b.rules_class = b.rules_list.map((r) => `rule-${r}`).join(' ')
+    b._class = variants.getBoardClass(b)
     b.onehive = {} // index: would break hive if moved
     b.cantmove = {} // same as onehive, except for mantis
     b.empty = {} // empty but next to onehive

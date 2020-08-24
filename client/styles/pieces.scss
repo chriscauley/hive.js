@@ -116,15 +116,15 @@ $types: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spider
 }
 
 .rule-spiderwebs .piece.type-spider:after {
-  background-image: url('../images/trap.png');
+  background-image: url('../images/icons/trap.png');
 }
 
 .rule-super_grasshopper .piece.type-grasshopper:after {
-  background-image: url('../images/blockchain.png');
+  background-image: url('../images/icons/blockchain.png');
 }
 
 .rule-queen_lock .piece.type-queen:after {
-  background-image: url('../images/comb-19.png');
+  background-image: url('../images/icons/comb-19.png');
 }
 
 .piece.type-basics,
@@ -150,23 +150,23 @@ $types: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spider
 }
 
 .piece.type-super_grasshopper:before {
-  background-image: url('../images/blockchain.png');
+  background-image: url('../images/icons/blockchain.png');
 }
 
 .piece.type-spiderwebs:before {
-  background-image: url('../images/trap.png');
+  background-image: url('../images/icons/trap.png');
 }
 
 .piece.type-no_rules:before {
-  background-image: url('../images/cancel.png');
+  background-image: url('../images/icons/cancel.png');
 }
 
 .piece.type-unlimited:before {
-  background-image: url('../images/endless.png');
+  background-image: url('../images/icons/endless.png');
 }
 
 .piece.type-queen_lock:before {
-  background-image: url('../images/comb-19.png');
+  background-image: url('../images/icons/comb-19.png');
   height: 80%;
   width: 75%;
 }

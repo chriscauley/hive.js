@@ -6,4 +6,7 @@ node_modules
 
 # python
 server/settings/local.py
+server/settings/.secret_key
 __pycache__
+.venv
+unrest

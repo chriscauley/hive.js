@@ -3,6 +3,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { GlobalHotKeys } from 'react-hotkeys'
 import { HashRouter, Route } from 'react-router-dom'
+import auth from '@unrest/react-auth'
 
 import Nav from './components/Nav'
 import About from './components/About'
@@ -38,6 +39,7 @@ const App = withConfig((props) => {
           <Route path="/sprites/" component={sprites.Routes} />
           <Chat />
           <ReactTooltip className="max-w-sm" />
+          <auth.Routes />
         </div>
       </HashRouter>
     </div>

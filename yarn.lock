@@ -1539,6 +1539,11 @@
   version "0.0.5"
   resolved "https://codeload.github.com/chriscauley/unrest-css/tar.gz/28f60945a351a6d893a649d786484e47c68d7bab"
 
+"@unrest/react-auth@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@unrest/react-auth/-/react-auth-0.1.0.tgz#91e7c249745185c327f602b7a7ed4ef2772e3ba8"
+  integrity sha512-sJjZHX0B9KF7DcviyEs4U5KmKRCEIykaPkF40/aAPsByHSX4snqRu5km7HxBeUsuBJk7/QsoiufzmldO5o7BFQ==
+
 "@unrest/react-config-hook@^0.0.3":
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/@unrest/react-config-hook/-/react-config-hook-0.0.3.tgz#10f0a2ff0735af32b17a55ae37aa55772c837a2f"
@@ -1548,6 +1553,13 @@
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/@unrest/react-jsonschema-form/-/react-jsonschema-form-0.0.2.tgz#cb620eff33702d3452c72b81eaeb7b324e728fa1"
   integrity sha512-4eTFUO4/waCkTujfPC1J2s4Ht3ryXN4wm8RBQ9sHX1ZhSPvLJc0lMLQCrs8TkYA4hC1A05LMyjsmTRZipz9y0Q==
+
+"@unrest/react-rest-hook@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@unrest/react-rest-hook/-/react-rest-hook-0.0.5.tgz#1de56a8222943a1aae487560a37595c5cc66013f"
+  integrity sha512-0ZLdgP+A9hIzJcoRNEna47h/Il666+G8U5S19sUD7aIN4hiSDUa/8BhZLAteYkHEwwyAbNljNUkCesia+oa0BQ==
+  dependencies:
+    lodash "^4.17.15"
 
 "@unrest/tailwind@^0.0.2":
   version "0.0.2"

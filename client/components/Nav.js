@@ -1,11 +1,13 @@
+
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { Dropdown } from '@unrest/core'
 import css from '@unrest/css'
+import auth from '@unrest/react-auth'
 
 import GameDropdown from './GameDropdown'
 import withConfig from '../config'
 import tutorial from '../tutorial'
-import { Dropdown } from '@unrest/core'
 
 export default function Nav() {
   return (
@@ -32,6 +34,7 @@ export default function Nav() {
           className={css.icon('github mx-2 text-blue-500')}
           href="https://github.com/chriscauley/hive.js/"
         />
+        <auth.AuthNav />
       </section>
     </header>
   )

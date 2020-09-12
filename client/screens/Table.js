@@ -79,5 +79,28 @@ export default function Table({ match }) {
     )
   }
   sync(board)
-  return <Game room_name={room_name} board_id={board.id} />
+  return (
+    <>
+      <Game room_name={room_name} board_id={board.id} />
+      <TableWatcher room_name={room_name} />
+    </>
+  )
+}
+
+function TableWatcher({ room_name }) {
+  const { _board } = useGame()
+  const { rooms, send } = useChat()
+  const room = rooms[room_name]
+  if (!room) {
+    return null
+  }
+  return (
+    <div className="fixed bottom-0 right-0 p-4 border bg-white rounded">
+      <div>players: {room.state.user_ids.length}</div>
+      <div>ticks: {room.ticks}</div>
+      <div className="btn btn-light" onClick={() => send(room_name, 'chat', 'woo!')}>
+        send
+      </div>
+    </div>
+  )
 }

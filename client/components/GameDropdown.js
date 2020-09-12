@@ -45,8 +45,8 @@ function Reset({ reset }) {
 }
 
 export default function GameDropdown() {
-  const { undo, redo, board={}, endGame } = useGame()
-  const { user={} } = auth.use()
+  const { undo, redo, board = {}, endGame } = useGame()
+  const { user = {} } = auth.use()
   const { send } = useChat()
   const { room_name } = board
   const is_host = room_name === user.username

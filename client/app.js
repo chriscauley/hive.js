@@ -19,24 +19,6 @@ const keyMap = {
   REDO: ['ctrl+y', 'ctrl+shift+y'],
 }
 
-import useGame from './game/useGame'
-import useChat from './useChat'
-
-function Refresher() {
-  const { board = {} } = useGame()
-  const { joinRoom } = useChat()
-  const room = window.ROOMS[board.room_name]
-  return (
-    <div className="fixed bottom-0 m-4 bg-white border right-0">
-      <div>room_name: {board.room_name}</div>
-      <div>room: {room && 'yes'}</div>
-      <button className="btn btn-light" onClick={() => joinRoom(board.room_name)}>
-        Refresh
-      </button>
-    </div>
-  )
-}
-
 const App = withConfig((props) => {
   const { debug } = props.config.formData
   const handlers = {
@@ -56,7 +38,6 @@ const App = withConfig((props) => {
           <Route path="/sprites/" component={sprites.Routes} />
           <ReactTooltip className="max-w-sm" />
           <auth.Routes />
-          <Refresher />
         </div>
       </HashRouter>
     </div>

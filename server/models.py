@@ -20,7 +20,7 @@ class Message(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     def to_json(self):
-        attrs = ['content', 'user_id', 'created', 'id', 'action']
+        attrs = ['content', 'user_id', 'id', 'action']
         return { attr: getattr(self, attr) for attr in attrs }
 
     class Meta:

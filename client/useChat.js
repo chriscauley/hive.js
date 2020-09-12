@@ -1,12 +1,10 @@
 import { last } from 'lodash'
 import React from 'react'
 import globalHook from 'use-global-hook'
-import { post } from '@unrest/core'
 import B from './game/Board'
 
+const SOCKETS = {}
 const ROOMS = {}
-const LOADING = {}
-const timeouts = {}
 window.ROOMS = ROOMS
 
 const actions = {
@@ -14,25 +12,23 @@ const actions = {
     store.setState(Math.random())
   },
   joinRoom: (store, room_name) => {
-    if (LOADING[room_name]) {
+    if (SOCKETS[room_name]) {
       return
     }
-    LOADING[room_name] = true
-    clearTimeout(timeouts[room_name])
-    fetch('/api/room/?room_name=' + room_name)
-      .then((r) => r.json())
-      .then((data) => {
-        ROOMS[room_name] = data
-        delete LOADING[room_name]
-        timeouts[room_name] = setTimeout(() => store.actions.joinRoom(room_name), 1000)
-        store.actions.update()
-      })
+    const url = `ws://${window.location.host}/ws/chat/${room_name}/`
+    const ws = (SOCKETS[room_name] = new WebSocket(url))
+    ws.__ticks = 0
+    ws.onclose = () => {
+      delete SOCKETS[room_name]
+    }
+    ws.onmessage = (e) => {
+      ROOMS[room_name] = JSON.parse(e.data)
+      ROOMS[room_name].ticks = ws.__ticks++
+      store.actions.update()
+    }
   },
   send(store, room_name, action, content) {
-    post('/api/room/message/', { room_name, action, content }).then((data) => {
-      ROOMS[room_name] = data
-      store.actions.update()
-    })
+    SOCKETS[room_name].send(JSON.stringify({ action, content }))
   },
   sync(store, board) {
     const room = ROOMS[board.room_name]

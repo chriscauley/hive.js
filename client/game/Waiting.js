@@ -13,32 +13,30 @@ const NeedsPlayers = ({ board }) => (
   </>
 )
 
-const NeedsReady = ({ colyseus, board }) => (
+const NeedsReady = ({ send, board }) => (
   <>
     <h2>Please click ready</h2>
-    <button className={css.button()} onClick={() => colyseus.send(board.room_name, 'ready')}>
+    <button className={css.button()} onClick={() => send(board.room_name, 'ready')}>
       I'm ready
     </button>
   </>
 )
 
-const IsReady = ({ colyseus, board }) => (
+const IsReady = ({ send, board }) => (
   <>
     <h2>Waiting for other players to press ready</h2>
-    <button className={css.button()} onClick={() => colyseus.send(board.room_name, 'notready')}>
+    <button className={css.button()} onClick={() => send(board.room_name, 'notready')}>
       Wait, I'm not ready!
     </button>
   </>
 )
 
-export default function Waiting({ colyseus, board }) {
-  const { user_id, rooms } = colyseus
-  const room = rooms[board.room_name]
-  const full = room.state.clients.length >= 2
-  const ready = room.state.ready[user_id]
+export default function Waiting({ room, user_id, board, send }) {
+  const full = room.state.user_ids.length >= 2
+  const ready = room.state.ready.includes(user_id)
   let Tag = NeedsPlayers
   if (full) {
     Tag = ready ? IsReady : NeedsReady
   }
-  return <Tag colyseus={colyseus} board={board} />
+  return <Tag send={send} board={board} />
 }

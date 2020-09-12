@@ -1,7 +1,8 @@
 import React from 'react'
+import auth from '@unrest/react-auth'
 
+import useChat from '../useChat'
 import useGame from '../game/useGame'
-import useColyseus from '../useColyseus'
 import game from '../game'
 import css from '@unrest/css'
 import { Dropdown } from '@unrest/core'
@@ -44,13 +45,14 @@ function Reset({ reset }) {
 }
 
 export default function GameDropdown() {
-  const { undo, redo, board, endGame } = useGame()
-  const colyseus = useColyseus()
-  const { room_name } = board || {}
-  const is_host = colyseus.isHost(room_name)
+  const { undo, redo, board={}, endGame } = useGame()
+  const { user={} } = auth.use()
+  const { send } = useChat()
+  const { room_name } = board
+  const is_host = room_name === user.username
 
   const reset = () => {
-    is_host && colyseus.send(room_name, 'clearBoard')
+    is_host && send(room_name, 'clearBoard')
     endGame()
   }
 

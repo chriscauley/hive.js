@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import css from '@unrest/css'
 
-import useColyseus from '../useColyseus'
+import useChat from '../useChat'
 import pieces from '../game/pieces'
 import RuleList from './RuleList'
 
@@ -12,8 +12,7 @@ Object.entries(pieces.piece_sets).forEach(([key, { pieces }]) => {
 })
 
 export default function RoomList() {
-  const { useRooms, available_rooms = [] } = useColyseus()
-  useRooms()
+  const { available_rooms = [] } = useChat()
   const rooms = available_rooms.filter((r) => r.metadata.channel !== 'general')
   return (
     <div className="border p-4 mt-8 shadowed max-w-md w-64 mx-2">

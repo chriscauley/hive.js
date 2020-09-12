@@ -2,7 +2,6 @@ import React from 'react'
 
 import { unslugify } from '../tutorial/Component'
 import pieces from '../game/pieces'
-import Board from '../game/Board'
 import variants from '../game/variants'
 import sprites from '../sprites'
 
@@ -29,9 +28,9 @@ export default function RuleList({ rules }) {
   if (!rules) {
     return null
   }
-  const { piece_sets=[] } = rules
+  const { piece_sets = [] } = rules
   const selected_variants = variants.list.filter((v) => rules[v.slug])
-  console.log(variants.list)
+
   return (
     <div className="RuleList mt-4">
       {piece_sets.map((set, irow) => (

@@ -1,17 +1,19 @@
 import React from 'react'
 import css from '@unrest/css'
+import auth from '@unrest/react-auth'
 import useGame from './useGame'
-import useColyseus from '../useColyseus'
+import useChat from '../useChat'
 
 export default function Winner() {
   const [open, setOpen] = React.useState(true)
   const { board, endGame } = useGame()
-  const colyseus = useColyseus()
-  const is_host = colyseus.isHost(board.room_name)
+  const { user } = auth.use() || {}
+  const { send } = useChat()
+  const is_host = user.username === board.room_name
   const can_end = board.room_name === 'local' || is_host
 
   const newGame = () => {
-    is_host && colyseus.send(board.room_name, 'clearBoard')
+    is_host && send(board.room_name, 'clearBoard')
     endGame()
   }
 

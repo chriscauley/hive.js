@@ -1,19 +1,20 @@
 import React from 'react'
 import { Redirect } from 'react-router-dom'
+import auth from '@unrest/react-auth'
 
+import useChat from '../useChat'
 import useGame from '../game/useGame'
-import useColyseus from '../useColyseus'
 import Wrapper from './Wrapper'
 
 export default function NewGameRedirect({ match }) {
   const { room_name } = match.params
+  const { user } = auth.use()
   const { board, endGame } = useGame(room_name)
-  const colyseus = useColyseus()
-  const is_host = colyseus.isHost(room_name)
+  const { send } = useChat()
   const url = room_name === 'local' ? '/local/' : `/play/${room_name}/`
 
   const reset = () => {
-    is_host && colyseus.send(room_name, 'clearBoard')
+    user.username === room_name && send(room_name, 'clearBoard')
     endGame()
   }
   if (!board) {

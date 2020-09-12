@@ -11,7 +11,7 @@ const variants = {
   },
   super_grasshopper: {
     requires: ['grasshopper'],
-    help:  'The grasshopper can make unlimited jumps per turn.',
+    help: 'The grasshopper can make unlimited jumps per turn.',
   },
   venom_centipede: {
     requires: ['centipede'],
@@ -19,11 +19,11 @@ const variants = {
   },
   no_rules: {
     requires: [],
-    help:  'UI will still display legal moves, but any piece can be moved to any space.',
+    help: 'UI will still display legal moves, but any piece can be moved to any space.',
   },
   unlimited: {
     requires: [],
-    help:  'You can place as many pieces as you want.',
+    help: 'You can place as many pieces as you want.',
   },
   // queen_lock: {
   //   requires: [],
@@ -34,19 +34,21 @@ const variants = {
 const schema = {
   type: 'object',
   title: 'variants',
-  properties: {}
+  properties: {},
 }
 const uiSchema = {}
 const list = []
 
-const getBoardClass = ({rules}) => {
-  return list.filter(v => rules[v.slug]).map((v) => `rule-${v.slug}`).join(' ')
+const getBoardClass = ({ rules }) => {
+  return list
+    .filter((v) => rules[v.slug])
+    .map((v) => `rule-${v.slug}`)
+    .join(' ')
 }
-
 
 Object.entries(variants).forEach(([slug, variant]) => {
   variant.slug = slug
-  variant.name = unslugify(slug),
+  variant.name = unslugify(slug)
   list.push(variant)
   uiSchema[slug] = {
     classNames: 'has-help',

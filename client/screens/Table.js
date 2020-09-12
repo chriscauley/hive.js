@@ -1,12 +1,13 @@
 import React from 'react'
+import auth from '@unrest/react-auth'
 import css from '@unrest/css'
 
 import Board from '../game/Board'
 import Game from '../game/Game'
+import useChat from '../useChat'
 import useGame from '../game/useGame'
 import NewGame from '../game/NewGame'
 import Waiting from '../game/Waiting'
-import useColyseus from '../useColyseus'
 import Wrapper from './Wrapper'
 
 const Modal = ({ children }) => (
@@ -18,19 +19,20 @@ const Modal = ({ children }) => (
 
 export default function Table({ match }) {
   const { room_name } = match.params
+  const { user } = auth.use()
   const { board, setRoomBoard, endGame } = useGame(room_name)
-  const colyseus = useColyseus()
-  const room = colyseus.rooms[room_name]
+  const { rooms, joinRoom, send, sync } = useChat()
+  const room = rooms[room_name]
 
-  if (!colyseus.user_id) {
+  if (!user) {
+    // TODO what if server is down?
     return <Modal>Connecting to server...</Modal>
   }
 
-  const is_host = colyseus.user.username === room_name
+  const is_host = room_name === user.username
   if (!room) {
-    const f = is_host ? 'joinOrCreateRoom' : 'joinRoom'
     const m = is_host ? 'Creating room...' : `Waiting for ${room_name} to come online`
-    colyseus[f](room_name)
+    joinRoom(room_name)
     return <Modal>{m}</Modal>
   }
 
@@ -47,25 +49,35 @@ export default function Table({ match }) {
 
   if (!room.state.initial_board) {
     if (is_host) {
-      colyseus.send(room_name, 'setBoard', Board.toJson(board))
+      send(room_name, 'setBoard', Board.toJson(board))
     }
     return <Wrapper /> // TODO loading modal?
   }
 
   if (!room.state.players) {
+    const user_id = user.id
     return (
       <Modal>
-        <Waiting {...{ colyseus, board, is_host }} />
+        <Waiting {...{ room, board, user_id, send }} />
       </Modal>
     )
   }
 
   if (room.state.cleared_board_id === board.id) {
+    // TODO is this still necessary with new django backend?
     // host cleared board
     setTimeout(endGame, 0)
     return <Wrapper />
   }
 
-  colyseus.sync(board)
+  if (!board.players) {
+    board.players = room.state.players
+    board.local_player = parseInt(
+      Object.keys(board.players).find((key) => {
+        return board.players[key] === user.id
+      }),
+    )
+  }
+  sync(board)
   return <Game room_name={room_name} board_id={board.id} />
 }

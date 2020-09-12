@@ -1,5 +1,4 @@
 import React from 'react'
-import Form from '@unrest/react-jsonschema-form'
 import ConfigHook from '@unrest/react-config-hook'
 
 import RuleList from '../components/RuleList'
@@ -47,9 +46,9 @@ const uiSchema = {
   variants: variants.uiSchema,
 }
 
-const initial = {formData: {piece_sets: ['standard']}}
+const initial = { formData: { piece_sets: ['standard'] } }
 
-const config = ConfigHook('new-game', {schema, uiSchema, actions: {}, initial})
+const config = ConfigHook('new-game', { schema, uiSchema, actions: {}, initial })
 
 export default function NewGame({ room_name }) {
   const { formData, actions } = config.useConfig()
@@ -67,11 +66,8 @@ export default function NewGame({ room_name }) {
   return (
     <div className="flex-grow flex items-center justify-center">
       <div className="NewGame">
-        <config.Form
-          onSubmit={onSubmit}
-          onChange={onChange}
-        />
-        <RuleList rules={{...variants, piece_sets}} />
+        <config.Form onSubmit={onSubmit} onChange={onChange} />
+        <RuleList rules={{ ...variants, piece_sets }} />
       </div>
     </div>
   )

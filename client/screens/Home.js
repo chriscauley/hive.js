@@ -1,12 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import css from '@unrest/css'
+import auth from '@unrest/react-auth'
 
-import useColyseus from '../useColyseus'
 import RoomList from '../components/RoomList'
 
 export default function Home() {
-  const { user } = useColyseus()
+  const { user } = auth.use()
   return (
     <div className="flex justify-center items-center flex-grow flex-wrap">
       <div className={css.card.outer()}>

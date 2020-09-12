@@ -6,6 +6,7 @@ import B from './game/Board'
 
 const ROOMS = {}
 const LOADING = {}
+const timeouts = {}
 window.ROOMS = ROOMS
 
 const actions = {
@@ -16,22 +17,16 @@ const actions = {
     if (LOADING[room_name]) {
       return
     }
+    LOADING[room_name] = true
+    clearTimeout(timeouts[room_name])
     fetch('/api/room/?room_name=' + room_name)
       .then((r) => r.json())
       .then((data) => {
         ROOMS[room_name] = data
         delete LOADING[room_name]
+        timeouts[room_name] = setTimeout(() => store.actions.joinRoom(room_name), 1000)
         store.actions.update()
       })
-  },
-  tick: (store, room_name) => {
-    const { updated } = ROOMS[room_name]
-    fetch('/api/room/', { room_name, updated }).then((data) => {
-      if (data.updated) {
-        ROOMS[room_name] = data
-        store.actions.update()
-      }
-    })
   },
   send(store, room_name, action, content) {
     post('/api/room/message/', { room_name, action, content }).then((data) => {

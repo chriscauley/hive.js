@@ -70,7 +70,7 @@ export default function Table({ match }) {
     return <Wrapper />
   }
 
-  if (!board.players) {
+  if (room.state.players) {
     board.players = room.state.players
     board.local_player = parseInt(
       Object.keys(board.players).find((key) => {

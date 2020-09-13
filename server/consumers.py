@@ -73,9 +73,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def leave_room(self, room):
         user = self.scope["user"]
-        if user.id in room.state['user_ids']:
-            room.state['user_ids'].remove(user.id)
-            room.save()
+        room.state['user_ids'] = [i for i in room.state['user_ids'] if i != user.id]
+        room.state['ready'] = [i for i in room.state['ready'] if i != user.id]
+        room.save()
 
     @database_sync_to_async
     def message_room(self, room, data):

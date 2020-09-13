@@ -23,6 +23,7 @@ const B = {
   getHash: (b) => objectHash(pick(b, ['stacks', 'piece_types', 'piece_owners'])),
   update(b) {
     // get derrived state of board
+    window.b = b
     b.layers = {
       type: {},
       player: {},
@@ -46,9 +47,22 @@ const B = {
       })
     })
 
-    b.current_player = (b.turn % PLAYER_COUNT) + 1 // 1 on even, 2 on odd
     b.hash = B.current_hash = B.getHash(b)
     B._markBoard(b)
+    let can_move
+    Object.values(b.stacks).forEach((stack) => {
+      const piece_id = stack[stack.length - 1]
+      if (b.piece_owners[piece_id] === b.current_player) {
+        if (B.getMoves(b, piece_id).length !== 0 || B.getSpecials(b, piece_id, []).length !== 0) {
+          can_move = true
+        }
+      }
+    })
+    const can_place = B.moves.getPlacement(b, b.current_player).length > 0
+    if (!(can_place || can_move)) {
+      b.error = `Skipped player ${b.current_player}'s turn because there are no legal moves`
+      B.nextPlayer(b)
+    }
     B.checkWinner(b)
   },
   save: (b) => {
@@ -111,7 +125,6 @@ const B = {
     const b = board_cache[id] || B.storage.get(id)
     if (b) {
       board_cache[id] = b
-      window.b = b
       B.save(b)
     }
     return b
@@ -119,9 +132,17 @@ const B = {
 
   getUrl: (b) => `#/${b.room_name}/`,
 
+  nextPlayer(b) {
+    b.current_player++
+    if (b.current_player > b.player_list.length) {
+      b.current_player = 1
+    }
+  },
+
   nextTurn: (b) => {
     delete b.frozen // undo information is now lost (if it existed)
     b.turn++
+    B.nextPlayer(b)
     B.unselect(b)
     B.save(b)
   },
@@ -187,6 +208,7 @@ const B = {
     'host',
     'last',
     'room_name',
+    'current_player',
   ],
   toJson: (b) => cloneDeep(pick(b, B.json_fields)),
   fromJson: (value) => {
@@ -205,6 +227,7 @@ const B = {
       piece_owners: [],
       turn: 0,
       actions: [],
+      current_player: 1,
     }
     board.hash = B.getHash(board)
     board.stacks = {}

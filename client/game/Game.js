@@ -84,7 +84,7 @@ export default function Game({ room_name }) {
       </div>
       <HelpText {...board.selected} board={board} />
       <div className={`absolute top-0 ${orientation}-0`}>
-        <Winner board={board} room_name={room_name} />
+        {board.winner && <Winner board={board} room_name={room_name} />}
         {board.rules.no_rules && <NoRules _delete={_delete} />}
         {error ? (
           <div className={css.alert.danger()}>

@@ -17,9 +17,6 @@ export default function Winner() {
     endGame()
   }
 
-  if (!(board && board.winner)) {
-    return null
-  }
   const text =
     board.winner === 'tie' ? 'The game is a draw' : `Player ${board.winner} has won the game.`
   const toggle = () => setOpen(!open)

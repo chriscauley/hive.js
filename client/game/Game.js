@@ -51,11 +51,15 @@ export default function Game({ room_name }) {
   const orientation = player_id === 1 ? 'left' : 'right'
   const _delete = get(board, 'selected.index') !== undefined ? deleteSelected : undefined
   const error = !board.rules.no_rules && board.error
+  const _player = (number) => {
+    const highlight = Board.isUsersTurn(board) && number === board.current_player
+    return `player_${number} odd-q ${highlight ? 'bg-green-400' : ''}`
+  }
   return (
     <div className="Game">
       <GlobalHotKeys handlers={handlers} keyMap={keyMap} />
-      <BoardComponent rows={player_1} className="player_1 odd-q" click={click} />
-      <BoardComponent rows={player_2} className="player_2 odd-q" click={click} />
+      <BoardComponent rows={player_1} className={_player(1)} click={click} />
+      <BoardComponent rows={player_2} className={_player(2)} click={click} />
       <div className="scroll-box" ref={scrollRef}>
         <div className="inner">
           <BoardComponent rows={rows} className="game_board" click={click} />

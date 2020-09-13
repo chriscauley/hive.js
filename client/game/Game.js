@@ -17,15 +17,31 @@ const keyMap = {
   TOGGLE_HELP: ['/', '?', 'shift+?'],
   UNDO: ['ctrl+z'],
   REDO: ['ctrl+y', 'ctrl+shift+y'],
+  CHEAT: ['up', 'down', 'left', 'right', 'b', 'a'],
 }
 
 let _scrolled // TODO was on component as this.scrolled. Should be in use effect?
+let i_cheat = 0
+const cheat_code = ['up', 'up', 'down', 'down', 'left', 'right', 'left', 'right', 'b', 'a']
 
 const scrollRef = React.createRef()
 
 export default function Game({ room_name }) {
   sprites.makeSprites() // idempotent
   const { update, deleteSelected, click, undo, redo, board } = useGame()
+  const checkCheat = (e) => {
+    const key = e.key.replace('Arrow', '').toLowerCase()
+    if (key === cheat_code[i_cheat]) {
+      i_cheat++
+    } else {
+      i_cheat = 0
+    }
+    if (i_cheat === cheat_code.length) {
+      Board.doAction(board, ['toggleCheat'])
+      update()
+    }
+  }
+
   if (!board) {
     return null
   }
@@ -39,6 +55,7 @@ export default function Game({ room_name }) {
     },
     UNDO: undo,
     REDO: redo,
+    CHEAT: checkCheat,
   }
   const { rows, player_1, player_2 } = toRows(board, { columns: 2 })
   const scrollbox = scrollRef.current

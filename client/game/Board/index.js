@@ -129,7 +129,9 @@ const B = {
   doAction: (b, args) => {
     let action_type = args[0]
     const index = args[1]
-    if (action_type === 'place') {
+    if (action_type === 'toggleCheat') {
+      b.rules.no_rules = !b.rules.no_rules
+    } else if (action_type === 'place') {
       const piece_id = b.piece_types.length
       const piece_type = args[2]
       const player_id = args[3]

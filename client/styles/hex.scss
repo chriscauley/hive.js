@@ -48,3 +48,10 @@
   width: 200px;
   height: 173px;
 }
+
+.hex-grid.highlight-green {
+  @apply bg-green-300;
+}
+.hex-grid.highlight-red {
+  @apply bg-red-300;
+}

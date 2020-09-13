@@ -69,8 +69,9 @@ export default function Game({ room_name }) {
   const _delete = get(board, 'selected.index') !== undefined ? deleteSelected : undefined
   const error = !board.rules.no_rules && board.error
   const _player = (number) => {
-    const highlight = Board.isUsersTurn(board) && number === board.current_player
-    return `player_${number} odd-q ${highlight ? 'bg-green-400' : ''}`
+    const highlight = number === board.current_player
+    const color = Board.isUsersTurn(board) ? 'green' : 'red'
+    return `player_${number} odd-q ${highlight ? 'highlight-' + color : ''}`
   }
   return (
     <div className="Game">

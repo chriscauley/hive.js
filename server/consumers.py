@@ -84,6 +84,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         content = data.get('content')
         if action == 'setBoard':
             room.state['initial_board'] = content
+            room.state.pop('cleared', None)
             room.save()
         elif action == 'ready':
             if user.id not in room.state['ready']:
@@ -92,8 +93,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
             if len(user_ids) == 2:
                 random.shuffle(user_ids)
                 room.state['players'] = dict({
-                    1: user_ids.pop(),
-                    2: user_ids.pop(),
+                    "1": user_ids.pop(),
+                    "2": user_ids.pop(),
                 })
             room.save()
         elif action == 'notready':
@@ -107,6 +108,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             room.state['ready'] = []
             room.state.pop('initial_board', None)
             room.state.pop('players', None)
+            room.state['cleared'] = True
             room.save()
         else:
             message = Message.objects.create(

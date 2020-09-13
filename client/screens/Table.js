@@ -50,8 +50,15 @@ export default function Table({ match }) {
   if (!room.state.initial_board) {
     if (is_host) {
       send(room_name, 'setBoard', Board.toJson(board))
+      return <Wrapper />
     }
-    return <Wrapper /> // TODO loading modal?
+  }
+
+  if (room.state.cleared) {
+    // TODO is this still necessary with new django backend?
+    // host cleared board
+    setTimeout(endGame, 0)
+    return <Wrapper />
   }
 
   if (!room.state.players) {
@@ -61,13 +68,6 @@ export default function Table({ match }) {
         <Waiting {...{ room, board, user_id, send }} />
       </Modal>
     )
-  }
-
-  if (room.state.cleared_board_id === board.id) {
-    // TODO is this still necessary with new django backend?
-    // host cleared board
-    setTimeout(endGame, 0)
-    return <Wrapper />
   }
 
   if (room.state.players) {

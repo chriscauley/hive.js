@@ -14,7 +14,6 @@ const actions = {
     // just need to trigger reflow, hash isn't used anywhere
     store.setState({ hash: BOARD && BOARD.hash })
   },
-  toggleImportExport: (store) => store.setState({ port_open: !store.state.port_open }),
   loadJson: (store, value) => {
     let import_error = null
     try {
@@ -45,12 +44,12 @@ const actions = {
   },
   setRoomBoard: (store, room_name, board) => {
     BOARD = board
-    B.storage.set(room_name, board ? board.id : null)
+    B.storage.set(room_name, board ? board.id : undefined)
     store.setState({ current_room: room_name })
     store.actions.update()
   },
   endGame: (store) => {
-    store.actions.setRoomBoard(BOARD.room_name, null)
+    store.actions.setRoomBoard(BOARD.room_name, undefined)
   },
 }
 

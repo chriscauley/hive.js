@@ -139,6 +139,13 @@ const B = {
     }
   },
 
+  prevPlayer(b) {
+    b.current_player--
+    if (b.current_player < b.player_list[0]) {
+      b.current_player = b.player_list[b.player_list.length - 1]
+    }
+  },
+
   nextTurn: (b) => {
     delete b.frozen // undo information is now lost (if it existed)
     b.turn++
@@ -148,7 +155,7 @@ const B = {
   },
 
   doAction: (b, args) => {
-    let action_type = args[0]
+    const action_type = args[0]
     const index = args[1]
     if (action_type === 'toggleCheat') {
       b.rules.no_rules = !b.rules.no_rules
@@ -290,6 +297,7 @@ const B = {
       specials.move(b, new_index, old_index)
     }
     b.turn--
+    B.prevPlayer(b)
     B.update(b)
   },
   redo: (b) => {

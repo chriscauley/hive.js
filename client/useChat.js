@@ -15,7 +15,7 @@ const actions = {
     if (SOCKETS[room_name]) {
       return
     }
-    const protocol = window.location.protocol === 'https:' ? 'wss': 'ws'
+    const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws'
     const url = `${protocol}://${window.location.host}/ws/chat/${room_name}/`
     const ws = (SOCKETS[room_name] = new WebSocket(url))
     ws.__ticks = 0

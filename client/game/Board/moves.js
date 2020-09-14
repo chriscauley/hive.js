@@ -273,7 +273,7 @@ const wasp = (b, index) => {
   return stepOffSubhive(b, subhive).filter((i) => placements.includes(i))
 }
 
-const dragonfly = (board, index) => {
+const dragonfly = (_board, _index) => {
   return []
 }
 

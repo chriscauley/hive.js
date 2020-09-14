@@ -31,7 +31,7 @@ const actions = {
     store.actions.update()
   },
   undo: (store) => {
-    if (BOARD.rules.players !== 'local') {
+    if (BOARD.local_player !== undefined) {
       // TODO temporarily disabling undo for online play
       return
     }
@@ -49,7 +49,7 @@ const actions = {
     store.actions.update()
   },
   endGame: (store) => {
-    store.actions.setRoomBoard(BOARD.room_name, undefined)
+    BOARD && store.actions.setRoomBoard(BOARD.room_name, undefined)
   },
 }
 

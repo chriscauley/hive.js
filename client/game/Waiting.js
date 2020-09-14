@@ -3,13 +3,14 @@ import css from '@unrest/css'
 
 const text = {
   public: 'Players can see this game from the lobby or join directly if you share the url.',
-  private: 'This game is private. The only way to get players to join is to share the url',
+  private: 'This game is private. The only way to get players to join is to share the url.',
 }
 
-const NeedsPlayers = ({ board }) => (
+// TODO needs to have 2 messages when public/private gets written
+const NeedsPlayers = ({ _board }) => (
   <>
     <h2>Waiting for other players</h2>
-    <div>{text[board.rules.players]}</div>
+    <div>{text.private}</div>
   </>
 )
 

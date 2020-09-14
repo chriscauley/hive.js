@@ -2,7 +2,6 @@
 // if board.special_args is long enough, return a function to execute as the move
 // other wise return potential indexes for the next argument
 import { mod } from './Geo'
-import { last } from 'lodash'
 import wouldBreakHive from './wouldBreakHive'
 import { stepOnHive } from './moves'
 import notScorpion from './notScorpion'
@@ -100,21 +99,19 @@ const dragonfly = (b, piece_id, args) => {
   const index = b.reverse[piece_id]
   const parity = mod(index, 2)
   if (args.length === 0) {
-    return b.geo.dindexes.dragonfly[parity]
-      .map((di) => index + di)
-      .filter((i) => notScorpion(b, i))
+    return b.geo.dindexes.dragonfly[parity].map((di) => index + di).filter((i) => notScorpion(b, i))
   }
   return () => {
     const target_index = args[0]
-    if (!b.stacks[target_index] && !wouldBreakHive(b, [index], 2)) {
+    if (b.stacks[index].length > 1 && !b.stacks[target_index] && !wouldBreakHive(b, [index], 2)) {
       b.stacks[target_index] = b.stacks[index].splice(-2, 2)
+      args.push(true)
     } else {
       move(b, index, target_index)
-      args.push(true)
     }
     return {
       from: index,
-      special: target_index
+      special: target_index,
     }
   }
 }
@@ -135,13 +132,13 @@ export default {
       b.stacks[args[0]].push(target_id)
     },
     dragonfly: (b, piece_id, index, args) => {
-      const [target_index, moved_two]= args[0]
+      const [target_index, moved_two] = args
       b.stacks[index] = b.stacks[index] || []
       if (moved_two) {
         b.stacks[index] = b.stacks[index].concat(b.stacks[target_index].splice(-2, 2))
       } else {
         b.stacks[index].push(b.stacks[target_index].pop())
       }
-    }
+    },
   },
 }

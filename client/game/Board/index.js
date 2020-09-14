@@ -130,8 +130,12 @@ const B = {
     return b
   },
 
-  getUrl: (b) => `#/${b.room_name}/`,
-
+  getUrl: (b) => {
+    if (b.room_name === 'local' || !b.room_name) {
+      return '#/local/'
+    }
+    return `#/play/${b.room_name}/`
+  },
   nextPlayer(b) {
     b.current_player++
     if (b.current_player > b.player_list.length) {

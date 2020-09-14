@@ -25,7 +25,10 @@ function Modal({ hook, children }) {
 const useImport = () => {
   const hook = useSelect()
   const { loadJson } = useGame()
-  const load = (e) => loadJson(e.clipboardData.getData('text'))
+  const load = (e) => {
+    loadJson(e.clipboardData.getData('text'))
+    hook.toggle()
+  }
   hook.Modal = function ImportModal() {
     return (
       <Modal hook={hook}>

@@ -170,18 +170,11 @@ const B = {
       }
       b.last = special()
     } else {
-      // action_type === "move" || type === "dragonfly"
       const new_index = args[2]
       const piece_id = last(b.stacks[index])
-      const _df =
-        b.piece_types[piece_id] === 'dragonfly' && moves.dragonflyExtra(b, index, new_index)
 
       b.stacks[index].pop()
       b.stacks[new_index] = b.stacks[new_index] || []
-      if (_df) {
-        b.stacks[new_index].push(b.stacks[index].pop())
-        action_type = 'dragonfly'
-      }
       b.stacks[new_index].push(piece_id)
       b.last = {
         from: index,
@@ -282,13 +275,7 @@ const B = {
     delete b.last
     B.freeze(b)
     const move = b.actions.pop()
-    if (move[0] === 'dragonfly') {
-      const [_, old_index, new_index] = move
-      const dragonfly = b.stacks[new_index].pop()
-      b.stacks[old_index] = b.stacks[old_index] || []
-      b.stacks[old_index].push(b.stacks[new_index].pop())
-      b.stacks[old_index].push(dragonfly)
-    } else if (move[0] === 'special') {
+    if (move[0] === 'special') {
       const [_, index, piece_id, special_args] = move
       const piece_type = b.piece_types[piece_id]
       specials.undo[piece_type](b, piece_id, index, special_args)

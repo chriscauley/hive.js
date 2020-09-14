@@ -1,5 +1,6 @@
 import { mod } from './Geo'
 import { flatten, last } from 'lodash'
+import notScorpion from './notScorpion'
 import wouldBreakHive from './wouldBreakHive'
 
 const getPlacement = (board, player_id, excludes = []) => {
@@ -100,12 +101,12 @@ const nStepsAlongHive = (board, index, n_steps) => {
 
 const isTouchingEnemySpider = (board, owner, start_index, target_index) => {
   if (!board.rules.spiderwebs) {
-    return
+    return false
   }
   const fail_index = board.geo.touching[target_index].find((touch_index) => {
     if (board.geo.touching[start_index].includes(touch_index)) {
       // don't count spiders that the and is touching in current position
-      return
+      return false
     }
     const touch_id = last(board.stacks[touch_index])
     const touch_owner = board.piece_owners[touch_id]
@@ -238,11 +239,6 @@ const isPlayer = (player_id) => (b, index) => {
   return b.piece_owners[piece_id] === player_id
 }
 
-const notScorpion = (b, index) => {
-  const piece_id = last(b.stacks[index])
-  return b.piece_types[piece_id] !== 'scorpion'
-}
-
 const stepOffSubhive = (b, subhive, filter = () => true) => {
   const out = []
   subhive.forEach((target) => {
@@ -278,10 +274,7 @@ const wasp = (b, index) => {
 }
 
 const dragonfly = (board, index) => {
-  const parity = mod(index, 2)
-  return board.geo.dindexes.dragonfly[parity]
-    .map((di) => index + di)
-    .filter((i) => notScorpion(board, i))
+  return []
 }
 
 const dragonflyExtra = (board, index, index2) => {

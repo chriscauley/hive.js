@@ -5,6 +5,7 @@ import { mod } from './Geo'
 import { last } from 'lodash'
 import wouldBreakHive from './wouldBreakHive'
 import { stepOnHive } from './moves'
+import notScorpion from './notScorpion'
 
 // TODO might be mergeable with B.move. Maybe switch to moves.move to simplify imports?
 const move = (b, i1, i2, special) => {
@@ -36,10 +37,7 @@ const mantis = (b, piece_id, args) => {
   }
   if (args.length === 0) {
     // select piece to pull under, no scorpions
-    return selectNearby(b, index).filter((target_index) => {
-      const piece_id = last(b.stacks[target_index])
-      return b.piece_types[piece_id] !== 'scorpion'
-    })
+    return selectNearby(b, index).filter((target_index) => notScorpion(b, target_index))
   } else {
     // pull under
     return () => {
@@ -79,12 +77,12 @@ const centipede = (b, piece_id, args) => {
     const touching = b.geo.touching[index]
     return touching.filter((index2, i_touching) => {
       if (!b.stacks[index2] || b.stacks[index2].length > 1) {
-        return
+        return false
       }
       const left = b.stacks[touching[mod(i_touching - 1, 6)]]
       const right = b.stacks[touching[mod(i_touching + 1, 6)]]
       if (left && right) {
-        return
+        return false
       }
       return !wouldBreakHive(b, [index, index2])
     })
@@ -98,9 +96,33 @@ const centipede = (b, piece_id, args) => {
   }
 }
 
+const dragonfly = (b, piece_id, args) => {
+  const index = b.reverse[piece_id]
+  const parity = mod(index, 2)
+  if (args.length === 0) {
+    return b.geo.dindexes.dragonfly[parity]
+      .map((di) => index + di)
+      .filter((i) => notScorpion(b, i))
+  }
+  return () => {
+    const target_index = args[0]
+    if (!b.stacks[target_index] && !wouldBreakHive(b, [index], 2)) {
+      b.stacks[target_index] = b.stacks[index].splice(-2, 2)
+    } else {
+      move(b, index, target_index)
+      args.push(true)
+    }
+    return {
+      from: index,
+      special: target_index
+    }
+  }
+}
+
 export default {
   move,
   selectNearby,
+  dragonfly,
   pill_bug,
   mantis,
   centipede,
@@ -112,5 +134,14 @@ export default {
       b.stacks[args[0]] = b.stacks[args[0]] || []
       b.stacks[args[0]].push(target_id)
     },
+    dragonfly: (b, piece_id, index, args) => {
+      const [target_index, moved_two]= args[0]
+      b.stacks[index] = b.stacks[index] || []
+      if (moved_two) {
+        b.stacks[index] = b.stacks[index].concat(b.stacks[target_index].splice(-2, 2))
+      } else {
+        b.stacks[index].push(b.stacks[target_index].pop())
+      }
+    }
   },
 }

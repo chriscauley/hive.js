@@ -34,7 +34,7 @@ export default function Game({ room_name }) {
     if (key === cheat_code[i_cheat]) {
       i_cheat++
     } else {
-      i_cheat = 0
+      i_cheat = key === 'up' ? 1 : 0
     }
     if (i_cheat === cheat_code.length) {
       Board.doAction(board, ['toggleCheat'])

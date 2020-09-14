@@ -11,7 +11,7 @@ const CUSTOM = {"actions":[["place",1274,"mantis",1],["place",1275,"fly",2],["pl
 
 // centipede and dragonfly
 // eslint-disable-next-line
-const CUSTOM_EXPANDED = {"actions":[["place",1274,"centipede",1],["place",1275,"queen",2],["place",1273,"queen",1],["place",1276,"centipede",2],["move",1273,1224],["move",1276,1325],["place",1273,"dragonfly",1],["place",1276,"dragonfly",2],["special",1274,0,[1273]],["move",1276,1274],["move",1273,1223],["dragonfly",1274,1225]],"id":0.9562311194511488,"W":50,"H":50,"stacks":{"1223":[0],"1224":[2],"1225":[4,5],"1275":[1],"1325":[3]},"piece_types":["centipede","queen","queen","centipede","dragonfly","dragonfly"],"piece_owners":[1,2,1,2,1,2],"hash":"4d65a6dd939b9efbdb211b5315f98af06e2fa0d4","turn":12,"rules":{"piece_sets":["expanded_custom"]}, "current_player": 1}
+const CUSTOM_EXPANDED = {"actions":[["place",1274,"queen",1],["place",1275,"queen",2],["place",1273,"centipede",1],["place",1276,"dragonfly",2],["special",1273,2,[1274]],["special",1276,3,[1274]],["place",1272,"dragonfly",1],["special",1274,3,[1272]],["place",1324,"cockroach",1],["special",1272,3,[1223,true]],["move",1324,1224]],"id":"0.279396865069536","W":50,"H":50,"stacks":{"1223":[4,3],"1224":[5],"1273":[0],"1274":[2],"1275":[1]},"piece_types":["queen","queen","centipede","dragonfly","dragonfly","cockroach"],"piece_owners":[1,2,1,2,1,1],"hash":"3ce0db19887f5afd380edcbea2899afc32e1c58c","turn":11,"rules":{"piece_sets":["expanded_custom"],"spiderwebs":false,"super_grasshopper":false,"venom_centipede":false},"last":{"from":1324,"to":1224},"room_name":"local","current_player":2}
 
 // pill_bug
 // eslint-disable-next-line

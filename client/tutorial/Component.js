@@ -9,13 +9,9 @@ import useGame from '../game/useGame'
 import B from '../game/Board'
 import help from '../game/help'
 import sprites from '../sprites'
+import { unslugify } from '../utils'
 
 const listify = (arg) => (Array.isArray(arg) ? arg : [arg])
-function titleCase(string) {
-  const sentence = string.toLowerCase().split(' ')
-  return sentence.map((w) => w[0].toUpperCase() + w.slice(1)).join(' ')
-}
-export const unslugify = (slug) => titleCase(slug.replace('_', ' '))
 
 export default class TutorialComponent extends React.Component {
   getTutorial() {

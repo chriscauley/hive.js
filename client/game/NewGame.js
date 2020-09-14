@@ -2,7 +2,7 @@ import React from 'react'
 import ConfigHook from '@unrest/react-config-hook'
 
 import RuleList from '../components/RuleList'
-import { unslugify } from '../tutorial/Component'
+import { unslugify } from '../utils'
 import useGame from '../game/useGame'
 import Board from './Board'
 import pieces from './pieces'

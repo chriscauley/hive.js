@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { unslugify } from '../tutorial/Component'
+import { unslugify } from '../utils'
 import pieces from '../game/pieces'
 import variants from '../game/variants'
 import sprites from '../sprites'

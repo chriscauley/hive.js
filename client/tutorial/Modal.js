@@ -2,7 +2,8 @@ import React from 'react'
 import css from '@unrest/css'
 
 import captions from './captions'
-import Tutorial, { unslugify } from './Component'
+import Tutorial from './Component'
+import { unslugify } from '../utils'
 
 const NavTile = ({ slug, current, click }) => {
   const player = current === slug ? 2 : 1

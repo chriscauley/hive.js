@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { unslugify } from '../tutorial/Component'
+import { unslugify } from '../utils'
 
 const _help = (s) => <i className="fa fa-question-circle-o" data-tip={s} />
 

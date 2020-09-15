@@ -3,6 +3,7 @@ import React from 'react'
 import globalHook from 'use-global-hook'
 import B from './game/Board'
 
+const TIMEOUTS = {}
 const SOCKETS = {}
 const ROOMS = {}
 window.ROOMS = ROOMS
@@ -12,6 +13,7 @@ const actions = {
     store.setState(Math.random())
   },
   joinRoom: (store, room_name) => {
+    clearTimeout(TIMEOUTS[room_name])
     if (SOCKETS[room_name]) {
       return
     }
@@ -19,13 +21,31 @@ const actions = {
     const url = `${protocol}://${window.location.host}/ws/chat/${room_name}/`
     const ws = (SOCKETS[room_name] = new WebSocket(url))
     ws.__ticks = 0
+    ws.onopen = () => {
+      if (!store.state.current_room) {
+        store.setState({ current_room: room_name })
+      }
+    }
     ws.onclose = () => {
+      const room = ROOMS[room_name] || {}
       delete SOCKETS[room_name]
+      room.disconnected = true
+      TIMEOUTS[room_name] = setTimeout(() => {
+        store.actions.joinRoom(room_name)
+        room.reconnect_tries = (room.reconnect_tries || 0) + 1
+        store.actions.update()
+      }, 5000)
+      store.actions.update()
     }
     ws.onmessage = (e) => {
       ROOMS[room_name] = JSON.parse(e.data)
       ROOMS[room_name].ticks = ws.__ticks++
       store.actions.update()
+    }
+  },
+  reconnect: (store, room_name) => {
+    if (!SOCKETS[room_name]) {
+      store.actions.joinRoom(room_name)
     }
   },
   send(store, room_name, action, content) {

@@ -83,6 +83,15 @@ export default function Chat() {
               ))}
             </ul>
           )}
+          {room.disconnected && (
+            <div>
+              <i className="fa fa-exclamation-triangle text-red-700 mr-2" />
+              Unable to connect to server
+              <br />
+              Will retry every 5 seconds ({room.reconnect_tries || 0} tries)
+            </div>
+          )}
+          <div>Players: {room.state.user_ids.length}</div>
           <MessageList autoscroll={autoscroll} messages={messages} />
           <MessageForm submit={submit} textRef={textRef} />
         </div>

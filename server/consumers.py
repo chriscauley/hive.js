@@ -4,7 +4,15 @@ import random
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 
+# passing group_channel takes channel name
+
 from server.models import Room, Message
+
+for r in Room.objects.all():
+    r.state['user_ids'] = []
+    r.state['afk'] = []
+    r.state['actions'] = []
+    r.save()
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):

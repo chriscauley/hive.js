@@ -11,5 +11,22 @@
 <body>
   <div id="react-app"></div>
 </body>
+<script
+  src="https://browser.sentry-cdn.com/5.23.0/bundle.tracing.min.js"
+  integrity="sha384-lSZkoLgJeNT+V/zBEZAchPik9VPNr9wvgAY6mwoMK5SO/cMsK/whVXKKdQOL1oiw"
+  crossorigin="anonymous"
+></script>
+<script>
+if (process.env.SENTRY_DSN) {
+Sentry.init({
+  dsn: process.env.SENTRY_DSN,
+  integrations: [
+    new Sentry.Integrations.BrowserTracing(),
+  ],
+  tracesSampleRate: 1.0,
+});
+setTimeout(() => bees(),1000)
+}
+</script>
 <script src="./app.js"></script>
 </html>

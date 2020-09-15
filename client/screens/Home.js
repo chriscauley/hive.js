@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import css from '@unrest/css'
 import auth from '@unrest/react-auth'
 
-import RoomList from '../components/RoomList'
+// import RoomList from '../components/RoomList'
 
 export default function Home() {
   const { user } = auth.use()
@@ -27,7 +27,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <RoomList />
+      {/* <RoomList /> */}
     </div>
   )
 }

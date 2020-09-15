@@ -24,4 +24,4 @@ class Message(models.Model):
         return { attr: getattr(self, attr) for attr in attrs }
 
     class Meta:
-        ordering = ('-created',)
+        ordering = ('created',)

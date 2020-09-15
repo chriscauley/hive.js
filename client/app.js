@@ -11,6 +11,7 @@ import withConfig from './config'
 import sprites from './sprites'
 import ReactTooltip from 'react-tooltip'
 import screens from './screens'
+import chat from './chat'
 
 const keyMap = {
   UNSELECT: 'escape',
@@ -38,6 +39,7 @@ const App = withConfig((props) => {
           <Route path="/sprites/" component={sprites.Routes} />
           <ReactTooltip className="max-w-sm" />
           <auth.Routes />
+          <chat.Window />
         </div>
       </HashRouter>
     </div>

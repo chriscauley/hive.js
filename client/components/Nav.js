@@ -29,10 +29,6 @@ export default function Nav() {
             <Link to="/about/">About</Link>
           </div>
         </Dropdown>
-        <a
-          className={css.icon('github mx-2 text-blue-500')}
-          href="https://github.com/chriscauley/hive.js/"
-        />
         <auth.AuthNav />
       </section>
     </header>

@@ -31,7 +31,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 'message': {
                     'name': room.name,
                     'state': room.state,
-                    'messages': [m.to_json() for m in messages]
+                    'messages': [m.content for m in messages]
                 }
             })
 
@@ -113,7 +113,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
         else:
             message = Message.objects.create(
                 room=room,
-                content=content,
+                content={
+                    'username': user.username,
+                    'text': content,
+                },
                 action=action,
                 user=user
             )

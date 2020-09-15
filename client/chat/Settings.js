@@ -1,7 +1,7 @@
 import React from 'react'
 import Form from '@unrest/react-jsonschema-form'
 
-import useColyseus from '../useColyseus'
+import useChat from '../useChat'
 
 const schema = {
   title: 'User Settings',
@@ -18,7 +18,7 @@ const schema = {
 const forbidden = ['general', 'local', 'admin']
 
 export default function Settings({ close = () => {}, ...props }) {
-  const { user, saveUser } = useColyseus()
+  const { user, saveUser } = useChat()
   if (!user) {
     return null
   }

@@ -1,8 +1,9 @@
 import React from 'react'
 import css from '@unrest/css'
+import auth from '@unrest/react-auth'
 import { useAutoScroll, Modal } from '@unrest/core'
 
-import useColyseus from '../useColyseus'
+import useChat from '../useChat'
 import Settings from './Settings'
 
 const ChatError = ({ error }) => (
@@ -15,13 +16,12 @@ const ChatError = ({ error }) => (
 )
 
 export default function Chat() {
-  const colyseus = useColyseus()
+  const { rooms, current_room, error, send, joinRoom, switchRoom } = useChat()
+  const { user } = auth.use()
   const [open, setOpen] = React.useState(true)
   const [settings_open, setSettingsOpen] = React.useState(false)
   const autoscroll = useAutoScroll()
   const textRef = React.useRef()
-
-  const { user, rooms, current_room, error } = colyseus
 
   if (!open) {
     return (
@@ -37,18 +37,23 @@ export default function Chat() {
     return null
   }
 
-  colyseus.joinOrCreateRoom('general') // idempotent
-  const room = colyseus.rooms[current_room] || { state: {} }
-  const { messages = [] } = room.state
+  // joinRoom('general') // idempotent
+  const room = rooms[current_room]
+  if (!room) {
+    console.log(room)
+    // just use game channels for now
+    return null
+  }
+  const _current_room = room.name
+  const { messages = [] } = room
   const room_entries = Object.entries(rooms).sort()
   const close = () => setSettingsOpen(false)
-  const _list = (n) => `room ${n === current_room ? 'current' : ''}`
+  const _list = (n) => `room ${n === _current_room ? 'current' : ''}`
   const submit = (e) => {
     e.preventDefault()
     const { current } = textRef
-    const { current_room } = colyseus
     const text = current.textContent
-    colyseus.send(current_room, 'chat', { text })
+    send(_current_room, 'chat', text)
     current.textContent = ''
     current.focus()
   }
@@ -72,12 +77,8 @@ export default function Chat() {
           {room_entries.length > 1 && (
             <ul className="room_list">
               {room_entries.map(([channel, room]) => (
-                <li
-                  key={channel}
-                  className={_list(channel)}
-                  onClick={() => colyseus.switchRoom(channel)}
-                >
-                  {channel === current_room && '* '}
+                <li key={channel} className={_list(channel)} onClick={() => switchRoom(channel)}>
+                  {channel === _current_room && '* '}
                   {room.state.clients && `(${room.state.clients.length}) ${room.state.name}`}
                 </li>
               ))}

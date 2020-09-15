@@ -52,6 +52,9 @@ const actions = {
       B.doAction(board, remote_actions[board.actions.length])
     }
   },
+  switchRoom(store, room_name) {
+    store.actions.setState({ current_room: room_name })
+  },
 }
 
 const makeHook = globalHook(React, {}, actions)

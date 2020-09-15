@@ -1,6 +1,7 @@
 # node related
 coverage
 .cache
+.env.local
 dist
 node_modules
 
@@ -10,3 +11,5 @@ server/settings/.secret_key
 __pycache__
 .venv
 unrest
+.static
+.media

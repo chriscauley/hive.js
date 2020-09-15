@@ -16,7 +16,7 @@ const ChatError = ({ error }) => (
 )
 
 export default function Chat() {
-  const { rooms, current_room, error, send, joinRoom, switchRoom } = useChat()
+  const { rooms, current_room, error, send, _joinRoom, switchRoom } = useChat()
   const { user } = auth.use()
   const [open, setOpen] = React.useState(true)
   const [settings_open, setSettingsOpen] = React.useState(false)
@@ -40,7 +40,6 @@ export default function Chat() {
   // joinRoom('general') // idempotent
   const room = rooms[current_room]
   if (!room) {
-    console.log(room)
     // just use game channels for now
     return null
   }

@@ -113,11 +113,11 @@ UNREST_ALLOW_GUEST = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, '.static')
+STATIC_ROOT = os.path.join(BASE_DIR, '../.static')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, '../dist'),
 ]
 
 # Media files (user uploads)
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, '.media')
+MEDIA_ROOT = os.path.join(BASE_DIR, '../.media')

@@ -1,0 +1,9 @@
+#! /usr/bin/env bash
+
+git pull
+pip install -r requirements.txt
+yarn install
+yarn build
+./manage.py migrate
+./manage.py collectstatic --noinput
+daphne -p 8239 server.asgi:application

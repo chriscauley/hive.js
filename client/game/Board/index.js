@@ -316,7 +316,7 @@ const B = {
   },
 
   isUsersTurn: (board) => {
-    if (!board.local_player) {
+    if (!board.players) {
       return true
     }
     return board.current_player === board.local_player

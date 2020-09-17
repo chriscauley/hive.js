@@ -101,7 +101,8 @@ export default function Game({ room_name }) {
 }
 
 const getTurnText = (board) => {
-  if (board.room_name === 'local') {
+  if (!board.local_player) {
+    // local game or spectating person
     return `Player ${board.current_player}'s turn`
   }
   return Board.isUsersTurn(board) ? 'Your turn' : "Opponent's turn"

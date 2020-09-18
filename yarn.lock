@@ -1585,10 +1585,10 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@unrest/core@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@unrest/core/-/core-0.0.1.tgz#2b6dbea8f42b59706f2bec644a7b1d0bb83b53c3"
-  integrity sha512-/pw5hxEeqJ42wsjm7ulIkmhg4PpcDlT6v1PZOGkjxRuqfzC4qWGiWoEq8jencaW8WOmYCjP6BZ578kixJghNLw==
+"@unrest/core@^0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@unrest/core/-/core-0.0.10.tgz#5e61a766c58b852d360be15594594096ed0589f0"
+  integrity sha512-FRzrNw+0Ho41V482sGLv/xPvMnMVJO7A2aRjo7SimvQuyHFxkjsc1FWIniqU0R117Tk53sxruK34W5eJX1+1jQ==
 
 "@unrest/css@chriscauley/unrest-css":
   version "0.0.5"
@@ -1599,15 +1599,15 @@
   resolved "https://registry.yarnpkg.com/@unrest/react-auth/-/react-auth-0.1.0.tgz#91e7c249745185c327f602b7a7ed4ef2772e3ba8"
   integrity sha512-sJjZHX0B9KF7DcviyEs4U5KmKRCEIykaPkF40/aAPsByHSX4snqRu5km7HxBeUsuBJk7/QsoiufzmldO5o7BFQ==
 
-"@unrest/react-config-hook@^0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@unrest/react-config-hook/-/react-config-hook-0.0.3.tgz#10f0a2ff0735af32b17a55ae37aa55772c837a2f"
-  integrity sha512-n5yGh0emGtCmSOSmCN2QF9htMYIBvZ7aoMuVvfSu/bqpOoxioqzDvbI9r4wHlCaYWwJfgOY7S42E6q9DVByYtA==
+"@unrest/react-config-hook@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@unrest/react-config-hook/-/react-config-hook-0.0.5.tgz#d56e15653baa682e03c8dd42aa960db9bac99c22"
+  integrity sha512-kWCCePmy9tQEZ/a8/rxJg+q4P6/Ck47nANel79TizuMUHENZPabUxGOG4CtmOCFHSffeaX4+F1vTP6ua9/gqvQ==
 
-"@unrest/react-jsonschema-form@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@unrest/react-jsonschema-form/-/react-jsonschema-form-0.0.2.tgz#cb620eff33702d3452c72b81eaeb7b324e728fa1"
-  integrity sha512-4eTFUO4/waCkTujfPC1J2s4Ht3ryXN4wm8RBQ9sHX1ZhSPvLJc0lMLQCrs8TkYA4hC1A05LMyjsmTRZipz9y0Q==
+"@unrest/react-jsonschema-form@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@unrest/react-jsonschema-form/-/react-jsonschema-form-0.0.4.tgz#d058708dc7e7fbe0489a200e50a4b79f5a55800e"
+  integrity sha512-+ZBtjirOC6wopc5uc98iRgCd854/iiUU1i3S9R5T+1KbcRiUPPnDQuJPfG1lrx1QanHlQYbVkPFf98XOj2gBgw==
 
 "@unrest/react-rest-hook@^0.0.5":
   version "0.0.5"

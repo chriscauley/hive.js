@@ -4,7 +4,7 @@ from server.models import Room, Message
 
 @admin.register(Room)
 class RoomAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('__str__', 'updated')
 
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):

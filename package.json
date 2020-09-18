@@ -28,7 +28,7 @@
     "@unrest/react-jsonschema-form": "^0.0.2",
     "@unrest/react-rest-hook": "^0.0.5",
     "@unrest/storage": "^0.1.1",
-    "@unrest/tailwind": "^0.0.2",
+    "@unrest/tailwind": "^0.0.7",
     "classnames": "^2.2.6",
     "object-hash": "^2.0.3",
     "parcel": "^1.12.4",

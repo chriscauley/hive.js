@@ -1621,10 +1621,10 @@
   resolved "https://registry.yarnpkg.com/@unrest/storage/-/storage-0.1.1.tgz#27f23a5b0da4642cfac646c843be4a450b068e45"
   integrity sha512-XUN0uM5vURkkfEOLNMFvbExWcNv6KIhEdwkr/YCtv5gkv7SdBIxsCRWJYh2E7MSbSkIa4cPgAJIh33kFU+o+6Q==
 
-"@unrest/tailwind@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@unrest/tailwind/-/tailwind-0.0.2.tgz#e2d1e49c9cf6f11f9ebfd79eae77a442f2c5cb7f"
-  integrity sha512-vhMnxBGd3f9Innr9pTriTd+PkgV6kTuzevlPcthxbCFdDw/SUhMNlTWk6YXpwW7wK/N2hJbqTk9PRA5dDWs91Q==
+"@unrest/tailwind@^0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@unrest/tailwind/-/tailwind-0.0.7.tgz#49e4454e1c27813e435487379244b82cec545b70"
+  integrity sha512-OdxB5q7sp0PVNWl5PLDothVMqhwdppEFBh6fGQ1qNTnHGbFJkUJ/EGaHriXuTJFMxSmUZ926xEAVEtPFlI45EA==
 
 abab@^2.0.0, abab@^2.0.3:
   version "2.0.3"

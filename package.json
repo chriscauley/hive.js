@@ -7,7 +7,7 @@
     "build": "yarn cp/img; yarn parcel build client/index.html --public-url /static/",
     "build/docs": "rm -rf docs; parcel build client/index.html -d docs --public-url /hive.js/",
     "cp/img": "rm -rf dist/;mkdir dist;cp -r client/images dist",
-    "develop": "parcel client/index.html --public-url /static/ -p 8432",
+    "develop": "parcel client/index.html --public-url /static/ -p 4483",
     "watch": "parcel watch client/index.html --public-url /static/ --no-hmr",
     "lint": "yarn eslint client __tests__",
     "test": "yarn jest --coverage"

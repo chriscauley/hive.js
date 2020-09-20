@@ -1,4 +1,5 @@
 #! /usr/bin/env bash
+export DJANGO_SETTINGS_MODULE='server.settings'
 
 git pull
 pip install -r requirements.txt
@@ -6,4 +7,4 @@ yarn install
 yarn build
 ./manage.py migrate
 ./manage.py collectstatic --noinput
-daphne -p 8239 server.asgi:application
+daphne -p 8239 server.routing:application

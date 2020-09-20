@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 from server.views import room, message_room
+import server.user.forms # urls via unrest.urls + unrest.schema.register
 
 urlpatterns = [
     path('admin/', admin.site.urls),

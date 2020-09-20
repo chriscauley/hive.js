@@ -9,24 +9,37 @@ import useGame from '../game/useGame'
 import NewGame from '../game/NewGame'
 import Waiting from '../game/Waiting'
 import Wrapper from './Wrapper'
+import { LoginButtons } from './Home'
 
 const Modal = ({ children }) => (
   <Wrapper>
-    <div className={css.modal.mask('cursor-default')} />
-    <div className={css.modal.content.sm()}>{children}</div>
+    <div className={css.modal.outer()} style={{ position: 'relative' }}>
+      <div className={css.modal.content.xs()}>{children}</div>
+    </div>
   </Wrapper>
 )
 
 export default function Table({ match }) {
   const { room_name } = match.params
-  const { user } = auth.use()
+  const { user, loading } = auth.use()
   const { board, setRoomBoard, endGame } = useGame(room_name)
   const { rooms, joinRoom, send, sync } = useChat()
   const room = rooms[room_name]
 
-  if (!user) {
-    // TODO what if server is down?
+  if (!user && loading) {
     return <Modal>Connecting to server...</Modal>
+  }
+
+  if (!auth.config.enabled) {
+    return <Modal>Error: online play not enabled on this server.</Modal>
+  }
+
+  if (!user) {
+    return (
+      <Modal>
+        <LoginButtons />
+      </Modal>
+    )
   }
 
   const is_host = room_name === user.username

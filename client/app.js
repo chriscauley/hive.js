@@ -13,6 +13,8 @@ import ReactTooltip from 'react-tooltip'
 import screens from './screens'
 import chat from './chat'
 
+auth.config.enabled = process.env.HIVE_ONLINE
+
 const keyMap = {
   UNSELECT: 'escape',
   TOGGLE_HELP: ['/', '?', 'shift+?'],

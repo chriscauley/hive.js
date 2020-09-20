@@ -51,7 +51,7 @@
 }
 
 .NewGame {
-  @apply flex border p-4 mt-8 shadow max-w-xl mx-2 flex-wrap;
+  @apply flex border p-4 mt-8 shadow max-w-xl mx-2 flex-wrap bg-white;
   .rjsf {
     margin-right: 30px;
     width: 200px;

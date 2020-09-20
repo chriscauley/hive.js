@@ -10,12 +10,8 @@ import tutorial from '../tutorial'
 import useUserSettings from './useUserSettings'
 
 export default function Nav() {
-  const { user = {} } = auth.use()
   const us_hook = useUserSettings()
   const auth_links = [{ onClick: us_hook.toggle, children: 'Settings' }]
-  if (!user.email) {
-    auth_links.push({ to: '/login', children: 'Login' })
-  }
   return (
     <header className={css.nav.outer()}>
       <section className={css.nav.section('left')}>
@@ -37,7 +33,7 @@ export default function Nav() {
             <Link to="/about/">About</Link>
           </div>
         </Dropdown>
-        <auth.AuthNav links={auth_links} hide_logout={!user.email} />
+        <auth.AuthNav links={auth_links} />
       </section>
     </header>
   )

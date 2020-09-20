@@ -7,6 +7,8 @@ test('Board snapshots', () => {
   const moves = {
     spiderwebs: '',
     super_grasshopper: '',
+    damselfly: '',
+    venom_centipede: '',
   }
   const specials = {}
   Object.entries(boards).forEach(([slug, board]) => {
@@ -34,9 +36,18 @@ test('Board snapshots', () => {
         board.rules.spiderwebs = true
         moves.spiderwebs += s + B.getMoves(board, piece_id).join(',') + '|'
       }
+      if (slug === 'dragonfly') {
+        board.rules.damselfly = true
+        moves.damselfly += s + B.getMoves(board, piece_id).join(',') + '|'
+      }
       if (slug === 'grasshopper') {
         board.rules.super_grasshopper = true
         moves.super_grasshopper += s + B.getMoves(board, piece_id).join(',') + '|'
+      }
+      if (slug === 'centipede') {
+        board.rules.venom_centipede = true
+        moves.venom_centipede += s + B.getMoves(board, piece_id).join(',') + '|'
+        moves.venom_centipede += '|S' + s + B.getSpecials(board, piece_id, []).join(',') + '|'
       }
     })
   })

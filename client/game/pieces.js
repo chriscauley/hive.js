@@ -72,7 +72,7 @@ const getAvailable = (board) => {
 const getNames = () => {
   const names = ['queen']
   Object.values(piece_sets).forEach((piece_set) => {
-    Object.keys(piece_set).forEach((name) => names.push(name))
+    Object.keys(piece_set.pieces).forEach((name) => names.push(name))
   })
   return names
 }

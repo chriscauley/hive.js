@@ -273,7 +273,10 @@ const wasp = (b, index) => {
   return stepOffSubhive(b, subhive).filter((i) => placements.includes(i))
 }
 
-const dragonfly = (_board, _index) => {
+const dragonfly = (board, index) => {
+  if (board.rules.damselfly && board.stacks[index].length === 1) {
+    return stepAlongHive(board, index)
+  }
   return []
 }
 

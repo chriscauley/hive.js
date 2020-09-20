@@ -17,6 +17,10 @@ const variants = {
     requires: ['centipede'],
     help: 'The centipede swaps with a piece 3 on-hive tiles away (Hive Venom variant).',
   },
+  damselfly: {
+    requires: ['dragonfly'],
+    help: 'When on the ground, the dragonfly can move along the hive.',
+  },
   no_rules: {
     requires: [],
     help: 'UI will still display legal moves, but any piece can be moved to any space.',

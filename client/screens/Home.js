@@ -9,10 +9,10 @@ export default function Home() {
   const { user } = auth.use()
   return (
     <div className="flex justify-center items-center flex-grow flex-wrap">
-      <div className={css.card.outer()}>
+      <div className={css.card.outer('bg-white')}>
         <div className={css.card.body()}>
-          <h2>Welcome!</h2>
-          <div className="text-center">
+          <div className="text-center pb-4">
+            <h2>Welcome!</h2>
             {user && (
               <>
                 <Link to={`/new/${user.username}/`} className={css.button()}>

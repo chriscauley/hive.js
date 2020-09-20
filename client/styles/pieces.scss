@@ -130,7 +130,7 @@ $types: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spider
   }
 }
 
-.piece.type-griffinfly, .rule-griffinfly {
+.piece.type-griffinfly, .rule-griffinfly .piece.type-dragonfly {
   transform: scale(-1);
 }
 

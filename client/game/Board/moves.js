@@ -42,7 +42,7 @@ const stepAlongHive = (board, index, excludes = []) => {
   const touching = board.geo.touching[index]
   return touching.filter((target_index, i) => {
     if (board.stacks[target_index] || excludes.includes(target_index)) {
-      return
+      return false
     }
     let count = 0
     const left_index = touching[mod(i - 1, touching.length)]
@@ -274,6 +274,9 @@ const wasp = (b, index) => {
 }
 
 const dragonfly = (board, index) => {
+  if (board.rules.griffinfly) {
+    return beetle(board, index)
+  }
   if (board.rules.damselfly && board.stacks[index].length === 1) {
     return stepAlongHive(board, index)
   }

@@ -115,7 +115,10 @@ $types: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spider
   opacity: 0.15;
 }
 
-.rule-damselfly .piece.type-dragonfly, .piece.type-damselfly {
+.rule-damselfly .piece.type-dragonfly,
+.piece.type-damselfly,
+.rule-griffinfly .piece.type-dragonfly,
+.piece.type-griffinfly {
   &:before {
     background-image: url('../images/pieces/damselfly.png');
   }
@@ -125,6 +128,10 @@ $types: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spider
   &.hex-player_2:before {
     filter: brightness(1.25);
   }
+}
+
+.piece.type-griffinfly, .rule-griffinfly {
+  transform: scale(-1);
 }
 
 .rule-spiderwebs .piece.type-spider:after {

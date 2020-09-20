@@ -7,7 +7,7 @@ import useChat from '../useChat'
 export default function Winner() {
   const [open, setOpen] = React.useState(true)
   const { board, endGame } = useGame()
-  const { user } = auth.use() || {}
+  const { user = {} } = auth.use()
   const { send } = useChat()
   const is_host = user.username === board.room_name
   const can_end = board.room_name === 'local' || is_host

@@ -425,7 +425,7 @@ const B = {
       return
     }
     const winners = b.player_list.filter((player_id) => {
-      const index = b.queens[player_id]
+      const index = b.queens[player_id === 1 ? 2 : 1]
       return index !== undefined && b.geo.touching[index].filter((i2) => b.stacks[i2]).length === 6
     })
     b.winner = winners.length === 2 ? 'tie' : winners[0]

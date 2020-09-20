@@ -8,7 +8,7 @@ import css from '@unrest/css'
 import { Dropdown } from '@unrest/core'
 import Board from '../game/Board'
 
-function Modal({ hook, children }) {
+export function Modal({ hook, children }) {
   if (!hook.open) {
     return null
   }

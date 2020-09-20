@@ -1,0 +1,16 @@
+#! /usr/bin/env bash
+
+. .venv/bin/activate
+export HIVE_ONLINE=true
+DJANGO='python manage.py runserver'
+YARN='yarn watch'
+
+if [[ $1 == "tmux" ]];then
+    tmux new-session -s ur-conf   $DJANGO
+    tmux new-window  -t ur-conf:1 $YARN
+else
+    trap "exit" INT TERM ERR
+    trap "kill 0" EXIT
+    $DJANGO &
+    $YARN
+fi

@@ -9,7 +9,7 @@ yarn install
 yarn develop
 ```
 
-The above will start only the client. If you also want to run the client you will need python3 and postgres installed. To install the python server and start both the client and multiplayer server at http://localhost:8239 run:
+The above will start only the client. If you also want to run the client you will need python3 and postgres installed. You'll also need docker (or redis if you don't want to use docker). To install the python server and start both the client and multiplayer server at http://localhost:8239 run:
 
 ``` bash
 # from hive.js directory
@@ -22,6 +22,9 @@ pip install -r requirements.txt
 # create database
 createdb hive
 python manage.py migrate
+
+# start redis
+docker run -p 6379:6379 -d redis:5is:5
 
 # start server locally
 ./bin/develop

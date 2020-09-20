@@ -9,7 +9,6 @@ import Nav from './components/Nav'
 import About from './components/About'
 import withConfig from './config'
 import sprites from './sprites'
-import ReactTooltip from 'react-tooltip'
 import screens from './screens'
 import chat from './chat'
 
@@ -39,7 +38,6 @@ const App = withConfig((props) => {
           <Route path="/new/:room_name/" component={screens.NewGameRedirect} />
           <Route exact path="/about/" component={About} />
           <Route path="/sprites/" component={sprites.Routes} />
-          <ReactTooltip className="max-w-sm" />
           <auth.Routes />
           <chat.Window />
         </div>

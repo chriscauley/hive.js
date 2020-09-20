@@ -7,6 +7,7 @@ import useGame from '../game/useGame'
 import Board from './Board'
 import pieces from './pieces'
 import variants from './variants'
+import ReactTooltip from 'react-tooltip'
 
 const piece_enum = Object.keys(pieces.piece_sets)
 const enumNames = piece_enum.map((name) => {
@@ -69,6 +70,7 @@ export default function NewGame({ room_name }) {
         <config.Form onSubmit={onSubmit} onChange={onChange} />
         <RuleList rules={{ ...variants, piece_sets }} />
       </div>
+      <ReactTooltip className="max-w-sm" />
     </div>
   )
 }

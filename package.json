@@ -24,7 +24,7 @@
     "@babel/preset-react": "^7.10.4",
     "@unrest/core": "^0.0.10",
     "@unrest/css": "chriscauley/unrest-css",
-    "@unrest/react-auth": "^0.1.1",
+    "@unrest/react-auth": "^0.1.2",
     "@unrest/react-config-hook": "^0.0.5",
     "@unrest/react-jsonschema-form": "^0.0.4",
     "@unrest/react-rest-hook": "^0.0.5",

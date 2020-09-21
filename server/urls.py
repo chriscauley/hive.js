@@ -8,5 +8,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/room/', room),
     path('api/room/message/', message_room),
+    path('', include('social_django.urls', namespace='social')),
     path('', include('unrest.urls')),
 ]

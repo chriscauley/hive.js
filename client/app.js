@@ -21,6 +21,24 @@ const keyMap = {
   REDO: ['ctrl+y', 'ctrl+shift+y'],
 }
 
+auth.config.LoginExtra = auth.config.SignupExtra = function SocialLinks({ next }) {
+  const u = (s) => `/login/${s}/?next=${encodeURIComponent(next)}`
+  const c = (s) => `btn btn-${s} mx-4`
+  return (
+    <div>
+      <div className="mb-4 text-center">-- Or Connect With --</div>
+      <div className="flex justify-center mb-4">
+        <a href={u('github')} className={c('github')}>
+          GitHub
+        </a>
+        <a href={u('twitter')} className={c('twitter')}>
+          Twitter
+        </a>
+      </div>
+    </div>
+  )
+}
+
 const App = withConfig((props) => {
   const { debug } = props.config.formData
   const handlers = {

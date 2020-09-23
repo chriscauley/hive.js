@@ -22,7 +22,7 @@ export default class NoRules extends React.Component {
         </div>
       </div>
     ) : (
-      <div>
+      <>
         <span onClick={this.toggle} className={css.alert.warning('cursor-pointer')}>
           {'¯\\_(ツ)_/¯ No Rules'}
         </span>
@@ -31,7 +31,7 @@ export default class NoRules extends React.Component {
             Delete selected
           </div>
         )}
-      </div>
+      </>
     )
   }
 }

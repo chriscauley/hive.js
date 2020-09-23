@@ -68,23 +68,24 @@ export default function Game({ room_name }) {
   const orientation = player_id === 1 ? 'left' : 'right'
   const _delete = get(board, 'selected.index') !== undefined ? deleteSelected : undefined
   const error = !board.rules.no_rules && board.error
-  const _player = (number) => {
+  const _player = (number, piece_rows) => {
     const highlight = number === board.current_player
     const color = Board.isUsersTurn(board) ? 'green' : 'red'
-    return `player_${number} odd-q ${highlight ? 'highlight-' + color : ''}`
+    const height = piece_rows[piece_rows.length - 1].length === 1 ? '' : 'long'
+    return `player_${number} odd-q ${highlight ? 'highlight-' + color : ''} ${height}`
   }
   return (
     <div className="Game">
       <GlobalHotKeys handlers={handlers} keyMap={keyMap} />
-      <BoardComponent rows={player_1} className={_player(1)} click={click} />
-      <BoardComponent rows={player_2} className={_player(2)} click={click} />
+      <BoardComponent rows={player_1} className={_player(1, player_1)} click={click} />
+      <BoardComponent rows={player_2} className={_player(2, player_2)} click={click} />
       <div className="scroll-box" ref={scrollRef}>
         <div className="inner">
           <BoardComponent rows={rows} className="game_board" click={click} />
         </div>
       </div>
       <HelpText {...board.selected} board={board} />
-      <div className={`absolute top-0 ${orientation}-0`}>
+      <div className={`absolute top-0 ${orientation}-0 flex`}>
         {board.winner && <Winner board={board} room_name={room_name} />}
         {board.rules.no_rules && <NoRules _delete={_delete} />}
         {error ? (

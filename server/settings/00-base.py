@@ -18,6 +18,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'channels',
     'social_django',
+    'mailer',
+
     'server',
     'server.user',
 ]
@@ -90,7 +92,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LOGIN_REDIRECT_URL = '/'
 AUTH_USER_MODEL = 'user.User'
-SOCIAL_AUTH_POSTGRES_JSONFIELD = True
+SOCIAL_AUTH_POSTGRES_JSONFIELD = False
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.twitter.TwitterOAuth',
     'social_core.backends.github.GithubOAuth2',
@@ -117,6 +119,7 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'SMTP_Injection'
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = SERVER_EMAIL = 'noreply@unrest.io'
+EMAIL_BACKEND = "mailer.backend.DbBackend"
 
 UNREST_ALLOW_GUEST = True
 

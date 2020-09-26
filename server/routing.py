@@ -1,3 +1,5 @@
+import django, os;os.environ['DJANGO_SETTINGS_MODULE']='server.settings';django.setup()
+
 from django.urls import re_path
 from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter

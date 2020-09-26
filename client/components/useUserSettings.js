@@ -5,7 +5,7 @@ import { Modal } from './GameDropdown'
 
 export default () => {
   const hook = useSelect()
-  const { user = null } = auth.use()
+  const { user = null, refetch } = auth.use()
   hook.Modal = function SettingsModal() {
     return (
       user && (
@@ -13,6 +13,7 @@ export default () => {
           <SchemaForm
             form_name={`UserSettingsForm/${user.id}`}
             after={'Email address will be used for authentication/password reset purposes only.'}
+            onSuccess={() => refetch()}
           />
         </Modal>
       )

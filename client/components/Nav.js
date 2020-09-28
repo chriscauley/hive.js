@@ -7,11 +7,9 @@ import auth from '@unrest/react-auth'
 import GameDropdown from './GameDropdown'
 import withConfig from '../config'
 import tutorial from '../tutorial'
-import useUserSettings from './useUserSettings'
 
 export default function Nav() {
-  const us_hook = useUserSettings()
-  const auth_links = [{ onClick: us_hook.toggle, children: 'Settings' }]
+  const auth_links = [{ to: '/settings/', children: 'Settings' }]
   return (
     <header className={css.nav.outer()}>
       <section className={css.nav.section('left')}>
@@ -20,7 +18,6 @@ export default function Nav() {
         </Link>
       </section>
       <section className={css.nav.section('flex items-center')}>
-        <us_hook.Modal />
         <GameDropdown />
         <Dropdown title={'config'}>
           <withConfig.Form className="p-4" customButton={true} autosubmit={true} />

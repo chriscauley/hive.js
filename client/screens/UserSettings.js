@@ -1,23 +1,26 @@
 import React from 'react'
 import auth from '@unrest/react-auth'
-import { SchemaForm, useSelect } from '@unrest/core'
-import { Modal } from './GameDropdown'
+import { SchemaForm } from '@unrest/core'
 
-export default () => {
-  const hook = useSelect()
+import Wrapper from './Wrapper'
+
+export default function UserSettings() {
   const { user = null, refetch } = auth.use()
-  hook.Modal = function SettingsModal() {
-    return (
-      user && (
-        <Modal hook={hook}>
+  if (!user) {
+    return null
+  }
+  return (
+    <Wrapper>
+      <div className="card bg-white">
+        <div className="card-body">
           <SchemaForm
+            title="User Settings"
             form_name={`UserSettingsForm/${user.id}`}
             after={'Email address will be used for authentication/password reset purposes only.'}
             onSuccess={() => refetch()}
           />
-        </Modal>
-      )
-    )
-  }
-  return hook
+        </div>
+      </div>
+    </Wrapper>
+  )
 }

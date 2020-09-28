@@ -51,6 +51,7 @@ const App = withConfig((props) => {
         <Nav />
         <div className="app-inner flex">
           <Route exact path="/" component={screens.Home} />
+          <Route exact path="/settings/" component={screens.UserSettings} />
           <Route exact path="/local/" component={screens.Local} />
           <Route path="/play/:room_name/" component={screens.Table} />
           <Route path="/new/:room_name/" component={screens.NewGameRedirect} />

@@ -17,16 +17,20 @@ for r in Room.objects.all():
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
+        if not self.scope['user'].is_authenticated:
+            reply_channel.send({"close": True})
+            return
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.room_group_name = 'chat_%s' % self.room_name
 
-        # Join room group
+        # Join group (channels)
         await self.channel_layer.group_add(
             self.room_group_name,
             self.channel_name
         )
-
         await self.accept()
+
+        # application specific
         room = await self.get_room()
         await self.join_room(room)
         await self.send_room(room)
@@ -75,7 +79,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def join_room(self, room):
-        user_id = str(self.scope["user"])
+        user_id = str(self.scope["user"].id)
         if not user_id in room.state['user_ids']:
             room.state['user_ids'].append(user_id)
             room.save()

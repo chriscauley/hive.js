@@ -14,27 +14,38 @@ const NeedsPlayers = ({ _board }) => (
   </>
 )
 
-const NeedsReady = ({ send, board }) => (
-  <>
-    <h2>Please click ready</h2>
-    <button className={css.button()} onClick={() => send(board.room_name, 'ready')}>
-      I'm ready
-    </button>
-  </>
-)
+const NeedsReady = ({ send, board }) => {
+  const sit = (color) => () => send(board.room_name, 'ready', color)
+  return (
+    <>
+      <h2>Please choose a seat</h2>
+      <div className="flex justify-around">
+        <button className={css.button()} onClick={sit('black')}>
+          Black
+        </button>
+        <button className={css.button()} onClick={sit('white')}>
+          White
+        </button>
+        <button className={css.button()} onClick={sit('random')}>
+          Random
+        </button>
+      </div>
+    </>
+  )
+}
 
 const IsReady = ({ send, board }) => (
   <>
-    <h2>Waiting for other players to press ready</h2>
+    <h2>Waiting for other players to sit down</h2>
     <button className={css.button()} onClick={() => send(board.room_name, 'notready')}>
-      Wait, I'm not ready!
+      Stand up
     </button>
   </>
 )
 
 export default function Waiting({ room, user_id, board, send }) {
   const full = room.state.user_ids.length >= 2
-  const ready = room.state.ready.includes(user_id)
+  const ready = room.state.ready[user_id]
   let Tag = NeedsPlayers
   if (full) {
     Tag = ready ? IsReady : NeedsReady

@@ -4,4 +4,4 @@ import Local from './Local'
 import NewGameRedirect from './NewGameRedirect'
 import UserSettings from './UserSettings'
 
-export default { Home, Table, Local, NewGameRedirect, UserSettings  }
+export default { Home, Table, Local, NewGameRedirect, UserSettings }

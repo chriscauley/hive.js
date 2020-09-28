@@ -4,7 +4,7 @@ import globalHook from 'use-global-hook'
 import B from './game/Board'
 
 const TIMEOUTS = {}
-const SOCKETS = {}
+const SOCKETS = (window.SOCKETS = {})
 const ROOMS = {}
 window.ROOMS = ROOMS
 

@@ -24,7 +24,9 @@ export default function NewGameRedirect({ match }) {
   }
 
   const reset = () => {
-    user.username === room_name && send(room_name, 'clearBoard')
+    if (user && user.username === room_name) {
+      send(room_name, 'clearBoard')
+    }
     endGame()
   }
   if (!board) {

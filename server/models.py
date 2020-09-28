@@ -5,7 +5,7 @@ def default_state():
     return {
         'user_ids': [],
         'afk': [],
-        'ready': [],
+        'ready': {},
         'actions': [],
     }
 
@@ -20,7 +20,7 @@ class Message(models.Model):
     action = models.CharField(max_length=64)
     content = models.JSONField(default=dict)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     def to_json(self):
         attrs = ['content', 'user_id', 'id', 'action']

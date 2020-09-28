@@ -4,6 +4,8 @@ from unrest.user.forms import validate_unique
 
 from .models import User
 
+FORBIDDEN_USERNAMES= ['admin', 'general']
+
 @schema.register
 class UserSettingsForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -12,10 +14,13 @@ class UserSettingsForm(forms.ModelForm):
     def clean_username(self):
         username = self.cleaned_data['username']
         validate_unique('username', username, exclude={'id': self.request.user.id})
+        if username in FORBIDDEN_USERNAMES:
+            raise forms.ValidationError('That username is already in use.')
         return username
     def clean_email(self):
         email = self.cleaned_data['email']
-        validate_unique('email', email, exclude={'id': self.request.user.id})
+        if email:
+            validate_unique('email', email, exclude={'id': self.request.user.id})
         return email
     def clean(self):
         if self.instance.id != self.request.user.id:

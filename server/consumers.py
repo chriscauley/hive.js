@@ -3,8 +3,9 @@ import random
 
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
-
-# passing group_channel takes channel name
+from django.contrib.auth import get_user_model
+from django.utils import timezone
+from loguru import logger
 
 from server.models import Room, Message
 
@@ -65,7 +66,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def get_room_messages(self, room):
-        return list(room.message_set.all())
+        hour_ago = timezone.now() - timezone.timedelta(0, 2600)
+        return list(room.message_set.filter(created__gte=hour_ago))
 
     @database_sync_to_async
     def get_room(self):
@@ -73,58 +75,85 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def join_room(self, room):
-        user = self.scope["user"]
-        if not user.id in room.state['user_ids']:
-            room.state['user_ids'].append(user.id)
+        user_id = str(self.scope["user"])
+        if not user_id in room.state['user_ids']:
+            room.state['user_ids'].append(user_id)
             room.save()
 
     @database_sync_to_async
     def leave_room(self, room):
-        user = self.scope["user"]
-        room.state['user_ids'] = [i for i in room.state['user_ids'] if i != user.id]
-        room.state['ready'] = [i for i in room.state['ready'] if i != user.id]
+        user_id = str(self.scope["user"].id)
+        room.state['user_ids'] = [i for i in room.state['user_ids'] if i != user_id]
+        room.state['ready'].pop(user_id, None)
         room.save()
 
     @database_sync_to_async
     def message_room(self, room, data):
-        user = self.scope["user"]
-        action = data['action']
-        content = data.get('content')
-        if action == 'setBoard':
-            room.state['initial_board'] = content
-            room.state.pop('cleared', None)
-            room.save()
-        elif action == 'ready':
-            if user.id not in room.state['ready']:
-                room.state['ready'].append(user.id)
-            user_ids = room.state['ready'][:]
-            if len(user_ids) == 2:
-                random.shuffle(user_ids)
-                room.state['players'] = dict({
-                    "1": user_ids.pop(),
-                    "2": user_ids.pop(),
-                })
-            room.save()
-        elif action == 'notready':
-            room.state['ready'] = [i for i in room.state['ready'] if i != user.id]
-            room.save()
-        elif action == 'action':
-            room.state['actions'].append(content['action'])
-            room.save()
-        elif action == 'clearBoard':
-            room.state['actions'] = []
-            room.state['ready'] = []
-            room.state.pop('initial_board', None)
-            room.state.pop('players', None)
-            room.state['cleared'] = True
-            room.save()
-        else:
-            message = Message.objects.create(
-                room=room,
-                content={
-                    'username': user.username,
-                    'text': content,
-                },
-                action=action,
-                user=user
-            )
+        apply_message(self.scope['user'], room, data)
+
+@logger.catch
+def apply_message(user, room, data):
+    user_id = str(user.id)
+    action = data['action']
+    content = data.get('content')
+    if action == 'setBoard':
+        room.state['initial_board'] = content
+        room.state.pop('cleared', None)
+        room.save()
+    elif action == 'ready':
+        room.state['ready'][user_id] = content
+        user_ids = list(room.state['ready'].keys())
+        if len(user_ids) == 2:
+            random.shuffle(user_ids)
+            # sort in order of white < random < black, which happens to be reverse alphabetical
+            # if same, they'll be random, otherwise whoever chose white is first, black second
+            user_ids.sort(key=lambda id: room.state['ready'][id])
+            room.state['players'] = dict({
+                "1": int(user_ids.pop()),
+                "2": int(user_ids.pop()),
+            })
+            m = get_coin_flip_message(room.state['ready'])
+            if m:
+                Message.objects.create(
+                    room=room,
+                    content={
+                        'text': m,
+                        'username': 'admin',
+                    },
+                    action='system',
+                )
+        room.save()
+    elif action == 'notready':
+        room.state['ready'].pop(user_id, None)
+        room.save()
+    elif action == 'action':
+        room.state['actions'].append(content['action'])
+        room.save()
+    elif action == 'clearBoard':
+        room.state['actions'] = []
+        room.state['ready'] = {}
+        room.state.pop('initial_board', None)
+        room.state.pop('players', None)
+        room.state['cleared'] = True
+        room.save()
+    else:
+        Message.objects.create(
+            room=room,
+            content={
+                'username': user.username,
+                'text': content,
+            },
+            action=action,
+            user=user
+        )
+
+def get_coin_flip_message(ready):
+    items = list(set(ready.values()))
+    if len(items) == 2 or items[0] == 'random':
+        # players picked different colors
+        id1, id2 = ready.keys()
+        User = get_user_model()
+        name1 = User.objects.get(id=id1).username
+        name2 = User.objects.get(id=id2).username
+        return f'{name1} has chosen {ready[id1]} and {name2} has chosen {ready[id2]}.'
+    return f'Both players picked {items[0]}. Flipping coing to see who goes first.'

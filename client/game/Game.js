@@ -94,11 +94,32 @@ export default function Game({ room_name }) {
             {board.error}
           </div>
         ) : (
-          <div className={css.alert.info()}>{getTurnText(board)}</div>
+          <div className={css.alert.info()}>
+            <div>
+              {`${getTurnText(board)}`}
+              <TimeSince turn={board.turn} time={board.last_move_at} />
+            </div>
+          </div>
         )}
       </div>
     </div>
   )
+}
+
+function TimeSince({ time, turn }) {
+  if (isNaN(time)) {
+    // TODO remove after 10/15/20
+    // This is because old games do not have last_move_at
+    return null
+  }
+  const [_, setState] = React.useState()
+  const seconds_since = Math.floor((new Date().valueOf() - time) / 1000)
+  const s = seconds_since % 60
+  const m = Math.floor(seconds_since / 60)
+  const fmt = (num) => num.toString().padStart(2, '0')
+  const timeout = setTimeout(() => setState(Math.random()), 1000)
+  React.useEffect(() => () => clearTimeout(timeout))
+  return <div className="text-center">{`#${turn} ${fmt(m)}:${fmt(s)}`}</div>
 }
 
 const getTurnText = (board) => {

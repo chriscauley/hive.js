@@ -20,7 +20,7 @@ const B = {
   wouldBreakHive,
   PLAYER_COUNT,
   storage: new Storage('saved_games'),
-  getHash: (b) => objectHash(pick(b, ['stacks', 'piece_types', 'piece_owners'])),
+  getHash: (b) => objectHash(pick(b, ['stacks', 'piece_types', 'piece_owners', 'current_player'])),
   update(b) {
     // get derrived state of board
     window.b = b
@@ -155,6 +155,7 @@ const B = {
     b.turn++
     B.nextPlayer(b)
     B.unselect(b)
+    b.last_move_at = new Date().valueOf()
     B.save(b)
   },
 
@@ -213,6 +214,7 @@ const B = {
     'last',
     'room_name',
     'current_player',
+    'last_move_at',
   ],
   toJson: (b) => cloneDeep(pick(b, B.json_fields)),
   fromJson: (value) => {
@@ -232,6 +234,7 @@ const B = {
       turn: 0,
       actions: [],
       current_player: 1,
+      last_move_at: new Date().valueOf(),
     }
     board.hash = B.getHash(board)
     board.stacks = {}

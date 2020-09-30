@@ -21,10 +21,6 @@ const variants = {
     requires: ['dragonfly'],
     help: 'When on the ground, the dragonfly can move along the hive.',
   },
-  griffinfly: {
-    requires: ['dragonfly'],
-    help: 'The dragonfly can move like a beetle.',
-  },
   no_rules: {
     requires: [],
     help: 'UI will still display legal moves, but any piece can be moved to any space.',

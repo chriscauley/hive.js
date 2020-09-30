@@ -111,27 +111,21 @@ $types: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spider
 .rule-spiderwebs .hex-player_2.piece.type-spider:after,
 .rule-super_grasshopper .hex-player_2.piece.type-grasshopper:after,
 .rule-queen_lock .hex-player_2.piece.type-queen:after {
-  filter: invert(1);
+  filter: invert(1) hue-rotate(-180deg);
   opacity: 0.15;
 }
 
 .rule-damselfly .piece.type-dragonfly,
-.piece.type-damselfly,
-.rule-griffinfly .piece.type-dragonfly,
-.piece.type-griffinfly {
+.piece.type-damselfly {
   &:before {
     background-image: url('../images/pieces/damselfly.png');
   }
   &.hex-player_1:before {
-    filter: invert(1);
+    filter: invert(1) hue-rotate(-180deg);
   }
   &.hex-player_2:before {
     filter: brightness(1.25);
   }
-}
-
-.piece.type-griffinfly, .rule-griffinfly .piece.type-dragonfly {
-  transform: scale(-1);
 }
 
 .rule-spiderwebs .piece.type-spider:after {
@@ -193,7 +187,7 @@ $types: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spider
 .hex-player_2.piece.type- {
   &super_grasshopper, &spiderwebs, &no_rules, &unlimited, &:queen_lock {
     &:before {
-      filter: invert(1);
+      filter: invert(1) hue-rotate(-180deg);
     }
   }
 }

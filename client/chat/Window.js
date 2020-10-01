@@ -14,6 +14,14 @@ const ChatError = ({ error }) => (
   </div>
 )
 
+function WindowBar({onClick}) {
+  return (
+    <div className="bg-gray-400 text-right py-1">
+      <i className={css.icon('minus cursor-pointer mx-1')} onClick={onClick} />
+    </div>
+  )
+}
+
 export default function Chat() {
   const { rooms = {}, current_room, error, send, _joinRoom, switchRoom } = useChat()
   const { user } = auth.use()
@@ -33,7 +41,11 @@ export default function Chat() {
   }
   const room = rooms[current_room]
   if (!user || !room) {
-    return <div className="Chat">loading...</div>
+    return (
+      <div className="Chat">
+        <WindowBar onClick={() => setOpen(false)} />
+      </div>
+    )
   }
 
   // joinRoom('general') // idempotent
@@ -53,9 +65,7 @@ export default function Chat() {
   return (
     <div className="Chat">
       <div className="flex flex-col h-full">
-        <div className="bg-gray-400 text-right py-1">
-          <i className={css.icon('minus cursor-pointer mx-1')} onClick={() => setOpen(false)} />
-        </div>
+        <WindowBar onClick={() => setOpen(false)} />
         {room_entries.length > 1 && (
           <ul className="room_list">
             {room_entries.map(([channel, room]) => (

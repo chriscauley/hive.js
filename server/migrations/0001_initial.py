@@ -32,7 +32,7 @@ class Migration(migrations.Migration):
                 ('content', models.JSONField(default=dict)),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('room', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='server.room')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, default=1)),
             ],
             options={
                 'ordering': ('created',),

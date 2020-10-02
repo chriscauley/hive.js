@@ -59,8 +59,8 @@ export default function Game({ room_name }) {
   }
   const { rows, player_1, player_2 } = toRows(board, { columns: 2 })
   const scrollbox = scrollRef.current
-  if (_scrolled !== board.id && scrollbox) {
-    _scrolled = board.id
+  if (_scrolled !== board && scrollbox) {
+    _scrolled = board
     const { scrollWidth, scrollHeight, clientWidth, clientHeight } = scrollbox
     scrollbox.scroll((scrollWidth - clientWidth) / 2, (scrollHeight - clientHeight) / 2)
   }

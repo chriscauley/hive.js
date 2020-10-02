@@ -5,5 +5,5 @@ import NewGame from '../game/NewGame'
 
 export default function Local() {
   const { board } = useGame('local')
-  return board ? <Game room_name="local" board_id={board.id} /> : <NewGame room_name="local" />
+  return board ? <Game room_name="local" /> : <NewGame room_name="local" />
 }

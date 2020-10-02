@@ -92,5 +92,5 @@ export default function Table({ match }) {
     )
   }
   sync(board)
-  return <Game room_name={room_name} board_id={board.id} />
+  return <Game room_name={room_name} />
 }

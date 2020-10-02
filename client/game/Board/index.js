@@ -72,7 +72,7 @@ const B = {
     }
 
     B.update(b)
-    B.storage.set(b.id, B.toJson(b))
+    B.storage.set(b.room_name, B.toJson(b))
     return b
   },
 
@@ -121,10 +121,10 @@ const B = {
     }
   },
 
-  get: (id) => {
-    const b = board_cache[id] || B.storage.get(id)
+  get: (room_name) => {
+    const b = board_cache[room_name] || B.storage.get(room_name)
     if (b) {
-      board_cache[id] = b
+      board_cache[room_name] = b
       B.save(b)
     }
     return b
@@ -228,7 +228,6 @@ const B = {
       W: 50, // hex math only works with even boards
       H: 50,
       ...options,
-      id: Math.random().toString(),
       piece_types: [],
       piece_owners: [],
       turn: 0,

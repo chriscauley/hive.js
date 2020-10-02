@@ -14,7 +14,7 @@ const ChatError = ({ error }) => (
   </div>
 )
 
-function WindowBar({onClick}) {
+function WindowBar({ onClick }) {
   return (
     <div className="bg-gray-400 text-right py-1">
       <i className={css.icon('minus cursor-pointer mx-1')} onClick={onClick} />

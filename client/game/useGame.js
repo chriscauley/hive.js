@@ -44,7 +44,6 @@ const actions = {
   },
   setRoomBoard: (store, room_name, board) => {
     BOARD = board
-    B.storage.set(room_name, board ? board.id : undefined)
     store.setState({ current_room: room_name })
     store.actions.update()
   },
@@ -57,7 +56,7 @@ const makeHook = globalHook(React, {}, actions)
 export default (room_name) => {
   const [state, actions] = makeHook()
   if (!BOARD && room_name) {
-    BOARD = B.get(B.storage.get(room_name))
+    BOARD = B.get(room_name)
   }
 
   return {

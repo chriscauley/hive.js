@@ -1,4 +1,5 @@
 import ConfigHook from '@unrest/react-config-hook'
+import ZoomInput from './components/ZoomInput'
 
 const schema = {
   type: 'object',
@@ -22,6 +23,11 @@ const schema = {
       title: 'Hex Angle',
       enum: ['flat', 'pointy'],
     },
+    zoom: {
+      type: 'string',
+      title: 'Zoom',
+      enum: ZoomInput.enum,
+    },
   },
 }
 
@@ -31,6 +37,7 @@ const initial = {
     theme: 'classic',
     debug: false,
     show_help: true,
+    zoom: 'medium',
   },
 }
 
@@ -42,4 +49,8 @@ const actions = {
   },
 }
 
-export default ConfigHook('game-config', { schema, initial, actions })
+const uiSchema = {
+  zoom: { 'ui:widget': ZoomInput }
+}
+
+export default ConfigHook('game-config', { schema, initial, actions, uiSchema })

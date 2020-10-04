@@ -2,6 +2,11 @@
 
 .hex-grid {
   font-size: 16px;
+  &.zoom-largest { font-size: 16px }
+  &.zoom-large { font-size: 14px }
+  &.zoom-medium { font-size: 12px }
+  &.zoom-small { font-size: 11px }
+  &.zoom-smallest { font-size: 10px }
   width: calc(var(--columns) * #{$cell_w + $buffer});
   &.cut_first {
     margin-left: -$hex_w;

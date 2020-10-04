@@ -24,7 +24,7 @@
 
 .app-content.debug {
   [data-index]:after {
-    background: rgba(255,255,255,0.45);
+    background: rgba(255,255,255,0.75);
     content: attr(data-index);
     position: absolute;
   }

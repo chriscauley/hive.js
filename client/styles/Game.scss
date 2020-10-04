@@ -20,6 +20,9 @@
         transform: translate(-50%, -50%);
         &.hex-pointy {
           transform: translate(-50%, -50%) rotate(30deg);
+          .hex:before, .hex:after {
+            transform: rotate(-30deg);
+          }
         }
       }
     }

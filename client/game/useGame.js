@@ -48,7 +48,10 @@ const actions = {
     store.actions.update()
   },
   endGame: (store) => {
-    BOARD && store.actions.setRoomBoard(BOARD.room_name, undefined)
+    if (BOARD) {
+      B.storage.set(BOARD.room_name, null)
+      store.actions.setRoomBoard(BOARD.room_name, undefined)
+    }
   },
 }
 

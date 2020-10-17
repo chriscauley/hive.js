@@ -1,55 +1,22 @@
 import React from 'react'
+import Markdown from 'react-markdown'
+import css from '@unrest/css'
+
+const content = `
+* Game rules and (most) design elements originated from the borad game Hive by Jhon Yianni. [Learn more at Board Game Geek](https://boardgamegeek.com/forums/thing/2655/hive).
+* Assets and extra rules taken from [A collection of variant pieces ](https://boardgamegeek.com/filepage/90063/collection-variant-pieces) and [Hive Swarm](https://boardgamegeek.com/filepage/95016/hive-swarm).
+* This article on [Hexagonal Grids](https://www.redblobgames.com/grids/hexagons/) by Red Blob Games was used frequently while writting this program.
+* This app was made by me using react and is hosted at github at [chriscauley/hive.js](https://github.com/chriscauley/hive.js/). Feel free to create an issue or message [@chriscauley](https://boardgamegeek.com/user/chriscauley) on Board Game Geek.
+* Icons made by [Freepik](https://www.flaticon.com/authors/freepik) and [Vitaly Gorbachev](https://www.flaticon.com/authors/vitaly-gorbachev) at www.flaticon.com
+`
 
 export default function About() {
   return (
-    <div className="max-w-md mx-auto">
-      <h2>About</h2>
-      <ul className="browser-default">
-        <li>
-          {
-            'Game rules and (most) design elements originated from the borad game Hive by Jhon Yianni. '
-          }
-          <a href="https://boardgamegeek.com/forums/thing/2655/hive">
-            Learn more at Board Game Geek
-          </a>
-          .
-        </li>
-        <li>
-          {'Assets and extra rules taken from '}
-          <a href="https://boardgamegeek.com/filepage/90063/collection-variant-pieces">
-            A collection of variant pieces
-          </a>
-          {' and '}
-          <a href="https://boardgamegeek.com/filepage/95016/hive-swarm">Hive Swarm</a>
-        </li>
-        <li>
-          {'This article on '}
-          <a href="https://www.redblobgames.com/grids/hexagons/">Hexagonal Grids</a>
-          {' by Red Blob Games was used frequently while writting this program.'}
-        </li>
-        <li>
-          {'This app was made by me using react and is hosted at github at '}
-          <a href="https://github.com/chriscauley/hive.js/">chriscauley/hive.js</a>
-          {'. Feel free to create an issue or message '}
-          <a href="https://boardgamegeek.com/user/chriscauley">@chriscauley</a>
-          {' on Board Game Geek.'}
-        </li>
-        <li>
-          {'Icons made by '}
-          <a href="https://www.flaticon.com/authors/freepik" title="Freepik">
-            Freepik
-          </a>
-          {' and '}
-          <a href="https://www.flaticon.com/authors/vitaly-gorbachev" title="Vitaly Gorbachev">
-            Vitaly Gorbachev
-          </a>
-          {' from '}
-          <a href="https://www.flaticon.com/" title="Flaticon">
-            www.flaticon.com
-          </a>
-          {' (spiderweb/mobius-strip and super grasshopper icons respectively)'}
-        </li>
-      </ul>
+    <div className={css.modal.outer()} style={{position: 'relative'}}>
+      <div className={css.modal.content()}>
+        <h2>About</h2>
+        <Markdown source={content} className="markdown" />
+      </div>
     </div>
   )
 }

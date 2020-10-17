@@ -12,7 +12,7 @@ const content = `
 
 export default function About() {
   return (
-    <div className={css.modal.outer()} style={{position: 'relative'}}>
+    <div className={css.modal.outer()} style={{ position: 'relative' }}>
       <div className={css.modal.content()}>
         <h2>About</h2>
         <Markdown source={content} className="markdown" />

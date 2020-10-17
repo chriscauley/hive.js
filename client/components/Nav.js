@@ -8,6 +8,10 @@ import GameDropdown from './GameDropdown'
 import withConfig from '../config'
 import tutorial from '../tutorial'
 
+const help_links = [
+  { to: '/about/', children: 'About' },
+  { to: '/change-log/', children: 'Change Log' },
+]
 export default function Nav() {
   const auth_links = [{ to: '/settings/', children: 'Settings' }]
   return (
@@ -22,12 +26,9 @@ export default function Nav() {
         <Dropdown title={'config'}>
           <withConfig.Form className="p-4" customButton={true} autosubmit={true} />
         </Dropdown>
-        <Dropdown title={'help'}>
+        <Dropdown title={'help'} links={help_links}>
           <div className={css.dropdown.item()}>
             <tutorial.NavButton />
-          </div>
-          <div className={css.dropdown.item()}>
-            <Link to="/about/">About</Link>
           </div>
         </Dropdown>
         <auth.AuthNav links={auth_links} />

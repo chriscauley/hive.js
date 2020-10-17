@@ -55,6 +55,7 @@ const App = withConfig((props) => {
           <Route path="/play/:room_name/" component={screens.Table} />
           <Route path="/new/:room_name/" component={screens.NewGameRedirect} />
           <Route exact path="/about/" component={screens.About} />
+          <Route exact path="/change-log/" component={screens.ChangeLog} />
           <Route path="/sprites/" component={sprites.Routes} />
           <auth.Routes />
           <chat.Window />

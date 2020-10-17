@@ -11,7 +11,7 @@ export default function UserSettings() {
   }
   return (
     <Wrapper>
-      <div className="card bg-white">
+      <div className="card bg--bg">
         <div className="card-body">
           <SchemaForm
             title="User Settings"

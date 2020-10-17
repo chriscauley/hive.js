@@ -39,7 +39,8 @@ auth.config.LoginExtra = auth.config.SignupExtra = function SocialLinks({ next }
 }
 
 const App = withConfig((props) => {
-  const { debug } = props.config.formData
+  const { debug, darkmode } = props.config.formData
+  document.body.classList[darkmode ? 'add' : 'remove']('theme-dark_mode')
   const handlers = {
     TOGGLE_HELP: props.config.actions.toggleHelp,
   }

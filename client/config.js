@@ -5,6 +5,10 @@ const schema = {
   type: 'object',
   required: ['theme'],
   properties: {
+    darkmode: {
+      title: 'Dark Mode',
+      type: 'boolean',
+    },
     theme: {
       title: 'Theme',
       type: 'string',
@@ -38,6 +42,7 @@ const initial = {
     debug: false,
     show_help: true,
     zoom: 'medium',
+    darkmode: true,
   },
 }
 

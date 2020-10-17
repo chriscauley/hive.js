@@ -39,7 +39,7 @@ export default function Home() {
   const { user } = auth.use()
   return (
     <div className="flex justify-center items-center flex-grow flex-wrap">
-      <div className={css.card.outer('bg-white')}>
+      <div className={css.card.outer('bg--bg')}>
         <div className={css.card.body()}>
           <div className="text-center pb-2">
             <LoginRequired>

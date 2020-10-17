@@ -51,30 +51,32 @@ export default function Table({ match }) {
 
   if (!board) {
     if (is_host) {
-      return <NewGame room_name={room_name} />
+      return <NewGame room_name={room_name} game_id={room.game_id} />
     }
-    if (room.state.initial_board) {
-      setTimeout(() => setRoomBoard(room_name, Board.save(room.state.initial_board)), 0)
+    if (room.game.rules) {
+      const { rules } = room.game
+      const { game_id } = room
+      setTimeout(() => setRoomBoard(room_name, Board.new({ rules, room_name, game_id })), 0)
     }
     const m = 'Waiting for host to pick game settings'
     return <Modal>{m}</Modal>
   }
 
-  if (!room.state.initial_board) {
+  if (!room.game.rules) {
     if (is_host) {
       send(room_name, 'setBoard', Board.toJson(board))
       return <Wrapper />
     }
   }
 
-  if (room.state.cleared) {
+  if (room.game_id !== board.game_id) {
     // TODO is this still necessary with new django backend?
     // host cleared board
     setTimeout(endGame, 0)
     return <Wrapper />
   }
 
-  if (!room.state.players) {
+  if (!room.game.players) {
     const user_id = user.id
     return (
       <Modal>
@@ -83,8 +85,8 @@ export default function Table({ match }) {
     )
   }
 
-  if (room.state.players) {
-    board.players = room.state.players
+  if (room.game.players) {
+    board.players = room.game.players
     board.local_player = parseInt(
       Object.keys(board.players).find((key) => {
         return board.players[key] === user.id

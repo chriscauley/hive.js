@@ -53,13 +53,13 @@ const actions = {
   },
   sync(store, board) {
     const room = ROOMS[board.room_name]
-    if (!room || !room.state.actions) {
+    if (!room || !room.game.actions) {
       return
     }
-    const remote_actions = room.state.actions
+    const remote_actions = room.game.actions
     const diff = remote_actions.length - board.actions.length
     if (diff < -1) {
-      console.error(room.state.actions, board.actions)
+      console.error(room.game.actions, board.actions)
       throw 'Game too far out of sync with server'
     }
     if (diff === -1) {

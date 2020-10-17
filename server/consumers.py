@@ -7,12 +7,11 @@ from django.contrib.auth import get_user_model
 from django.utils import timezone
 from loguru import logger
 
-from server.models import Room, Message
+from server.models import Room, Message, Game, default_state
 
+# DELETE ME
 for r in Room.objects.all():
     r.state['user_ids'] = []
-    r.state['afk'] = []
-    r.state['actions'] = []
     r.save()
 
 class ChatConsumer(AsyncWebsocketConsumer):
@@ -37,16 +36,19 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def send_room(self, room):
         messages = await self.get_room_messages(room)
+        game = await self.get_current_game(room)
+        message = {
+            'name': room.name,
+            'state': room.state,
+            'messages': [m.content for m in messages]
+        }
+        if game:
+            message['game_id'] = game.id
+            message['game'] = game.state
         await self.channel_layer.group_send(
             self.room_group_name,
-            {
-                'type': 'all_message',
-                'message': {
-                    'name': room.name,
-                    'state': room.state,
-                    'messages': [m.content for m in messages]
-                }
-            })
+            { 'type': 'all_message', 'message': message}
+        )
 
     async def all_message(self, event):
         # Send message to WebSocket
@@ -95,14 +97,20 @@ class ChatConsumer(AsyncWebsocketConsumer):
     def message_room(self, room, data):
         apply_message(self.scope['user'], room, data)
 
+    @database_sync_to_async
+    def get_current_game(self, room):
+        return room.get_current_game()
+
 @logger.catch
 def apply_message(user, room, data):
     user_id = str(user.id)
     action = data['action']
     content = data.get('content')
+    game = room.get_current_game()
     if action == 'setBoard':
-        room.state['initial_board'] = content
-        room.state.pop('cleared', None)
+        content['game_id'] = game.id
+        game.state['rules'] = content['rules']
+        game.save()
         room.save()
     elif action == 'ready':
         room.state['ready'][user_id] = content
@@ -112,10 +120,11 @@ def apply_message(user, room, data):
             # sort in order of white < random < black, which happens to be reverse alphabetical
             # if same, they'll be random, otherwise whoever chose white is first, black second
             user_ids.sort(key=lambda id: room.state['ready'][id])
-            room.state['players'] = dict({
+            game.state['players'] = dict({
                 "1": int(user_ids.pop()),
                 "2": int(user_ids.pop()),
             })
+            game.save()
             m = get_coin_flip_message(room.state['ready'])
             if m:
                 Message.objects.create(
@@ -131,14 +140,17 @@ def apply_message(user, room, data):
         room.state['ready'].pop(user_id, None)
         room.save()
     elif action == 'action':
-        room.state['actions'].append(content['action'])
-        room.save()
+        game.state['actions'].append(content['action'])
+        game.save()
     elif action == 'clearBoard':
-        room.state['actions'] = []
+        room.state.pop('ready', None)
+        if game:
+            if game.state.get('actions'):
+                game.done = True
+                game.save()
+            else:
+                game.delete()
         room.state['ready'] = {}
-        room.state.pop('initial_board', None)
-        room.state.pop('players', None)
-        room.state['cleared'] = True
         room.save()
     else:
         Message.objects.create(

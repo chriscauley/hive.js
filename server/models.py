@@ -6,13 +6,14 @@ def default_state():
         'user_ids': [],
         'afk': [],
         'ready': {},
-        'actions': [],
     }
 
 class Room(models.Model):
     state = models.JSONField(default=default_state)
     name = models.CharField(max_length=150) # same length as username
     updated = models.DateTimeField(auto_now=True)
+    def get_current_game(self):
+        return self.game_set.get_or_create(done=False)[0]
     def __str__(self):
         return self.name
 
@@ -30,3 +31,14 @@ class Message(models.Model):
         return f"{self.user} in {self.room}"
     class Meta:
         ordering = ('created',)
+
+class Game(models.Model):
+    def default_state():
+        return {
+            'actions': [],
+            # players will be added once game starts
+        }
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+    done = models.BooleanField(default=False)
+    state = models.JSONField(default=default_state)

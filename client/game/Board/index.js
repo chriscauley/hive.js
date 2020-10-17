@@ -130,6 +130,8 @@ const B = {
     return b
   },
 
+  _delete: (room_name) => delete board_cache[room_name],
+
   getUrl: (b) => {
     if (b.room_name === 'local' || !b.room_name) {
       return '#/local/'
@@ -215,6 +217,7 @@ const B = {
     'room_name',
     'current_player',
     'last_move_at',
+    'game_id',
   ],
   toJson: (b) => cloneDeep(pick(b, B.json_fields)),
   fromJson: (value) => {

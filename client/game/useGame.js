@@ -50,6 +50,7 @@ const actions = {
   endGame: (store) => {
     if (BOARD) {
       B.storage.set(BOARD.room_name, null)
+      B._delete(BOARD.room_name)
       store.actions.setRoomBoard(BOARD.room_name, undefined)
     }
   },

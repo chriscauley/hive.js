@@ -5,6 +5,7 @@ import { mod } from './Geo'
 import wouldBreakHive from './wouldBreakHive'
 import { stepOnHive } from './moves'
 import notScorpion from './notScorpion'
+import { last } from 'lodash'
 
 // TODO might be mergeable with B.move. Maybe switch to moves.move to simplify imports?
 const move = (b, i1, i2, special) => {
@@ -116,6 +117,20 @@ const dragonfly = (b, piece_id, args) => {
   }
 }
 
+const mosquito = (b, piece_id, args) => {
+  const index = b.reverse[piece_id]
+  let out = []
+  if (b.stacks[index].length === 1) {
+    b.geo.touching[index].forEach((i2) => {
+      const target_id = last(b.stacks[i2])
+      if (b.piece_types[target_id] === 'dragonfly') {
+        out = dragonfly(b, piece_id, args)
+      }
+    })
+  }
+  return out
+}
+
 export default {
   move,
   selectNearby,
@@ -123,6 +138,7 @@ export default {
   pill_bug,
   mantis,
   centipede,
+  mosquito,
   undo: {
     pill_bug: (b, piece_id, index, args) => move(b, args[1], args[0]),
     centipede: (b, piece_id, index, args) => swap(b, args[0], index),

@@ -6,7 +6,6 @@ import { HashRouter, Route } from 'react-router-dom'
 import auth from '@unrest/react-auth'
 
 import Nav from './components/Nav'
-import About from './components/About'
 import withConfig from './config'
 import sprites from './sprites'
 import screens from './screens'
@@ -55,7 +54,7 @@ const App = withConfig((props) => {
           <Route exact path="/local/" component={screens.Local} />
           <Route path="/play/:room_name/" component={screens.Table} />
           <Route path="/new/:room_name/" component={screens.NewGameRedirect} />
-          <Route exact path="/about/" component={About} />
+          <Route exact path="/about/" component={screens.About} />
           <Route path="/sprites/" component={sprites.Routes} />
           <auth.Routes />
           <chat.Window />

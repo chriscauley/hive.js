@@ -216,6 +216,10 @@ const beetle = (b, i) => {
 const getSubhive = (b, index, filters) => {
   // create a map of places that can be stepped on the hive given a filter
   const subhive = []
+  if (b.stacks[index].length > 1) {
+    // subhive includes index is there is a piece under the one that will move
+    subhive.push(index)
+  }
   const targets = [index]
   const checked = {}
   while (targets.length) {

@@ -184,8 +184,8 @@ const lady_bug = (board, index) => {
 
 const mantis = (board, index) => {
   if (board.stacks[index].length === 1) {
-    // mantis cannot move on ground
-    return []
+    const { lotus_mantis } = board.rules
+    return lotus_mantis ? stepAlongHive(board, index) : []
   }
   return stepOnHive(board, index).concat(stepOffHive(board, index))
 }
@@ -258,12 +258,11 @@ const cockroach = (b, index) => {
 }
 
 const fly = (b, index) => {
-  const moves = stepAlongHive(b, index)
-  if (moves.length !== 0) {
-    return moves
+  if (b.stacks[index].length > 1) {
+    const subhive = getSubhive(b, index, [notScorpion])
+    return stepOffSubhive(b, subhive).filter((i2) => i2 !== index)
   }
-  const subhive = getSubhive(b, index, [notScorpion])
-  return stepOffSubhive(b, subhive).filter((i2) => i2 !== index)
+  return stepOnHive(b, index)
 }
 
 const wasp = (b, index) => {

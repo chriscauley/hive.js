@@ -93,7 +93,8 @@ $types: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spider
 
 .rule-spiderwebs .piece.type-spider:after,
 .rule-super_grasshopper .piece.type-grasshopper:after,
-.rule-queen_lock .piece.type-queen:after, {
+.rule-queen_lock .piece.type-queen:after,
+.rule-lotus_mantis .piece.type-mantis:after {
   content: '';
   display: block;
   width: 80%;
@@ -105,14 +106,25 @@ $types: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spider
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  opacity: 0.1;
+  opacity: 0.2;
+  z-index: -1;
 }
 
 .rule-spiderwebs .hex-player_2.piece.type-spider:after,
 .rule-super_grasshopper .hex-player_2.piece.type-grasshopper:after,
-.rule-queen_lock .hex-player_2.piece.type-queen:after {
+.rule-queen_lock .hex-player_2.piece.type-queen:after,
+.rule-lotus_mantis .hex-player_2.piece.type-lotus:after {
   filter: invert(1) hue-rotate(-180deg);
   opacity: 0.15;
+}
+
+.rule-lotus_mantis .piece.type-mantis, .piece.type-lotus_mantis {
+  &:after {
+    background-image: url('../images/icons/lotus.png')
+  }
+  &.hex-player_2:after {
+    filter: invert(1);
+  }
 }
 
 .rule-damselfly .piece.type-dragonfly,
@@ -162,6 +174,10 @@ $types: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spider
   content: "3";
 }
 
+.piece.type-lotus_mantis:before {
+  background-image: url('../images/icons/lotus.png');
+}
+
 .piece.type-super_grasshopper:before {
   background-image: url('../images/icons/blockchain.png');
 }
@@ -185,9 +201,9 @@ $types: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spider
 }
 
 .hex-player_2.piece.type- {
-  &super_grasshopper, &spiderwebs, &no_rules, &unlimited, &:queen_lock {
+  &super_grasshopper, &spiderwebs, &no_rules, &unlimited, &queen_lock, &lotus_mantis {
     &:before {
-      filter: invert(1) hue-rotate(-180deg);
+      filter: invert(0.9);
     }
   }
 }

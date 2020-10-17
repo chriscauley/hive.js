@@ -9,11 +9,6 @@ from loguru import logger
 
 from server.models import Room, Message, Game, default_state
 
-# DELETE ME
-for r in Room.objects.all():
-    r.state['user_ids'] = []
-    r.save()
-
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         if not self.scope['user'].is_authenticated:

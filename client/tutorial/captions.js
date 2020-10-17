@@ -69,8 +69,8 @@ export default {
     'From on top of the hive, the black Mantis moves like a beetle.',
   ],
   fly: [
-    'The white fly can move to one of two spaces, like a queen.',
-    "The black fly's queen-like moves are restricted, so it can move anywhere.",
+    'The white fly can climb onto one of two pieces.',
+    'From on top of the hive, the black fly can move to any ground level space (except those blocked by scorpions).',
   ],
   scorpion: [
     'From this position the scorpion can move to one of two spaces.',

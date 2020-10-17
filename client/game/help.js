@@ -67,11 +67,12 @@ const pill_bug = [
 const mantis = [
   'If on the ground level, the mantis can grab an ajacent piece and move it underneath the mantis.',
   'Once on the hive the mantis can move one space on the hive or step off the hive.',
+  ifRule('lotus_mantis', _along('mantis')),
 ]
 
 const fly = [
-  _along('fly'),
-  'If there fly has no available moves, it can move on the hive and then land in any empty space.',
+  'If on the ground, the fly can step on the hive.',
+  'Once on the hive, the fly take any number of steps on the hive, and then step off the hive.',
 ]
 
 const scorpion = [
@@ -94,6 +95,7 @@ const dragonfly = [
   special(
     'If the dragon fly starts on top of a stack and would end on the ground, it moves the tile underneath it on the starting stack to the end (as long as it does not break the one-hive rule).',
   ),
+  ifRule('damselfly', 'While on the ground the dragonfly can move one step along the hive.'),
 ]
 
 const centipede = [

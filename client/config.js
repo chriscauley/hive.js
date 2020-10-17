@@ -50,7 +50,7 @@ const actions = {
 }
 
 const uiSchema = {
-  zoom: { 'ui:widget': ZoomInput }
+  zoom: { 'ui:widget': ZoomInput },
 }
 
 export default ConfigHook('game-config', { schema, initial, actions, uiSchema })

@@ -87,16 +87,32 @@ const _stepUntil = (board, index, excludes, condition = () => false) => {
   return excludes
 }
 
+const makePaths = (board, index) => {
+  const subhive = { stacks: {}, geo: board.geo }
+  Object.keys(board.stacks)
+    .filter((i) => parseInt(i) !== index)
+    .forEach((i) => (subhive.stacks[i] = board.stacks[i]))
+  const paths = {}
+  const targets = [index]
+  while (targets.length) {
+    const target = targets.pop()
+    paths[target] = stepAlongHive(subhive, target)
+    paths[target].filter((i) => !paths[i]).forEach((i) => targets.push(i))
+  }
+  return paths
+}
+
+const walkPaths = (paths, index, n_steps, excludes = []) => {
+  const next = paths[index].filter((i) => !excludes.includes(i))
+  if (n_steps === 1) {
+    return next
+  }
+  return flatten(next.map((i) => walkPaths(paths, i, n_steps - 1, [...excludes, index])))
+}
+
 const nStepsAlongHive = (board, index, n_steps) => {
-  const moves = stepAlongHive(board, index)
-  return moves
-    .map((current_index) => {
-      const excludes = [index, current_index]
-      const condition = (_index, excludes) => excludes.length > n_steps
-      const results = _stepUntil(board, current_index, excludes, condition)
-      return results[n_steps]
-    })
-    .filter((i) => i !== undefined && i !== index)
+  const paths = makePaths(board, index)
+  return walkPaths(paths, index, n_steps)
 }
 
 const isTouchingEnemySpider = (board, owner, start_index, target_index) => {

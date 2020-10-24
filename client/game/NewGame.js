@@ -1,74 +1,55 @@
 import React from 'react'
-import ConfigHook from '@unrest/react-config-hook'
+import css from '@unrest/css'
 
-import RuleList from '../components/RuleList'
-import { unslugify } from '../utils'
 import useGame from '../game/useGame'
 import Board from './Board'
-import pieces from './pieces'
+import pieces from '../game/pieces'
 import variants from './variants'
 import ReactTooltip from 'react-tooltip'
 
-const piece_enum = Object.keys(pieces.piece_sets)
-const enumNames = piece_enum.map((name) => {
-  const help = Object.keys(pieces.piece_sets[name].pieces).map((n) => {
-    const count = pieces.piece_sets[name].pieces[n]
-    return `${count}x${unslugify(n)}`
-  })
-  return (
-    <span key={name}>
-      {unslugify(name)}
-      <i className="fa fa-question-circle-o ml-2" data-tip={help.join(', ')} />
-    </span>
-  )
-})
+import RuleList from '../components/RuleList'
 
-const schema = {
-  type: 'object',
-  properties: {
-    piece_sets: {
-      type: 'array',
-      title: 'Piece Sets',
-      items: {
-        type: 'string',
-        enum: piece_enum,
-        enumNames,
-      },
-      uniqueItems: true,
-    },
-    variants: variants.schema,
-  },
-}
-
-const uiSchema = {
-  piece_sets: {
-    'ui:widget': 'checkboxes',
-  },
-  variants: variants.uiSchema,
-}
-
-const initial = { formData: { piece_sets: ['standard'] } }
-
-const config = ConfigHook('new-game', { schema, uiSchema, actions: {}, initial })
+const stored = localStorage.getItem('NEW_GAME_RULES')
+const initial_rules = { variants: {}, pieces: { ...pieces.piece_sets.standard.pieces } }
+const saved_rules = stored ? JSON.parse(stored) : initial_rules
 
 export default function NewGame({ room_name, game_id }) {
-  const { formData, actions } = config.useConfig()
-  const { piece_sets, variants } = formData
   const game = useGame()
-  const onSubmit = ({ formData }) => {
-    const { variants, ...rules } = formData
-    Object.assign(rules, variants)
+  const [rules, setRules] = React.useState(saved_rules)
+  const onSubmit = () => {
     game.setRoomBoard(room_name, Board.new({ rules, room_name, game_id }))
   }
-  const onChange = (formData) => {
-    // TODO make config hook auto save and this won't be necessary any more
-    actions.save({ formData })
+  const onClick = (e, type) => {
+    if (variants[type]) {
+      rules.variants[type] = !rules.variants[type]
+    } else {
+      const MAX = 8
+      rules.pieces[type] = rules.pieces[type] || 0
+      rules.pieces[type] += e.shiftKey ? -1 : 1
+      if (rules.pieces[type] < 0) {
+        rules.pieces[type] = MAX
+      } else if (rules.pieces[type] > MAX) {
+        rules.pieces[type] = 0
+      }
+    }
+    localStorage.setItem('NEW_GAME_RULES', JSON.stringify(rules))
+    setRules({ ...rules })
   }
+
   return (
     <div className="flex-grow flex items-center justify-center">
       <div className="NewGame">
-        <config.Form onSubmit={onSubmit} onChange={onChange} />
-        <RuleList rules={{ ...variants, piece_sets }} />
+        <div>
+          <h2>New Game</h2>
+          <p>
+            Choose which pieces to play with. Click adds a piece/rule, shift+click removes it. Hover
+            over a rule (bottom row) to read more.
+          </p>
+          <RuleList rules={rules} onClick={onClick} />
+          <button className={css.button('mt-4')} onClick={onSubmit}>
+            Start
+          </button>
+        </div>
       </div>
       <ReactTooltip className="max-w-sm" />
     </div>

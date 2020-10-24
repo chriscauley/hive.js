@@ -53,10 +53,13 @@ const getAvailable = (board) => {
   })
 
   const available = []
-  const piece_set = { blank: 0, queen: 1 }
-  board.rules.piece_sets.forEach((name) => {
-    Object.assign(piece_set, modes[name](board, used))
-  })
+  const piece_set = { blank: 0, queen: 1, ...board.rules.pieces }
+  if (board.rules.piece_sets) {
+    board.rules.piece_sets.forEach((name) => {
+      Object.assign(piece_set, modes[name](board, used))
+    })
+  }
+
   Object.entries(used).forEach(([player_id, used_pieces]) => {
     Object.entries(piece_set).forEach(([type, total]) => {
       used_pieces[type] = used_pieces[type] || 0

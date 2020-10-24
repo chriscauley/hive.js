@@ -3,6 +3,9 @@ import Markdown from 'react-markdown'
 import css from '@unrest/css'
 
 const content = `
+### 2020-10-24
+* Pick any combination of tiles in new game.
+* Select stack + hover to expand
 ### 2020-10-17
 * Dark mode! (config dropdown)
 * Changed fly completely (email me if you want me to add original in as a variant). Old fly was only useful in very rare circumstances.

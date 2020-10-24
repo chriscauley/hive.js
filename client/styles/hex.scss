@@ -63,11 +63,11 @@
       }
     }
   }
-  .item:nth-child(even) .content {
-    margin-top: - ($hex_h / 2 + 0.08em);
+  .item:nth-child(even) {
+    top: - ($hex_h / 2 + 0.08em);
   }
-  &.odd-q .item:nth-child(even) .content {
-    margin-top: ($hex_h / 2 + 0.08em);
+  &.odd-q .item:nth-child(even) {
+    top: ($hex_h / 2 + 0.08em);
   }
 }
 

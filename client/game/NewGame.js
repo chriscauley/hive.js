@@ -17,7 +17,8 @@ export default function NewGame({ room_name, game_id }) {
   const game = useGame()
   const [rules, setRules] = React.useState(saved_rules)
   const onSubmit = () => {
-    game.setRoomBoard(room_name, Board.new({ rules, room_name, game_id }))
+    const { pieces, variants } = rules
+    game.setRoomBoard(room_name, Board.new({ rules: { pieces, ...variants }, room_name, game_id }))
   }
   const onClick = (e, type) => {
     if (variants[type]) {

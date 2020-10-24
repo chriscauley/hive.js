@@ -26,12 +26,18 @@
       top: 50%;
       transform: translate(-50%, -50%);
       width: $hex_w;
-      $z: -5%;
-      @for $i from  1 through 4 {
-        .stacked-#{$i} {
-          top: $i * $z;
-          left: $i * $z;
-        }
+    }
+    $z: -5%;
+    @for $i from  1 through 4 {
+      .stacked-#{$i} {
+        top: $i * $z;
+        left: $i * $z;
+        transition: top 0.5s, left 0.5s;
+      }
+      &.selected:hover .stacked-#{$i} {
+        top: $i * -45%;
+        left: $i * -45%;
+        transition-delay: 0.5s;
       }
     }
   }

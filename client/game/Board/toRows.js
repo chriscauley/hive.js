@@ -70,6 +70,7 @@ export default (board, { columns = 1 } = {}) => {
   rows.forEach((row) =>
     row.forEach((cell) => {
       cell.stack = []
+      cell.selected = cell.index === selected.index
       if (board.stacks[cell.index]) {
         board.stacks[cell.index].forEach((piece_id) => {
           cell.stack.push(pieceToClass(board, piece_id))

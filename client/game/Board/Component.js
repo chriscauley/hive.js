@@ -43,7 +43,7 @@ const TileStack = ({ cell, click }) => {
 }
 
 function BoardComponent(props) {
-  const { board = {} } = useGame()
+  const board = useGame().board || {}
   const { className = '', rows, config, click } = props
   if (rows.length === 0) {
     return null

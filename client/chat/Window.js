@@ -1,7 +1,7 @@
 import React from 'react'
 import css from '@unrest/css'
 import auth from '@unrest/react-auth'
-import { useAutoScroll } from '@unrest/core'
+import { useAutoScroll, useLocalStorage } from '@unrest/core'
 
 import useChat from '../useChat'
 
@@ -25,7 +25,7 @@ function WindowBar({ onClick }) {
 export default function Chat() {
   const { rooms = {}, current_room, error, send, _joinRoom, switchRoom } = useChat()
   const { user } = auth.use()
-  const [open, setOpen] = React.useState(true)
+  const [open, setOpen] = useLocalStorage('CHAT_OPEN', true)
   const autoscroll = useAutoScroll()
   const textRef = React.useRef()
 

@@ -2,6 +2,7 @@
 import { range } from 'lodash'
 import pieces from '../pieces'
 import Board from './index'
+import webs from './webs'
 
 const _class = (player, type) => `piece hex-player_${player} type type-${type} hex `
 const empty = (board, index) => {
@@ -53,6 +54,7 @@ const sliceBoard = (board) => {
 export default (board, { columns = 1 } = {}) => {
   const marked = getMarked(board)
   const { selected = {} } = board
+  const show_webs = webs.getVisible(board, selected.index)
   if (selected.index !== undefined) {
     marked[selected.index] = ' purple'
   } else if (board.last) {
@@ -82,6 +84,30 @@ export default (board, { columns = 1 } = {}) => {
       } else {
         cell.stack.push(empty(board, cell.index))
       }
+      show_webs.forEach((web) => {
+        if (!board.layers[web][cell.index]) {
+          return // no webs
+        }
+        if (web === 'crawl') {
+          if (board.stacks[cell.index] && cell.index !== selected.index) {
+            // only show crawl web on the selected piece or empty squares
+            return
+          }
+          const enemy_webs = board.layers[web][cell.index].filter(
+            (i) => selected.player_id !== board.layers.player[i],
+          )
+          if (enemy_webs.length === 0) {
+            return
+          }
+
+          const selected_webs = board.layers.crawl[selected.index] || []
+          if (enemy_webs.find((i) => selected_webs.includes(i)) !== undefined) {
+            web = 'crawl-gray'
+          }
+        }
+        cell.title = webs.title[web](selected.piece_type)
+        cell.web = web
+      })
       if (marked[cell.index]) {
         const _i = cell.stack.length - 1
         cell.stack[_i] = cell.stack[_i] + marked[cell.index]

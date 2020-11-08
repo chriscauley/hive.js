@@ -1,11 +1,8 @@
-$types: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spider dragonfly fly mantis wasp scorpion cockroach;
+$types: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spider dragonfly fly mantis wasp scorpion cockroach cicada earthworm trapdoor_spider orbweaver lanternfly;
 
 @each $type in $types {
   .piece.type-#{$type}:before {
-    background-image: url(../images/pieces/#{$type}.png);
-    .theme-carbon & {
-      background-image: url(../images/pieces/#{$type}_dark.png);
-    }
+    background-image: url(../images/pieces/#{$type}.svg);
   }
 }
 
@@ -18,31 +15,6 @@ $types: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spider
   @apply flex items-center justify-center absolute w-full h-full z-0;
   cursor: pointer;
 
-  /* a few bugs are too dark on the black tiles. This is overwritten by invert in carbon theme */
-  &.hex-player_2.type- {
-    &spider:before, &scorpion:before, &fly:before, &pill_bug:before {
-      filter: brightness(1.75);
-    }
-  }
-  &.hex-player_2.type-scorpion.gray{
-    filter: grayscale(0.5);
-    &:before {
-      opacity: 1;
-      filter: brightness(2);
-    }
-  }
-
-  /* same as above but too bright for white*/
-  &.hex-player_1.type- {
-    &grasshopper:before {
-      filter: brightness(0.8);
-    }
-  }
-
-  &.hex-player_2.type-hive:before {
-    filter: invert(0.8);
-  }
-
   /* some bugs are off center and need to be shifted */
   &.hex.type- {
     &scorpion:before, &dragonfly:before {
@@ -51,13 +23,34 @@ $types: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spider
     &fly:before {
       margin-left: 15%;
     }
-    &spider:before, &queen:before {
+    &spider:before, &queen:before, &trapdoor_spider:before, &orbweaver:before {
       margin-top: 5%;
+    }
+    &orbweaver:before {
+      height: 100%;
+    }
+    &earthworm:before {
+      margin-top: 15%;
     }
   }
 
+  &.hex-player_2.hex.type- {
+    &scorpion:before, &spider:before, &trapdoor_spider:before {
+      filter: brightness(1.5);
+    }
+  }
+
+  &.hex-player_2.hex.type- {
+    &lanternfly:before {
+      filter: brightness(1.25);
+    }
+  }
+
+  .theme-carbon &:before {
+    filter: brightness(0) !important;
+  }
   .theme-carbon &.hex-player_2:before {
-    filter: invert(1);
+    filter: brightness(0) invert(1) !important;
   }
   &.type:before {
     content: "";
@@ -79,23 +72,19 @@ $types: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spider
   }
 }
 
-.rule-venom_centipede .piece.type-centipede:before,
-.type-venom_centipede:before {
-  background-image: url(../images/pieces/venom_centipede.png);
+[data-web="stack"]:after {
+  @apply text-red-600 flex w-full h-full justify-center items-center absolute;
+  content: "\f00d";
+  font-family: "FontAwesome";
+  font-size: 4rem;
+  pointer-events: none;
 }
 
-.theme-carbon {
-  &.rule-venom_centipede .piece.type-centipede:before,
-  .type-venom_centipede:before {
-    background-image: url(../images/pieces/venom_centipede_dark.png);
-  }
-}
-
-.rule-spiderwebs .piece.type-spider:after,
-.rule-super_grasshopper .piece.type-grasshopper:after,
-.rule-queen_lock .piece.type-queen:after,
-.rule-lotus_mantis .piece.type-mantis:after {
+[data-web="crawl"]:after,
+[data-web="crawl-gray"]:after,
+[data-web="fly"]:after {
   content: '';
+  background-image: url('../images/icons/trap_red.png');
   display: block;
   width: 80%;
   height: 80%;
@@ -106,50 +95,20 @@ $types: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spider
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  opacity: 0.2;
-  z-index: -1;
+  pointer-events: none;
+  opacity: 0.4;
+  z-index: 3;
 }
 
-.rule-spiderwebs .hex-player_2.piece.type-spider:after,
-.rule-super_grasshopper .hex-player_2.piece.type-grasshopper:after,
-.rule-queen_lock .hex-player_2.piece.type-queen:after,
-.rule-lotus_mantis .hex-player_2.piece.type-lotus:after {
-  filter: invert(1) hue-rotate(-180deg);
-  opacity: 0.15;
-}
-
-.rule-lotus_mantis .piece.type-mantis, .piece.type-lotus_mantis {
-  &:after {
-    background-image: url('../images/icons/lotus.png')
-  }
-  &.hex-player_2:after {
-    filter: invert(1);
-  }
-}
-
-.rule-damselfly .piece.type-dragonfly,
-.piece.type-damselfly {
-  &:before {
-    background-image: url('../images/pieces/damselfly.png');
-  }
-  &.hex-player_1:before {
-    filter: invert(1) hue-rotate(-180deg);
-  }
-  &.hex-player_2:before {
-    filter: brightness(1.25);
-  }
-}
-
-.rule-spiderwebs .piece.type-spider:after {
+[data-web="crawl-gray"]:after {
   background-image: url('../images/icons/trap.png');
+  filter: invert(1);
+  opacity: 0.2;
 }
 
-.rule-super_grasshopper .piece.type-grasshopper:after {
-  background-image: url('../images/icons/blockchain.png');
-}
-
-.rule-queen_lock .piece.type-queen:after {
-  background-image: url('../images/icons/comb-19.png');
+[data-web="crawl"]:after,
+[data-web="crawl-green"]:after {
+  opacity: 0.8;
 }
 
 .piece.type-basics,
@@ -173,38 +132,4 @@ $types: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spider
 }
 .piece.type-stacks:before {
   content: "3";
-}
-
-.piece.type-lotus_mantis:before {
-  background-image: url('../images/icons/lotus.png');
-}
-
-.piece.type-super_grasshopper:before {
-  background-image: url('../images/icons/blockchain.png');
-}
-
-.piece.type-spiderwebs:before {
-  background-image: url('../images/icons/trap.png');
-}
-
-.piece.type-no_rules:before {
-  background-image: url('../images/icons/cancel.png');
-}
-
-.piece.type-unlimited:before {
-  background-image: url('../images/icons/endless.png');
-}
-
-.piece.type-queen_lock:before {
-  background-image: url('../images/icons/comb-19.png');
-  height: 80%;
-  width: 75%;
-}
-
-.hex-player_2.piece.type- {
-  &super_grasshopper, &spiderwebs, &no_rules, &unlimited, &queen_lock, &lotus_mantis {
-    &:before {
-      filter: invert(0.9);
-    }
-  }
 }

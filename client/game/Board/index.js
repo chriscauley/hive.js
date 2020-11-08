@@ -7,14 +7,13 @@ import wouldBreakHive from './wouldBreakHive'
 import specials from './specials'
 import moves from './moves'
 import variants from '../variants'
+import webs from './webs'
 
 const board_cache = {}
 const PLAYER_COUNT = 2
 const noop = () => []
-const RULES = ['super_grasshopper', 'spiderwebs', 'venom_centipede', 'no_rules', 'unlimited']
 
 const B = {
-  RULES,
   moves,
   specials,
   wouldBreakHive,
@@ -27,6 +26,9 @@ const B = {
     b.layers = {
       type: {},
       player: {},
+      stack: {},
+      crawl: {},
+      fly: {},
     }
     b.special_args = b.special_args || []
     b.actions = b.actions || []
@@ -45,6 +47,10 @@ const B = {
         b.layers.type[index] = b.piece_types[piece_id]
         b.layers.player[index] = b.piece_owners[piece_id]
       })
+      const piece_type = b.layers.type[index]
+      if (webs[piece_type]) {
+        webs[piece_type](b, index)
+      }
     })
 
     b.hash = B.current_hash = B.getHash(b)

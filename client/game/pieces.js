@@ -1,45 +1,67 @@
-const piece_sets = {
-  standard: {
-    pieces: {
-      beetle: 2,
-      grasshopper: 3,
-      ant: 3,
-      spider: 2,
-    },
-  },
-  custom: {
-    pieces: {
-      mantis: 2,
-      fly: 3,
-      wasp: 3,
-      scorpion: 2,
-    },
-  },
-  expanded_standard: {
-    pieces: {
-      lady_bug: 1,
-      mosquito: 1,
-      pill_bug: 1,
-    },
-  },
-  expanded_custom: {
-    pieces: {
-      dragonfly: 1,
-      cockroach: 1,
-      centipede: 1,
-    },
-  },
+import help from './help'
+
+const VANILLA = {
+  beetle: 2,
+  grasshopper: 3,
+  ant: 3,
+  spider: 2,
 }
 
-const _defaultMode = (name) => () => piece_sets[name].pieces
+const piece_counts = {
+  ...VANILLA,
+  // expansion
+  lady_bug: 1,
+  mosquito: 1,
+  pill_bug: 1,
 
-const modes = {
-  ants: (_board, used) => {
-    const ants = Math.max(used[1].ant || 0, Math.max(used[2].ant || 0))
-    return { ant: ants + 3 }
-  },
+  // boardgamegeeks
+  mantis: 2,
+  fly: 3,
+  wasp: 3,
+  scorpion: 2,
+  dragonfly: 1,
+  cockroach: 1,
+  centipede: 1,
+
+  // hive.js
+  cicada: 3,
+  lanternfly: 3,
+  trapdoor_spider: 2,
+  orbweaver: 2,
+  earthworm: 1,
 }
-Object.keys(piece_sets).forEach((name) => (modes[name] = _defaultMode(name)))
+
+// currently not used, colors are stored on svg
+const colors = {
+  ant: '#0088e6',
+  beetle: '#b95cb9',
+  centipede: '#b98900',
+  cicada: '#4b9400', //  copies grasshopper
+  cockroach: '#b95c2b',
+  dragonfly: '#e62b00',
+  earthworm: '#dc5797',
+  fly: '#2a5c00',
+  grasshopper: '#4b9400',
+  ladybug: '#b90000',
+  lanternfly: '#ac3a3a',
+  mantis: '#008b5c',
+  mosquito: '#8a8a8a',
+  pillbug: '#005cb9',
+  scorpion: '#5c008b',
+  spider: '#5c2900',
+  trapdoor_spider: '#5c2900', // copies spider for now
+  queen: '#e6b900',
+  wasp: '#e62b8b',
+}
+
+const tags = {
+  hive: ['beetle', 'grasshopper', 'ant', 'spider', 'lady_bug', 'mosquito', 'pill_bug'],
+  crawl: ['trapdoor_spider', 'spider', 'cicada', 'ant'],
+  fly: ['orbweaver', 'lanternfly', 'fly', 'wasp', 'cockroach', 'grasshopper', 'cicada', 'ladybug'],
+  stack: ['scorpion', 'beetle', 'mantis', 'dragonfly', 'damselfly'],
+  special: ['mosquito', 'centipede', 'pillbug', 'earthworm'],
+  all: ['queen', ...Object.keys(piece_counts)],
+}
 
 const getAvailable = (board) => {
   const { unlimited } = board.rules
@@ -54,11 +76,6 @@ const getAvailable = (board) => {
 
   const available = []
   const piece_set = { blank: 0, queen: 1, ...board.rules.pieces }
-  if (board.rules.piece_sets) {
-    board.rules.piece_sets.forEach((name) => {
-      Object.assign(piece_set, modes[name](board, used))
-    })
-  }
 
   Object.entries(used).forEach(([player_id, used_pieces]) => {
     Object.entries(piece_set).forEach(([type, total]) => {
@@ -72,17 +89,20 @@ const getAvailable = (board) => {
   return available
 }
 
-const getNames = () => {
-  const names = ['queen']
-  Object.values(piece_sets).forEach((piece_set) => {
-    Object.keys(piece_set.pieces).forEach((name) => names.push(name))
-  })
-  return names
+export default {
+  VANILLA,
+  getAvailable,
+  piece_counts,
+  tags,
+  list: Object.keys(piece_counts),
+  colors,
 }
 
-export default {
-  getNames,
-  getAvailable,
-  piece_sets,
-  modes,
-}
+tags.all.forEach((type) => {
+  if (!help[type]) {
+    console.log('missing help', type)
+  }
+  if (!colors[type]) {
+    console.log('missing color', type)
+  }
+})

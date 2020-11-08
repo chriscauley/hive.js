@@ -1,7 +1,8 @@
 import { mod } from './Geo'
 import { flatten, last } from 'lodash'
-import notScorpion from './notScorpion'
+
 import wouldBreakHive from './wouldBreakHive'
+import webs from './webs'
 
 const getPlacement = (board, player_id, excludes = []) => {
   if (board.turn === 0) {
@@ -115,24 +116,24 @@ const nStepsAlongHive = (board, index, n_steps) => {
   return walkPaths(paths, index, n_steps)
 }
 
-const isTouchingEnemySpider = (board, owner, start_index, target_index) => {
-  if (!board.rules.spiderwebs) {
+const isTouchingEnemySpider = (board, start_index, target_index) => {
+  const webs = board.layers.crawl[target_index]
+  if (!webs) {
     return false
   }
-  const fail_index = board.geo.touching[target_index].find((touch_index) => {
-    if (board.geo.touching[start_index].includes(touch_index)) {
-      // don't count spiders that the and is touching in current position
-      return false
-    }
-    const touch_id = last(board.stacks[touch_index])
-    const touch_owner = board.piece_owners[touch_id]
-    return touch_owner !== owner && board.piece_types[touch_id] === 'spider'
-  })
-  return fail_index !== undefined
+  const starting_webs = board.layers.crawl[start_index] || []
+  const owner = board.layers.player[start_index]
+  return (
+    undefined !==
+    webs.find(
+      (i) =>
+        board.layers.player[i] !== owner && // friendly spiders do not stop
+        !starting_webs.includes(i), // cannot get stopped by web you start in
+    )
+  )
 }
 
 const ant = (board, index) => {
-  const owner = board.piece_owners[last(board.stacks[index])]
   // left and right spaces from ant
   let moves = stepAlongHive(board, index)
   moves = moves.map((current_index) => {
@@ -140,9 +141,7 @@ const ant = (board, index) => {
     let targets = _stepUntil(board, current_index, excludes)
     // ant has to take the shortest route, this means cutting two routes in half
     targets = targets.slice(0, Math.ceil(targets.length / 2) + 1)
-    const first_spider = targets.find((target) =>
-      isTouchingEnemySpider(board, owner, index, target),
-    )
+    const first_spider = targets.find((target) => isTouchingEnemySpider(board, index, target))
     if (first_spider) {
       targets = targets.slice(0, targets.indexOf(first_spider) + 1)
     }
@@ -154,31 +153,45 @@ const ant = (board, index) => {
   return moves.filter((i) => i !== undefined && i !== index)
 }
 
-const grasshopper = (board, index) => {
+const grasshopper = (board, index, excludes = []) => {
+  const moves = []
+  board.geo.touching[index].map((target_index, i_dir) => {
+    if (!board.stacks[target_index]) {
+      // grasshopper must first step on hive
+      return
+    }
+
+    // grasshopper travels in same direction until it falls off hive
+    while (board.stacks[target_index]) {
+      if (board.layers.fly[target_index]) {
+        // orbweaver stops grasshopper
+        return
+      }
+      if (excludes.includes(target_index)) {
+        return
+      }
+      const dindex = board.geo.dindexes[mod(target_index, 2)][i_dir]
+      target_index += dindex
+    }
+    moves.push(target_index)
+  })
+  return moves
+}
+
+const cicada = (board, index) => {
   const targets = [index]
   const moves = []
   while (targets.length) {
-    const target_index = targets.pop()
-    board.geo.touching[target_index].map((target_index, i_dir) => {
-      if (!board.stacks[target_index]) {
-        // grasshopper must first step on hive and cannot step over itself
-        return
-      }
-
-      // grasshopper travels in same direction until it falls off hive
-      while (board.stacks[target_index]) {
-        // cannot step over scorpion or starting index
-        if (isScorpion(board, target_index) || target_index === index) {
-          return
+    const target = targets.pop()
+    grasshopper(board, target, [index])
+      .filter((index2) => !moves.includes(index2))
+      .forEach((index2) => {
+        moves.push(index2)
+        const webs = board.layers.crawl[index2]
+        if (!webs || webs.includes(index)) {
+          targets.push(index2)
         }
-        const dindex = board.geo.dindexes[mod(target_index, 2)][i_dir]
-        target_index += dindex
-      }
-      if (board.rules.super_grasshopper && !moves.includes(target_index)) {
-        targets.push(target_index)
-      }
-      moves.push(target_index)
-    })
+      })
   }
   return moves
 }
@@ -273,13 +286,13 @@ const stepOffSubhive = (b, subhive, filter = () => true) => {
 
 const cockroach = (b, index) => {
   const current_player = b.piece_owners[last(b.stacks[index])]
-  const friendly_hive = getSubhive(b, index, [notScorpion, isPlayer(current_player)])
+  const friendly_hive = getSubhive(b, index, [webs.no.fly, isPlayer(current_player)])
   return stepOffSubhive(b, friendly_hive).filter((i2) => i2 !== index)
 }
 
 const fly = (b, index) => {
   if (b.stacks[index].length > 1) {
-    const subhive = getSubhive(b, index, [notScorpion])
+    const subhive = getSubhive(b, index, [webs.no.fly])
     return stepOffSubhive(b, subhive).filter((i2) => i2 !== index)
   }
   return stepOnHive(b, index)
@@ -287,7 +300,7 @@ const fly = (b, index) => {
 
 const wasp = (b, index) => {
   const current_player = b.piece_owners[last(b.stacks[index])]
-  const subhive = getSubhive(b, index, [notScorpion])
+  const subhive = getSubhive(b, index, [webs.no.fly])
   const placements = getPlacement(b, current_player === 1 ? 2 : 1, [index])
   return stepOffSubhive(b, subhive).filter((i) => placements.includes(i))
 }
@@ -312,10 +325,26 @@ const centipede = (board, index) => {
   return stepAlongHive(board, index)
 }
 
+const spider = (b, i) => {
+  const moves = nStepsAlongHive(b, i, 3)
+  b.geo.dindexes[mod(i, 2)].forEach((dindex, i_dir) => {
+    const index2 = i + dindex
+    if (!b.stacks[index2] || b.layers.type[index2] === 'scorpion') {
+      // cannot "jump" an empty space or a scorpion
+      return
+    }
+    const index3 = index2 + b.geo.dindexes[mod(index2, 2)][i_dir]
+    if (!b.stacks[index3]) {
+      // Can jump to next space if empty
+      moves.push(index3)
+    }
+  })
+  return moves
+}
+
 const moves = {
   stepOnHive,
   stepOffHive,
-
   centipede,
   queen: stepAlongHive,
   pill_bug: stepAlongHive,
@@ -323,24 +352,8 @@ const moves = {
   beetle,
   cockroach,
   dragonfly,
-  spider: (b, i) => {
-    const moves = nStepsAlongHive(b, i, 3)
-    b.geo.dindexes[mod(i, 2)].forEach((dindex, i_dir) => {
-      const index2 = i + dindex
-      if (!b.stacks[index2] || b.layers.type[index2] === 'scorpion') {
-        // cannot "jump" an empty space or a scorpion
-        return
-      }
-      const index3 = index2 + b.geo.dindexes[mod(index2, 2)][i_dir]
-      if (!b.stacks[index3]) {
-        // Can jump to next space if empty
-        moves.push(index3)
-      }
-    })
-    return moves
-  },
-  scorpion: (b, i) => nStepsAlongHive(b, i, 3),
   grasshopper,
+  cicada,
   fly,
   wasp,
   getPlacement,
@@ -348,6 +361,12 @@ const moves = {
   mantis,
   mosquito,
   dragonflyExtra,
+
+  // all spider-likes move the same
+  spider,
+  scorpion: spider,
+  trapdoor_spider: spider,
+  orbweaver: spider,
 }
 
 export default moves

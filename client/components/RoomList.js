@@ -3,13 +3,7 @@ import { Link } from 'react-router-dom'
 import css from '@unrest/css'
 
 import useChat from '../useChat'
-import pieces from '../game/pieces'
 import RuleList from './RuleList'
-
-const piece_map = {}
-Object.entries(pieces.piece_sets).forEach(([key, { pieces }]) => {
-  piece_map[key] = Object.keys(pieces)
-})
 
 export default function RoomList() {
   const { available_rooms = [] } = useChat()

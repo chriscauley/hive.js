@@ -1,13 +1,9 @@
 import React from 'react'
+import { range } from 'lodash'
 
 import pieces from '../game/pieces'
 import variants from '../game/variants'
 import sprites from '../sprites'
-
-const piece_map = {}
-Object.entries(pieces.piece_sets).forEach(([key, { pieces }]) => {
-  piece_map[key] = Object.keys(pieces)
-})
 
 const _class = (player, type) => `hex hex-player_${(player % 2) + 1} type type-${type} piece`
 
@@ -24,12 +20,9 @@ export default function RuleList({ rules, onClick = () => {} }) {
   if (!rules) {
     return null
   }
-  const { piece_sets } = pieces
-  const piece_lists = [
-    Object.keys({ ...piece_sets.standard.pieces, ...piece_sets.expanded_standard.pieces }),
-    Object.keys({ ...piece_sets.custom.pieces, ...piece_sets.expanded_custom.pieces }),
-  ]
-
+  const piece_lists = range(Math.ceil(pieces.list.length / 7)).map((i) =>
+    pieces.list.slice(i * 7, (i + 1) * 7),
+  )
   return (
     <div className="RuleList mt-4">
       {piece_lists.map((piece_list, irow) => (

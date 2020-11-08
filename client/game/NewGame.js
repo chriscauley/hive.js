@@ -10,7 +10,7 @@ import ReactTooltip from 'react-tooltip'
 import RuleList from '../components/RuleList'
 
 const stored = localStorage.getItem('NEW_GAME_RULES')
-const initial_rules = { variants: {}, pieces: { ...pieces.piece_sets.standard.pieces } }
+const initial_rules = { variants: {}, pieces: { ...pieces.VANILLA } }
 const saved_rules = stored ? JSON.parse(stored) : initial_rules
 
 export default function NewGame({ room_name, game_id }) {

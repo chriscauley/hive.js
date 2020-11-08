@@ -25,7 +25,7 @@ const Tile = ({ xy, className, target, index, z, click }) => {
 const TileStack = ({ cell, click }) => {
   return (
     <div className={`item ${cell.selected ? 'selected' : ''}`}>
-      <div className="content">
+      <div className="content" data-web={cell.web} title={cell.title}>
         {cell.stack.map((item, i) => (
           <Tile
             className={item}

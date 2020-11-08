@@ -47,16 +47,25 @@ const useImport = () => {
 
 const useExport = () => {
   const hook = useSelect()
-  const { board } = useGame()
-  const json = JSON.stringify(Board.toJson(board))
   hook.Modal = function ImportModal() {
+    const { board = {} } = useGame()
+    const json = Board.toJson(board)
+    if (json.rules) {
+      delete json.room_name
+      Object.keys(json.rules)
+        .filter((k) => !json.rules[k])
+        .forEach((k) => delete json.rules[k])
+      Object.keys(json.rules.pieces)
+        .filter((k) => !json.rules.pieces[k])
+        .forEach((k) => delete json.rules.pieces[k])
+    }
     return (
       <Modal hook={hook}>
         <div className={'form-group'}>
           <div className="pb-4 mb-4 border-b">
             The json representation of the current game is below. Copy the text or download the
             file.
-            <textarea className="form-control" defaultValue={json} />
+            <textarea className="form-control" defaultValue={JSON.stringify(json)} />
           </div>
           <div className={css.button()} onClick={hook.toggle}>
             Close

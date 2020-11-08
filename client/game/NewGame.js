@@ -13,6 +13,13 @@ const stored = localStorage.getItem('NEW_GAME_RULES')
 const initial_rules = { variants: {}, pieces: { ...pieces.VANILLA } }
 const saved_rules = stored ? JSON.parse(stored) : initial_rules
 
+// remove invalid pieces
+Object.keys(saved_rules.pieces).forEach((type) => {
+  if (!pieces.piece_counts[type]) {
+    delete saved_rules.pieces[type]
+  }
+})
+
 export default function NewGame({ room_name, game_id }) {
   const game = useGame()
   const [rules, setRules] = React.useState(saved_rules)

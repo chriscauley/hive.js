@@ -5,26 +5,6 @@ import { unslugify } from '../utils'
 const _help = (s) => <i className="fa fa-question-circle-o" data-tip={s} />
 
 const variants = {
-  spiderwebs: {
-    requires: ['spider'],
-    help: 'Ants stop moving if they collide with an enemy spider.',
-  },
-  super_grasshopper: {
-    requires: ['grasshopper'],
-    help: 'The grasshopper can make unlimited jumps per turn.',
-  },
-  venom_centipede: {
-    requires: ['centipede'],
-    help: 'The centipede swaps with a piece 3 on-hive tiles away (Hive Venom variant).',
-  },
-  damselfly: {
-    requires: ['dragonfly'],
-    help: 'When on the ground, the dragonfly can move along the hive.',
-  },
-  lotus_mantis: {
-    requires: ['mantis'],
-    help: 'When on the ground, the mantis can move along the hive.',
-  },
   no_rules: {
     requires: [],
     help: 'UI will still display legal moves, but any piece can be moved to any space.',
@@ -33,10 +13,6 @@ const variants = {
     requires: [],
     help: 'You can place as many pieces as you want.',
   },
-  // queen_lock: {
-  //   requires: [],
-  //   help:  'Pieces touching the enemy queen cannot move.',
-  // },
 }
 
 const schema = {

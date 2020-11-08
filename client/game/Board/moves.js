@@ -202,12 +202,15 @@ const isScorpion = (board, target_index) => {
 }
 
 const lady_bug = (board, index) => {
+  const noFly = (i) => !board.layers.fly[i]
   let moves = []
-  stepOnHive(board, index).forEach((on_index1) =>
-    stepOnHive(board, on_index1, [index]).forEach(
-      (on_index2) => (moves = moves.concat(stepOffHive(board, on_index2, [index]))),
-    ),
-  )
+  stepOnHive(board, index)
+    .filter(noFly)
+    .forEach((on_index1) =>
+      stepOnHive(board, on_index1, [index])
+        .filter(noFly)
+        .forEach((on_index2) => (moves = moves.concat(stepOffHive(board, on_index2, [index])))),
+    )
   return moves
 }
 
@@ -290,12 +293,21 @@ const cockroach = (b, index) => {
   return stepOffSubhive(b, friendly_hive).filter((i2) => i2 !== index)
 }
 
+const flyAnywhere = (b, i) => {
+  const subhive = getSubhive(b, i, [webs.no.fly])
+  return stepOffSubhive(b, subhive).filter((i2) => i2 !== i)
+}
+
 const fly = (b, index) => {
   if (b.stacks[index].length > 1) {
-    const subhive = getSubhive(b, index, [webs.no.fly])
-    return stepOffSubhive(b, subhive).filter((i2) => i2 !== index)
+    return flyAnywhere(b, index)
   }
   return stepOnHive(b, index)
+}
+
+const lanternfly = (b, index) => {
+  const touching_stacks = b.geo.touching[index].filter((i) => b.stacks[i])
+  return touching_stacks.length < 3 ? stepAlongHive(b, index) : flyAnywhere(b, index)
 }
 
 const wasp = (b, index) => {
@@ -355,6 +367,7 @@ const moves = {
   grasshopper,
   cicada,
   fly,
+  lanternfly,
   wasp,
   getPlacement,
   lady_bug,

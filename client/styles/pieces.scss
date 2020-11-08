@@ -72,14 +72,7 @@ $types: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spider
   }
 }
 
-[data-web="stack"]:after {
-  @apply text-red-600 flex w-full h-full justify-center items-center absolute;
-  content: "\f00d";
-  font-family: "FontAwesome";
-  font-size: 4rem;
-  pointer-events: none;
-}
-
+/* webs - show where you can't move */
 [data-web="crawl"]:after,
 [data-web="crawl-gray"]:after,
 [data-web="fly"]:after {
@@ -111,6 +104,7 @@ $types: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spider
   opacity: 0.8;
 }
 
+/* tutorial only */
 .piece.type-basics,
 .piece.type-onehive,
 .piece.type-stacks {
@@ -132,4 +126,28 @@ $types: ant beetle centipede grasshopper lady_bug mosquito pill_bug queen spider
 }
 .piece.type-stacks:before {
   content: "3";
+}
+
+/* stack size for NewGame */
+[data-web="stack"]:after {
+  @apply text-red-600 flex w-full h-full justify-center items-center absolute;
+  content: "\f00d";
+  font-family: "FontAwesome";
+  font-size: 4rem;
+  pointer-events: none;
+}
+
+/* rules for NewGame screen */
+.piece.type-no_rules:before {
+  background-image: url('../images/icons/cancel.png');
+}
+
+.piece.type-unlimited:before {
+  background-image: url('../images/icons/endless.png');
+}
+
+.piece.type-no_rules, .piece.type-unlimited {
+  &.hex-player_2:before {
+    filter: invert(1);
+  }
 }

@@ -21,14 +21,12 @@ Object.keys(saved_rules.pieces).forEach((type) => {
   }
 })
 
-function HoveringPiece({ piece_type }) {
+function HoveringPiece({ piece_type, is_host }) {
   if (!piece_type) {
-    return (
-      <p>
-        Choose which pieces to play with. Click adds a piece/rule, shift+click removes it. Hover
-        over a rule (bottom row) to read more.
-      </p>
-    )
+    const host_text =
+      'Choose which pieces to play with. Click adds a piece/rule, shift+click removes it.'
+    const guest_text = 'Waiting for host to choose pieces. Check out the rules while you wait.'
+    return <p>{is_host ? host_text : guest_text} Hover over a rule (bottom row) to read more.</p>
   }
   const _ = (name) =>
     name
@@ -52,7 +50,7 @@ function HoveringPiece({ piece_type }) {
   )
 }
 
-export default function NewGame({ room_name, game_id }) {
+export default function NewGame({ room_name, game_id, is_host = true }) {
   const game = useGame()
   const [rules, setRules] = React.useState(saved_rules)
   const [hovering, setHovering] = React.useState()
@@ -61,6 +59,9 @@ export default function NewGame({ room_name, game_id }) {
     game.setRoomBoard(room_name, Board.new({ rules: { pieces, ...variants }, room_name, game_id }))
   }
   const onClick = (e, type) => {
+    if (!is_host) {
+      return
+    }
     if (variants[type]) {
       rules.variants[type] = !rules.variants[type]
     } else {
@@ -79,16 +80,18 @@ export default function NewGame({ room_name, game_id }) {
   return (
     <div className="flex-grow flex items-center justify-center">
       <div className="NewGame">
-        <h2>New Game</h2>
+        <h2>{is_host ? 'New Game' : 'Waiting for host'}</h2>
         <div className="flex">
-          <div className="w-1/2">
+          <div className={`w-1/2 ${is_host ? '' : 'is_guest'}`}>
             <RuleList rules={rules} onClick={onClick} onHover={(_, t) => setHovering(t)} />
-            <button className={css.button('mt-4')} onClick={onSubmit}>
-              Start
-            </button>
+            {is_host && (
+              <button className={css.button('mt-4')} onClick={onSubmit}>
+                Start
+              </button>
+            )}
           </div>
           <div className="w-1/2">
-            <HoveringPiece piece_type={hovering} />
+            <HoveringPiece piece_type={hovering} is_host={is_host} />
           </div>
         </div>
       </div>

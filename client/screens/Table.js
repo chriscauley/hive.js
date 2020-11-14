@@ -58,8 +58,7 @@ export default function Table({ match }) {
       const { game_id } = room
       setTimeout(() => setRoomBoard(room_name, Board.new({ rules, room_name, game_id })), 0)
     }
-    const m = 'Waiting for host to pick game settings'
-    return <Modal>{m}</Modal>
+    return <NewGame room_name={room_name} game_id={room.game_id} is_host={false} />
   }
 
   if (!room.game.rules) {

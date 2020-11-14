@@ -71,6 +71,15 @@
   }
 }
 
+.is_guest .hex-grid .item .content {
+  .piece {
+    cursor: default
+  }
+  &[data-count]:before {
+    display: none;
+  }
+}
+
 .hex {
   background-size: contain;
   background-repeat: no-repeat;

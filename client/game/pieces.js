@@ -19,16 +19,16 @@ const piece_counts = {
   mantis: 2,
   fly: 3,
   wasp: 3,
-  scorpion: 2,
   dragonfly: 1,
   cockroach: 1,
   centipede: 1,
+  scorpion: 2,
 
   // hive.js
-  cicada: 3,
-  lanternfly: 3,
   trapdoor_spider: 2,
   orbweaver: 2,
+  cicada: 3,
+  lanternfly: 3,
   earthworm: 1,
 }
 

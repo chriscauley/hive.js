@@ -7,21 +7,27 @@ import sprites from '../sprites'
 
 const _class = (player, type) => `hex hex-player_${(player % 2) + 1} type type-${type} piece`
 
-const Piece = ({ piece_type, player, title, count, onClick }) => (
-  <div className="item" onClick={onClick}>
+export const Piece = ({ piece_type, player, title, count, onClick, onHover = () => {} }) => (
+  <div
+    className="item"
+    onClick={(e) => onClick(e, piece_type)}
+    onMouseOver={(e) => onHover(e, piece_type)}
+    onMouseOut={(e) => onHover(e, '')}
+  >
     <div className="content" data-count={count}>
       <div title={title} className={_class(player, piece_type)} />
     </div>
   </div>
 )
 
-export default function RuleList({ rules, onClick = () => {} }) {
+export default function RuleList({ rules, onClick, onHover }) {
   sprites.makeSprites() // idempotent
   if (!rules) {
     return null
   }
-  const piece_lists = range(Math.ceil(pieces.list.length / 7)).map((i) =>
-    pieces.list.slice(i * 7, (i + 1) * 7),
+  const _len = 5
+  const piece_lists = range(Math.ceil(pieces.list.length / _len)).map((i) =>
+    pieces.list.slice(i * _len, (i + 1) * _len),
   )
   return (
     <div className="RuleList mt-4">
@@ -35,7 +41,8 @@ export default function RuleList({ rules, onClick = () => {} }) {
                 key={type}
                 title={type}
                 count={rules.pieces[type] || 0}
-                onClick={(e) => onClick(e, type)}
+                onClick={onClick}
+                onHover={onHover}
               />
             ))}
           </div>
@@ -46,11 +53,12 @@ export default function RuleList({ rules, onClick = () => {} }) {
           {variants.list.map((v) => (
             <Piece
               piece_type={v.slug}
-              player={1}
+              player={0}
               title={`"${v.name}" rule enabled`}
               key={v.slug}
               count={rules.variants[v.slug] ? 'yes' : 'no'}
-              onClick={(e) => onClick(e, v.slug)}
+              onClick={onClick}
+              onHover={onHover}
             />
           ))}
         </div>

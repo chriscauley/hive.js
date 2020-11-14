@@ -137,7 +137,7 @@ const mosquito = (b, piece_id, args) => {
   if (b.stacks[index].length === 1) {
     b.geo.touching[index].forEach((i2) => {
       const target_id = last(b.stacks[i2])
-      if (b.piece_types[target_id] === 'dragonfly') {
+      if (['dragonfly', 'damselfly'].includes(b.piece_types[target_id])) {
         out = dragonfly(b, piece_id, args)
       }
     })
@@ -149,6 +149,7 @@ export default {
   move,
   selectNearby,
   dragonfly,
+  damselfly: dragonfly,
   pill_bug,
   mantis,
   centipede,

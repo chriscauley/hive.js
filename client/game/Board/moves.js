@@ -200,7 +200,7 @@ const isScorpion = (board, target_index) => {
   return board.piece_types[piece_id] === 'scorpion'
 }
 
-const lady_bug = (board, index) => {
+const ladybug = (board, index) => {
   const noFly = (i) => !board.layers.fly[i]
   let moves = []
   stepOnHive(board, index)
@@ -316,8 +316,7 @@ const wasp = (b, index) => {
   return stepOffSubhive(b, subhive).filter((i) => placements.includes(i))
 }
 
-const dragonfly = (board, index) => {
-  // TODO split into damselfly
+const damselfly = (board, index) => {
   if (board.stacks[index].length === 1) {
     return stepAlongHive(board, index)
   }
@@ -361,14 +360,15 @@ const moves = {
   ant,
   beetle,
   cockroach,
-  dragonfly,
+  dragonfly: () => [],
+  damselfly,
   grasshopper,
   cicada,
   fly,
   lanternfly,
   wasp,
   getPlacement,
-  lady_bug,
+  ladybug,
   mantis,
   mosquito,
   dragonflyExtra,

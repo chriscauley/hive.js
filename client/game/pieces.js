@@ -11,7 +11,7 @@ const VANILLA = {
 const piece_counts = {
   ...VANILLA,
   // expansion
-  lady_bug: 1,
+  ladybug: 1,
   mosquito: 1,
   pill_bug: 1,
 
@@ -30,6 +30,7 @@ const piece_counts = {
   cicada: 3,
   lanternfly: 3,
   earthworm: 1,
+  damselfly: 1,
 }
 
 // currently not used, colors are stored on svg
@@ -56,7 +57,7 @@ const colors = {
 }
 
 const tags = {
-  hive: ['beetle', 'grasshopper', 'ant', 'spider', 'lady_bug', 'mosquito', 'pill_bug'],
+  hive: ['beetle', 'grasshopper', 'ant', 'spider', 'ladybug', 'mosquito', 'pill_bug'],
   crawl: ['trapdoor_spider', 'spider', 'cicada', 'ant'],
   fly: ['orbweaver', 'lanternfly', 'fly', 'wasp', 'cockroach', 'grasshopper', 'cicada', 'ladybug'],
   stack: ['scorpion', 'beetle', 'mantis', 'dragonfly', 'damselfly'],

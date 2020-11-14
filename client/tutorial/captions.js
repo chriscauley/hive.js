@@ -8,7 +8,7 @@ export default {
     'grasshopper',
     'ant',
     'spider',
-    'lady_bug',
+    'ladybug',
     'mosquito',
     'pill_bug',
     'mantis',
@@ -17,6 +17,7 @@ export default {
     'scorpion',
     'cockroach',
     'dragonfly',
+    'damselfly',
     'centipede',
     'cicada',
     'lanternfly',
@@ -59,7 +60,7 @@ export default {
     'Normally, both ants can move to any open space on the board.',
     'If spiderwebs are enabled, the black ant can get trapped on the far spider.',
   ],
-  lady_bug: ['The black ladybug can move to one of five open spaces, the white ladybug eight.'],
+  ladybug: ['The black ladybug can move to one of five open spaces, the white ladybug eight.'],
   mosquito: [
     'From this position, the black mosquito can move to one of five spaces. It can move as a scorpion, queen, or grasshopper.',
     'On top of the hive, the white mosquito moves like a beetle. It cannot step on the scorpion because have you ever stepped on a scorpion? It hurts.',
@@ -89,8 +90,12 @@ export default {
     'The white cockroach is blocked by the enemy beetle and fly, and cannot move at all.',
   ],
   dragonfly: [
-    'The black dragonfly can move to one of four spaces.',
+    'The black dragonfly can move to one of three spaces. It cannot land on the scorpion',
     'The white dragonfly has six possible moves. If it moves to one of the three unoccupied spaces, it must move the spider its on top of as well.',
+  ],
+  damselfly: [
+    'The black damselfly can move along the hive to one of two spaces or diagonally to one of three spaces. It cannot land on the scorpion',
+    'The white damselfly has six possible moves. If it moves to one of the five unoccupied spaces, it must move the spider its on top of as well.',
   ],
   centipede: [
     'From this position, the centipede can move to one of two spaces.',

@@ -2,7 +2,7 @@
 
 // which pieces can be affected by which webs
 const web_targets = {
-  fly: ['fly', 'wasp', 'lady_bug', 'cockroach', 'grasshopper', 'cicada', 'lanterfly'],
+  fly: ['fly', 'wasp', 'ladybug', 'cockroach', 'grasshopper', 'cicada', 'lanterfly'],
   crawl: ['ant', 'cicada'], // , 'orbweaver', 'scorpion', 'trapdoor_spider', 'spider'],
   stack: ['beetle', 'mantis', 'fly', 'dragonfly'],
 }

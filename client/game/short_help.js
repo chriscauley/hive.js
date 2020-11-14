@@ -11,7 +11,7 @@ const grasshopper = ['Hops over hive.', _fly]
 const cicada = ['Can make unlimited jumps over the hive.', _fly, _crawl]
 const spider = _spiderlike([])
 const ant = ['Can move unlimited spaces along the hive.', _crawl]
-const lady_bug = ['Takes two steps on hive then one step off.', _fly]
+const ladybug = ['Takes two steps on hive then one step off.', _fly]
 const mosquito = [
   'Copies the movement and restrictions of any piece it is touching.',
   _beetle,
@@ -29,10 +29,10 @@ const lanternfly = [_along, 'If touching pieces on 3 sides, can fly anywhere.', 
 const wasp = ['Can fly over hive and land in any space not touching a friendly piece.', _fly]
 const cockroach = ['Can move over friendly pieces to any empty space.', _fly]
 const dragonfly = [
-  'If on the ground, can move along the hive.',
   'Can move one space forward than one space left or right.',
-  'If on a piece, it will move if moving to an empty space.',
+  'If it moves from a stack to an empty space, it will carry one piece with it.',
 ]
+const damselfly = ['If on the ground, can move along the hive.', ...dragonfly]
 const centipede = [_along, 'Can swap with an adjacent piece.']
 const earthworm = [_along, 'Can swap with the bottom piece of any stack 3  (on hive) moves away.']
 const orbweaver = _spiderlike([
@@ -55,7 +55,7 @@ export default {
   cicada,
   spider,
   ant,
-  lady_bug,
+  ladybug,
   mosquito,
   pill_bug,
   mantis,
@@ -64,6 +64,7 @@ export default {
   wasp,
   cockroach,
   dragonfly,
+  damselfly,
   centipede,
   earthworm,
   orbweaver,

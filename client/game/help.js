@@ -47,9 +47,9 @@ const ant = [
   _trapdoor_spider('ant'),
 ]
 
-const lady_bug = [
-  'The lady bug must take two steps on the hive and then step off the hive.',
-  _trapdoor_spider('lady_bug'),
+const ladybug = [
+  'The ladybug must take two steps on the hive and then step off the hive.',
+  _trapdoor_spider('ladybug'),
 ]
 
 const mosquito = [
@@ -89,12 +89,18 @@ const cockroach = [
   'However, it cannot step onto enemy tiles.',
 ]
 
-const dragonfly = [
-  'The dragon fly must take one step in any direction, and then take another step in any other direction (without backtracking).',
+const _dragonfly = (p) => [
+  `The ${p} must take one step in any direction, and then take another step in any other direction (without backtracking).`,
   'This can also be thought of like taking a step in the "corner" direction of a hex.',
   special(
-    'If the dragon fly starts on top of a stack and would end on the ground, it moves the tile underneath it on the starting stack to the end (as long as it does not break the one-hive rule).',
+    `If the ${p} starts on top of a stack and would end on the ground, it moves the tile underneath it on the starting stack to the end (as long as it does not break the one-hive rule).`,
   ),
+]
+
+const damselfly = [
+  'If on the ground, the damselfly can move one step along the hive.',
+  ..._dragonfly('damselfly'),
+  '(this piece is identical to the dragonfly, but it can move on the ground)',
 ]
 
 const centipede = [
@@ -118,7 +124,7 @@ export default {
   cicada,
   spider,
   ant,
-  lady_bug,
+  ladybug,
   mosquito,
   pill_bug,
   mantis,
@@ -126,7 +132,8 @@ export default {
   lanternfly,
   wasp,
   cockroach,
-  dragonfly,
+  dragonfly: _dragonfly('dragonfly'),
+  damselfly,
   centipede,
   earthworm,
   blank,

@@ -21,12 +21,15 @@ Object.keys(saved_rules.pieces).forEach((type) => {
   }
 })
 
+const host_text =
+  "Choose which pieces to play with. Click adds a piece, shift+click removes it. Hover over a piece to read more. It's recommended that you choose 10-12 pieces."
+
+const guest_text =
+  'Waiting for host to choose pieces. Check out the rules while you wait. Hover over a piece to read more.'
+
 function HoveringPiece({ piece_type, is_host }) {
   if (!piece_type) {
-    const host_text =
-      'Choose which pieces to play with. Click adds a piece/rule, shift+click removes it.'
-    const guest_text = 'Waiting for host to choose pieces. Check out the rules while you wait.'
-    return <p>{is_host ? host_text : guest_text} Hover over a piece to read more.</p>
+    return <p>{is_host ? host_text : guest_text} </p>
   }
   const _ = (name) =>
     name
@@ -77,6 +80,10 @@ export default function NewGame({ room_name, game_id, is_host = true }) {
     localStorage.setItem('NEW_GAME_RULES', JSON.stringify(rules))
     setRules({ ...rules })
   }
+  let total_pieces = 0
+  Object.values(rules.pieces)
+    .filter((i) => !isNaN(i))
+    .forEach((i) => (total_pieces += i))
   return (
     <div className="flex-grow flex items-center justify-center">
       <div className="NewGame">
@@ -85,9 +92,12 @@ export default function NewGame({ room_name, game_id, is_host = true }) {
           <div className={`w-1/2 ${is_host ? '' : 'is_guest'}`}>
             <RuleList rules={rules} onClick={onClick} onHover={(_, t) => setHovering(t)} />
             {is_host && (
-              <button className={css.button('mt-4')} onClick={onSubmit}>
-                Start
-              </button>
+              <div>
+                <button className={css.button('mt-4 mr-4')} onClick={onSubmit}>
+                  Start
+                </button>
+                {total_pieces} pieces
+              </div>
             )}
           </div>
           <div className="w-1/2">

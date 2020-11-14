@@ -58,22 +58,36 @@ const swap = (b, index1, index2) => {
   b.stacks[index2].push(piece1)
 }
 
+const swapBottom = (b, index1, index2) => {
+  const piece1 = b.stacks[index1].shift()
+  const piece2 = b.stacks[index2].shift()
+  b.stacks[index1].unshift(piece2)
+  b.stacks[index2].unshift(piece1)
+}
+
+const earthworm = (b, piece_id, args) => {
+  const index = b.reverse[piece_id]
+  if (args.length === 0) {
+    let moves = []
+    stepOnHive(b, index).forEach((on_index1) =>
+      stepOnHive(b, on_index1, [index]).forEach(
+        (on_index2) => (moves = moves.concat(stepOnHive(b, on_index2, [index, on_index1]))),
+      ),
+    )
+    return moves.filter((swap_index) => !wouldBreakHive(b, [index, swap_index]))
+  }
+  return () => {
+    swapBottom(b, index, args[0])
+    return {
+      from: index,
+      special: args[0],
+    }
+  }
+}
+
 const centipede = (b, piece_id, args) => {
   const index = b.reverse[piece_id]
   if (args.length === 0) {
-    if (b.rules.venom_centipede) {
-      let moves = []
-      stepOnHive(b, index).forEach((on_index1) =>
-        stepOnHive(b, on_index1, [index]).forEach(
-          (on_index2) => (moves = moves.concat(stepOnHive(b, on_index2, [index, on_index1]))),
-        ),
-      )
-      return moves.filter(
-        (swap_index) =>
-          !wouldBreakHive(b, [index, swap_index]) && b.stacks[swap_index].length === 1,
-      )
-    }
-
     const touching = b.geo.touching[index]
     return touching.filter((index2, i_touching) => {
       if (!b.stacks[index2] || b.stacks[index2].length > 1) {
@@ -139,6 +153,7 @@ export default {
   mantis,
   centipede,
   mosquito,
+  earthworm,
   undo: {
     pill_bug: (b, piece_id, index, args) => move(b, args[1], args[0]),
     centipede: (b, piece_id, index, args) => swap(b, args[0], index),

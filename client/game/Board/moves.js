@@ -330,9 +330,6 @@ const dragonflyExtra = (board, index, index2) => {
 }
 
 const centipede = (board, index) => {
-  if (board.rules.venom_centipede) {
-    return []
-  }
   return stepAlongHive(board, index)
 }
 
@@ -359,6 +356,7 @@ const moves = {
   centipede,
   queen: stepAlongHive,
   pill_bug: stepAlongHive,
+  earthworm: stepAlongHive,
   ant,
   beetle,
   cockroach,

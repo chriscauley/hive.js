@@ -106,7 +106,7 @@ const centipede = [
 
 const earthworm = [
   _along('earthworm'),
-  'The centipede can burrow under the hive and swap with the bottom piece of any stack 3 tiles away as long as removing both pieces would not break the one-hive rule.',
+  'The earthworm can burrow under the hive and swap with the bottom piece of any stack 3 tiles away as long as removing both pieces would not break the one-hive rule.',
 ]
 
 const blank = ['An inert tile that cannot move']

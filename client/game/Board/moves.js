@@ -317,7 +317,8 @@ const wasp = (b, index) => {
 }
 
 const dragonfly = (board, index) => {
-  if (board.rules.damselfly && board.stacks[index].length === 1) {
+  // TODO split into damselfly
+  if (board.stacks[index].length === 1) {
     return stepAlongHive(board, index)
   }
   return []

@@ -34,7 +34,7 @@ const dragonfly = [
   'If on a piece, it will move if moving to an empty space.',
 ]
 const centipede = [_along, 'Can swap with an adjacent piece.']
-const earthworm = [_along, 'Can swap with the bottom piece of any stack 2 (on hive) moves away.']
+const earthworm = [_along, 'Can swap with the bottom piece of any stack 3  (on hive) moves away.']
 const orbweaver = _spiderlike([
   'No piece can move over.',
   'Defends against grasshopper, cicada, ladybug, fly, wasp, and cockroach.',
@@ -45,7 +45,7 @@ const trapdoor_spider = _spiderlike([
 ])
 const scorpion = _spiderlike([
   'No piece can stack on top of the scorpion.',
-  'Defends against beetle, fly, and mantis.',
+  'Defends against beetle, fly, dragonfly, and mantis.',
 ])
 
 export default {

@@ -26,7 +26,7 @@ function HoveringPiece({ piece_type, is_host }) {
     const host_text =
       'Choose which pieces to play with. Click adds a piece/rule, shift+click removes it.'
     const guest_text = 'Waiting for host to choose pieces. Check out the rules while you wait.'
-    return <p>{is_host ? host_text : guest_text} Hover over a rule (bottom row) to read more.</p>
+    return <p>{is_host ? host_text : guest_text} Hover over a piece to read more.</p>
   }
   const _ = (name) =>
     name

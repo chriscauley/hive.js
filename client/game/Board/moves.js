@@ -187,8 +187,7 @@ const cicada = (board, index) => {
       .filter((index2) => !moves.includes(index2))
       .forEach((index2) => {
         moves.push(index2)
-        const webs = board.layers.crawl[index2]
-        if (!webs || webs.includes(index)) {
+        if (!isTouchingEnemySpider(board, index, index2)) {
           targets.push(index2)
         }
       })

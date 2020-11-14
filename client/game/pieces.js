@@ -1,4 +1,5 @@
 import help from './help'
+import captions from '../tutorial/captions'
 
 const VANILLA = {
   beetle: 2,
@@ -99,10 +100,10 @@ export default {
 }
 
 tags.all.forEach((type) => {
-  if (!help[type]) {
-    console.log('missing help', type)
-  }
-  if (!colors[type]) {
-    console.log('missing color', type)
-  }
+  const toCheck = { captions, help, colors }
+  Object.entries(toCheck).forEach(([name, map]) => {
+    if (!map[type]) {
+      console.log('missing', name, type) // eslint-disable-line
+    }
+  })
 })

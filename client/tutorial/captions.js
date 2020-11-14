@@ -18,6 +18,10 @@ export default {
     'cockroach',
     'dragonfly',
     'centipede',
+    'cicada',
+    'lanternfly',
+    'trapdoor_spider',
+    'orbweaver',
   ],
   basics: [
     'To start, each player places a piece next to each other.',
@@ -92,4 +96,20 @@ export default {
     'From this position, the centipede can move to one of two spaces.',
     'Alternatively, it can switch places with the grasshopper.',
   ],
+  cicada: [
+    'The black cicada can make one move by jumping over the hive.',
+    'The white cicada can jump over the ant or jump over the white queen, black queen, and black cicada (stopping anywhere along the way).',
+  ],
+  lanternfly: [
+    'The white laternfly can move one space in either direction.',
+    'Surrounded on 3 sides, the black lantern fly can move over the hive to any square.',
+  ],
+  trapdoor_spider: [
+    'The white trapdoor spider has 3 possible hop over 4 tiles or move 3 tiles along the hive.',
+    'The black trapdoor spider cannot move (one hive rule)',
+    'If either cicada lands next to the enemy trapdoor spider, it stops moving.',
+    'The white ant cannot move past the black spider.',
+    'The black ant starts touching the white spider, so it cannot get trapped by its webs.',
+  ],
+  orbweaver: ['Every piece is in some way limited by both friendly and enemy orbweavers.'],
 }

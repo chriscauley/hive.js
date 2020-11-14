@@ -17,7 +17,7 @@ const NavTile = ({ slug, current, click }) => {
 }
 
 const TutorialNav = ({ current, click }) => {
-  const rows = [captions.slugs]
+  const rows = [captions.slugs.slice(0, 14), captions.slugs.slice(14)]
   return (
     <div className="hex-grid TutorialNav">
       {rows.map((row, ir) => (

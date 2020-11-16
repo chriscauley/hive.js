@@ -2,7 +2,7 @@
   "main": "client/index.html",
   "author": "chriscauley <chris@lablackey.com>",
   "license": "MIT",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {
     "build": "yarn cp/img; yarn parcel build client/index.html --public-url /static/",
     "build/docs": "rm -rf docs; parcel build client/index.html -d docs --public-url /hive.js/",

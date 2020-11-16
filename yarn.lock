@@ -1594,10 +1594,10 @@
   version "0.0.5"
   resolved "https://codeload.github.com/chriscauley/unrest-css/tar.gz/28f60945a351a6d893a649d786484e47c68d7bab"
 
-"@unrest/react-auth@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@unrest/react-auth/-/react-auth-0.1.0.tgz#91e7c249745185c327f602b7a7ed4ef2772e3ba8"
-  integrity sha512-sJjZHX0B9KF7DcviyEs4U5KmKRCEIykaPkF40/aAPsByHSX4snqRu5km7HxBeUsuBJk7/QsoiufzmldO5o7BFQ==
+"@unrest/react-auth@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@unrest/react-auth/-/react-auth-0.1.2.tgz#383e5808f386a19a3f40f92f7d661ecd7702d9ce"
+  integrity sha512-KAr35tvvVCBynlWqVHbol9jh99fKCc6D1Ghsz9e6xZkSFApaAdS1gCs+eR5f7C90zSuSRAKcBW1Dxcuol0wKuQ==
 
 "@unrest/react-config-hook@^0.0.5":
   version "0.0.5"
@@ -1621,10 +1621,10 @@
   resolved "https://registry.yarnpkg.com/@unrest/storage/-/storage-0.1.1.tgz#27f23a5b0da4642cfac646c843be4a450b068e45"
   integrity sha512-XUN0uM5vURkkfEOLNMFvbExWcNv6KIhEdwkr/YCtv5gkv7SdBIxsCRWJYh2E7MSbSkIa4cPgAJIh33kFU+o+6Q==
 
-"@unrest/tailwind@^0.0.7":
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/@unrest/tailwind/-/tailwind-0.0.7.tgz#49e4454e1c27813e435487379244b82cec545b70"
-  integrity sha512-OdxB5q7sp0PVNWl5PLDothVMqhwdppEFBh6fGQ1qNTnHGbFJkUJ/EGaHriXuTJFMxSmUZ926xEAVEtPFlI45EA==
+"@unrest/tailwind@^0.0.8":
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/@unrest/tailwind/-/tailwind-0.0.8.tgz#763c336e9f8794cf899f72fe0796e603b177da41"
+  integrity sha512-0hayenlo6vQrsdsjbL5r4LYHG89ymHKsBF4mwEFM9/wuLfdfTWJXgpPuvVp1uINTAyhiOJMtGm9bknlcM72+7A==
 
 abab@^2.0.0, abab@^2.0.3:
   version "2.0.3"
@@ -2459,6 +2459,11 @@ cli-width@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/cli-width/-/cli-width-3.0.0.tgz#a2f48437a2caa9a22436e794bf071ec9e61cedf6"
   integrity sha512-FxqpkPPwu1HjuN93Omfm4h8uIanXofW0RxVEW3k5RKx+mJJYSthzNhp32Kzxxy3YAEZ/Dc/EWN1vZRY0+kOhbw==
+
+clipboard-polyfill@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/clipboard-polyfill/-/clipboard-polyfill-3.0.1.tgz#6d4723c0fac435555ca923f26bc6d64f9c20b396"
+  integrity sha512-R/uxBa8apxLJArzpFpuTLqavUcnEX8bezZKSuqkwz7Kny2BmxyKDslYGdrKiasKuD+mU1noF7Lkt/p5pyDqFoQ==
 
 cliui@^5.0.0:
   version "5.0.0"

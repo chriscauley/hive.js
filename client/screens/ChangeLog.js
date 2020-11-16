@@ -1,5 +1,4 @@
 import React from 'react'
-import Markdown from 'react-markdown'
 import css from '@unrest/css'
 
 const content = {
@@ -23,7 +22,7 @@ const content = {
   ],
 }
 
-const getId = s => s.split(' ')[0].replace(/\./g, '-')
+const getId = (s) => s.split(' ')[0].replace(/\./g, '-')
 
 export default function ChangeLog() {
   return (
@@ -31,10 +30,14 @@ export default function ChangeLog() {
       <div className={css.modal.content()}>
         <h2>Change Log</h2>
         {Object.entries(content).map(([title, items]) => (
-          <div key={title} id={getId(title)} className="mb-4 pb-2 border-b border--text-alt last:border-b-0">
+          <div
+            key={title}
+            id={getId(title)}
+            className="mb-4 pb-2 border-b border--text-alt last:border-b-0"
+          >
             <h3>{title}</h3>
             <ul className="browser-default">
-              {items.map(item => (
+              {items.map((item) => (
                 <li key={item}>{item}</li>
               ))}
             </ul>

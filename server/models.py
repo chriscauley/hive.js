@@ -38,6 +38,8 @@ class Game(models.Model):
             'actions': [],
             # players will be added once game starts
         }
+    def __str__(self):
+        return self.room
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     done = models.BooleanField(default=False)

@@ -21,7 +21,7 @@ export function LoginButtons() {
         Create an Account
       </Link>
       <Link to={'/login/' + qs} className={css.button('block')}>
-        Login
+        Log In
       </Link>
     </div>
   )

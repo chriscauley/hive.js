@@ -39,7 +39,7 @@ class Game(models.Model):
             # players will be added once game starts
         }
     def __str__(self):
-        return self.room
+        return f'{self.room} at {self.created}'
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     done = models.BooleanField(default=False)

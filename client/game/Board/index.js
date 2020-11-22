@@ -83,7 +83,6 @@ const B = {
   },
 
   _markBoard: (b) => {
-    b._class = variants.getBoardClass(b)
     b.onehive = {} // index: would break hive if moved
     b.cantmove = {} // same as onehive, except for mantis
     b.empty = {} // empty but next to onehive

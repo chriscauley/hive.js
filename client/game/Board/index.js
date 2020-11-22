@@ -84,7 +84,7 @@ const B = {
 
   _markBoard: (b) => {
     b.onehive = {} // index: would break hive if moved
-    b.cantmove = {} // same as onehive, except for mantis
+    b.cantmove = {} // same as onehive, except for orchid_mantis
     b.empty = {} // empty but next to onehive
     b.queens = {} // player: queen_index
     Object.entries(b.stacks).forEach(([index, stack]) => {
@@ -96,7 +96,7 @@ const B = {
         b.cantmove[index] = true
       }
 
-      if (type === 'mantis') {
+      if (type === 'orchid_mantis') {
         if (B.getSpecials(b, piece_id, []).length > 0) {
           delete b.cantmove[index]
         } else if (B.getMoves(b, piece_id).length === 0) {
@@ -347,7 +347,7 @@ const B = {
       !selected || // no tile currently selected
       player_id !== board.current_player || // currently selected enemy piece
       target.piece_id === 'new' || // clicked sidebar
-      board.cantmove[selected.index] || // onehive or mantis/pillbug logic
+      board.cantmove[selected.index] || // onehive or orchid_mantis/pillbug logic
       !B.isUsersTurn(board) // for remote multiplayer
     ) {
       // currently selected an enemy piece, select new target piece instead

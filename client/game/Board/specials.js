@@ -29,7 +29,7 @@ const pill_bug = (b, piece_id, args) => {
   }
 }
 
-const mantis = (b, piece_id, args) => {
+const orchid_mantis = (b, piece_id, args) => {
   const index = b.reverse[piece_id]
   if (b.stacks[index].length > 1) {
     // already on top of hive
@@ -151,14 +151,14 @@ export default {
   dragonfly,
   damselfly: dragonfly,
   pill_bug,
-  mantis,
+  orchid_mantis,
   centipede,
   mosquito,
   earthworm,
   undo: {
     pill_bug: (b, piece_id, index, args) => move(b, args[1], args[0]),
     centipede: (b, piece_id, index, args) => swap(b, args[0], index),
-    mantis: (b, piece_id, index, args) => {
+    orchid_mantis: (b, piece_id, index, args) => {
       const target_id = b.stacks[index].shift()
       b.stacks[args[0]] = b.stacks[args[0]] || []
       b.stacks[args[0]].push(target_id)

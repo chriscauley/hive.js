@@ -213,10 +213,9 @@ const ladybug = (board, index) => {
   return moves
 }
 
-const mantis = (board, index) => {
+const orchid_mantis = (board, index) => {
   if (board.stacks[index].length === 1) {
-    const { lotus_mantis } = board.rules
-    return lotus_mantis ? stepAlongHive(board, index) : []
+    return stepAlongHive(board, index)
   }
   return stepOnHive(board, index).concat(stepOffHive(board, index))
 }
@@ -369,7 +368,7 @@ const moves = {
   wasp,
   getPlacement,
   ladybug,
-  mantis,
+  orchid_mantis,
   mosquito,
   dragonflyExtra,
 

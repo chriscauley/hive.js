@@ -18,7 +18,7 @@ const mosquito = [
   'Cannot copy special abilities.',
 ]
 const pill_bug = [_along, 'Can move any piece it is touching to another empty square.']
-const mantis = [_along, 'Can pull a piece under itself.', _beetle, _stack]
+const orchid_mantis = [_along, 'Can pull a piece under itself.', _beetle, _stack]
 const fly = [
   'If on ground, can step on the hive.',
   'If on the hive, can fly to any open square.',
@@ -45,7 +45,7 @@ const trapdoor_spider = _spiderlike([
 ])
 const scorpion = _spiderlike([
   'No piece can stack on top of the scorpion.',
-  'Defends against beetle, fly, dragonfly, and mantis.',
+  'Defends against beetle, fly, dragonfly, and orchid mantis.',
 ])
 
 export default {
@@ -58,7 +58,7 @@ export default {
   ladybug,
   mosquito,
   pill_bug,
-  mantis,
+  orchid_mantis,
   fly,
   lanternfly,
   wasp,

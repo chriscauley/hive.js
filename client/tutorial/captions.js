@@ -11,7 +11,7 @@ export default {
     'ladybug',
     'mosquito',
     'pill_bug',
-    'mantis',
+    'orchid_mantis',
     'fly',
     'wasp',
     'scorpion',
@@ -69,9 +69,9 @@ export default {
     'From this position, the pill bug can move to one of two spaces.',
     'Alternatively, it can move the white queen to one of three spaces.',
   ],
-  mantis: [
-    'The white mantis cannot move, but it can pull the queen or grasshopper under itself.',
-    'From on top of the hive, the black Mantis moves like a beetle.',
+  orchid_mantis: [
+    'The white orchid mantis cannot move, but it can pull the queen or grasshopper under itself.',
+    'From on top of the hive, the black orchid mantis moves like a beetle.',
   ],
   fly: [
     'The white fly can climb onto one of two pieces.',

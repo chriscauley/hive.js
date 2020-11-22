@@ -64,10 +64,10 @@ const pill_bug = [
   ),
 ]
 
-const mantis = [
-  _along('mantis', ' if on the ground level'),
-  'If on the ground level, the mantis can grab an ajacent piece and move it underneath the mantis.',
-  'Once on the hive the mantis can move one space on the hive or step off the hive.',
+const orchid_mantis = [
+  _along('orchid mantis', ' if on the ground level'),
+  'If on the ground level, the orchid mantis can grab an ajacent piece and move it underneath the orchid mantis.',
+  'Once on the hive the orchid mantis can move one space on the hive or step off the hive.',
 ]
 
 const fly = [
@@ -127,7 +127,7 @@ export default {
   ladybug,
   mosquito,
   pill_bug,
-  mantis,
+  orchid_mantis,
   fly,
   lanternfly,
   wasp,

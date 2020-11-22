@@ -16,7 +16,7 @@ const piece_counts = {
   pill_bug: 1,
 
   // boardgamegeeks
-  mantis: 2,
+  orchid_mantis: 2,
   fly: 3,
   wasp: 3,
   dragonfly: 1,
@@ -46,7 +46,7 @@ const colors = {
   grasshopper: '#4b9400',
   ladybug: '#b90000',
   lanternfly: '#ac3a3a',
-  mantis: '#008b5c',
+  orchid_mantis: '#008b5c',
   mosquito: '#8a8a8a',
   pillbug: '#005cb9',
   scorpion: '#5c008b',
@@ -60,7 +60,7 @@ const tags = {
   hive: ['beetle', 'grasshopper', 'ant', 'spider', 'ladybug', 'mosquito', 'pill_bug'],
   crawl: ['trapdoor_spider', 'spider', 'cicada', 'ant'],
   fly: ['orbweaver', 'lanternfly', 'fly', 'wasp', 'cockroach', 'grasshopper', 'cicada', 'ladybug'],
-  stack: ['scorpion', 'beetle', 'mantis', 'dragonfly', 'damselfly'],
+  stack: ['scorpion', 'beetle', 'orchid_mantis', 'dragonfly', 'damselfly'],
   special: ['mosquito', 'centipede', 'pillbug', 'earthworm'],
   all: ['queen', ...Object.keys(piece_counts)],
 }

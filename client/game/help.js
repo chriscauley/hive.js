@@ -1,6 +1,7 @@
 const u = (piece) => piece.replace('_', ' ')
 
-const _trapdoor_spider = (p) => `The ${u(p)} must stop moving if ever next to a trapdoor spider.`
+const _trapdoor_spider = (p) =>
+  `The ${u(p)} must stop moving if it moves next to an enemy trapdoor spider.`
 const _scorpion = (p) => `The ${u(p)} cannot stack on top of a scorpion.`
 const _orbweaver = (p) => `The ${u(p)} cannot pass over an orbweaver.`
 
@@ -22,8 +23,8 @@ const grasshopper = [
 ]
 
 const cicada = [
-  'The cicada over the hive in a straight as many times as you want',
-  _orbweaver('grasshopper'),
+  'The cicada jumps over the hive in a straight line as many times as you want.',
+  _orbweaver('cicada'),
   _trapdoor_spider('cicada'),
 ]
 
@@ -70,6 +71,13 @@ const orchid_mantis = [
   'Once on the hive the orchid mantis can move one space on the hive or step off the hive.',
 ]
 
+const praying_mantis = [
+  'If starting on the ground, the praying mantis leaps in any direction and lands on the furthest piece.',
+  'It cannot leap over any breaks in the hive',
+  'If the mantis encounters any stacks while leaping, it will carry the top most piece with it.',
+  'If starting on top of a stack, the mantis can only step off the stack onto the ground.',
+]
+
 const fly = [
   'If on the ground, the fly can step on the hive.',
   'Once on the hive, the fly take any number of steps on the hive, and then step off the hive.',
@@ -90,15 +98,14 @@ const cockroach = [
 ]
 
 const _dragonfly = (p) => [
-  `The ${p} must take one step in any direction, and then take another step in any other direction (without backtracking).`,
-  'This can also be thought of like taking a step in the "corner" direction of a hex.',
+  `The ${p} moves along diagonals (one step forward then one step left or right).`,
   special(
     `If the ${p} starts on top of a stack and would end on the ground, it moves the tile underneath it on the starting stack to the end (as long as it does not break the one-hive rule).`,
   ),
 ]
 
 const damselfly = [
-  'If on the ground, the damselfly can move one step along the hive.',
+  _along('damselfly', ' if on the ground level'),
   ..._dragonfly('damselfly'),
   '(this piece is identical to the dragonfly, but it can move on the ground)',
 ]
@@ -128,6 +135,7 @@ export default {
   mosquito,
   pill_bug,
   orchid_mantis,
+  praying_mantis,
   fly,
   lanternfly,
   wasp,

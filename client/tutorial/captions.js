@@ -12,6 +12,7 @@ export default {
     'mosquito',
     'pill_bug',
     'orchid_mantis',
+    'praying_mantis',
     'fly',
     'wasp',
     'scorpion',
@@ -72,6 +73,9 @@ export default {
   orchid_mantis: [
     'The white orchid mantis cannot move, but it can pull the queen or grasshopper under itself.',
     'From on top of the hive, the black orchid mantis moves like a beetle.',
+  ],
+  praying_mantis: [
+    // TODO preying_mantis
   ],
   fly: [
     'The white fly can climb onto one of two pieces.',

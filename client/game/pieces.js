@@ -31,6 +31,7 @@ const piece_counts = {
   lanternfly: 3,
   earthworm: 1,
   damselfly: 1,
+  praying_mantis: 1,
 }
 
 // currently not used, colors are stored on svg
@@ -47,6 +48,7 @@ const colors = {
   ladybug: '#b90000',
   lanternfly: '#ac3a3a',
   orchid_mantis: '#008b5c',
+  praying_mantis: '#008b5c',
   mosquito: '#8a8a8a',
   pillbug: '#005cb9',
   scorpion: '#5c008b',
@@ -59,8 +61,18 @@ const colors = {
 const tags = {
   hive: ['beetle', 'grasshopper', 'ant', 'spider', 'ladybug', 'mosquito', 'pill_bug'],
   crawl: ['trapdoor_spider', 'spider', 'cicada', 'ant'],
-  fly: ['orbweaver', 'lanternfly', 'fly', 'wasp', 'cockroach', 'grasshopper', 'cicada', 'ladybug'],
-  stack: ['scorpion', 'beetle', 'orchid_mantis', 'dragonfly', 'damselfly'],
+  fly: [
+    'orbweaver',
+    'lanternfly',
+    'fly',
+    'wasp',
+    'cockroach',
+    'grasshopper',
+    'cicada',
+    'ladybug',
+    'praying_mantis',
+  ],
+  stack: ['scorpion', 'beetle', 'orchid_mantis', 'praying_mantis', 'dragonfly', 'damselfly'],
   special: ['mosquito', 'centipede', 'pillbug', 'earthworm'],
   all: ['queen', ...Object.keys(piece_counts)],
 }

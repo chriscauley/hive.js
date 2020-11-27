@@ -6,7 +6,6 @@ import objectHash from 'object-hash'
 import wouldBreakHive from './wouldBreakHive'
 import specials from './specials'
 import moves from './moves'
-import variants from '../variants'
 import webs from './webs'
 
 const board_cache = {}

@@ -220,6 +220,10 @@ const orchid_mantis = (board, index) => {
   return stepOnHive(board, index).concat(stepOffHive(board, index))
 }
 
+const praying_mantis = (board, index) => {
+  return board.stacks[index].length > 1 ? stepOffHive(board, index) : []
+}
+
 const mosquito = (board, index) => {
   if (board.stacks[index].length > 1) {
     return beetle(board, index)
@@ -369,6 +373,7 @@ const moves = {
   getPlacement,
   ladybug,
   orchid_mantis,
+  praying_mantis,
   mosquito,
   dragonflyExtra,
 

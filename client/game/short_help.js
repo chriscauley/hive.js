@@ -19,6 +19,13 @@ const mosquito = [
 ]
 const pill_bug = [_along, 'Can move any piece it is touching to another empty square.']
 const orchid_mantis = [_along, 'Can pull a piece under itself.', _beetle, _stack]
+const praying_mantis = [
+  'Can jump over the hive and land on the furthest piece in any direction',
+  'Will carry a stacked piece with it when it jumps.',
+  'If on the hive, can only step on the ground.',
+  _fly,
+  _stack,
+]
 const fly = [
   'If on ground, can step on the hive.',
   'If on the hive, can fly to any open square.',
@@ -59,6 +66,7 @@ export default {
   mosquito,
   pill_bug,
   orchid_mantis,
+  praying_mantis,
   fly,
   lanternfly,
   wasp,

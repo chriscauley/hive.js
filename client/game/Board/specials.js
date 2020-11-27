@@ -51,6 +51,45 @@ const orchid_mantis = (b, piece_id, args) => {
   }
 }
 
+const praying_mantis = (board, piece_id, args) => {
+  const index = board.reverse[piece_id]
+  if (board.stacks[index].length > 1) {
+    return []
+  }
+  const targets = []
+  board.geo.touching[index].map((target_index, i_dir) => {
+    let snag, last
+    if (!board.stacks[target_index]) {
+      return
+    }
+
+    // praying_mantis travels in same direction until it falls off hive
+    while (board.stacks[target_index]) {
+      if (board.layers.fly[target_index]) {
+        // cannot leap over orbweaver
+        return
+      }
+      const dindex = board.geo.dindexes[mod(target_index, 2)][i_dir]
+      last = target_index
+      if (!snag && board.stacks[target_index].length > 1) {
+        snag = target_index
+      }
+      target_index += dindex
+    }
+    targets.push([last, snag])
+  })
+  if (args.length === 0) {
+    return targets.filter((t) => !board.layers.stack[t[0]]).map((t) => t[0])
+  }
+  return () => {
+    const [target_index, snag_index] = targets.find((t) => t[0] === args[0])
+    if (board.stacks[snag_index]) {
+      board.stacks[target_index].push(board.stacks[snag_index].pop())
+    }
+    board.stacks[target_index].push(board.stacks[index].pop())
+  }
+}
+
 const swap = (b, index1, index2) => {
   const piece1 = b.stacks[index1].pop()
   const piece2 = b.stacks[index2].pop()
@@ -152,6 +191,7 @@ export default {
   damselfly: dragonfly,
   pill_bug,
   orchid_mantis,
+  praying_mantis,
   centipede,
   mosquito,
   earthworm,

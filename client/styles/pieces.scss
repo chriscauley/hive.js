@@ -1,4 +1,4 @@
-$types: ant beetle centipede grasshopper ladybug mosquito pill_bug queen spider dragonfly fly orchid_mantis wasp scorpion cockroach cicada earthworm trapdoor_spider orbweaver lanternfly damselfly;
+$types: ant beetle centipede grasshopper ladybug mosquito pill_bug queen spider dragonfly fly orchid_mantis praying_mantis wasp scorpion cockroach cicada earthworm trapdoor_spider orbweaver lanternfly damselfly;
 
 @each $type in $types {
   .piece.type-#{$type}:before {
@@ -31,6 +31,11 @@ $types: ant beetle centipede grasshopper ladybug mosquito pill_bug queen spider 
     }
     &earthworm:before {
       margin-top: 15%;
+    }
+    &orchid_mantis, &fly, &wasp, &pill_bug, &scorpion, &cockroach {
+      &:before {
+        transform: rotate(-30deg);
+      }
     }
   }
 

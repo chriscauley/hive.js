@@ -2,7 +2,7 @@ const u = (piece) => piece.replace('_', ' ')
 
 const _trapdoor_spider = (p) =>
   `The ${u(p)} must stop moving if it moves next to an enemy trapdoor spider.`
-const _scorpion = (p) => `The ${u(p)} cannot stack on top of a scorpion.`
+const _scorpion = (p) => `The ${u(p)} cannot stack on top of an enemy scorpion.`
 const _orbweaver = (p) => `The ${u(p)} cannot pass over an orbweaver.`
 
 const special = (l) => l
@@ -31,12 +31,12 @@ const cicada = [
 const spiderLike = (piece, extra = []) => [
   `The ${u(piece)} must crawl exactly 3 spaces along the hive.`,
   `The ${u(piece)} can jump over exactly 1 tile except for an orbweaver.`,
-  _trapdoor_spider(piece),
+  // _trapdoor_spider(piece),
   ...extra,
 ]
 
 const spider = spiderLike('spider')
-const scorpion = spiderLike('scorpion', ['No piece can stack on top of a scorpion'])
+const scorpion = spiderLike('scorpion', ['No piece can stack on top of an enemy scorpion.'])
 const orbweaver = spiderLike('orbweaver', ['Pieces cannot fly over an orbweaver.'])
 const trapdoor_spider = spiderLike('trapdoor_spider', [
   'The trapdoor spider will stop any piece that tries to crawl past it.',
@@ -69,6 +69,7 @@ const orchid_mantis = [
   _along('orchid mantis', ' if on the ground level'),
   'If on the ground level, the orchid mantis can grab an ajacent piece and move it underneath the orchid mantis.',
   'Once on the hive the orchid mantis can move one space on the hive or step off the hive.',
+  'The orchid mantis cannot stack on or grab an enemy scorpion.',
 ]
 
 const praying_mantis = [
@@ -76,11 +77,15 @@ const praying_mantis = [
   'It cannot leap over any breaks in the hive',
   'If the mantis encounters any stacks while leaping, it will carry the top most piece with it.',
   'If starting on top of a stack, the mantis can only step off the stack onto the ground.',
+  _orbweaver('praying_mantis'),
+  _scorpion('praying_mantis'),
 ]
 
 const fly = [
   'If on the ground, the fly can step on the hive.',
   'Once on the hive, the fly take any number of steps on the hive, and then step off the hive.',
+  _orbweaver('fly'),
+  _scorpion('fly'),
 ]
 
 const lanternfly = [
@@ -90,17 +95,19 @@ const lanternfly = [
 
 const wasp = [
   'The wasp takes unlimited steps on top of the hive and then steps off to any space not touching friendly tiles (opposite of placement).',
+  _orbweaver('wasp'),
 ]
 
 const cockroach = [
   'The cockroach must step on the hive, move any number of spaces on the hive, then step on the ground.',
-  'However, it cannot step onto enemy tiles.',
+  'However, it cannot step over enemy tiles or friendly orbweavers.',
+  _orbweaver('cockroach'),
 ]
 
 const _dragonfly = (p) => [
   `The ${p} moves along diagonals (one step forward then one step left or right).`,
   special(
-    `If the ${p} starts on top of a stack and would end on the ground, it moves the tile underneath it on the starting stack to the end (as long as it does not break the one-hive rule).`,
+    `If the ${p} moves to an empty space, it will carry the piece under it to the new space (as long as it does not break the one-hive rule).`,
   ),
 ]
 
@@ -119,7 +126,7 @@ const centipede = [
 
 const earthworm = [
   _along('earthworm'),
-  'The earthworm can burrow under the hive and swap with the bottom piece of any stack 3 tiles away as long as removing both pieces would not break the one-hive rule.',
+  'The earthworm can swap with the bottom piece of any stack 3 tiles away as long as removing both stacks would not break the one-hive rule.',
 ]
 
 const blank = ['An inert tile that cannot move']

@@ -3,8 +3,7 @@
 // other wise return potential indexes for the next argument
 import { mod } from './Geo'
 import wouldBreakHive from './wouldBreakHive'
-import { stepOnHive } from './moves'
-import notScorpion from './notScorpion'
+import { stepOnHive, notEnemyScorpion } from './moves'
 import { last } from 'lodash'
 
 // TODO might be mergeable with B.move. Maybe switch to moves.move to simplify imports?
@@ -37,7 +36,7 @@ const orchid_mantis = (b, piece_id, args) => {
   }
   if (args.length === 0) {
     // select piece to pull under, no scorpions
-    return selectNearby(b, index).filter((target_index) => notScorpion(b, target_index))
+    return selectNearby(b, index).filter((target) => notEnemyScorpion(b, index, target))
   } else {
     // pull under
     return () => {
@@ -153,7 +152,8 @@ const dragonfly = (b, piece_id, args) => {
   const index = b.reverse[piece_id]
   const parity = mod(index, 2)
   if (args.length === 0) {
-    return b.geo.dindexes.dragonfly[parity].map((di) => index + di).filter((i) => notScorpion(b, i))
+    const f = (i) => notEnemyScorpion(b, index, i)
+    return b.geo.dindexes.dragonfly[parity].map((di) => index + di).filter(f)
   }
   return () => {
     const target_index = args[0]

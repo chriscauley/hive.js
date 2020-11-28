@@ -88,6 +88,9 @@ export default (board, { columns = 1 } = {}) => {
         if (!board.layers[web][cell.index]) {
           return // no webs
         }
+        if (web === 'stack' && selected.player_id === board.layers.player[cell.index]) {
+          return
+        }
         if (web === 'crawl') {
           if (board.stacks[cell.index] && cell.index !== selected.index) {
             // only show crawl web on the selected piece or empty squares

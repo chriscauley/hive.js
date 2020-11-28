@@ -4,6 +4,11 @@ import { flatten, last } from 'lodash'
 import wouldBreakHive from './wouldBreakHive'
 import webs from './webs'
 
+export const notEnemyScorpion = (board, source, target) => {
+  const { stack, player } = board.layers
+  return !stack[target] || player[source] === player[target]
+}
+
 const getPlacement = (board, player_id, excludes = []) => {
   if (board.turn === 0) {
     return [board.geo.center]
@@ -60,7 +65,7 @@ export const stepOnHive = (board, index, excludes = []) => {
     return (
       board.stacks[target_index] &&
       !excludes.includes(target_index) &&
-      !isScorpion(board, target_index)
+      notEnemyScorpion(board, index, target_index)
     )
   })
 }
@@ -193,11 +198,6 @@ const cicada = (board, index) => {
       })
   }
   return moves
-}
-
-const isScorpion = (board, target_index) => {
-  const piece_id = last(board.stacks[target_index])
-  return board.piece_types[piece_id] === 'scorpion'
 }
 
 const ladybug = (board, index) => {
@@ -340,8 +340,8 @@ const spider = (b, i) => {
   const moves = nStepsAlongHive(b, i, 3)
   b.geo.dindexes[mod(i, 2)].forEach((dindex, i_dir) => {
     const index2 = i + dindex
-    if (!b.stacks[index2] || b.layers.type[index2] === 'scorpion') {
-      // cannot "jump" an empty space or a scorpion
+    if (!b.stacks[index2] || b.layers.type[index2] === 'orbweaver') {
+      // cannot "jump" an empty space or an orbweaver
       return
     }
     const index3 = index2 + b.geo.dindexes[mod(index2, 2)][i_dir]

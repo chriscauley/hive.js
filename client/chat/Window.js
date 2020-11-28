@@ -85,6 +85,7 @@ export default function Chat() {
           </div>
         )}
         <div>Players: {room.state.user_ids.length}</div>
+        <div className="flex-grow" />
         <MessageList autoscroll={autoscroll} messages={messages} />
         <MessageForm submit={submit} textRef={textRef} />
       </div>
@@ -106,11 +107,13 @@ const MessageForm = ({ submit, textRef }) => (
 
 const MessageList = ({ messages, autoscroll }) => (
   <div className="message-list" onScroll={autoscroll.onScroll}>
-    {messages.map(({ username, text }, i) => (
-      <p key={i}>
-        {username}: {text}
-      </p>
-    ))}
-    <div ref={autoscroll.ref} />
+    <div className="inner">
+      {messages.map(({ username, text }, i) => (
+        <p key={i}>
+          {username}: {text}
+        </p>
+      ))}
+      <div ref={autoscroll.ref} />
+    </div>
   </div>
 )

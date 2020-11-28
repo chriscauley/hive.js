@@ -22,7 +22,7 @@
     "@babel/plugin-transform-runtime": "^7.10.4",
     "@babel/preset-env": "^7.10.4",
     "@babel/preset-react": "^7.10.4",
-    "@unrest/core": "^0.0.10",
+    "@unrest/core": "^0.0.12",
     "@unrest/css": "chriscauley/unrest-css",
     "@unrest/react-auth": "^0.1.2",
     "@unrest/react-config-hook": "^0.0.5",

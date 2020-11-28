@@ -3,9 +3,14 @@
 @import './pieces.scss';
 
 /* Components */
+@import './scrollbar.scss';
 @import './Game.scss';
 @import './Chat.scss';
 @import './z-index.scss';
+
+body {
+  overflow: auto;
+}
 
 .app-content {
   position: relative;
@@ -13,14 +18,14 @@
     outline: none;
   }
   .app-inner {
-    background: linear-gradient(135deg, #f5f2d0 10%, #e2dccd 100%);
+    background: #f5f2d0;
     bottom: 0;
     position: fixed;
     left: 0;
     top: 77px;
     right: 0;
     .theme-dark_mode & {
-      background: linear-gradient(135deg, theme('colors.teal.900') 10%, theme('colors.gray.900') 100%);
+      background: theme('colors.teal.900');
       .hex {
         filter: brightness(0.9)
       }

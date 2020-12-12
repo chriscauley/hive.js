@@ -86,6 +86,10 @@ const praying_mantis = (board, piece_id, args) => {
       board.stacks[target_index].push(board.stacks[snag_index].pop())
     }
     board.stacks[target_index].push(board.stacks[index].pop())
+    return {
+      from: index,
+      special: target_index,
+    }
   }
 }
 

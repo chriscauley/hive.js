@@ -126,7 +126,8 @@ const centipede = [
 
 const earthworm = [
   _along('earthworm'),
-  'The earthworm can swap with the bottom piece of any stack 3 tiles away as long as removing both stacks would not break the one-hive rule.',
+  'The earthworm can swap with the bottom piece of any stack 3 tiles away.',
+  'Removing the bottom piece of a 2+ piece stack will not break the one hive rule.',
 ]
 
 const blank = ['An inert tile that cannot move']

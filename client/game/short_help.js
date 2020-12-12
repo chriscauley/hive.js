@@ -5,7 +5,7 @@ const _crawl = 'Will stop moving if it touches the trapdoor spider.'
 const _spiderlike = (e) => ['Move three steps along hive.', 'Jump over one tile.', ...e]
 const _beetle = 'Moves like a beetle if it starts a turn on the hive.'
 
-const queen = [_along, 'If surrounded, you lose.']
+const queen = [_along, 'If surrounded, you lose.', 'You can only have one queen.']
 const beetle = [_along, 'Can move onto hive.', _stack]
 const grasshopper = ['Hops over hive.', _fly]
 const cicada = ['Can make unlimited jumps over the hive.', _fly, _crawl]

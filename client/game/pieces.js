@@ -9,6 +9,7 @@ const VANILLA = {
 }
 
 const piece_counts = {
+  queen: 1,
   ...VANILLA,
   // expansion
   ladybug: 1,
@@ -74,7 +75,7 @@ const tags = {
   ],
   stack: ['scorpion', 'beetle', 'orchid_mantis', 'praying_mantis', 'dragonfly', 'damselfly'],
   special: ['mosquito', 'centipede', 'pillbug', 'earthworm'],
-  all: ['queen', ...Object.keys(piece_counts)],
+  all: Object.keys(piece_counts),
 }
 
 const getAvailable = (board) => {

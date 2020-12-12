@@ -48,6 +48,10 @@
         font-family: "FontAwesome";
         content: "\f00d";
       }
+      &[data-count="lock"]:before {
+        font-family: "FontAwesome";
+        content: "\f023";
+      }
     }
     $z: -5%;
     @for $i from  1 through 4 {

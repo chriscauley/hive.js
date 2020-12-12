@@ -56,6 +56,7 @@ function HoveringPiece({ piece_type, is_host }) {
 export default function NewGame({ room_name, game_id, is_host = true }) {
   const game = useGame()
   const [rules, setRules] = React.useState(saved_rules)
+  rules.pieces.queen = 1
   const [hovering, setHovering] = React.useState()
   const onSubmit = () => {
     const { pieces, variants } = rules

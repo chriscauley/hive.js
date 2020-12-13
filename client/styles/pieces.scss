@@ -45,6 +45,12 @@ $types: ant beetle centipede grasshopper ladybug mosquito pill_bug queen spider 
     }
   }
 
+  &.hex-player_2.hex.gray.type- {
+    &scorpion:before, &spider:before, &trapdoor_spider:before {
+      filter: brightness(2.5);
+    }
+  }
+
   &.hex-player_2.hex.type- {
     &lanternfly:before {
       filter: brightness(1.25);

@@ -84,6 +84,7 @@ const praying_mantis = (board, piece_id, args) => {
     const [target_index, snag_index] = targets.find((t) => t[0] === args[0])
     if (board.stacks[snag_index]) {
       board.stacks[target_index].push(board.stacks[snag_index].pop())
+      args.push(snag_index)
     }
     board.stacks[target_index].push(board.stacks[index].pop())
     return {
@@ -188,6 +189,16 @@ const mosquito = (b, piece_id, args) => {
   return out
 }
 
+const undoDragonfly = (b, piece_id, index, args) => {
+  const [target_index, moved_two] = args
+  b.stacks[index] = b.stacks[index] || []
+  if (moved_two) {
+    b.stacks[index] = b.stacks[index].concat(b.stacks[target_index].splice(-2, 2))
+  } else {
+    b.stacks[index].push(b.stacks[target_index].pop())
+  }
+}
+
 export default {
   move,
   selectNearby,
@@ -207,14 +218,14 @@ export default {
       b.stacks[args[0]] = b.stacks[args[0]] || []
       b.stacks[args[0]].push(target_id)
     },
-    dragonfly: (b, piece_id, index, args) => {
-      const [target_index, moved_two] = args
-      b.stacks[index] = b.stacks[index] || []
-      if (moved_two) {
-        b.stacks[index] = b.stacks[index].concat(b.stacks[target_index].splice(-2, 2))
-      } else {
-        b.stacks[index].push(b.stacks[target_index].pop())
+    praying_mantis: (b, piece_id, index, args) => {
+      const [target_index, snag_index] = args
+      move(b, target_index, index)
+      if (snag_index !== undefined) {
+        move(b, target_index, snag_index)
       }
     },
+    dragonfly: undoDragonfly,
+    damselfly: undoDragonfly,
   },
 }

@@ -28,26 +28,48 @@ const pill_bug = (b, piece_id, args) => {
   }
 }
 
+const pullUnder = (b, index, target) => {
+  b.stacks[index].unshift(b.stacks[target].pop())
+  return {
+    special: index,
+    from: target,
+    to: index,
+  }
+}
+
 const orchid_mantis = (b, piece_id, args) => {
   const index = b.reverse[piece_id]
   if (b.stacks[index].length > 1) {
     // already on top of hive
     return []
   }
-  if (args.length === 0) {
-    // select piece to pull under, no scorpions
-    return selectNearby(b, index).filter((target) => notEnemyScorpion(b, index, target))
-  } else {
-    // pull under
-    return () => {
-      b.stacks[index].unshift(b.stacks[args[0]].pop())
-      return {
-        special: index,
-        from: args[0],
-        to: index,
-      }
-    }
+  if (args.length === 1) {
+    return () => pullUnder(b, index, args[0])
   }
+  // select piece to pull under, no scorpions
+  return selectNearby(b, index).filter((target) => notEnemyScorpion(b, index, target))
+}
+
+const kung_fu_mantis = (board, piece_id, args) => {
+  const index = board.reverse[piece_id]
+  if (board.stacks[index].length > 1) {
+    // already on top of hive
+    return []
+  }
+  if (args.length === 1) {
+    return () => pullUnder(board, index, args[0])
+  }
+
+  const one_away = board.geo.touching[index]
+  const two_away = []
+  one_away.forEach((index2) =>
+    selectNearby(board, index2)
+      .filter((i) => i !== index && !one_away.includes(i))
+      .filter((i) => notEnemyScorpion(board, index, i))
+      .forEach((i) => two_away.push(i)),
+  )
+  // select piece to pull under, no scorpions
+  return two_away
 }
 
 const praying_mantis = (board, piece_id, args) => {
@@ -199,6 +221,12 @@ const undoDragonfly = (b, piece_id, index, args) => {
   }
 }
 
+const undoMoveUnder = (b, piece_id, index, args) => {
+  const target_id = b.stacks[index].shift()
+  b.stacks[args[0]] = b.stacks[args[0]] || []
+  b.stacks[args[0]].push(target_id)
+}
+
 export default {
   move,
   selectNearby,
@@ -210,15 +238,13 @@ export default {
   centipede,
   mosquito,
   earthworm,
+  kung_fu_mantis,
   undo: {
     earthworm: (b, piece_id, index, args) => swapBottom(b, args[0], index),
     pill_bug: (b, piece_id, index, args) => move(b, args[1], args[0]),
     centipede: (b, piece_id, index, args) => swap(b, args[0], index),
-    orchid_mantis: (b, piece_id, index, args) => {
-      const target_id = b.stacks[index].shift()
-      b.stacks[args[0]] = b.stacks[args[0]] || []
-      b.stacks[args[0]].push(target_id)
-    },
+    orchid_mantis: undoMoveUnder,
+    kung_fu_mantis: undoMoveUnder,
     praying_mantis: (b, piece_id, index, args) => {
       const [target_index, snag_index] = args
       move(b, target_index, index)

@@ -79,6 +79,12 @@ const orchid_mantis = [
   'The orchid mantis cannot stack on or grab an enemy scorpion.',
 ]
 
+const kung_fu_mantis = [
+  'If on the ground level, the kung fu mantis can grab a piece two spaces away and move it underneath the kung fu mantis.',
+  'Once on the hive the kung fu mantis can move one space on the hive or step off the hive.',
+  'The kung fu mantis cannot stack on or grab an enemy scorpion.',
+]
+
 const praying_mantis = [
   'If starting on the ground, the praying mantis leaps in any direction and lands on the furthest piece.',
   'It cannot leap over any breaks in the hive',
@@ -150,6 +156,7 @@ export default {
   mosquito,
   pill_bug,
   orchid_mantis,
+  kung_fu_mantis,
   praying_mantis,
   fly,
   lanternfly,

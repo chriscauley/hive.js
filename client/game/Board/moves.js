@@ -229,7 +229,7 @@ const orchid_mantis = (board, index) => {
   if (board.stacks[index].length === 1) {
     return stepAlongHive(board, index)
   }
-  return stepOnHive(board, index).concat(stepOffHive(board, index))
+  return beetle(board, index)
 }
 
 const praying_mantis = (board, index) => {
@@ -365,6 +365,8 @@ const spider = (b, i) => {
   return moves
 }
 
+const kung_fu_mantis = (b, i) => (b.stacks[i].length > 1 ? beetle(b, i) : [])
+
 const moves = {
   stepOnHive,
   stepOffHive,
@@ -395,6 +397,7 @@ const moves = {
   trapdoor_spider: spider,
   orbweaver: spider,
   emerald_wasp,
+  kung_fu_mantis,
 }
 
 export default moves

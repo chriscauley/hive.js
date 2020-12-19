@@ -213,6 +213,18 @@ const ladybug = (board, index) => {
   return moves
 }
 
+const emerald_wasp = (board, index) => {
+  if (board.stacks[index].length > 1) {
+    return stepOffHive(board, index)
+  }
+  const noFly = (i) => !board.layers.fly[i]
+  let moves = []
+  stepOnHive(board, index)
+    .filter(noFly)
+    .forEach((index2) => (moves = moves.concat(stepOnHive(board, index2, [index]))))
+  return moves.filter((index2) => notEnemyScorpion(board, index, index2))
+}
+
 const orchid_mantis = (board, index) => {
   if (board.stacks[index].length === 1) {
     return stepAlongHive(board, index)
@@ -382,6 +394,7 @@ const moves = {
   scorpion: spider,
   trapdoor_spider: spider,
   orbweaver: spider,
+  emerald_wasp,
 }
 
 export default moves

@@ -1,4 +1,4 @@
-$types: ant beetle centipede grasshopper ladybug mosquito pill_bug queen spider dragonfly fly orchid_mantis praying_mantis wasp scorpion cockroach cicada earthworm trapdoor_spider orbweaver lanternfly damselfly;
+$types: ant beetle centipede grasshopper ladybug mosquito pill_bug queen spider dragonfly fly orchid_mantis praying_mantis wasp scorpion cockroach cicada earthworm trapdoor_spider orbweaver lanternfly damselfly emerald_wasp kung_fu_mantis;
 
 @each $type in $types {
   .piece.type-#{$type}:before {
@@ -18,7 +18,7 @@ $types: ant beetle centipede grasshopper ladybug mosquito pill_bug queen spider 
   /* some bugs are off center and need to be shifted */
   &.hex.type- {
     &scorpion:before, &dragonfly:before {
-      margin-left: 10%;
+      margin-left: 4%;
     }
     &fly:before {
       margin-left: 15%;
@@ -39,16 +39,29 @@ $types: ant beetle centipede grasshopper ladybug mosquito pill_bug queen spider 
     }
   }
 
+  &.hex-player_2.hex.type-emerald_wasp:before {
+    filter: brightness(1.25);
+  }
+
   &.hex-player_2.hex.type- {
-    &scorpion:before, &spider:before, &trapdoor_spider:before {
-      filter: brightness(1.5);
+    &scorpion, &spider, &trapdoor_spider, &praying_mantis {
+      &:before {
+        filter: brightness(1.5);
+      }
     }
   }
 
   &.hex-player_2.hex.gray.type- {
-    &scorpion:before, &spider:before, &trapdoor_spider:before {
-      filter: brightness(2.5);
+    &scorpion, &spider, &trapdoor_spider, &praying_mantis {
+      &:before {
+        filter: brightness(2.5);
+      }
     }
+  }
+
+  &.hex.type-emerald_wasp:before {
+    margin-top: 0.3em;
+    width: 70px;
   }
 
   &.hex-player_2.hex.type- {

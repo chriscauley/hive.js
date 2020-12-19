@@ -33,6 +33,8 @@ const piece_counts = {
   earthworm: 1,
   damselfly: 1,
   praying_mantis: 1,
+  emerald_wasp: 1,
+  kung_fu_mantis: 1,
 }
 
 // currently not used, colors are stored on svg
@@ -57,6 +59,8 @@ const colors = {
   trapdoor_spider: '#5c2900', // copies spider for now
   queen: '#e6b900',
   wasp: '#e62b8b',
+  emerald_wasp: '#43b38c',
+  kung_fu_mantis: '#aa3355',
 }
 
 const tags = {

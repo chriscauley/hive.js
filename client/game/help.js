@@ -11,6 +11,13 @@ const _along = (s, e = '') => `The ${u(s)} can move one space along the hive${e}
 const _spider = (s, e = '') => `The ${u(s)} must crawl exactly 3 spaces along the hive${e}.`
 const queen = [_along('queen')]
 
+const emerald_wasp = [
+  'If starting on the hive, the emerald wasp can take two steps on top of the hive',
+  'If starting on the ground, the emrald wasp can step off the hive',
+  _orbweaver('emerald_wasp'),
+  _scorpion('emerald_wasp'),
+]
+
 const beetle = [
   _along('beetle', ' or step on the hive'),
   'If starting on the hive, it can move in any direction on or off the hive.',
@@ -153,7 +160,7 @@ export default {
   centipede,
   earthworm,
   blank,
-
+  emerald_wasp,
   scorpion,
   trapdoor_spider,
   orbweaver,

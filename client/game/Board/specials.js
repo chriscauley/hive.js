@@ -211,6 +211,7 @@ export default {
   mosquito,
   earthworm,
   undo: {
+    earthworm: (b, piece_id, index, args) => swapBottom(b, args[0], index),
     pill_bug: (b, piece_id, index, args) => move(b, args[1], args[0]),
     centipede: (b, piece_id, index, args) => swap(b, args[0], index),
     orchid_mantis: (b, piece_id, index, args) => {

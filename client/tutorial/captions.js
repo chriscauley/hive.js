@@ -24,6 +24,7 @@ export default {
     'lanternfly',
     'trapdoor_spider',
     'orbweaver',
+    'emerald_wasp',
   ],
   basics: [
     'To start, each player places a piece next to each other.',
@@ -121,4 +122,8 @@ export default {
     'The black ant starts touching the white spider, so it cannot get trapped by its webs.',
   ],
   orbweaver: ['Every piece is in some way limited by both friendly and enemy orbweavers.'],
+  emerald_wasp: [
+    'The black emerald wasp move onto two spaces (by first stepping on the white emerald wasp).',
+    'The whiet emerald wasp can step off the hive to three different spaces.',
+  ],
 }

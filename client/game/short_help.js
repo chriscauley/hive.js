@@ -55,6 +55,13 @@ const scorpion = _spiderlike([
   'Defends against beetle, fly, dragonfly, and orchid mantis.',
 ])
 
+const emerald_wasp = [
+  'If on the ground, can take two steps onto the hive.',
+  'If on the hive, can only step on the ground.',
+  _fly,
+  _stack,
+]
+
 export default {
   queen,
   beetle,
@@ -78,9 +85,5 @@ export default {
   orbweaver,
   trapdoor_spider,
   scorpion,
-  no_rules: [
-    'Any piece can be moved to any square.',
-    'UI will still show legal moves, but will not enforce.',
-  ],
-  unlimited: ['Piece counts will be ignored.'],
+  emerald_wasp,
 }

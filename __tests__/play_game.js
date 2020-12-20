@@ -7,7 +7,7 @@ const STANDARD = {"actions":[["place",1274,"queen",1],["place",1275,"queen",2],[
 
 // This is really just testing mantis
 // eslint-disable-next-line
-const CUSTOM = {"actions":[["place",1274,"mantis",1],["place",1275,"fly",2],["place",1323,"queen",1],["move",1275,1224],["special",1274,0,[1323]]],"id":0.7017979038850923,"W":50,"H":50,"stacks":{"1224":[1],"1274":[2,0]},"piece_types":["mantis","fly","queen"],"piece_owners":[1,2,1],"hash":"04f115e3554f5024c96687ff1c9aeba4669a5cec","turn":5,"rules":{"piece_sets":["custom"]}, "current_player": 2}
+const CUSTOM = {"actions":[["place",1274,"orchid_mantis",1],["place",1275,"fly",2],["place",1323,"queen",1],["move",1275,1224],["special",1274,0,[1323]]],"id":0.7017979038850923,"W":50,"H":50,"stacks":{"1224":[1],"1274":[2,0]},"piece_types":["orchid_mantis","fly","queen"],"piece_owners":[1,2,1],"hash":"04f115e3554f5024c96687ff1c9aeba4669a5cec","turn":5,"rules":{"piece_sets":["custom"]}, "current_player": 2}
 
 // centipede and dragonfly
 // eslint-disable-next-line
@@ -16,6 +16,10 @@ const CUSTOM_EXPANDED = {"actions":[["place",1274,"queen",1],["place",1275,"quee
 // pill_bug
 // eslint-disable-next-line
 const STANDARD_EXPANDED = {"actions":[["place",1274,"pill_bug",1],["place",1275,"queen",2],["special",1274,0,[1275,1325]],["place",1326,"mosquito",2],["place",1273,"queen",1],["place",1377,"lady_bug",2],["place",1222,"lady_bug",1]],"id":0.7337746181174609,"W":50,"H":50,"stacks":{"1222":[5],"1273":[3],"1274":[0],"1325":[1],"1326":[2],"1377":[4]},"piece_types":["pill_bug","queen","mosquito","queen","lady_bug","lady_bug"],"piece_owners":[1,2,2,1,2,1],"hash":"1b48eb80fcad999841acdb2dd0c9637de0ff82e6","turn":7,"rules":{"piece_sets":["expanded_standard"]}, "current_player": 2}
+
+// earthworm and praying-mantis
+// eslint-disable-next-line
+const OTHERS = {actions: [['place', 1274, 'queen', 1],['place', 1275, 'queen', 2],['place', 1273, 'beetle', 1],['place', 1276, 'beetle', 2],['place', 1323, 'praying_mantis', 1],['place', 1225, 'earthworm', 2],['move', 1273, 1274],['place', 1326, 'beetle', 2],['special', 1323, 4, [1275, 1274]],['special', 1225, 5, [1326]],['move', 1275, 1325],['special', 1326, 5, [1275]],['special', 1325, 4, [1225, 1275]],],W: 50,H: 50,stacks: { 1225: [6, 2, 4], 1274: [0], 1275: [5], 1276: [3], 1326: [1] },piece_types: ['queen', 'queen', 'beetle', 'beetle', 'praying_mantis', 'earthworm', 'beetle'],piece_owners: [1, 2, 1, 2, 1, 2, 2],hash: '640e4d1d5ce79df250cf1a823ac660700d505b90',turn: 13,rules: {pieces: { beetle: 3, earthworm: 1, fly: 1, praying_mantis: 1, orchid_mantis: 1, queen: 1 },spiderwebs: true,},last: { from: 1325, special: 1225 },current_player: 2,last_move_at: 1607879603499}
 
 const getTarget = (b, index) => {
   const piece_id = last(b.stacks[index])
@@ -72,7 +76,7 @@ test('Play a game', () => {
 })
 
 test('replay-game', () => {
-  const games = [STANDARD, CUSTOM, CUSTOM_EXPANDED, STANDARD_EXPANDED]
+  const games = [STANDARD, CUSTOM, CUSTOM_EXPANDED, STANDARD_EXPANDED, OTHERS]
   games.forEach((b) => {
     const board = cloneDeep(b)
     B.update(board)

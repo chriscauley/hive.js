@@ -141,17 +141,15 @@ export const makeSprites = (debug) => {
 
       style_text += toStyle(cls, canvas, debug)
 
-      if (['green', 'yellow', 'red'].includes(border)) {
-        const _w = 0.15
-        ctx.drawImage(
-          img_cache['thin,purple'],
-          _w * canvas.width,
-          _w * canvas.height,
-          canvas.width * (1 - 2 * _w),
-          canvas.height * (1 - 2 * _w),
-        )
-        style_text += toStyle(cls + ' extra--dragonfly', canvas, debug)
-      }
+      const _w = 0.15
+      ctx.drawImage(
+        img_cache['thin,purple'],
+        _w * canvas.width,
+        _w * canvas.height,
+        canvas.width * (1 - 2 * _w),
+        canvas.height * (1 - 2 * _w),
+      )
+      style_text += toStyle(cls + ' purple-inner', canvas, debug)
     }),
   )
   style = document.createElement('style')

@@ -6,6 +6,12 @@ import wouldBreakHive from './wouldBreakHive'
 import { stepOnHive, notEnemyScorpion } from './moves'
 import { last } from 'lodash'
 
+const markChalk = (b, targets, string) => {
+  if (b.selected) {
+    b.selected.chalk = Object.fromEntries(targets.map((i) => [i, string]))
+  }
+}
+
 // TODO might be mergeable with B.move. Maybe switch to moves.move to simplify imports?
 const move = (b, i1, i2, special) => {
   b.stacks[i2] = b.stacks[i2] || []
@@ -31,9 +37,9 @@ const pill_bug = (b, piece_id, args) => {
 const pullUnder = (b, index, target) => {
   b.stacks[index].unshift(b.stacks[target].pop())
   return {
-    special: index,
     from: target,
     to: index,
+    stacks: [index, target],
   }
 }
 
@@ -47,7 +53,9 @@ const orchid_mantis = (b, piece_id, args) => {
     return () => pullUnder(b, index, args[0])
   }
   // select piece to pull under, no scorpions
-  return selectNearby(b, index).filter((target) => notEnemyScorpion(b, index, target))
+  const targets = selectNearby(b, index).filter((target) => notEnemyScorpion(b, index, target))
+  markChalk(b, targets, ' purple-inner')
+  return targets
 }
 
 const kung_fu_mantis = (board, piece_id, args) => {
@@ -104,14 +112,17 @@ const praying_mantis = (board, piece_id, args) => {
   }
   return () => {
     const [target_index, snag_index] = targets.find((t) => t[0] === args[0])
+    const stacks = [target_index, index]
     if (board.stacks[snag_index]) {
+      stacks.push(snag_index)
       board.stacks[target_index].push(board.stacks[snag_index].pop())
       args.push(snag_index)
     }
     board.stacks[target_index].push(board.stacks[index].pop())
     return {
       from: index,
-      special: target_index,
+      to: target_index,
+      stacks,
     }
   }
 }
@@ -145,7 +156,8 @@ const earthworm = (b, piece_id, args) => {
     swapBottom(b, index, args[0])
     return {
       from: index,
-      special: args[0],
+      to: args[0],
+      stacks: [args[0]],
     }
   }
 }
@@ -170,30 +182,40 @@ const centipede = (b, piece_id, args) => {
     swap(b, index, args[0])
     return {
       from: index,
-      special: args[0],
+      to: args[0],
     }
   }
 }
 
 const dragonfly = (b, piece_id, args) => {
+  const willSnag = (b, index, target) =>
+    b.stacks[index].length > 1 && !b.stacks[target] && !wouldBreakHive(b, [index], 2)
   const index = b.reverse[piece_id]
   const parity = mod(index, 2)
   if (args.length === 0) {
     const f = (i) => notEnemyScorpion(b, index, i)
-    return b.geo.dindexes.dragonfly[parity].map((di) => index + di).filter(f)
+    const targets = b.geo.dindexes.dragonfly[parity].map((di) => index + di).filter(f)
+    markChalk(
+      b,
+      targets.filter((i2) => willSnag(b, index, i2)),
+      ' purple-inner',
+    )
+    return targets
   }
   return () => {
     const target_index = args[0]
-    if (b.stacks[index].length > 1 && !b.stacks[target_index] && !wouldBreakHive(b, [index], 2)) {
+    const chalk = {
+      from: index,
+      to: target_index,
+    }
+    if (willSnag(b, index, target_index)) {
       b.stacks[target_index] = b.stacks[index].splice(-2, 2)
       args.push(true)
+      chalk.stacks = [index, target_index]
     } else {
       move(b, index, target_index)
     }
-    return {
-      from: index,
-      special: target_index,
-    }
+    return chalk
   }
 }
 

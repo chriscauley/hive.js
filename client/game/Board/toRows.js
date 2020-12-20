@@ -54,7 +54,6 @@ const sliceBoard = (board) => {
 export default (board, { columns = 1 } = {}) => {
   const marked = getMarked(board)
   const { selected = {} } = board
-  const show_webs = webs.getVisible(board, selected.index)
   if (selected.index !== undefined) {
     marked[selected.index] = ' purple'
   } else if (board.last) {
@@ -67,7 +66,12 @@ export default (board, { columns = 1 } = {}) => {
     if (board.last.special) {
       marked[board.last.special] = ' yellow'
     }
+    board.last.stacks?.forEach((index) => {
+      marked[index] += ' purple-inner'
+    })
   }
+
+  const show_webs = webs.getVisible(board, selected.index)
   const rows = sliceBoard(board)
   rows.forEach((row) =>
     row.forEach((cell) => {
@@ -166,14 +170,15 @@ const columnize = (cells, columns) => {
 }
 
 const getMarked = (board) => {
-  const out = {}
-  Object.keys(board.cantmove).forEach((index) => (out[index] = 'gray'))
+  const { selected } = board
+  const marked = {}
+  Object.keys(board.cantmove).forEach((index) => (marked[index] = 'gray'))
 
-  if (!board.selected) {
-    return out
+  if (!selected) {
+    return marked
   }
 
-  const { piece_id, player_id } = board.selected
+  const { piece_id, player_id } = selected
 
   const color = board.current_player === player_id ? ' green' : ' red'
   let indexes = []
@@ -181,15 +186,18 @@ const getMarked = (board) => {
     indexes = Board.moves.getPlacement(board, player_id)
   } else {
     const specials = Board.getSpecials(board, piece_id, board.special_args)
-    specials.forEach((i) => (out[i] = ' yellow'))
+    specials.forEach((i) => (marked[i] = ' yellow'))
     if (board.special_args.length === 0) {
       indexes = Board.getMoves(board, piece_id)
     }
   }
-  indexes.forEach((i) => (out[i] = color))
+  if (board?.selected?.chalk) {
+    Object.entries(selected.chalk).forEach(([index, s]) => (marked[index] += s))
+  }
+  indexes.forEach((i) => (marked[i] = color))
   if (board.piece_types[piece_id] === 'dragonfly') {
     const index = board.reverse[piece_id]
-    indexes.forEach((i2) => (out[i2] += Board.moves.dragonflyExtra(board, index, i2)))
+    indexes.forEach((i2) => (marked[i2] += Board.moves.dragonflyExtra(board, index, i2)))
   }
-  return out
+  return marked
 }

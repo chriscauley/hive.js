@@ -50,6 +50,8 @@ const useExport = () => {
   hook.Modal = function ImportModal() {
     const { board = {} } = useGame()
     const json = Board.toJson(board)
+    json.rules = json.rules || {}
+    json.rules.pieces = json.rules.pieces || {}
     if (json.rules) {
       delete json.room_name
       Object.keys(json.rules)

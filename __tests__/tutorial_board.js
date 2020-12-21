@@ -4,13 +4,11 @@ import { cloneDeep } from 'lodash'
 
 test('Board snapshots', () => {
   const placements = {}
-  const moves = {
-    spiderwebs: '',
-    super_grasshopper: '',
-    damselfly: '',
-    venom_centipede: '',
-  }
+  const moves = {}
   const specials = {}
+  const extras = {
+    trapdoor_spider: ['ant', 'cicada'],
+  }
   Object.entries(boards).forEach(([slug, board]) => {
     board = cloneDeep(board)
     B.update(board)
@@ -32,23 +30,15 @@ test('Board snapshots', () => {
         const args = board.special_args
         specials[slug] += s + B.getSpecials(board, piece_id, args).join(',') + '|'
       }
-      if (slug === 'ant') {
-        board.rules.spiderwebs = true
-        moves.spiderwebs += s + B.getMoves(board, piece_id).join(',') + '|'
-      }
-      if (slug === 'dragonfly') {
-        board.rules.damselfly = true
-        moves.damselfly += s + B.getMoves(board, piece_id).join(',') + '|'
-      }
-      if (slug === 'grasshopper') {
-        board.rules.super_grasshopper = true
-        moves.super_grasshopper += s + B.getMoves(board, piece_id).join(',') + '|'
-      }
-      if (slug === 'centipede') {
-        board.rules.venom_centipede = true
-        moves.venom_centipede += s + B.getMoves(board, piece_id).join(',') + '|'
-        moves.venom_centipede += '|S' + s + B.getSpecials(board, piece_id, []).join(',') + '|'
-      }
+      extras[slug]?.forEach((slug2) => {
+        const key = `${slug}__${slug2}`
+        moves[key] = ''
+        board.piece_types.forEach((piece_type, piece_id) => {
+          if (piece_type === slug2) {
+            moves[key] += s + B.getMoves(board, piece_id).join(',') + '|'
+          }
+        })
+      })
     })
   })
   expect({ moves, specials, placements }).toMatchSnapshot()

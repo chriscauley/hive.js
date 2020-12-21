@@ -76,22 +76,6 @@ const stepOffHive = (board, index, excludes = []) => {
   })
 }
 
-const _stepUntil = (board, index, excludes, condition = () => false) => {
-  let _count = 0
-  while (!condition(index, excludes)) {
-    index = stepAlongHive(board, index, excludes)[0]
-    if (index === undefined) {
-      break
-    }
-    excludes.push(index)
-    /* istanbul ignore next */
-    if (_count++ > 200) {
-      throw 'Overflow: could not find end of path after 200 steps'
-    }
-  }
-  return excludes
-}
-
 const makePaths = (board, index) => {
   const subhive = { stacks: {}, geo: board.geo }
   Object.keys(board.stacks)
@@ -139,22 +123,32 @@ const isTouchingEnemySpider = (board, start_index, target_index) => {
 
 const ant = (board, index) => {
   // left and right spaces from ant
-  let moves = stepAlongHive(board, index)
-  moves = moves.map((current_index) => {
-    const excludes = [index, current_index]
-    let targets = _stepUntil(board, current_index, excludes)
-    // ant has to take the shortest route, this means cutting two routes in half
-    targets = targets.slice(0, Math.ceil(targets.length / 2) + 1)
-    const first_spider = targets.find((target) => isTouchingEnemySpider(board, index, target))
-    if (first_spider) {
-      targets = targets.slice(0, targets.indexOf(first_spider) + 1)
+  const paths = makePaths(board, index)
+  const checked = {}
+  const locked = {}
+  const targets = [index]
+  const moves = []
+  while (targets.length) {
+    const target = targets.shift()
+    if (checked[target]) {
+      continue
     }
-    return targets
-  })
-
-  // at this point moves is two paths, flatten into one
-  moves = flatten(moves)
-  return moves.filter((i) => i !== undefined && i !== index)
+    checked[target] = true
+    paths[target]
+      .filter((t2) => !checked[t2])
+      .forEach((t2) => {
+        if (locked[target]) {
+          locked[t2] = true
+        } else {
+          if (isTouchingEnemySpider(board, index, t2)) {
+            locked[t2] = true
+          }
+          moves.push(t2)
+        }
+        targets.push(t2)
+      })
+  }
+  return moves
 }
 
 const grasshopper = (board, index, excludes = []) => {

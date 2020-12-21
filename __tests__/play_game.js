@@ -21,6 +21,10 @@ const STANDARD_EXPANDED = {"actions":[["place",1274,"pill_bug",1],["place",1275,
 // eslint-disable-next-line
 const OTHERS = {actions: [['place', 1274, 'queen', 1],['place', 1275, 'queen', 2],['place', 1273, 'beetle', 1],['place', 1276, 'beetle', 2],['place', 1323, 'praying_mantis', 1],['place', 1225, 'earthworm', 2],['move', 1273, 1274],['place', 1326, 'beetle', 2],['special', 1323, 4, [1275, 1274]],['special', 1225, 5, [1326]],['move', 1275, 1325],['special', 1326, 5, [1275]],['special', 1325, 4, [1225, 1275]],],W: 50,H: 50,stacks: { 1225: [6, 2, 4], 1274: [0], 1275: [5], 1276: [3], 1326: [1] },piece_types: ['queen', 'queen', 'beetle', 'beetle', 'praying_mantis', 'earthworm', 'beetle'],piece_owners: [1, 2, 1, 2, 1, 2, 2],hash: '640e4d1d5ce79df250cf1a823ac660700d505b90',turn: 13,rules: {pieces: { beetle: 3, earthworm: 1, fly: 1, praying_mantis: 1, orchid_mantis: 1, queen: 1 },spiderwebs: true,},last: { from: 1325, special: 1225 },current_player: 2,last_move_at: 1607879603499}
 
+// no legal moves
+// eslint-disable-next-line
+const NO_LEGAL = {"actions":[["place",1274,"queen",1],["place",1275,"queen",2],["place",1273,"beetle",1],["place",1225,"beetle",2],["move",1273,1224],["move",1225,1275],["move",1224,1225],["move",1275,1224],["move",1225,1226],["move",1224,1275],["move",1226,1275],["move",1275,1226],["move",1275,1225],["move",1226,1176],["place",1276,"beetle",2]],"W":50,"H":50,"stacks":{"1176":[2],"1225":[3],"1274":[0],"1275":[1],"1276":[4]},"piece_types":["queen","queen","beetle","beetle","beetle"],"piece_owners":[1,2,1,2,2],"hash":"6b27eaa81398f86899d0435131aaf5eeafdde301","turn":15,"rules":{"pieces":{"beetle":3,"ant":1,"orbweaver":1,"earthworm":1,"pill_bug":1,"dragonfly":1,"scorpion":1,"fly":1,"praying_mantis":1,"orchid_mantis":1,"damselfly":1,"queen":1,"emerald_wasp":1,"kung_fu_mantis":1},"spiderwebs":true},"last":{"to":1276},"current_player":1,"last_move_at":1608554875259}
+
 const getTarget = (b, index) => {
   const piece_id = last(b.stacks[index])
   return {
@@ -76,7 +80,7 @@ test('Play a game', () => {
 })
 
 test('replay-game', () => {
-  const games = [STANDARD, CUSTOM, CUSTOM_EXPANDED, STANDARD_EXPANDED, OTHERS]
+  const games = [STANDARD, CUSTOM, CUSTOM_EXPANDED, STANDARD_EXPANDED, OTHERS, NO_LEGAL]
   games.forEach((b) => {
     const board = cloneDeep(b)
     B.update(board)
@@ -212,4 +216,6 @@ test('edge cases', () => {
   B.doAction(b, ['place', b.geo.center + b.W, 'ant', 1])
   const ant_id = findPiece(b, { player_id: 1, piece_type }).piece_id
   expect(() => B.doAction(b, ['special', ant_id, b.geo.center, []])).toThrow()
+  B.doAction(b, ['toggleCheat'])
+  expect(b.rules.no_rules).toBe(false)
 })

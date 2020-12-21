@@ -1,7 +1,6 @@
 import { mod } from './Geo'
 import { flatten, last } from 'lodash'
 
-import wouldBreakHive from './wouldBreakHive'
 import webs from './webs'
 
 export const notEnemyScorpion = (board, source, target) => {
@@ -338,12 +337,6 @@ const damselfly = (board, index) => {
   return []
 }
 
-const dragonflyExtra = (board, index, index2) => {
-  const match =
-    board.stacks[index].length > 1 && !board.stacks[index2] && !wouldBreakHive(board, index, 2)
-  return match ? ' extra--dragonfly' : ''
-}
-
 const centipede = (board, index) => {
   return stepAlongHive(board, index)
 }
@@ -389,7 +382,6 @@ const moves = {
   orchid_mantis,
   praying_mantis,
   mosquito,
-  dragonflyExtra,
 
   // all spider-likes move the same
   spider,

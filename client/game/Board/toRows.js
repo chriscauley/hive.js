@@ -56,7 +56,7 @@ export default (board, { columns = 1 } = {}) => {
   const { selected = {} } = board
   if (selected.index !== undefined) {
     marked[selected.index] = ' purple'
-  } else if (board.last) {
+  } else if (selected.piece_id !== 'new' && board.last) {
     if (board.last.from) {
       marked[board.last.from] = ' blue-dashed'
     }
@@ -190,14 +190,10 @@ const getMarked = (board) => {
     if (board.special_args.length === 0) {
       indexes = Board.getMoves(board, piece_id)
     }
-  }
-  if (board?.selected?.chalk) {
-    Object.entries(selected.chalk).forEach(([index, s]) => (marked[index] += s))
+    if (selected.chalk) {
+      Object.entries(selected.chalk).forEach(([index, s]) => (marked[index] += s))
+    }
   }
   indexes.forEach((i) => (marked[i] = color))
-  if (board.piece_types[piece_id] === 'dragonfly') {
-    const index = board.reverse[piece_id]
-    indexes.forEach((i2) => (marked[i2] += Board.moves.dragonflyExtra(board, index, i2)))
-  }
   return marked
 }

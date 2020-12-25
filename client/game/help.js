@@ -12,8 +12,8 @@ const _spider = (s, e = '') => `The ${u(s)} must crawl exactly 3 spaces along th
 const queen = [_along('queen')]
 
 const emerald_wasp = [
-  'If starting on the hive, the emerald wasp can take two steps on top of the hive',
-  'If starting on the ground, the emrald wasp can step off the hive',
+  'If starting on the ground, the emerald wasp can take two steps on top of the hive',
+  'If starting on the hive, the emrald wasp can step off the hive',
   _orbweaver('emerald_wasp'),
   _scorpion('emerald_wasp'),
 ]

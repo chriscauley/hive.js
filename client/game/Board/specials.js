@@ -3,7 +3,7 @@
 // other wise return potential indexes for the next argument
 import { mod } from './Geo'
 import wouldBreakHive from './wouldBreakHive'
-import { stepOnHive, notEnemyScorpion } from './moves'
+import moves_lib, { stepOnHive, notEnemyScorpion } from './moves'
 import { last } from 'lodash'
 
 const markChalk = (b, targets, string) => {
@@ -54,7 +54,7 @@ const orchid_mantis = (b, piece_id, args) => {
   }
   // select piece to pull under, no scorpions
   const targets = selectNearby(b, index).filter((target) => notEnemyScorpion(b, index, target))
-  markChalk(b, targets, ' purple-inner')
+  markChalk(b, targets, (s) => (s += ' purple-inner'))
   return targets
 }
 
@@ -221,16 +221,57 @@ const dragonfly = (b, piece_id, args) => {
 
 const mosquito = (b, piece_id, args) => {
   const index = b.reverse[piece_id]
-  let out = []
-  if (b.stacks[index].length === 1) {
-    b.geo.touching[index].forEach((i2) => {
-      const target_id = last(b.stacks[i2])
-      if (['dragonfly', 'damselfly'].includes(b.piece_types[target_id])) {
-        out = dragonfly(b, piece_id, args)
-      }
-    })
+  if (b.stacks[index].length > 1) {
+    // while on top of the hive, mosquito moves like a beetle
+    return []
   }
-  return out
+  const notMosquito = (b, i) => b.piece_types[last(b.stacks[i])] !== 'mosquito'
+
+  const target_indexes = b.geo.touching[index].filter((i) => b.stacks[i] && notMosquito(b, i))
+  if (args.length === 0) {
+    return target_indexes
+  }
+  if (args[0] === 'move') {
+    // redoing move
+    return () => move(b, index, args[1])
+  } else if (typeof args[0] === 'string') {
+    // redoing special
+    return _default[args[0]](b, piece_id, args[1])
+  }
+  const target_index = args[0]
+  const target_id = last(b.stacks[target_index])
+  const target_type = b.piece_types[target_id]
+  const possible_moves = moves_lib[target_type](b, index)
+  if (args.length === 2 && possible_moves.includes(args[1])) {
+    // piece chosen and move chosen, make move
+    return () => {
+      args[0] = 'move' // simplifies undo by not haivng to reverse what happened
+      move(b, index, args[1])
+    }
+  }
+  const f = _default[target_type]
+  const new_args = args.slice(1)
+  const special_result = f ? f(b, piece_id, new_args) : []
+  if (args.length === 1) {
+    // piece chosen only, return possible indexes for move and sepcial
+    markChalk(b, possible_moves, (s) => s.replace('yellow', '') + ' green')
+    return possible_moves.concat(special_result || [])
+  }
+  if (typeof special_result === 'function') {
+    // mosquito is doing a special of another piece
+    return () => {
+      // because specials (dragonfly) might mutate new_args, gotta reassemle args to be the right
+      const result = special_result()
+      while (args.length) {
+        args.pop()
+      }
+      args.push(target_type)
+      args.push(new_args)
+      return result
+    }
+  }
+  // special needs more arguments
+  return special_result
 }
 
 const undoDragonfly = (b, piece_id, index, args) => {
@@ -249,7 +290,7 @@ const undoMoveUnder = (b, piece_id, index, args) => {
   b.stacks[args[0]].push(target_id)
 }
 
-export default {
+const _default = {
   move,
   selectNearby,
   dragonfly,
@@ -262,6 +303,13 @@ export default {
   earthworm,
   kung_fu_mantis,
   undo: {
+    mosquito: (b, piece_id, index, args) => {
+      if (args[0] === 'move') {
+        move(b, args[1], index)
+      } else {
+        _default.undo[args[0]](b, piece_id, index, args[1])
+      }
+    },
     earthworm: (b, piece_id, index, args) => swapBottom(b, args[0], index),
     pill_bug: (b, piece_id, index, args) => move(b, args[1], args[0]),
     centipede: (b, piece_id, index, args) => swap(b, args[0], index),
@@ -278,3 +326,5 @@ export default {
     damselfly: undoDragonfly,
   },
 }
+
+export default _default

@@ -229,21 +229,7 @@ const praying_mantis = (board, index) => {
   return board.stacks[index].length > 1 ? stepOffHive(board, index) : []
 }
 
-const mosquito = (board, index) => {
-  if (board.stacks[index].length > 1) {
-    return beetle(board, index)
-  }
-  let out = []
-  board.geo.touching[index].forEach((i2) => {
-    const target_id = last(board.stacks[i2])
-    if (target_id === undefined) {
-      return
-    }
-    const f = moves[board.piece_types[target_id]]
-    out = out.concat(f(board, index))
-  })
-  return out
-}
+const mosquito = (b, i) => (b.stacks[i].length > 1 ? beetle(b, i) : [])
 
 const beetle = (b, i) => {
   if (b.stacks[i].length > 1) {

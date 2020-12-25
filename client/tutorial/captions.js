@@ -64,7 +64,7 @@ export default {
   ],
   ladybug: ['The black ladybug can move to one of five open spaces, the white ladybug eight.'],
   mosquito: [
-    'From this position, the black mosquito can move to one of five spaces. It can move as a scorpion, queen, or grasshopper.',
+    'From this position, the black mosquito can move as a scorpion, queen, or grasshopper.',
     'On top of the hive, the white mosquito moves like a beetle. It cannot step on the scorpion because have you ever stepped on a scorpion? It hurts.',
   ],
   pill_bug: [

@@ -191,7 +191,9 @@ const getMarked = (board) => {
       indexes = Board.getMoves(board, piece_id)
     }
     if (selected.chalk) {
-      Object.entries(selected.chalk).forEach(([index, s]) => (marked[index] += s))
+      Object.entries(selected.chalk).forEach(
+        ([index, f]) => (marked[index] = f(marked[index] || '')),
+      )
     }
   }
   indexes.forEach((i) => (marked[i] = color))

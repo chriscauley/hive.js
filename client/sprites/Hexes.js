@@ -51,7 +51,7 @@ const _hex = (ctx, color, x, y, r) => {
 }
 
 const base_sprites = {
-  thick: 'white,black,red,blue,purple,green,yellow,gray',
+  thick: 'white,black,red,blue,purple,yellow,gray,green',
   thin: 'purple',
   dashed: 'blue',
 }

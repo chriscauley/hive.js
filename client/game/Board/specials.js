@@ -108,6 +108,9 @@ const praying_mantis = (board, piece_id, args) => {
     targets.push([last, snag])
   })
   if (args.length === 0) {
+    let snag_targets = []
+    targets.filter((t) => t[1] !== undefined).map((t) => (snag_targets = snag_targets.concat(t)))
+    markChalk(board, snag_targets, (s) => (s += ' purple-inner'))
     return targets.filter((t) => !board.layers.stack[t[0]]).map((t) => t[0])
   }
   return () => {

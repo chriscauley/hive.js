@@ -76,7 +76,8 @@ export default {
     'From on top of the hive, the black orchid mantis moves like a beetle.',
   ],
   praying_mantis: [
-    // TODO preying_mantis
+    'The white praying mantis can move onto the white ant or black queen. If it moves onto the white queen it will move the white beetle as well.',
+    'From on top of the hive, the black praying mantis can step off the hive.',
   ],
   fly: [
     'The white fly can climb onto one of two pieces.',

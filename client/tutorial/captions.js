@@ -22,6 +22,7 @@ export default {
     'centipede',
     'cicada',
     'lanternfly',
+    'lanternfly_nymph',
     'trapdoor_spider',
     'orbweaver',
     'emerald_wasp',
@@ -115,6 +116,7 @@ export default {
     'The white laternfly can move one space in either direction.',
     'Surrounded on 3 sides, the black lantern fly can move over the hive to any square.',
   ],
+  lanternfly_nymph: ['Either lanternfly nymph can move to 4 different spaces.'],
   trapdoor_spider: [
     'The white trapdoor spider has 3 possible hop over 4 tiles or move 3 tiles along the hive.',
     'The black trapdoor spider cannot move (one hive rule)',

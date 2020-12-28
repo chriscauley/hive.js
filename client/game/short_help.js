@@ -35,6 +35,7 @@ const fly = [
   _stack,
 ]
 const lanternfly = [_along, 'If touching pieces on 3 sides, can fly anywhere.', _fly]
+const lanternfly_nymph = [_along, 'Can fly to any space surrounded on 3 or more sides.']
 const wasp = ['Can fly over hive and land in any space not touching a friendly piece.', _fly]
 const cockroach = ['Can move over friendly pieces to any empty space.', _fly]
 const dragonfly = [
@@ -79,6 +80,7 @@ export default {
   praying_mantis,
   fly,
   lanternfly,
+  lanternfly_nymph,
   wasp,
   cockroach,
   dragonfly,

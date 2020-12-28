@@ -106,6 +106,11 @@ const lanternfly = [
   'If surounded on 3 or more sides, the lanternfly can move over the hive to any unoccupied tile on the board.',
 ]
 
+const lanternfly_nymph = [
+  _along('lanternfly_nymph'),
+  'The lanternfly nymph can move over the hive to any unoccupied space which is surrounded on 3 or more sides.',
+]
+
 const wasp = [
   'The wasp takes unlimited steps on top of the hive and then steps off to any space not touching friendly tiles (opposite of placement).',
   _orbweaver('wasp'),
@@ -160,6 +165,7 @@ export default {
   praying_mantis,
   fly,
   lanternfly,
+  lanternfly_nymph,
   wasp,
   cockroach,
   dragonfly: _dragonfly('dragonfly'),

@@ -303,6 +303,19 @@ const lanternfly = (b, index) => {
   return touching_stacks.length < 3 ? stepAlongHive(b, index) : flyAnywhere(b, index)
 }
 
+const lanternfly_nymph = (b, index) => {
+  const totals = {}
+  Object.keys(b.stacks).forEach((index) => {
+    b.geo.touching[index]
+      .filter((i) => !b.stacks[i] && i !== index)
+      .forEach((index2) => {
+        totals[index2] = (totals[index2] || 0) + 1
+      })
+  })
+  const targets = flyAnywhere(b, index).filter((i) => totals[i] > 3)
+  return stepAlongHive(b, index).concat(targets)
+}
+
 const wasp = (b, index) => {
   const current_player = b.piece_owners[last(b.stacks[index])]
   const subhive = getSubhive(b, index, [webs.no.fly])
@@ -356,6 +369,7 @@ const moves = {
   cicada,
   fly,
   lanternfly,
+  lanternfly_nymph,
   wasp,
   getPlacement,
   ladybug,

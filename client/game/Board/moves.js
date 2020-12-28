@@ -312,7 +312,7 @@ const lanternfly_nymph = (b, index) => {
         totals[index2] = (totals[index2] || 0) + 1
       })
   })
-  const targets = flyAnywhere(b, index).filter((i) => totals[i] > 3)
+  const targets = flyAnywhere(b, index).filter((i) => totals[i] >= 3)
   return stepAlongHive(b, index).concat(targets)
 }
 

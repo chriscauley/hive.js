@@ -2,6 +2,14 @@ import React from 'react'
 import css from '@unrest/css'
 
 const content = {
+  'v1.0.2 Dec 28, 2020': [
+    'NEW PIECE: Praying Mantis can leap onto furthest piece in any direction and drag a stacked piece with it.',
+    'NEW PIECE: Kung Fu Mantis can grab a piece two spaces away and move it underneath.',
+    'NEW PIECE: Emerald Wasp can take two steps onto the hive (or step off if starting on the hive).',
+    'NEW PIECE: Lanternfly Nymph can move to any empty space surrounded on 3 or more sides.',
+    'Mosquito can now copy every move by every piece (does not copy passives).',
+    'Minor ui tweaks.',
+  ],
   'v1.0.1 Nov 14, 2020': [
     'NEW PIECE: Lanternfly can fly over the hive to any open space is touching pieces on 3 sides (otherwise moves like queen).',
     'NEW PIECE: Orbweaver Spider moves like a spider and no piece can move over it (this ability has been taken from scorpion which now only blocks stacking pieces).',

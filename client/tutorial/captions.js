@@ -5,12 +5,14 @@ export default {
     'stacks',
     'queen',
     'beetle',
+    'earthworm',
     'grasshopper',
     'ant',
     'spider',
     'ladybug',
     'mosquito',
     'pill_bug',
+    'kung_fu_mantis',
     'orchid_mantis',
     'praying_mantis',
     'fly',
@@ -56,9 +58,9 @@ export default {
   grasshopper: [
     'The black grasshopper can move to three different spaces.',
     'The white grasshopper can move to two different spaces.',
-    'With super_grasshopper turned on the black and white pieces can move to 6 and 7 spaces respectively',
+    'With super_grasshopper turned on the black and white pieces can move to 6 and 7 spaces respectively.',
   ],
-  spider: 'From this position, the white spider can move to one of three spaces.',
+  spider: ['From this position, the white spider can move to one of three spaces.'],
   ant: [
     'Normally, both ants can move to any open space on the board.',
     'If spiderwebs are enabled, the black ant can get trapped on the far spider.',
@@ -71,6 +73,10 @@ export default {
   pill_bug: [
     'From this position, the pill bug can move to one of two spaces.',
     'Alternatively, it can move the white queen to one of three spaces.',
+  ],
+  kung_fu_mantis: [
+    'From on top the hive, the black mantis can take one step in any direction.',
+    'From the ground, the white mantis can move any one of three pieces underneath itself.',
   ],
   orchid_mantis: [
     'The white orchid mantis cannot move, but it can pull the queen or grasshopper under itself.',
@@ -129,4 +135,5 @@ export default {
     'The black emerald wasp move onto two spaces (by first stepping on the white emerald wasp).',
     'The whiet emerald wasp can step off the hive to three different spaces.',
   ],
+  earthworm: ['Both earthworms can swap with 4 different pieces.'],
 }

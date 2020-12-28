@@ -1,5 +1,6 @@
 import help from './help'
 import captions from '../tutorial/captions'
+import boards from '../tutorial/boards'
 
 const VANILLA = {
   beetle: 2,
@@ -46,6 +47,7 @@ const colors = {
   cicada: '#4b9400', //  copies grasshopper
   cockroach: '#b95c2b',
   dragonfly: '#e62b00',
+  damselfly: '#e67000',
   earthworm: '#dc5797',
   fly: '#2a5c00',
   grasshopper: '#4b9400',
@@ -53,9 +55,10 @@ const colors = {
   lanternfly: '#ac3a3a',
   lanternfly_nymph: '#ac3a3a',
   orchid_mantis: '#008b5c',
+  orbweaver: '#900000',
   praying_mantis: '#008b5c',
   mosquito: '#8a8a8a',
-  pillbug: '#005cb9',
+  pill_bug: '#005cb9',
   scorpion: '#5c008b',
   spider: '#5c2900',
   trapdoor_spider: '#5c2900', // copies spider for now
@@ -120,7 +123,7 @@ export default {
 }
 
 tags.all.forEach((type) => {
-  const toCheck = { captions, help, colors }
+  const toCheck = { captions, help, colors, boards }
   Object.entries(toCheck).forEach(([name, map]) => {
     if (!map[type]) {
       console.log('missing', name, type) // eslint-disable-line

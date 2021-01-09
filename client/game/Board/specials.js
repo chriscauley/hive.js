@@ -201,7 +201,7 @@ const dragonfly = (b, piece_id, args) => {
     markChalk(
       b,
       targets.filter((i2) => willSnag(b, index, i2)),
-      ' purple-inner',
+      s => s + ' purple-inner',
     )
     return targets
   }

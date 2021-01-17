@@ -77,7 +77,7 @@ export default {
   ],
   kung_fu_mantis: [
     'From on top the hive, the black mantis can take one step in any direction.',
-    'From the ground, the white mantis can move any one of three pieces underneath itself.',
+    'From the ground, the white mantis can pull the black queen under itself.',
   ],
   orchid_mantis: [
     'The white orchid mantis cannot move, but it can pull the queen or grasshopper under itself.',

@@ -80,7 +80,7 @@ const orchid_mantis = [
 ]
 
 const kung_fu_mantis = [
-  'If on the ground level, the kung fu mantis can grab a piece two spaces away and move it underneath the kung fu mantis.',
+  'If on the ground level, the kung fu mantis can grab a piece two spaces in any direction and move it underneath the kung fu mantis.',
   'Once on the hive the kung fu mantis can move one space on the hive or step off the hive.',
   'The kung fu mantis cannot stack on or grab an enemy scorpion.',
 ]

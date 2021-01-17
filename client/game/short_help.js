@@ -19,7 +19,11 @@ const mosquito = [
 ]
 const pill_bug = [_along, 'Can move any piece it is touching to another empty square.']
 const orchid_mantis = [_along, 'Can pull a piece under itself.', _beetle, _stack]
-const kung_fu_mantis = ['Can pull a piece two spaces away under itself.', _beetle, _stack]
+const kung_fu_mantis = [
+  'Can pull a piece two spaces in any direction under itself.',
+  _beetle,
+  _stack,
+]
 
 const praying_mantis = [
   'Can jump over the hive and land on the furthest piece in any direction',

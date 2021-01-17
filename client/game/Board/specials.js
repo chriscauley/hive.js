@@ -67,17 +67,12 @@ const kung_fu_mantis = (board, piece_id, args) => {
   if (args.length === 1) {
     return () => pullUnder(board, index, args[0])
   }
+  const { dindexes } = board.geo
 
-  const one_away = board.geo.touching[index]
-  const two_away = []
-  one_away.forEach((index2) =>
-    selectNearby(board, index2)
-      .filter((i) => i !== index && !one_away.includes(i))
-      .filter((i) => notEnemyScorpion(board, index, i))
-      .forEach((i) => two_away.push(i)),
-  )
+  const targets = dindexes[0].map((di, i) => index + di + dindexes[1][i])
+
   // select piece to pull under, no scorpions
-  return two_away
+  return targets.filter((i) => board.stacks[i]).filter((i) => notEnemyScorpion(board, index, i))
 }
 
 const praying_mantis = (board, piece_id, args) => {

@@ -95,7 +95,7 @@ const B = {
         b.cantmove[index] = true
       }
 
-      if (type === 'orchid_mantis' || type === 'kung_fu_mantis') {
+      if (['orchid_mantis', 'kung_fu_mantis', 'dragonfly_nymph'].includes(type)) {
         if (B.getSpecials(b, piece_id, []).length > 0) {
           delete b.cantmove[index]
         } else if (B.getMoves(b, piece_id).length === 0) {

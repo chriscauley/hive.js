@@ -129,6 +129,12 @@ const _dragonfly = (p) => [
   ),
 ]
 
+const dragonfly_nymph = [
+  'If on the ground, this can grab any piece one diagonal away (one step forward then one step left or right).',
+  'If on the hive, this piece moves on diagonals.',
+  'If it moves to an empty space it will carry the piece immediately under it (as long as it does not break the one hive rule).',
+]
+
 const damselfly = [
   _along('damselfly', ' if on the ground level'),
   ..._dragonfly('damselfly'),
@@ -170,6 +176,7 @@ export default {
   cockroach,
   dragonfly: _dragonfly('dragonfly'),
   damselfly,
+  dragonfly_nymph,
   centipede,
   earthworm,
   blank,

@@ -43,6 +43,11 @@ const dragonfly = [
   'If it moves from a stack to an empty space, it will carry one piece with it.',
 ]
 const damselfly = ['If on the ground, can move along the hive.', ...dragonfly]
+const dragonfly_nymph = [
+  'If on the ground can pull any piece under it from one diagonal away (one space forward and one to the right or left).',
+  'If on the hive it moves one diagonal in any direction.',
+  'If it moves to an empty space it will carry the piece under along with it.',
+]
 const centipede = [_along, 'Can swap with an adjacent piece.']
 const earthworm = [_along, 'Can swap with the bottom piece of any stack 3  (on hive) moves away.']
 const orbweaver = _spiderlike([
@@ -84,6 +89,7 @@ export default {
   wasp,
   cockroach,
   dragonfly,
+  dragonfly_nymph,
   damselfly,
   centipede,
   earthworm,

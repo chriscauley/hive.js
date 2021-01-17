@@ -29,6 +29,10 @@ const NO_LEGAL = {"actions":[["place",1274,"queen",1],["place",1275,"queen",2],[
 // eslint-disable-next-line
 const MOSQUITO = {"actions":[["place",1274,"queen",1],["place",1275,"queen",2],["place",1273,"mosquito",1],["place",1226,"earthworm",2],["place",1323,"pill_bug",1],["place",1225,"mosquito",2],["place",1324,"dragonfly",1],["place",1276,"orchid_mantis",2],["place",1272,"praying_mantis",1],["place",1176,"kung_fu_mantis",2],["place",1373,"centipede",1],["place",1277,"damselfly",2],["special",1273,2,["pill_bug",[1272,1224]]],["special",1225,5,["kung_fu_mantis",[1274]]],["place",1374,"mosquito",1],["move",1225,1174],["special",1374,12,["dragonfly",[1325]]],["special",1174,5,["praying_mantis",[1277]]],["special",1325,12,["orchid_mantis",[1275]]],["move",1277,1227],["special",1273,2,["praying_mantis",[1373]]],["special",1227,5,["earthworm",[1325]]],["move",1373,1423],["special",1226,3,[1325]],["special",1423,2,["move",1374]],["move",1227,1228],["special",1374,2,["centipede",[1373]]]],"W":50,"H":50,"stacks":{"1176":[9],"1224":[8],"1225":[0],"1226":[5],"1228":[1],"1276":[7],"1277":[11],"1323":[4],"1324":[6],"1325":[3,12],"1373":[2],"1374":[10]},"piece_types":["queen","queen","mosquito","earthworm","pill_bug","mosquito","dragonfly","orchid_mantis","praying_mantis","kung_fu_mantis","centipede","damselfly","mosquito"],"piece_owners":[1,2,1,2,1,2,1,2,1,2,1,2,1],"hash":"563b8e64461cef91d47bd17d0e526abc3049b337","turn":27,"rules":{},"current_player": 2}
 
+// dragonfly_nymph
+// eslint-disable-next-line
+const DRAGONFLY_NYMPH = {"actions":[["place",1274,"queen",1],["place",1275,"dragonfly_nymph",2],["place",1273,"dragonfly",1],["place",1276,"beetle",2],["place",1324,"beetle",1],["special",1275,1,[1273,"pulled"]],["move",1324,1323],["special",1275,1,[1273]]],"W":50,"H":50,"stacks":{"1273":[1],"1274":[0],"1275":[2],"1276":[3],"1323":[4]},"piece_types":["queen","dragonfly_nymph","dragonfly","beetle","beetle"],"piece_owners":[1,2,1,2,1],"hash":"2a22ca8e5a4d13334c423d5df90059f8dfce9ea7","turn":8,"rules":{},"last":{"from":1275,"to":1273},"current_player":1,"last_move_at":1610847663161}
+
 const getTarget = (b, index) => {
   const piece_id = last(b.stacks[index])
   return {
@@ -84,7 +88,16 @@ test('Play a game', () => {
 })
 
 test('replay-game', () => {
-  const games = [STANDARD, CUSTOM, CUSTOM_EXPANDED, STANDARD_EXPANDED, OTHERS, NO_LEGAL, MOSQUITO]
+  const games = [
+    STANDARD,
+    CUSTOM,
+    CUSTOM_EXPANDED,
+    STANDARD_EXPANDED,
+    OTHERS,
+    NO_LEGAL,
+    MOSQUITO,
+    DRAGONFLY_NYMPH,
+  ]
   games.forEach((b) => {
     const board = cloneDeep(b)
     B.update(board)

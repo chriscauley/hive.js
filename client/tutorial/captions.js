@@ -21,6 +21,7 @@ export default {
     'cockroach',
     'dragonfly',
     'damselfly',
+    'dragonfly_nymph',
     'centipede',
     'cicada',
     'lanternfly',
@@ -109,6 +110,10 @@ export default {
   damselfly: [
     'The black damselfly can move along the hive to one of two spaces or diagonally to one of three spaces. It cannot land on the scorpion',
     'The white damselfly has six possible moves. If it moves to one of the five unoccupied spaces, it must move the spider its on top of as well.',
+  ],
+  dragonfly_nymph: [
+    'The black dragonfly nymph can pull the white queen under it.',
+    'From on top the hive, the white dragonfly nymph can move diagonally to 5 different spaces.',
   ],
   centipede: [
     'From this position, the centipede can move to one of two spaces.',

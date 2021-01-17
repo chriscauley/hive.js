@@ -34,6 +34,7 @@ const piece_counts = {
   lanternfly_nymph: 3,
   earthworm: 1,
   damselfly: 1,
+  dragonfly_nymph: 2,
   praying_mantis: 1,
   emerald_wasp: 1,
   kung_fu_mantis: 1,
@@ -47,6 +48,7 @@ const colors = {
   cicada: '#4b9400', //  copies grasshopper
   cockroach: '#b95c2b',
   dragonfly: '#e62b00',
+  dragonfly_nymph: '#e62b00',
   damselfly: '#e67000',
   earthworm: '#dc5797',
   fly: '#2a5c00',

@@ -190,6 +190,26 @@ const centipede = (b, piece_id, args) => {
   }
 }
 
+const dragonfly_nymph = (b, piece_id, args) => {
+  const index = b.reverse[piece_id]
+  if (b.stacks[index].length > 1) {
+    // once on the hive it acts like dragonfly
+    return dragonfly(b, piece_id, args)
+  }
+  if (args.length > 0) {
+    // 1 for move, 2 for redo
+    return () => {
+      args.push('pulled')
+      pullUnder(b, index, args[0])
+    }
+  }
+  return b.geo.dindexes.dragonfly[mod(index, 2)]
+    .map((di) => index + di)
+    .filter((i) => b.stacks[i])
+    .filter((i) => notEnemyScorpion(b, index, i))
+    .filter((i) => !wouldBreakHive(b, [i]))
+}
+
 const dragonfly = (b, piece_id, args) => {
   const willSnag = (b, index, target) =>
     b.stacks[index].length > 1 && !b.stacks[target] && !wouldBreakHive(b, [index], 2)
@@ -201,7 +221,7 @@ const dragonfly = (b, piece_id, args) => {
     markChalk(
       b,
       targets.filter((i2) => willSnag(b, index, i2)),
-      s => s + ' purple-inner',
+      (s) => s + ' purple-inner',
     )
     return targets
   }
@@ -298,6 +318,7 @@ const _default = {
   selectNearby,
   dragonfly,
   damselfly: dragonfly,
+  dragonfly_nymph,
   pill_bug,
   orchid_mantis,
   praying_mantis,
@@ -326,6 +347,10 @@ const _default = {
       }
     },
     dragonfly: undoDragonfly,
+    dragonfly_nymph: (b, piece, index, args) => {
+      const f = args[1] === 'pulled' ? undoMoveUnder : undoDragonfly
+      return f(b, piece, index, args)
+    },
     damselfly: undoDragonfly,
   },
 }

@@ -53,25 +53,37 @@
         content: "\f023";
       }
     }
-    $z: -5%;
-    @for $i from  1 through 4 {
-      .stacked-#{$i} {
-        top: $i * $z;
-        left: $i * $z;
-        transition: top 0.5s, left 0.5s;
-      }
-      &.selected:hover .stacked-#{$i} {
-        top: $i * -45%;
-        left: $i * -45%;
-        transition-delay: 0.5s;
-      }
-    }
   }
   .item:nth-child(even) {
     top: - ($hex_h / 2 + 0.08em);
   }
   &.odd-q .item:nth-child(even) {
     top: ($hex_h / 2 + 0.08em);
+  }
+}
+
+.hex-grid .item {
+  $z: -5%;
+  .piece {
+    top: 0;
+    left: 0;
+    transition: top 0.5s, left 0.5s;
+  }
+  @for $i from  1 through 4 {
+    .stacked-#{$i} {
+      top: $i * $z;
+      left: $i * $z;
+    }
+    &.selected:hover .stacked-#{$i} {
+      top: $i * -45%;
+      left: $i * -45%;
+      transition-delay: 0.5s;
+    }
+    &.selected:hover .stacked--#{$i} {
+      top: $i * 20%;
+      left: $i * 20%;
+      transition-delay: 0.5s;
+    }
   }
 }
 

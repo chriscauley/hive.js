@@ -6,7 +6,7 @@ const getZ = (i, height) => {
   if (height < 4) {
     return i
   }
-  return Math.max(i - height + 4, 0)
+  return i - height + 4
 }
 
 const Tile = ({ xy, className, target, index, z, click }) => {

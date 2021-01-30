@@ -305,9 +305,10 @@ const lanternfly = (b, index) => {
 
 const lanternfly_nymph = (b, index) => {
   const totals = {}
-  Object.keys(b.stacks).forEach((index) => {
-    b.geo.touching[index]
-      .filter((i) => !b.stacks[i] && i !== index)
+  const occupied = Object.keys(b.stacks).filter((i) => parseInt(i) !== index)
+  occupied.forEach((stack_index) => {
+    b.geo.touching[stack_index]
+      .filter((i) => !b.stacks[i])
       .forEach((index2) => {
         totals[index2] = (totals[index2] || 0) + 1
       })

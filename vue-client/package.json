@@ -12,6 +12,7 @@
     "@unrest/form": "^0.0.4",
     "@unrest/tailwind": "^0.0.8",
     "@unrest/vue": "^0.1.1",
+    "@unrest/vue-reactive-storage": "^0.0.1",
     "core-js": "^3.6.5",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-beta.13"

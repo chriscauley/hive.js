@@ -10,7 +10,11 @@
       <ur-dropdown>
         <div class="ur-dropdown__trigger">config</div>
         <template #content>
-          <ur-form schema="$store.config.schema" state="$store.config.state" />
+          <div class="dropdown-menu" @click.stop>
+            <ur-form v-bind="$store.config.form">
+              <template #actions>{{ ' ' }}</template>
+            </ur-form>
+          </div>
         </template>
       </ur-dropdown>
       <ur-dropdown :items="help_links">

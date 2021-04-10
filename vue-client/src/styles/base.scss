@@ -10,6 +10,9 @@
 
 body {
   overflow: auto;
+  &.theme-dark_mode {
+    background: #234e52;
+  }
 }
 
 .app-content {

@@ -948,6 +948,11 @@
     "@nodelib/fs.scandir" "2.1.4"
     fastq "^1.6.0"
 
+"@popperjs/core@^2.9.2":
+  version "2.9.2"
+  resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.9.2.tgz#adea7b6953cbb34651766b0548468e743c6a2353"
+  integrity sha512-VZMYa7+fXHdwIq1TDhSXoVmSPEGM/aa+6Aiq3nVVJ9bXr24zScr+NlKFKC3iPljA7ho/GAZr+d2jOf5GIRC30Q==
+
 "@soda/friendly-errors-webpack-plugin@^1.7.1":
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/@soda/friendly-errors-webpack-plugin/-/friendly-errors-webpack-plugin-1.8.0.tgz#84751d82a93019d5c92c0cf0e45ac59087cd2240"
@@ -1127,10 +1132,24 @@
     "@types/webpack-sources" "*"
     source-map "^0.6.0"
 
+"@unrest/form@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@unrest/form/-/form-0.0.4.tgz#9a687081095eb3cdcaa57947510889a3640591ba"
+  integrity sha512-jU3laerOxSX+ZaFrO9GVRVGlTMRWPzqQ22xO8OhuAfQDBSXovT9oVGJDfYBdcSmwvub5pG6G6/RVuTbeqnWEGg==
+  dependencies:
+    core-js "^3.6.5"
+    lodash.pick "^4.4.0"
+    vue "^3.0.0"
+
 "@unrest/tailwind@^0.0.8":
   version "0.0.8"
   resolved "https://registry.yarnpkg.com/@unrest/tailwind/-/tailwind-0.0.8.tgz#763c336e9f8794cf899f72fe0796e603b177da41"
   integrity sha512-0hayenlo6vQrsdsjbL5r4LYHG89ymHKsBF4mwEFM9/wuLfdfTWJXgpPuvVp1uINTAyhiOJMtGm9bknlcM72+7A==
+
+"@unrest/vue@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@unrest/vue/-/vue-0.1.1.tgz#b5f786f87763cf9ae4af87cbdac6f24dc991233b"
+  integrity sha512-VnTrOPjuY7HLLEfgQfC4XrDnlls8CClEybz8YFhM6bmuqo6Lg/eHeq21FW+10vgCxux9EdmbtYLvO9+I1N+ZkQ==
 
 "@vue/babel-helper-vue-jsx-merge-props@^1.2.1":
   version "1.2.1"
@@ -5452,6 +5471,11 @@ lodash.memoize@^4.1.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/lodash.memoize/-/lodash.memoize-4.1.2.tgz#bcc6c49a42a2840ed997f323eada5ecd182e0bfe"
   integrity sha1-vMbEmkKihA7Zl/Mj6tpezRguC/4=
+
+lodash.pick@^4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/lodash.pick/-/lodash.pick-4.4.0.tgz#52f05610fff9ded422611441ed1fc123a03001b3"
+  integrity sha1-UvBWEP/53tQiYRRB7R/BI6AwAbM=
 
 lodash.toarray@^4.4.0:
   version "4.4.0"

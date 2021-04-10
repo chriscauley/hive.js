@@ -1,14 +1,14 @@
 @import "./var.scss";
 
 .Chat {
-  @apply border bg--bg flex flex-col;
+  @apply border -bg-bg flex flex-col;
   flex-shrink: 0;
   top: 77px;
   width: $chat_w;
 }
 
 .Chat .menu-bar {
-  @apply bg--bg-alt py-1 px-2 text-right;
+  @apply -bg-bg-alt py-1 px-2 text-right;
 }
 
 .Chat .room_list {

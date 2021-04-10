@@ -1,6 +1,4 @@
-<template>
-  Woo!
-</template>
+<template>Woo!</template>
 
 <script>
 export default {

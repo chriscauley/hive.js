@@ -25,7 +25,6 @@ body {
     top: 77px;
     right: 0;
     .theme-dark_mode & {
-      background: theme('colors.teal.900');
       .hex {
         filter: brightness(0.9)
       }
@@ -41,7 +40,7 @@ body {
 
 .app-content.debug {
   [data-index]:after {
-    @apply text--text bg--bg;
+    @apply -text-text -bg-bg;
     content: attr(data-index);
     position: absolute;
   }
@@ -68,7 +67,7 @@ body {
 }
 
 .NewGame {
-  @apply border p-4 mt-8 shadow mx-2 flex-wrap bg--bg;
+  @apply border p-4 mt-8 shadow mx-2 flex-wrap -bg-bg;
   width: 672px;
   .rjsf {
     margin-right: 30px;

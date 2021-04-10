@@ -6,6 +6,6 @@ const devServer = {
 
 module.exports = {
   lintOnSave: false,
-  publicPath: '/static/',
+  // publicPath: '/static/',
   devServer,
 }

@@ -1,6 +1,6 @@
 <template>
   <Nav />
-  Woo!
+  <router-view class="router-view" />
 </template>
 
 <script>

@@ -1,19 +1,21 @@
 <template>
   <header :class="css.nav.outer()">
     <section :class="css.nav.section('left')">
-      <router-link to="/" :class="css.nav.brand()">
-        Hive!
-      </router-link>
+      <router-link to="/" :class="css.nav.brand()"> Hive! </router-link>
     </section>
     <section :class="css.nav.section('flex items-center')">
-      <ur-dropdown :items="game_links">game</ur-dropdown>
+      <ur-dropdown :items="game_links">
+        <div class="ur-dropdown__trigger">game</div>
+      </ur-dropdown>
       <ur-dropdown>
-        config
+        <div class="ur-dropdown__trigger">config</div>
         <template #content>
           <ur-form schema="$store.config.schema" state="$store.config.state" />
         </template>
       </ur-dropdown>
-      <ur-dropdown :items="help_links">help</ur-dropdown>
+      <ur-dropdown :items="help_links">
+        <div class="ur-dropdown__trigger">help</div>
+      </ur-dropdown>
       <div>Auth links!</div>
     </section>
   </header>
@@ -23,8 +25,8 @@
 import css from '@unrest/css'
 
 const help_links = [
-  { to: '/about/', children: 'About' },
-  { to: '/change-log/', children: 'Change Log' },
+  { to: '/about/', text: 'About' },
+  { to: '/change-log/', text: 'Change Log' },
 ]
 export default {
   data() {
@@ -34,6 +36,6 @@ export default {
     game_links() {
       return []
     },
-  }
+  },
 }
 </script>

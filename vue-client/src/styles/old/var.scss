@@ -1,0 +1,8 @@
+$size: 3em;
+$sqrt3: 1.73205080757;
+$hex_w: 2 * $size;
+$hex_h: $sqrt3 * $size;
+$cell_w: 0.75 * $hex_w;
+$cell_h: $hex_h;
+$buffer: 0.25em;
+$chat_w: 320px;

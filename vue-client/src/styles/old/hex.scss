@@ -1,0 +1,119 @@
+@import "./var.scss";
+
+.hex-grid {
+  font-size: 16px;
+  &.zoom-largest { font-size: 20px }
+  &.zoom-large { font-size: 18px }
+  &.zoom-medium { font-size: 16px }
+  &.zoom-small { font-size: 14px }
+  &.zoom-smallest { font-size: 12px }
+  width: calc(var(--columns) * #{$cell_w + $buffer});
+  &.cut_first {
+    margin-left: -$hex_w;
+  }
+  .row {
+    display: flex;
+  }
+  .item {
+    @apply relative;
+    width: $hex_w / 2 + $buffer;
+    height: $hex_h + $buffer;
+    margin: 0 $hex_w / 8;
+    .content {
+      height: calc(#{$hex_h} + 1px);
+      left: 50%;
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: $hex_w;
+      &[data-count]:before {
+        @apply bg-blue-600 text-white flex justify-center absolute bottom-0 right-0 rounded-full font-bold;
+        content: attr(data-count);
+        height: 1.5em;
+        line-height: 1.6em;
+        margin-right: 1em;
+        width: 1.5em;
+        z-index: 1;
+      }
+      &[data-count="0"]:before {
+        @apply bg-red-600;
+      }
+      &[data-count="yes"]:before {
+        @apply bg-green-600;
+        font-family: "FontAwesome";
+        content: "\f00c";
+      }
+      &[data-count="no"]:before {
+        @apply bg-red-600;
+        font-family: "FontAwesome";
+        content: "\f00d";
+      }
+      &[data-count="lock"]:before {
+        font-family: "FontAwesome";
+        content: "\f023";
+      }
+    }
+  }
+  .item:nth-child(even) {
+    top: - ($hex_h / 2 + 0.08em);
+  }
+  &.odd-q .item:nth-child(even) {
+    top: ($hex_h / 2 + 0.08em);
+  }
+}
+
+.hex-grid .item {
+  $z: -5%;
+  .piece {
+    top: 0;
+    left: 0;
+    transition: top 0.5s, left 0.5s;
+  }
+  @for $i from  1 through 4 {
+    .stacked-#{$i} {
+      top: $i * $z;
+      left: $i * $z;
+    }
+    &.selected:hover .stacked-#{$i} {
+      top: $i * -45%;
+      left: $i * -45%;
+      transition-delay: 0.5s;
+    }
+    &.selected:hover .stacked--#{$i} {
+      top: $i * 20%;
+      left: $i * 20%;
+      transition-delay: 0.5s;
+    }
+  }
+}
+
+.is_guest .hex-grid .item .content {
+  .piece {
+    cursor: default
+  }
+  &[data-count]:before {
+    display: none;
+  }
+}
+
+.hex {
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.hex.debug {
+  float: left;
+  width: 200px;
+  height: 173px;
+}
+
+.hex-grid.highlight-green {
+  @apply bg-green-300;
+}
+.hex-grid.highlight-red {
+  @apply bg-red-300;
+}
+
+.hex-grid.long {
+  padding-bottom: 2.5em;
+}

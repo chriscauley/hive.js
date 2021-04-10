@@ -1099,6 +1099,11 @@
     "@types/webpack-sources" "*"
     source-map "^0.6.0"
 
+"@unrest/tailwind@^0.0.8":
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/@unrest/tailwind/-/tailwind-0.0.8.tgz#763c336e9f8794cf899f72fe0796e603b177da41"
+  integrity sha512-0hayenlo6vQrsdsjbL5r4LYHG89ymHKsBF4mwEFM9/wuLfdfTWJXgpPuvVp1uINTAyhiOJMtGm9bknlcM72+7A==
+
 "@vue/babel-helper-vue-jsx-merge-props@^1.2.1":
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@vue/babel-helper-vue-jsx-merge-props/-/babel-helper-vue-jsx-merge-props-1.2.1.tgz#31624a7a505fb14da1d58023725a4c5f270e6a81"

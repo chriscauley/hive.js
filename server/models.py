@@ -8,14 +8,26 @@ def default_state():
         'ready': {},
     }
 
+def process_user(user):
+    return { 'username': user.username, 'id': user.id }
+
 class Room(models.Model):
     state = models.JSONField(default=default_state)
-    name = models.CharField(max_length=150) # same length as username
     updated = models.DateTimeField(auto_now=True)
+    users = models.ManyToManyField(settings.AUTH_USER_MODEL)
+    public = models.BooleanField(default=True)
+    empty = models.BooleanField(default=False)
     def get_current_game(self):
         return self.game_set.get_or_create(done=False)[0]
     def __str__(self):
-        return self.name
+        return f'Room #{self.id}'
+    def to_json(self):
+        return {
+            **self.state,
+            'id': self.id,
+            'public': self.public,
+            'users': [process_user(u) for u in self.users.all()]
+        }
 
 class Message(models.Model):
     action = models.CharField(max_length=64)

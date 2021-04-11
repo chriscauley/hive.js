@@ -14,8 +14,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
         if not self.scope['user'].is_authenticated:
             reply_channel.send({"close": True})
             return
-        self.room_name = self.scope['url_route']['kwargs']['room_name']
-        self.room_group_name = 'chat_%s' % self.room_name
+        self.room_id = self.scope['url_route']['kwargs']['room_id']
+        self.room_group_name = 'chat_%s' % self.room_id
 
         # Join group (channels)
         await self.channel_layer.group_add(
@@ -33,7 +33,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         messages = await self.get_room_messages(room)
         game = await self.get_current_game(room)
         message = {
-            'name': room.name,
+            'room_id': room.id,
             'state': room.state,
             'messages': [m.content for m in messages]
         }
@@ -72,13 +72,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def get_room(self):
-        return Room.objects.get_or_create(name=self.room_name)[0]
+        return Room.objects.get(id=self.room_id)
 
     @database_sync_to_async
     def join_room(self, room):
-        user_id = str(self.scope["user"].id)
-        if not user_id in room.state['user_ids']:
-            room.state['user_ids'].append(user_id)
+        user = self.scope["user"]
+        if not user in room.users.all():
+            room.users.add(user)
             room.save()
 
     @database_sync_to_async

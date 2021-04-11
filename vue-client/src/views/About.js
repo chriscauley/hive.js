@@ -15,8 +15,8 @@ export default {
   },
   render: () => (
     <section>
-      <div className={css.modal.outer()} style={{ position: 'relative', zIndex: 1 }}>
-        <div className={css.modal.content()}>
+      <div className={css.modal.outer('-relative')}>
+        <div className={css.modal.content('-auto')}>
           <h2>About</h2>
           <vue3-markdown-it source={content} className="markdown" />
         </div>

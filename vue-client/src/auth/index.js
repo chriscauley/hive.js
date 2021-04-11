@@ -5,6 +5,9 @@ import store from './store'
 
 const auth = {
   ...store,
+  get user() {
+    return store.get()
+  },
   routes: [
     {
       path: '/auth/:slug/',

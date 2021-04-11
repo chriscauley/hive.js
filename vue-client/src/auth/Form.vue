@@ -1,6 +1,6 @@
 <template>
-  <div :class="css.modal.outer()" style="position: relative; z-index: 1">
-    <div :class="css.modal.content()">
+  <div :class="css.modal.outer('-relative')">
+    <div :class="css.modal.content('-auto')">
       <h2>{{ mode.title }}</h2>
       <schema-form :form_name="mode.form_name" :success="success" />
       <!-- <social-links :verb="verb" /> -->
@@ -10,24 +10,7 @@
 
 <script>
 import css from '@unrest/css'
-
-const modes = [
-  {
-    slug: 'login',
-    form_name: 'schema/LoginForm',
-    title: 'Login',
-  },
-  {
-    slug: 'sign-up',
-    form_name: 'schema/SignUpForm',
-    title: 'Sign Up',
-  },
-  {
-    slug: 'reset-password',
-    form_name: 'schema/ResetPassword',
-    title: 'Reset Password',
-  },
-]
+import config from './config'
 
 export default {
   __route: {
@@ -41,7 +24,7 @@ export default {
       return this.$route.path.match(/(login|sign-up|forgot-password)/)[1]
     },
     mode() {
-      return modes.find(m => m.slug === this.slug)
+      return config.modes.find(m => m.slug === this.slug)
     },
   },
   methods: {

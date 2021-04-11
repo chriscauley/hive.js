@@ -9,37 +9,29 @@
 /* @import './z-index.scss'; */
 
 body {
-  overflow: auto;
   &.theme-dark_mode {
     background: #234e52;
-  }
-}
-
-.app-content {
-  position: relative;
-  &:focus {
-    outline: none;
-  }
-  .app-inner {
-    background: #f5f2d0;
-    bottom: 0;
-    position: fixed;
-    left: 0;
-    top: 77px;
-    right: 0;
-    .theme-dark_mode & {
-      .hex {
-        filter: brightness(0.9)
-      }
-      .highlight-green {
-        @apply bg-green-500;
-      }
-      .highlight-red {
-        @apply bg-red-800;
-      }
+    .hex {
+      filter: brightness(0.9)
+    }
+    .highlight-green {
+      @apply bg-green-500;
+    }
+    .highlight-red {
+      @apply bg-red-800;
     }
   }
 }
+
+/* TODO move into @unrest/tailwind? */
+#app[data-v-app] {
+  @apply flex flex-col;
+  .router-view {
+    flex-grow: 1;
+  }
+}
+
+/* TODO everything below this needs to be reintegrated */
 
 .app-content.debug {
   [data-index]:after {

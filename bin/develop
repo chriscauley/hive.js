@@ -3,7 +3,7 @@
 . .venv/bin/activate
 export HIVE_ONLINE=true
 DJANGO='python manage.py runserver'
-YARN='yarn watch'
+YARN='cd ../vue-client;yarn watch'
 
 if [[ $1 == "tmux" ]];then
     tmux new-session -s ur-conf   $DJANGO

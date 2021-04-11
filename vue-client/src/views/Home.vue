@@ -1,5 +1,5 @@
 <template>
-  <div :class="css.modal.outer('-relative')">
+  <div v-if="$auth.ready" :class="css.modal.outer('-relative')">
     <div :class="css.modal.content('-auto')">
       <div class="text-center pb-2">
         <h2>Welcome!</h2>
@@ -8,7 +8,7 @@
             Start Online Game
           </router-link>
           <div class="font-bold font-xl mb-4">-- OR --</div>
-          <router-link to="/new/local/" :class="css.button('block mb-4')">
+          <router-link to="/new/local/" :class="css.button('block')">
             Start Local Game
           </router-link>
         </template>

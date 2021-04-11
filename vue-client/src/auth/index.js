@@ -8,6 +8,10 @@ const auth = {
   get user() {
     return store.get()
   },
+  get ready() {
+    store.get() // trigger fetch
+    return store.api.state.ready
+  },
   routes: [
     {
       path: '/auth/:slug/',

@@ -81,8 +81,8 @@ export default {
         .then((result) => {
           this.loading = false
           if (!this.errors) {
+            api.markStale()
             this.success?.(result)
-            this.$store.schema.markStale(this.form_name)
           }
         })
     },

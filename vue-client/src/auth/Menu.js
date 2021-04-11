@@ -5,7 +5,8 @@ export default {
   render({ items = [] }) {
     const user = this.$store.auth.get()
     if (user) {
-      items = [...items, { children: 'Logout', onClick: this.$store.auth.logout }]
+      const click = () => this.$auth.logout().then(() => this.$router.push('/'))
+      items = [...items, { text: 'Logout', click }]
       return <ur-dropdown items={items} title={user.username} />
     }
     return (
@@ -13,7 +14,7 @@ export default {
         <router-link to="/auth/login/" class="btn -link">
           Log In
         </router-link>
-        <router-link to="/auth/signup/" class="btn -link">
+        <router-link to="/auth/sign-up/" class="btn -link">
           Sign Up
         </router-link>
       </div>

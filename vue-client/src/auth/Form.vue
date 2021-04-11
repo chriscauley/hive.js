@@ -43,9 +43,9 @@ export default {
   },
   methods: {
     success() {
-      const { next = '/' } = this.$route.query
       // reload route to cause router to redirect to next or /
-      this.$store.auth.refetch().then(() => this.$router.replace(next))
+      this.$auth.markStale()
+      this.$auth.fetch().then(() => this.$router.replace(this.$route.query.next || '/'))
     },
   },
 }

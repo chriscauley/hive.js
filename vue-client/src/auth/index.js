@@ -5,13 +5,18 @@ import { ReactiveRestApi } from '@unrest/vue-reactive-storage'
 const api = ReactiveRestApi()
 const fetch = () => api.fetch('auth/user.json').then(({ user }) => user)
 const get = () => api.get('auth/user.json')?.user
-const logout = () => fetch('/api/auth/logout/')
+const logout = () =>
+  api.fetch('auth/logout/').then(() => {
+    api.markStale()
+    return fetch()
+  })
 
 const auth = {
   api,
   get,
   fetch,
   logout,
+  markStale: api.markStale,
   route: {
     path: '/auth/:slug/',
     name: 'auth',

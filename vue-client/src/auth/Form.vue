@@ -30,6 +30,9 @@ const modes = [
 ]
 
 export default {
+  __route: {
+    meta: { authRedirect: true },
+  },
   data() {
     return { css }
   },
@@ -38,7 +41,7 @@ export default {
       return this.$route.path.match(/(login|sign-up|forgot-password)/)[1]
     },
     mode() {
-      return modes.find((m) => m.slug === this.slug)
+      return modes.find(m => m.slug === this.slug)
     },
   },
   methods: {

@@ -82,7 +82,7 @@ function CompletePasswordReset() {
   )
 }
 
-const useNext = (message) => {
+const useNext = message => {
   const next = qs.parse(useLocation().search.replace(/^\?/, '')).next || '/'
   const { success } = alert.use()
   const { refetch } = api.use()

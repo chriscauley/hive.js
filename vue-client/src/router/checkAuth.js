@@ -20,9 +20,9 @@ const redirectIfAuthed = (to, next) => {
 }
 
 export default (to, from, next) => {
-  if (to.matched.some((record) => record.meta.authRequired)) {
+  if (to.matched.some(record => record.meta.authRequired)) {
     store.auth.check().then(() => requireAuth(to, next))
-  } else if (to.matched.some((record) => record.meta.authRedirect)) {
+  } else if (to.matched.some(record => record.meta.authRedirect)) {
     store.auth.check().then(() => redirectIfAuthed(to, next))
   } else {
     next()

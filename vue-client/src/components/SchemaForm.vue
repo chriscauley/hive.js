@@ -28,9 +28,9 @@ import { ReactiveRestApi } from '@unrest/vue-reactive-storage'
 
 const api = ReactiveRestApi()
 
-const getSchema = (form_name) => api.get(`${form_name}/?schema=1`)?.schema
+const getSchema = form_name => api.get(`${form_name}/?schema=1`)?.schema
 
-export const prepSchema = (schema) => {
+export const prepSchema = schema => {
   schema = cloneDeep(schema)
   if (schema.properties.avatar_url) {
     schema.properties.avatar_url.type = 'image'
@@ -40,7 +40,7 @@ export const prepSchema = (schema) => {
     schema.properties.photo_url.type = 'image'
     schema.properties.photo_url.title = 'Photo'
   }
-  Object.values(schema.properties).forEach((property) => {
+  Object.values(schema.properties).forEach(property => {
     if (property.__widget === 'HiddenInput') {
       property.ui = { tagName: 'ur-hidden' }
     }
@@ -75,10 +75,10 @@ export default {
       this.loading = true
       api
         .post(`${this.form_name}/`, state)
-        .catch((e) => {
+        .catch(e => {
           this.errors = e.server_errors || { __all__: 'An unknown error has occurred' }
         })
-        .then((result) => {
+        .then(result => {
           this.loading = false
           if (!this.errors) {
             api.markStale()

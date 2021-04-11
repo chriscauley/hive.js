@@ -15,6 +15,7 @@ module.exports = {
     'vue/html-indent': 0,
     'vue/html-self-closing': 0,
     'vue/max-attributes-per-line': 0,
+    'vue/prop-name-casing': 0,
     'vue/require-default-prop': 0,
     'vue/singleline-html-element-content-newline': 0,
   },

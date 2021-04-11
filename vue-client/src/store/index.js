@@ -1,4 +1,5 @@
 import config from './config'
+import room from './room'
 
 const store = {
   list: [],
@@ -10,6 +11,7 @@ const store = {
 
 const modules = {
   config,
+  room,
 }
 
 Object.entries(modules).forEach(([name, module]) => {

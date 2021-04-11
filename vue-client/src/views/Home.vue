@@ -4,7 +4,7 @@
       <div class="text-center pb-2">
         <h2>Welcome!</h2>
         <template v-if="$auth.user">
-          <router-link to="/new/" :class="css.button('block mb-4')">
+          <router-link to="/new/online/" :class="css.button('block mb-4')">
             Start Online Game
           </router-link>
           <div class="font-bold font-xl mb-4">-- OR --</div>

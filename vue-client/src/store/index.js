@@ -1,4 +1,3 @@
-// import auth from './auth'
 import config from './config'
 
 const store = {
@@ -10,7 +9,6 @@ const store = {
 }
 
 const modules = {
-  // auth
   config,
 }
 

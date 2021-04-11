@@ -14,13 +14,13 @@ export default {
     meta: {},
   },
   render: () => (
-    <div>
+    <section>
       <div className={css.modal.outer()} style={{ position: 'relative', zIndex: 1 }}>
         <div className={css.modal.content()}>
           <h2>About</h2>
           <vue3-markdown-it source={content} className="markdown" />
         </div>
       </div>
-    </div>
+    </section>
   ),
 }

@@ -3,10 +3,10 @@ import { createRouter, createWebHistory, createMemoryHistory } from 'vue-router'
 
 import applyMeta from './applyMeta'
 // import checkAuth from './checkAuth'
-// import store from '@/store'
 import views from '@/views'
+import auth from '@/auth'
 
-const routes = []
+const routes = [auth.route]
 
 const loadViews = (o) =>
   Object.entries(o).forEach(([component_name, Component]) => {

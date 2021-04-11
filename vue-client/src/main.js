@@ -4,6 +4,7 @@ import UrForm from '@unrest/form'
 import UrVue from '@unrest/vue'
 import '@unrest/tailwind/dist.css'
 
+import auth from '@/auth' // TODO move into new app @unrest/vue-auth
 import store from '@/store'
 import router from '@/router'
 import App from '@/App.vue'
@@ -17,5 +18,6 @@ app.use(store)
 app.use(UrVue)
 app.use(VueMarkdownIt)
 app.use(UrForm)
+app.use(auth) // must come after store!
 
 app.mount('#app')

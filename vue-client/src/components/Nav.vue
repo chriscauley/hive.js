@@ -20,7 +20,7 @@
       <ur-dropdown :items="help_links" placement="bottom">
         <div class="ur-dropdown__trigger">help</div>
       </ur-dropdown>
-      <div>Auth links!</div>
+      <ur-auth-menu />
     </section>
   </header>
 </template>
@@ -38,8 +38,6 @@ export default {
   },
   computed: {
     game_links() {
-      const { darkmode } = this.$store.config.state
-      document.body.classList[darkmode ? 'add' : 'remove']('theme-dark_mode')
       return []
     },
   },

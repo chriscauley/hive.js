@@ -13,7 +13,7 @@ export default {
   },
   computed: {
     room() {
-      return this.$store.room.getOne(this.$route.params.room_id)
+      return this.$store.room.watch(this.$route.params.room_id)
     },
   },
 }

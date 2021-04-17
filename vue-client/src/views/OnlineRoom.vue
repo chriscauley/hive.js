@@ -1,5 +1,8 @@
 <template>
-  <div>{{ room }}</div>
+  <div class="online-room">
+    <div class="online-room__left">Wee!!!</div>
+    <ur-chat-widget :room_id="Number($route.params.room_id)" />
+  </div>
 </template>
 
 <script>

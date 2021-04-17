@@ -3,12 +3,14 @@
 /* @import './pieces.scss'; */
 
 /* Components */
-@import './scrollbar.scss';
+@import './scrollbar';
 /* @import './Game.scss'; */
-/* @import './Chat.scss'; */
+@import './chat';
 /* @import './z-index.scss'; */
+@import './online-room';
 
 body {
+  overflow: hidden;
   &.theme-dark_mode {
     background: #234e52;
     .hex {

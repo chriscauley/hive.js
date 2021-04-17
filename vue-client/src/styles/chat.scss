@@ -1,17 +1,17 @@
 @import "./var.scss";
 
-.Chat {
+.ur-chat-widget {
   @apply border -bg-bg flex flex-col;
   flex-shrink: 0;
   top: 77px;
   width: $chat_w;
 }
 
-.Chat .menu-bar {
+.ur-chat-widget .menu-bar {
   @apply -bg-bg-alt py-1 px-2 text-right;
 }
 
-.Chat .room_list {
+.ur-chat-widget .room_list {
   @apply border-b p-2 mb-2;
   .room {
     @apply cursor-pointer;
@@ -21,25 +21,28 @@
   }
 }
 
-.Chat .message-list {
-  @apply p-4 overflow-y-scroll pb-0;
+.ur-chat-box {
+  @apply flex flex-col h-full;
+  .message-list {
+    @apply flex-grow overflow-y-scroll p-4 pb-0;
+  }
 }
 
-.Chat .text-box {
+.ur-chat-widget .text-box {
   @apply mb-0 border-t flex justify-between;
   .input {
     @apply block px-2 py-1 w-full;
   }
 }
 
-.ChatError {
+.ur-chat-error {
   @apply fixed bottom-0 right-0 flex m-8;
   .fa {
     @apply text-yellow-900;
   }
 }
 
-.Chat-collapsed {
+.ur-chat-collapsed {
   @apply w-16 h-16 rounded-full cursor-pointer flex justify-center items-center m-4;
   @apply text-2xl text-white bg-blue-400;
   @apply fixed bottom-0 right-0;

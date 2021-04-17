@@ -5,6 +5,7 @@ import UrVue from '@unrest/vue'
 import '@unrest/tailwind/dist.css'
 
 import auth from '@/auth' // TODO move into new app @unrest/vue-auth
+import chat from '@/chat'
 import store from '@/store'
 import router from '@/router'
 import App from '@/App.vue'
@@ -16,6 +17,7 @@ app.component('SchemaForm', SchemaForm)
 app.use(router)
 app.use(store)
 app.use(UrVue)
+app.use(chat)
 app.use(VueMarkdownIt)
 app.use(UrForm)
 app.use(auth) // must come after store!

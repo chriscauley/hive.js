@@ -1,0 +1,6 @@
+.online-room {
+  @apply flex;
+  &__left {
+    @apply flex-grow;
+  }
+}

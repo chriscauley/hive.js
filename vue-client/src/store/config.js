@@ -6,6 +6,9 @@ const initial = {
   darkmode: true,
   hex_angle: 'flat',
   zoom: '0', // TODO integer zero isn't working here
+
+  // not in schema
+  chat_collapsed: false,
 }
 
 const schema = {

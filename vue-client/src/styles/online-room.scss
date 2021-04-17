@@ -1,5 +1,5 @@
 .online-room {
-  @apply flex;
+  @apply flex overflow-hidden;
   &__left {
     @apply flex-grow;
   }

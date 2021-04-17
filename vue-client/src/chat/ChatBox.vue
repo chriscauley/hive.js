@@ -8,13 +8,10 @@
     </div>
     <div>Players: {{ room.state.user_ids.length }}</div>
     <div class="flex-grow" />
-    <div class="message-list" @scroll="auto.onScroll">
-      <div class="inner">
-        <p v-for="(m, i) in room.messages" :key="i">
-          {{ `${m.username}: ${m.text}` }}
-        </p>
-        <div ref="autoscroll" />
-      </div>
+    <div class="message-list" v-autoscroll>
+      <p v-for="(m, i) in room.messages" :key="i">
+        {{ `${m.username}: ${m.text}` }}
+      </p>
     </div>
     <form @submit="submit" class="text-box">
       <textarea v-model="value" class="input" ref="textarea" @keypress="onKeyPress" />
@@ -44,7 +41,7 @@ export default {
       const { value } = this
       this.$store.room.send(this.room_id, 'chat', value)
       this.value = ''
-      this.refs.textarea.focus()
+      this.$refs.textarea.focus()
     },
     onKeyPress(e) {
       e.key === 'Enter' && !e.shiftKey && this.submit(e)

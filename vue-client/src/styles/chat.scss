@@ -1,9 +1,7 @@
 @import "./var.scss";
 
 .ur-chat-widget {
-  @apply border -bg-bg flex flex-col;
-  flex-shrink: 0;
-  top: 77px;
+  @apply border -bg-bg;
   width: $chat_w;
 }
 
@@ -22,9 +20,9 @@
 }
 
 .ur-chat-box {
-  @apply flex flex-col h-full;
+  @apply flex flex-col flex-grow overflow-hidden;
   .message-list {
-    @apply flex-grow overflow-y-scroll p-4 pb-0;
+    @apply overflow-y-scroll p-4 pb-0;
   }
 }
 

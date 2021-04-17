@@ -4,6 +4,7 @@ import UrForm from '@unrest/form'
 import UrVue from '@unrest/vue'
 import '@unrest/tailwind/dist.css'
 
+import autoscroll from '@/autoscroll'
 import auth from '@/auth' // TODO move into new app @unrest/vue-auth
 import chat from '@/chat'
 import store from '@/store'
@@ -14,6 +15,7 @@ import '@/styles/base.scss'
 
 const app = createApp(App)
 app.component('SchemaForm', SchemaForm)
+app.directive('autoscroll', autoscroll)
 app.use(router)
 app.use(store)
 app.use(UrVue)

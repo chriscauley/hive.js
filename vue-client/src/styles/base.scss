@@ -9,6 +9,10 @@
 /* @import './z-index.scss'; */
 @import './online-room';
 
+#app, html, body {
+  height: 100%;
+}
+
 body {
   overflow: hidden;
   &.theme-dark_mode {

@@ -25,7 +25,7 @@ const piece_list = ['queen', ...pieces.list]
 
 export default {
   __route: {
-    path: '/sprite/tiles/'
+    path: '/sprite/pieces/'
   },
   mounted() {
     makeSprites()

@@ -32,7 +32,7 @@ export default {
       return this.$store.config.state.chat_collapsed
     },
     room() {
-      return this.$store.room.watch(this.room_id)
+      return window.ROOM = this.$store.room.watch(this.room_id)
     },
     error() {
       const { error } = this.room || {}

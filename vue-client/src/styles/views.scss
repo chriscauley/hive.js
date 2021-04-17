@@ -1,3 +1,6 @@
 .sprite-view {
   overflow: auto;
+  .router-link-active {
+    @apply underline
+  }
 }

@@ -1,3 +1,5 @@
+const path = require('path')
+
 const devServer = {
   host: 'vue-hive.localhost',
   port: 8283,
@@ -9,4 +11,11 @@ module.exports = {
   lintOnSave: false,
   publicPath: '/static/',
   devServer,
+  configureWebpack: {
+    resolve: {
+      alias: {
+        'hive.js': path.resolve(__dirname, '../hive.js'),
+      },
+    }
+  }
 }

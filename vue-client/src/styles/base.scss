@@ -1,6 +1,7 @@
+@import 'views';
 /* Game pieces */
-/* @import './hex.scss'; */
-/* @import './pieces.scss'; */
+@import './hex';
+@import './pieces';
 
 /* Components */
 @import './scrollbar';

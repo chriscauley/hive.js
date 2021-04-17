@@ -1,6 +1,7 @@
 import { defaultsDeep } from 'lodash'
 import { createRouter, createWebHistory, createMemoryHistory } from 'vue-router'
 
+import sprite from '@/sprite'
 import applyMeta from './applyMeta'
 import views from '@/views'
 import auth from '@/auth'
@@ -20,6 +21,7 @@ const loadViews = o =>
   })
 
 loadViews(views)
+loadViews(sprite.views)
 const createHistory = process.env.NODE_ENV === 'test' ? createMemoryHistory : createWebHistory
 
 const router = createRouter({

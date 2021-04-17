@@ -1,4 +1,6 @@
 const config = {
+  AUTH_START: '/login/',
+  AUTH_REDIRECT: '/',
   modes: [
     {
       slug: 'login',

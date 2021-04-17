@@ -1,11 +1,14 @@
+import config from './config'
+
 export default {
   props: {
     items: Array,
   },
   render({ items = [] }) {
+    const { AUTH_START } = config
     const user = this.$store.auth.get()
     if (user) {
-      const click = () => this.$auth.logout().then(() => this.$router.push('/'))
+      const click = () => this.$auth.logout().then(() => this.$router.push(AUTH_START))
       items = [...items, { text: 'Logout', click }]
       return <ur-dropdown items={items} title={user.username} />
     }

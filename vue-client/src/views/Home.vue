@@ -16,10 +16,10 @@
           <div @click="makeGuest" :class="css.button('block mb-4')">
             Play as Guest
           </div>
-          <router-link to="/auth/sign-up/" :class="css.button('block mb-4')">
+          <router-link :to="signup" :class="css.button('block mb-4')">
             Create An Account
           </router-link>
-          <router-link to="/auth/login/" :class="css.button('block')">
+          <router-link :to="login" :class="css.button('block')">
             Log In
           </router-link>
         </template>
@@ -37,11 +37,14 @@ export default {
     path: '/',
   },
   data() {
-    return { css }
+    const { query } = this.$route
+    const signup = { path: '/auth/sign-up/', query }
+    const login = { path: '/auth/login/', query }
+    return { css, signup, login }
   },
   methods: {
     makeGuest() {
-      this.$auth.api.post('/api/auth/guest/').then(this.$auth.api.refetch)
+      this.$auth.api.post('auth/guest/').then(() => this.$auth.refetch())
     },
   },
 }

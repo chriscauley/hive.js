@@ -13,6 +13,8 @@ import App from '@/App.vue'
 import SchemaForm from '@/components/SchemaForm'
 import '@/styles/base.scss'
 
+auth.config.AUTH_START = '/'
+
 const app = createApp(App)
 app.component('SchemaForm', SchemaForm)
 app.directive('autoscroll', autoscroll)

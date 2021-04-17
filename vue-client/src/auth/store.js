@@ -24,5 +24,6 @@ export default {
   get,
   fetch,
   logout,
+  refetch,
   markStale: api.markStale,
 }

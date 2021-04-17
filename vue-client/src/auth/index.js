@@ -2,8 +2,10 @@ import AuthMenu from './Menu'
 import AuthForm from './Form'
 import checkAuth from './checkAuth'
 import store from './store'
+import config from './config'
 
 const auth = {
+  config,
   ...store,
   get user() {
     return store.get()

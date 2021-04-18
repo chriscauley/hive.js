@@ -1,9 +1,7 @@
 @import "./var.scss";
 
-.Game {
-  overflow: hidden;
-  flex-shrink: 1;
-  position: relative;
+.game {
+  @apply flex-shrink h-full overflow-hidden relative w-full;
   .scroll-box {
     overflow: scroll;
     height: 100%;
@@ -29,7 +27,7 @@
   }
 }
 
-.Game {
+.game {
   .player_1, .player_2 {
     position: absolute;
     top: 50%;

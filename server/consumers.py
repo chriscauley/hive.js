@@ -9,6 +9,13 @@ from loguru import logger
 
 from server.models import Room, Message, Game, default_state
 
+def remove(list_, item):
+    while item in list_:
+        list_.remove(item)
+
+class HiveError(Exception):
+    pass
+
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         if not self.scope['user'].is_authenticated:
@@ -56,6 +63,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.channel_name
         )
         room = await self.get_room()
+        if not 'watching' in room.state:
+            room.state['watching'] = []
         await self.leave_room(room)
         await self.send_room(room)
 
@@ -78,82 +87,83 @@ class ChatConsumer(AsyncWebsocketConsumer):
     def join_room(self, room):
         user = self.scope["user"]
         if not user in room.users.all():
-            print('joining', user.id)
             room.state['user_ids'].append(user.id)
             room.users.add(user)
-            room.save()
+        if user.id != room.state['host_id'] and user.id not in room.state['watching']:
+            room.state['player_id'] = user.id
+        remove(room.state['afk'], user.id)
+        room.save()
 
     @database_sync_to_async
     def leave_room(self, room):
-        user = self.scope["user"]
-        print('leaving', user.id)
-        room.users.remove(self.scope['user'])
-        room.state['user_ids'] = [id for id in room.state['user_ids'] if id != user.id]
+        room.state['afk'].append(self.scope["user"].id)
         room.save()
 
     @database_sync_to_async
     def message_room(self, room, data):
-        apply_message(self.scope['user'], room, data)
+        try:
+            apply_message(self.scope['user'], room, data)
+        except HiveError as e:
+            raise NotImplementedError('Email admins')
 
     @database_sync_to_async
     def get_current_game(self, room):
         return room.get_current_game()
 
+def check_permission(user_id, room, action):
+    is_host = user_id == room.state['host_id']
+    player_id = room.state.get('player_id')
+    if action in ['set_rules', 'start_game', 'kick'] and not is_host:
+        raise HiveError('Only host can '+action)
+    if action == 'sit' and user_id not in [player_id, None]:
+        raise HiveError('Cannot sit')
+    if action == 'stand' and user_id not in [player_id, room.state['host_id']]:
+        raise HiveError('Non player tried to stand')
+    if action == 'action' and user_id not in [player_id, room.state['host_id']]:
+        raise HiveError('Non player tried to move')
+
 @logger.catch
 def apply_message(user, room, data):
-    user_id = str(user.id)
+    user_id = user.id
     action = data['action']
     content = data.get('content')
     game = room.get_current_game()
-    if action == 'setBoard':
-        content['game_id'] = game.id
-        game.state['rules'] = content['rules']
-        game.save()
-        room.save()
-    elif action == 'ready':
-        room.state['ready'][user_id] = content
-        user_ids = list(room.state['ready'].keys())
-        if len(user_ids) == 2:
-            random.shuffle(user_ids)
-            # sort in order of white < random < black, which happens to be reverse alphabetical
-            # if same, they'll be random, otherwise whoever chose white is first, black second
-            user_ids.sort(key=lambda id: room.state['ready'][id])
-            game.state['players'] = dict({
-                "1": int(user_ids.pop()),
-                "2": int(user_ids.pop()),
-            })
-            game.save()
-            m = get_coin_flip_message(room.state['ready'])
-            if m:
-                Message.objects.create(
-                    room=room,
-                    content={
-                        'text': m,
-                        'username': 'admin',
-                    },
-                    action='system',
-                )
-        room.save()
-    elif action == 'notready':
-        room.state['ready'].pop(user_id, None)
-        room.save()
+    host_id = room.state['host_id']
+    player_id = room.state.get('player_id')
+    check_permission(user_id, room, action)
+    if action == 'set_rules':
+        room.state['rules'] = content
+    elif action == 'sit':
+        room.state['player_id'] = user_id
+        remove(room.state['watching'], user_id)
+    elif action == 'stand':
+        room.state.pop('player_id', None)
+        room.state['watching'].append(user_id)
+    elif action == 'kick':
+        raise NotImplementError('Kick user from room and reset game.')
     elif action == 'action':
         game.state['actions'].append(content['action'])
         game.save()
-    elif action == 'clearBoard':
-        room.state.pop('ready', None)
+    elif action == 'start_game':
+        # order will be random or reverse of last game (if there was a winner)
+        order = [player_id, host_id]
+        random.shuffle(order)
         if game:
+            # order = [ game.state['players']['1'], game.state['players']['2'] ]
+            # if game.winner:
+            #     order.reverse()
+
+            # close out last game
             if game.state.get('actions'):
                 game.done = True
                 game.save()
             else:
                 game.delete()
-        room.state['ready'] = {}
-        room.save()
-    elif action == 'set_rules': # TODO snake case?
-        room.state['rules'] = content
-        room.save()
-    else:
+        game = room.game_set.create()
+        players = { '1': order[0], '2': order[1] }
+        game.state = { 'players': players, 'rules': room.state['rules'] }
+        game.save()
+    elif action == 'chat':
         Message.objects.create(
             room=room,
             content={
@@ -163,14 +173,6 @@ def apply_message(user, room, data):
             action=action,
             user=user
         )
-
-def get_coin_flip_message(ready):
-    items = list(set(ready.values()))
-    if len(items) == 2 or items[0] == 'random':
-        # players picked different colors
-        id1, id2 = ready.keys()
-        User = get_user_model()
-        name1 = User.objects.get(id=id1).username
-        name2 = User.objects.get(id=id2).username
-        return f'{name1} has chosen {ready[id1]} and {name2} has chosen {ready[id2]}.'
-    return f'Both players picked {items[0]}. Flipping coing to see who goes first.'
+    else:
+        raise HiveError('Unrecognized action')
+    room.save()

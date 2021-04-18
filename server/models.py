@@ -5,7 +5,7 @@ def default_state():
     return {
         'user_ids': [],
         'afk': [],
-        'ready': {},
+        'watching': [],
     }
 
 def process_user(user):

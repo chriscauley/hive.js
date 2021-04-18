@@ -6,10 +6,13 @@
         <div :class="`w-1/2 ${is_host ? '' : 'is_guest'}`">
           <rule-list :rules="rules" :onClick="onClick" :onHover="t => (hovering = t)" />
           <div v-if="is_host">
-            <button :class="css.button('mt-4 mr-4')" onClick="{onSubmit}">
+            <button v-if="can_start" :class="css.button('mt-4 mr-4')" @click="startGame">
               Start
             </button>
-            {{ total_pieces }} pieces
+            <div v-else>
+              <i class="fa fa-warning text-yellow-500 mr-2" />
+              Waiting for players...
+            </div>
           </div>
         </div>
         <div className="w-1/2">
@@ -25,6 +28,7 @@
             </ul>
           </div>
           <p v-else>{{ empty_text }}</p>
+          <div>{{ total_pieces }} pieces selected</div>
         </div>
       </div>
     </div>
@@ -68,6 +72,7 @@ export default {
   props: {
     room: Object,
     setRules: Function,
+    startGame: Function,
   },
   data() {
     return { hovering: null, css }
@@ -92,6 +97,10 @@ export default {
     },
     hovering_lines() {
       return short_help[this.hovering]
+    },
+    can_start() {
+      const { player_id, afk } = this.room.state
+      return player_id && !afk.includes(player_id)
     },
   },
   methods: {

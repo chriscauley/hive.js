@@ -2,6 +2,7 @@
 
 .ur-chat-widget {
   @apply border -bg-bg;
+  flex-shrink: 0;
   width: $chat_w;
 }
 

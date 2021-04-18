@@ -5,9 +5,9 @@
 
 /* Components */
 @import './scrollbar';
-/* @import './Game.scss'; */
+@import './game';
 @import './chat';
-/* @import './z-index.scss'; */
+@import './z-index';
 @import './online-room';
 
 #app, html, body {

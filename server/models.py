@@ -18,7 +18,7 @@ class Room(models.Model):
     public = models.BooleanField(default=True)
     empty = models.BooleanField(default=False)
     def get_current_game(self):
-        return self.game_set.get_or_create(done=False)[0]
+        return self.game_set.filter(done=False).first()
     def __str__(self):
         return f'Room #{self.id}'
     def to_json(self):

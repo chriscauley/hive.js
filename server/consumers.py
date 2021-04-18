@@ -78,14 +78,17 @@ class ChatConsumer(AsyncWebsocketConsumer):
     def join_room(self, room):
         user = self.scope["user"]
         if not user in room.users.all():
+            print('joining', user.id)
+            room.state['user_ids'].append(user.id)
             room.users.add(user)
             room.save()
 
     @database_sync_to_async
     def leave_room(self, room):
-        user_id = str(self.scope["user"].id)
-        room.state['user_ids'] = [i for i in room.state['user_ids'] if i != user_id]
-        room.state['ready'].pop(user_id, None)
+        user = self.scope["user"]
+        print('leaving', user.id)
+        room.users.remove(self.scope['user'])
+        room.state['user_ids'] = [id for id in room.state['user_ids'] if id != user.id]
         room.save()
 
     @database_sync_to_async
@@ -146,6 +149,9 @@ def apply_message(user, room, data):
             else:
                 game.delete()
         room.state['ready'] = {}
+        room.save()
+    elif action == 'set_rules': # TODO snake case?
+        room.state['rules'] = content
         room.save()
     else:
         Message.objects.create(

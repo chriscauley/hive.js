@@ -6,5 +6,5 @@ import Pieces from './Pieces'
 
 export default {
   makeSprites,
-  views: { Hexes, Nav, Pieces }
+  views: { Hexes, Nav, Pieces },
 }

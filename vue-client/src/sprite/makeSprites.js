@@ -70,7 +70,7 @@ const toStyle = (className, canvas) => {
   return `.${className.replace(/ /g, '.')} { ${declaration} }\n`
 }
 
-export default (ref) => {
+export default ref => {
   if (ref) {
     style = null
   }
@@ -79,7 +79,7 @@ export default (ref) => {
   }
   const img_cache = {}
 
-  const cacheImage = (id) => {
+  const cacheImage = id => {
     const c2 = document.createElement('canvas')
     c2.width = canvas.width
     c2.height = canvas.height
@@ -95,7 +95,7 @@ export default (ref) => {
   canvas.height = Math.sqrt(3) * SIZE
   const ctx = canvas.getContext('2d')
   Object.entries(base_sprites).map(([style, colors]) => {
-    colors.split(',').forEach((color) => {
+    colors.split(',').forEach(color => {
       ctx.clearRect(0, 0, 2 * SIZE, 2 * SIZE)
 
       _hex(ctx, fill_map[color], canvas.width / 2, canvas.height / 2, SIZE)
@@ -123,7 +123,7 @@ export default (ref) => {
 
   const borders = [undefined, 'green', 'red', 'purple', 'gray', 'yellow', 'blue', 'blue-dashed']
   Object.entries(bgs).forEach(([bg_name, bg]) =>
-    borders.forEach((border) => {
+    borders.forEach(border => {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       _hex(ctx, bg, canvas.width / 2, canvas.height / 2, SIZE)
       const cls = classNames('hex', 'hex-' + bg_name, border)

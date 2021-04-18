@@ -16,6 +16,6 @@ module.exports = {
       alias: {
         'hive.js': path.resolve(__dirname, '../hive.js'),
       },
-    }
-  }
+    },
+  },
 }

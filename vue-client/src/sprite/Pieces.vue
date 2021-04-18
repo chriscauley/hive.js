@@ -2,7 +2,7 @@
   <div class="sprite-view">
     <sprite-nav />
     <div v-for="theme in themes" :key="theme">
-      <h2>{{theme || 'No Theme'}}</h2>
+      <h2>{{ theme || 'No Theme' }}</h2>
       <div :class="`flex flex-wrap ${theme}`">
         <div v-for="name in piece_list" :key="name">
           <div v-for="player in players" class="relative dummy_piece" :key="player">
@@ -21,16 +21,15 @@ import pieces from 'hive.js/pieces'
 
 const players = ['player_1', 'player_2']
 const themes = ['', 'theme-carbon']
-const piece_list = ['queen', ...pieces.list]
 
 export default {
   __route: {
-    path: '/sprite/pieces/'
+    path: '/sprite/pieces/',
   },
+  components: { SpriteNav },
+  data: () => ({ players, themes, piece_list: pieces.list }),
   mounted() {
     makeSprites()
   },
-  data: () => ({ players, themes, piece_list }),
-  components: { SpriteNav }
 }
 </script>

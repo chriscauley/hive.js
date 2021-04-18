@@ -1,10 +1,10 @@
 <template>
   <div class="sprite-view">
     <sprite-nav />
-    This is a page for viewing the sprites. These are generated every time the browser loads and
-    are used as the background for <code>.hex</code> elements
+    This is a page for viewing the sprites. These are generated every time the browser loads and are
+    used as the background for <code>.hex</code> elements
     <div class="sprite-box flex flex-wrap">
-      <div v-for="item in SPRITES" :class="item" />
+      <div v-for="item in SPRITES" :class="item" :key="item" />
     </div>
     <div ref="debug" />
   </div>
@@ -22,6 +22,6 @@ export default {
   data: () => ({ SPRITES }),
   mounted() {
     makeSprites(this.$route.query.debug && this.$refs.debug)
-  }
+  },
 }
 </script>

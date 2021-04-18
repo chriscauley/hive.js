@@ -2,7 +2,7 @@ $types: ant beetle centipede grasshopper ladybug mosquito pill_bug queen spider 
 
 @each $type in $types {
   .piece.type-#{$type}:before {
-    background-image: url("../../../hive.js/images/pieces/#{$type}.svg");
+    background-image: url("../../../game/images/pieces/#{$type}.svg");
   }
 }
 
@@ -101,7 +101,7 @@ $types: ant beetle centipede grasshopper ladybug mosquito pill_bug queen spider 
 [data-web="crawl-gray"]:after,
 [data-web="fly"]:after {
   content: '';
-  background-image: url('../../../hive.js/images/icons/trap_red.png');
+  background-image: url('../../../game/images/icons/trap_red.png');
   display: block;
   width: 80%;
   height: 80%;
@@ -118,7 +118,7 @@ $types: ant beetle centipede grasshopper ladybug mosquito pill_bug queen spider 
 }
 
 [data-web="crawl-gray"]:after {
-  background-image: url('../../../hive.js/images/icons/trap.png');
+  background-image: url('../../../game/images/icons/trap.png');
   filter: invert(1);
   opacity: 0.2;
 }
@@ -163,11 +163,11 @@ $types: ant beetle centipede grasshopper ladybug mosquito pill_bug queen spider 
 
 /* rules for NewGame screen */
 .piece.type-no_rules:before {
-  background-image: url('../../../hive.js/images/icons/cancel.png');
+  background-image: url('../../../game/images/icons/cancel.png');
 }
 
 .piece.type-unlimited:before {
-  background-image: url('../../../hive.js/images/icons/endless.png');
+  background-image: url('../../../game/images/icons/endless.png');
 }
 
 .piece.type-no_rules, .piece.type-unlimited {

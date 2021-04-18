@@ -14,7 +14,7 @@ module.exports = {
   configureWebpack: {
     resolve: {
       alias: {
-        'hive.js': path.resolve(__dirname, '../hive.js'),
+        'hive.js': path.resolve(__dirname, '../game'),
       },
     },
   },

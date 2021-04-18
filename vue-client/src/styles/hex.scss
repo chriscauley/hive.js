@@ -91,9 +91,6 @@
   .piece {
     cursor: default
   }
-  &[data-count]:before {
-    display: none;
-  }
 }
 
 .hex {

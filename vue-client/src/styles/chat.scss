@@ -1,7 +1,7 @@
 @import "./var.scss";
 
 .ur-chat-widget {
-  @apply border -bg-bg;
+  @apply border -bg-bg h-full;
   flex-shrink: 0;
   width: $chat_w;
 }

@@ -38,9 +38,9 @@ export default ({ store }) => {
       room.ticks = ws.__ticks++
       if (room.game_id && !BOARDS[room.game_id]) {
         BOARDS[room.game_id] = B.new(room.game)
+        room.board = BOARDS[room.game_id]
+        room.board.local_player = store.auth.user?.id
       }
-      room.board = BOARDS[room.game_id]
-      room.board.local_player = store.auth.user?.id
     }
     return state.rooms[room_id]
   }

@@ -10,7 +10,7 @@ export default {
     time: Number,
   },
   data() {
-    return { text:'00:00', timeout: null }
+    return { text: '00:00', timeout: null }
   },
   mounted() {
     this.timeout = setTimeout(this.step, 1000)

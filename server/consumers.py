@@ -87,8 +87,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
     def join_room(self, room):
         user = self.scope["user"]
         if not user in room.users.all():
-            room.state['user_ids'].append(user.id)
             room.users.add(user)
+        if not user.id in room.state['user_ids']:
+            room.state['user_ids'].append(user.id)
         if user.id != room.state['host_id'] and user.id not in room.state['watching']:
             room.state['player_id'] = user.id
         remove(room.state['afk'], user.id)

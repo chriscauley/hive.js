@@ -1,8 +1,11 @@
 <template>
-  <div className="flex-grow flex items-center justify-center" v-if="rules">
-    <div className="NewGame">
-      <h2>{{ is_host ? 'Choose pieces' : 'Host is choosing pieces' }}</h2>
-      <div className="flex">
+  <div class="new-game__wrapper">
+    <div class="new-game" v-if="rules">
+      <div class="flex justify-between items-center">
+        <h2>{{ is_host ? 'Choose pieces' : 'Host is choosing pieces' }}</h2>
+        <div>{{ total_pieces }} pieces selected</div>
+      </div>
+      <div class="flex">
         <div :class="`w-1/2 ${is_host ? '' : 'is_guest'}`">
           <rule-list :rules="rules" :onClick="onClick" :onHover="t => (hovering = t)" />
           <div v-if="is_host">
@@ -15,7 +18,7 @@
             </div>
           </div>
         </div>
-        <div className="w-1/2">
+        <div class="w-1/2">
           <div v-if="hovering" class="h-full">
             <div class="flex items-center text-3xl font-bold">
               <div style="width: 36px, height: 32px" class="relative mr-2">
@@ -28,7 +31,6 @@
             </ul>
           </div>
           <p v-else>{{ empty_text }}</p>
-          <div>{{ total_pieces }} pieces selected</div>
         </div>
       </div>
     </div>
@@ -46,11 +48,12 @@ import ls from 'local-storage-json'
 
 // TODO move clean rules into store
 const cleanRules = rules => {
-  Object.keys(rules.pieces).forEach(type => {
-    if (!pieces.piece_counts[type]) {
-      delete rules.pieces[type]
-    }
-  })
+  rules &&
+    Object.keys(rules.pieces).forEach(type => {
+      if (!pieces.piece_counts[type]) {
+        delete rules.pieces[type]
+      }
+    })
   return rules
 }
 

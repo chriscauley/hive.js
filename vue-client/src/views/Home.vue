@@ -44,7 +44,14 @@ export default {
   },
   methods: {
     makeGuest() {
-      this.$auth.api.post('auth/guest/').then(() => this.$auth.refetch())
+      this.$auth.api
+        .post('auth/guest/')
+        .then(this.$auth.refetch)
+        .then(() => {
+          if (this.$route.query.next) {
+            this.$router.replace(this.$route.query.next)
+          }
+        })
     },
   },
 }

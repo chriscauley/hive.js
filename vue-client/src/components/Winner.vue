@@ -24,7 +24,7 @@ export default {
     room: Object,
   },
   data() {
-    return { open: false, css }
+    return { open: true, css }
   },
   computed: {
     text() {
@@ -32,7 +32,7 @@ export default {
       return winner === 'tie' ? 'The game is a draw' : `Player ${winner} has won the game.`
     },
     can_end() {
-      const is_host = this.room.host_id === this.$store.auth.user?.id
+      const is_host = this.room.state.host_id === this.$store.auth.user?.id
       return is_host || this.board.room_name === 'local'
     },
   },

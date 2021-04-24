@@ -1,15 +1,15 @@
 <template>
   <div class="game">
-    <hive-board :rows="rows.player_1" :class="css.player(1, rows.player_1)" @click="click" />
-    <hive-board :rows="rows.player_2" :class="css.player(2, rows.player_2)" @click="click" />
+    <hive-board :rows="rows.player_1" :class="css.player(1, rows.player_1)" @clickPiece="click" />
+    <hive-board :rows="rows.player_2" :class="css.player(2, rows.player_2)" @clickPiece="click" />
     <div class="scroll-box" ref="scroll_box">
       <div class="inner">
-        <hive-board :rows="rows.rows" class="game_board" @click="click" />
+        <hive-board :rows="rows.rows" class="game_board" @clickPiece="click" />
       </div>
     </div>
     <help-text v-bind="board.selected" :board="board" />
     <div :class="css.player_indicator">
-      <winner v-if="board.winner" :board="board" :room_id="room_id" />
+      <winner v-if="board.winner" :board="board" :room="room" />
       <no-rules v-if="board.rules.no_rules" :_delete="_delete" />
       <div v-if="board.error" :class="css.alert.danger()">
         <i :class="css.icon('times-circle text-xl mr-2')" />
@@ -98,8 +98,9 @@ export default {
     scroll_box.scroll((scrollWidth - clientWidth) / 2, (scrollHeight - clientHeight) / 2)
   },
   methods: {
-    click() {
-      alert('TODO')
+    click(cell) {
+      B.click(this.board, cell)
+      this.$store.room.sync(this.room.room_id)
     },
     deleteSelected() {
       alert('TODO')

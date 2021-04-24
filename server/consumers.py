@@ -162,7 +162,7 @@ def apply_message(user, room, data):
                 game.delete()
         game = room.game_set.create()
         players = { '1': order[0], '2': order[1] }
-        game.state = { 'players': players, 'rules': room.state['rules'] }
+        game.state = { 'players': players, 'rules': room.state['rules'], 'actions': [] }
         game.save()
     elif action == 'chat':
         Message.objects.create(

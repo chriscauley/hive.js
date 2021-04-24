@@ -1,7 +1,7 @@
 @import "./var.scss";
 
 .game {
-  @apply flex-shrink h-full overflow-hidden relative w-full;
+  @apply absolute inset-0;
   .scroll-box {
     overflow: scroll;
     height: 100%;

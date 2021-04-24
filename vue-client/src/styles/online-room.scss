@@ -1,7 +1,6 @@
 .online-room {
   @apply flex overflow-hidden items-center justify-center;
-  max-height: 100%;
   &__left {
-    @apply flex-grow flex-shrink overflow-hidden;
+    @apply flex-grow flex-shrink h-full overflow-hidden relative;
   }
 }

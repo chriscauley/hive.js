@@ -37,10 +37,15 @@ export default ({ store }) => {
       const room = (state.rooms[room_id] = JSON.parse(e.data))
       room.ticks = ws.__ticks++
       if (room.game_id && !BOARDS[room.game_id]) {
-        BOARDS[room.game_id] = B.new(room.game)
-        room.board = BOARDS[room.game_id]
-        room.board.local_player = store.auth.user?.id
+        const board = (BOARDS[room.game_id] = B.new(room.game))
+        board.local_player = board.local_player = parseInt(
+          Object.keys(board.players).find(key => {
+            return board.players[key] === store.auth.user.id
+          }),
+        )
       }
+      room.board = BOARDS[room.game_id]
+      sync(room.room_id)
     }
     return state.rooms[room_id]
   }
@@ -49,8 +54,29 @@ export default ({ store }) => {
     SOCKETS[room_id].send(JSON.stringify({ action, content }))
   }
 
+  const sync = room_id => {
+    const room = state.rooms[room_id]
+    const board = room.board
+    const remote_actions = room.game.actions
+    const diff = remote_actions.length - board.actions.length
+    if (diff < -1) {
+      console.error(room.game.actions, board.actions)
+      throw 'Game too far out of sync with server'
+    }
+    if (diff === -1) {
+      sendRoom(room_id, 'action', {
+        hash: board.hash,
+        action: board.actions[board.actions.length - 1],
+      })
+    }
+    while (remote_actions.length > board.actions.length) {
+      B.doAction(board, remote_actions[board.actions.length])
+    }
+  }
+
   const room_store = RestStorage('room')
   room_store.watch = watchRoom
   room_store.send = sendRoom
+  room_store.sync = sync
   return room_store
 }

@@ -6,7 +6,7 @@
           <div
             v-for="(tile, iz) in cell.stack"
             :key="iz"
-            @click="() => click(cell)"
+            @click="$emit('clickPiece', cell)"
             :class="css.tile(cell, tile)"
             :data-index="tile.index"
             :data-xy="tile.xy"
@@ -30,8 +30,8 @@ const getZ = (cell, tile) => {
 export default {
   props: {
     rows: Array,
-    click: Function,
   },
+  emits: ['clickPiece'],
   computed: {
     css() {
       const { theme, hex_angle, zoom } = this.$store.config.state

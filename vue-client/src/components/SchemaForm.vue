@@ -73,17 +73,16 @@ export default {
       }
       this.errors = null
       this.loading = true
-      api
+      return api
         .post(`${this.form_name}/`, state)
         .catch(e => {
-          this.errors = e.server_errors || { __all__: 'An unknown error has occurred' }
+          this.loading = false
+          throw e
         })
         .then(result => {
           this.loading = false
-          if (!this.errors) {
-            api.markStale()
-            this.success?.(result)
-          }
+          api.markStale()
+          this.success?.(result)
         })
     },
     doDelete() {

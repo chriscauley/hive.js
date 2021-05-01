@@ -67,6 +67,7 @@ export default ({ store }) => {
       sendRoom(room_id, 'action', {
         hash: board.hash,
         action: board.actions[board.actions.length - 1],
+        action_count: board.actions.length,
       })
     }
     while (remote_actions.length > board.actions.length) {

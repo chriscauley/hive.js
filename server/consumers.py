@@ -143,8 +143,12 @@ def apply_message(user, room, data):
     elif action == 'kick':
         raise NotImplementError('Kick user from room and reset game.')
     elif action == 'action':
-        game.state['actions'].append(content['action'])
-        game.save()
+        # TODO there was a bug with people resending actions
+        # this is a bandaid, but I need to check the error logs (sentry)
+        # and validate against hash (replace with node server and run game server side)
+        if content.get('action_count') != len(game.state['actions']):
+            game.state['actions'].append(content['action'])
+            game.save()
     elif action == 'start_game':
         # order will be random or reverse of last game (if there was a winner)
         order = [player_id, host_id]

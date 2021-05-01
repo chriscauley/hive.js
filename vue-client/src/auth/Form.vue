@@ -3,7 +3,7 @@
     <div :class="css.modal.content('-auto')">
       <h2>{{ mode.title }}</h2>
       <schema-form :form_name="mode.form_name" :success="success" />
-      <!-- <social-links :verb="verb" /> -->
+      <ur-auth-social-links />
     </div>
   </div>
 </template>

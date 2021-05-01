@@ -14,6 +14,7 @@ import SchemaForm from '@/components/SchemaForm'
 import '@/styles/base.scss'
 
 auth.config.AUTH_START = '/'
+auth.config.oauth_providers = ['twitter', 'github']
 
 const app = createApp(App)
 app.component('SchemaForm', SchemaForm)

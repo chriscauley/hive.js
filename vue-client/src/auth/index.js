@@ -1,5 +1,6 @@
 import AuthMenu from './Menu'
 import AuthForm from './Form'
+import AuthSocialLinks from './SocialLinks'
 import checkAuth from './checkAuth'
 import store from './store'
 import config from './config'
@@ -25,6 +26,7 @@ const auth = {
   install: (app, _options) => {
     app.config.globalProperties.$auth = auth
     app.component('UrAuthMenu', AuthMenu)
+    app.component('UrAuthSocialLinks', AuthSocialLinks)
 
     const { $store, $router } = app.config.globalProperties
     if ($store) {

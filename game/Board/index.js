@@ -18,8 +18,11 @@ const B = {
   PLAYER_COUNT,
   getHash: (b) => objectHash(pick(b, ['stacks', 'piece_types', 'piece_owners', 'current_player'])),
   update(b) {
-    // get derrived state of board
     window.b = b
+    if (b.reverse && B.getHash(b) === b.hash) {
+      return
+    }
+    // get derrived state of board
     b.layers = {
       type: {},
       player: {},
@@ -68,16 +71,6 @@ const B = {
     }
     B.checkWinner(b)
   },
-  save: (b) => {
-    // TODO currently saving on mouse move
-    if (b.reverse && B.current_hash === b.hash) {
-      return b
-    }
-
-    B.update(b)
-    return b
-  },
-
   _markBoard: (b) => {
     b.onehive = {} // index: would break hive if moved
     b.cantmove = {} // same as onehive, except for orchid_mantis
@@ -126,7 +119,7 @@ const B = {
     const b = board_cache[room_id]
     if (b) {
       board_cache[room_id] = b
-      B.save(b)
+      B.update(b)
     }
     return b
   },
@@ -159,7 +152,7 @@ const B = {
     B.nextPlayer(b)
     B.unselect(b)
     b.last_move_at = new Date().valueOf()
-    B.save(b)
+    B.update(b)
   },
 
   doAction: (b, args) => {
@@ -240,7 +233,7 @@ const B = {
     }
     board.hash = B.getHash(board)
     board.stacks = {}
-    B.save(board)
+    B.update(board)
     return board
   },
 
@@ -264,6 +257,7 @@ const B = {
   },
 
   unselect: (b) => {
+    B.update(b)
     b.hash = B.getHash(b)
     b.special_args = []
     delete b.selected
@@ -424,7 +418,7 @@ const B = {
       })
     })
     B.unselect(board)
-    B.save(board)
+    B.update(board)
   },
 
   checkWinner: (b) => {

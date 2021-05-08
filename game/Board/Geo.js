@@ -3,14 +3,12 @@ import { range } from 'lodash'
 export const mod = (a, b) => ((a % b) + b) % b
 
 const geo_cache = {}
-window.GC = geo_cache
 
 export const getGeo = (board) => {
   const WH = `${board.W},${board.H}`
   if (!geo_cache[WH]) {
     geo_cache[WH] = new Geo(board, WH)
   }
-  window.G = geo_cache[WH]
   return geo_cache[WH]
 }
 

@@ -1,4 +1,4 @@
-import B from '../client/game/Board'
+import B from 'hive.js/Board'
 import { last, cloneDeep } from 'lodash'
 
 // no specials, but this is a shotgun approach to testing undo/redo
@@ -222,8 +222,7 @@ test('edge cases', () => {
   expect(b.geo.index2xy(99)).toEqual([49, 1])
 
   // save/load aren't used in tests
-  B.save(b)
-  B.fromJson(JSON.stringify(STANDARD_EXPANDED))
+  B.fromJson(STANDARD_EXPANDED)
 
   // type of piece with no possible moves
   const piece_type = 'bearodactyl'

@@ -1,5 +1,5 @@
-import boards from '../client/tutorial/boards'
-import B from '../client/game/Board'
+import boards from 'hive.js/tutorial/boards'
+import B from 'hive.js/Board'
 import { cloneDeep } from 'lodash'
 
 test('Board snapshots', () => {

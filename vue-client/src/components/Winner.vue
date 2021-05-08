@@ -33,13 +33,13 @@ export default {
     },
     can_end() {
       const is_host = this.room.state.host_id === this.$store.auth.user?.id
-      return is_host || this.board.room_name === 'local'
+      return is_host || this.board.room_id === 'local'
     },
   },
   methods: {
     newGame() {
       alert('TODO')
-      // is_host && send(board.room_name, 'clearBoard')
+      // is_host && send(board.room_id, 'clearBoard')
       // endGame()
     },
   },

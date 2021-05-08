@@ -1,18 +1,46 @@
 import { reactive } from 'vue'
 import { RestStorage } from '@unrest/vue-reactive-storage'
+import ls from 'local-storage-json'
 
 import B from 'hive.js/Board'
 
 const TIMEOUTS = {}
 const SOCKETS = {}
 const BOARDS = {}
+const LOCAL_GAME_KEY = 'local_storage_game'
+
 const state = reactive({
   current_room: null,
   rooms: {},
 })
 
 export default ({ store }) => {
+  SOCKETS.local = {
+    send(json_data) {
+      const { action, content } = JSON.parse(json_data)
+      const room = state.rooms.local
+      if (action === 'set_rules') {
+        room.state.rules = content
+      } else if (action === 'start_game') {
+        delete BOARDS.local
+        room.board = BOARDS.local = B.new({
+          rules: room.state.rules,
+          game_id: 'local',
+          rooom_id: 'local',
+        })
+        ls.set(LOCAL_GAME_KEY, B.toJson(room.board))
+      }
+    },
+  }
+
   const watchRoom = room_id => {
+    if (room_id === 'local') {
+      if (!state.rooms.local) {
+        const b = ls.get(LOCAL_GAME_KEY)
+        state.rooms.local = { id: room_id, state: {}, board: b && B.fromJson(b) }
+      }
+      return state.rooms.local
+    }
     clearTimeout(TIMEOUTS[room_id])
     if (SOCKETS[room_id]) {
       return state.rooms[room_id]
@@ -38,14 +66,14 @@ export default ({ store }) => {
       room.ticks = ws.__ticks++
       if (room.game_id && !BOARDS[room.game_id]) {
         const board = (BOARDS[room.game_id] = B.new(room.game))
-        board.local_player = board.local_player = parseInt(
+        board.local_player = parseInt(
           Object.keys(board.players).find(key => {
             return board.players[key] === store.auth.user.id
           }),
         )
       }
       room.board = BOARDS[room.game_id]
-      sync(room.room_id)
+      sync(room_id)
     }
     return state.rooms[room_id]
   }
@@ -56,6 +84,10 @@ export default ({ store }) => {
 
   const sync = room_id => {
     const room = state.rooms[room_id]
+    if (room_id === 'local') {
+      ls.set(LOCAL_GAME_KEY, B.toJson(room.board))
+      return
+    }
     const board = room.board
     const remote_actions = room.game.actions
     const diff = remote_actions.length - board.actions.length

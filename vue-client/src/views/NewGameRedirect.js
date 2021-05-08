@@ -3,11 +3,12 @@ export default {
     path: '/new/:location/',
     meta: { authRequired: true },
   },
-  render: () => '',
+  render: () => <div />,
   mounted() {
     if (this.$route.params.location !== 'online') {
-      throw 'Not Implemented'
+      this.$router.replace('/play/local/')
+    } else {
+      this.$store.room.save({}).then(({ id }) => this.$router.replace(`/play/${id}/`))
     }
-    this.$store.room.save({}).then(({ id }) => this.$router.replace(`/play/${id}/`))
   },
 }

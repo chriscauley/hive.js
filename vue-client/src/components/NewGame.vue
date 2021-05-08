@@ -82,13 +82,13 @@ export default {
   },
   computed: {
     is_host() {
-      return this.room.state.host_id === this.$store.auth.user?.id
+      return this.room.id === 'local' || this.room.state.host_id === this.$store.auth.user?.id
     },
     rules() {
-      const { rules } = this.room.state
+      let { rules } = this.room.state
       if (!rules && this.is_host) {
-        const newRules = ls.get(LS_KEY) || { variants: {}, pieces: { ...pieces.VANILLA } }
-        this.setRules(cleanRules(newRules))
+        rules = cleanRules(ls.get(LS_KEY) || { variants: {}, pieces: { ...pieces.VANILLA } })
+        this.setRules(rules)
       }
       return cleanRules(rules)
     },
@@ -102,6 +102,9 @@ export default {
       return short_help[this.hovering]
     },
     can_start() {
+      if (this.room.id === 'local') {
+        return true
+      }
       const { player_id, afk } = this.room.state
       return player_id && !afk.includes(player_id)
     },
@@ -126,11 +129,6 @@ export default {
       }
       this.setRules(rules)
     },
-  },
-  submit() {
-    alert('TODO')
-    // game.setRoomBoard(room_name, Board.new({ rules: { pieces, ...variants }, room_name, game_id }))
-    ls.set(LS_KEY, this.rules)
   },
 }
 </script>

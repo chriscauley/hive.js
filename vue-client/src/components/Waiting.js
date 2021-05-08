@@ -26,7 +26,7 @@ const NeedsPlayers = ({ _board }) => {
 }
 
 const NeedsReady = ({ send, board }) => {
-  const sit = color => () => send(board.room_name, 'ready', color)
+  const sit = color => () => send(board.room_id, 'ready', color)
   return (
     <>
       <h2>Please choose a seat</h2>
@@ -48,7 +48,7 @@ const NeedsReady = ({ send, board }) => {
 const IsReady = ({ send, board }) => (
   <>
     <h2>Waiting for other players to sit down</h2>
-    <button className={css.button()} onClick={() => send(board.room_name, 'notready')}>
+    <button className={css.button()} onClick={() => send(board.room_id, 'notready')}>
       Stand up
     </button>
   </>

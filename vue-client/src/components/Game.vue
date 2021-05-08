@@ -100,7 +100,7 @@ export default {
   methods: {
     click(cell) {
       B.click(this.board, cell)
-      this.$store.room.sync(this.room.room_id)
+      this.$store.room.sync(this.room.id)
     },
     deleteSelected() {
       alert('TODO')

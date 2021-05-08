@@ -1,4 +1,3 @@
-import Storage from '@unrest/storage'
 import { pick, last, cloneDeep } from 'lodash'
 import { getGeo } from './Geo'
 import objectHash from 'object-hash'
@@ -17,7 +16,6 @@ const B = {
   specials,
   wouldBreakHive,
   PLAYER_COUNT,
-  storage: new Storage('saved_games'),
   getHash: (b) => objectHash(pick(b, ['stacks', 'piece_types', 'piece_owners', 'current_player'])),
   update(b) {
     // get derrived state of board
@@ -77,7 +75,6 @@ const B = {
     }
 
     B.update(b)
-    B.storage.set(b.room_name, B.toJson(b))
     return b
   },
 
@@ -125,22 +122,22 @@ const B = {
     }
   },
 
-  get: (room_name) => {
-    const b = board_cache[room_name] || B.storage.get(room_name)
+  get: (room_id) => {
+    const b = board_cache[room_id]
     if (b) {
-      board_cache[room_name] = b
+      board_cache[room_id] = b
       B.save(b)
     }
     return b
   },
 
-  _delete: (room_name) => delete board_cache[room_name],
+  _delete: (room_id) => delete board_cache[room_id],
 
   getUrl: (b) => {
-    if (b.room_name === 'local' || !b.room_name) {
+    if (b.room_id === 'local' || !b.room_id) {
       return '#/local/'
     }
-    return `#/play/${b.room_name}/`
+    return `#/play/${b.room_id}/`
   },
   nextPlayer(b) {
     b.current_player++
@@ -218,15 +215,14 @@ const B = {
     'players',
     'host',
     'last',
-    'room_name',
+    'room_id',
     'current_player',
     'last_move_at',
     'game_id',
   ],
   toJson: (b) => cloneDeep(pick(b, B.json_fields)),
-  fromJson: (value) => {
-    const board = JSON.parse(value)
-    B.save(board)
+  fromJson: (board) => {
+    B.update(board)
     return board
   },
   new: (options) => {

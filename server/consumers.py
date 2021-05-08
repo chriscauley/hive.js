@@ -40,7 +40,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         messages = await self.get_room_messages(room)
         game = await self.get_current_game(room)
         message = {
-            'room_id': room.id,
+            'id': room.id,
             'state': room.state,
             'messages': [m.content for m in messages]
         }

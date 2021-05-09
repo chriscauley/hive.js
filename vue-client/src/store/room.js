@@ -29,15 +29,23 @@ export default ({ store }) => {
           rooom_id: 'local',
         })
         ls.set(LOCAL_GAME_KEY, B.toJson(room.board))
+      } else if (action === 'change_pieces') {
+        delete BOARDS.local
+        delete room.board
       }
     },
   }
 
   const watchRoom = room_id => {
+    state.current_room = room_id
     if (room_id === 'local') {
       if (!state.rooms.local) {
         const b = ls.get(LOCAL_GAME_KEY)
-        state.rooms.local = { id: room_id, state: {}, board: b && B.fromJson(b) }
+        state.rooms.local = {
+          id: room_id,
+          state: { rules: b && b.rules },
+          board: b && B.fromJson(b),
+        }
       }
       return state.rooms.local
     }
@@ -49,9 +57,6 @@ export default ({ store }) => {
     const url = `${protocol}://${window.location.host}/ws/chat/${room_id}/`
     const ws = (SOCKETS[room_id] = new WebSocket(url))
     ws.__ticks = 0
-    ws.onopen = () => {
-      state.current_room = state.current_room || room_id
-    }
     ws.onclose = () => {
       const room = state.rooms[room_id] || {}
       delete SOCKETS[room_id]
@@ -79,6 +84,9 @@ export default ({ store }) => {
   }
 
   const sendRoom = (room_id, action, content) => {
+    if (action === 'reset_game') {
+      action = 'new_game' // alias
+    }
     SOCKETS[room_id].send(JSON.stringify({ action, content }))
   }
 
@@ -86,6 +94,9 @@ export default ({ store }) => {
     const room = state.rooms[room_id]
     if (room_id === 'local') {
       ls.set(LOCAL_GAME_KEY, B.toJson(room.board))
+      return
+    }
+    if (!room.game) {
       return
     }
     const board = room.board
@@ -111,5 +122,8 @@ export default ({ store }) => {
   room_store.watch = watchRoom
   room_store.send = sendRoom
   room_store.sync = sync
+  room_store.isHost = room_id => {
+    return room_id === 'local' || state.rooms[room_id]?.state.host_id === store.auth.user?.id
+  }
   return room_store
 }

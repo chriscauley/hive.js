@@ -114,7 +114,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 def check_permission(user_id, room, action):
     is_host = user_id == room.state['host_id']
     player_id = room.state.get('player_id')
-    if action in ['set_rules', 'start_game', 'kick'] and not is_host:
+    if action in ['set_rules', 'start_game', 'kick', 'change_pieces'] and not is_host:
         raise HiveError('Only host can '+action)
     if action == 'sit' and user_id not in [player_id, None]:
         raise HiveError('Cannot sit')
@@ -134,6 +134,9 @@ def apply_message(user, room, data):
     check_permission(user_id, room, action)
     if action == 'set_rules':
         room.state['rules'] = content
+    elif action == 'change_pieces':
+        game.done = True
+        game.save()
     elif action == 'sit':
         room.state['player_id'] = user_id
         remove(room.state['watching'], user_id)

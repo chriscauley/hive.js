@@ -85,7 +85,7 @@ export default ({ store }) => {
 
   const sendRoom = (room_id, action, content) => {
     if (action === 'reset_game') {
-      action = 'new_game' // alias
+      action = 'start_game' // alias
     }
     SOCKETS[room_id].send(JSON.stringify({ action, content }))
   }

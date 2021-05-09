@@ -8,8 +8,8 @@
       <button :class="css.button()" @click="open = false">
         Keep Playing
       </button>
-      <button v-if="can_end" :class="css.button()" @click="newGame">
-        New Game
+      <button v-if="can_end" :class="css.button()" @click="send('reset_game')">
+        Play Again
       </button>
     </template>
   </ur-modal>
@@ -32,15 +32,12 @@ export default {
       return winner === 'tie' ? 'The game is a draw' : `Player ${winner} has won the game.`
     },
     can_end() {
-      const is_host = this.room.state.host_id === this.$store.auth.user?.id
-      return is_host || this.board.room_id === 'local'
+      return this.$store.room.isHost(this.room.id)
     },
   },
   methods: {
-    newGame() {
-      alert('TODO')
-      // is_host && send(board.room_id, 'clearBoard')
-      // endGame()
+    send(action) {
+      this.$store.room.send(this.room.id, action)
     },
   },
 }

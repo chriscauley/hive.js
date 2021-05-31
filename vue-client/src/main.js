@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import VueMarkdownIt from 'vue3-markdown-it'
 import UrForm from '@unrest/form'
-import UrVue from '@unrest/vue'
+import UrVue, { ui } from '@unrest/vue'
 import '@unrest/tailwind/dist.css'
 
 import autoscroll from '@/autoscroll'
@@ -22,6 +22,7 @@ app.directive('autoscroll', autoscroll)
 app.use(router)
 app.use(store)
 app.use(UrVue)
+app.use(ui)
 app.use(chat)
 app.use(VueMarkdownIt)
 app.use(UrForm)

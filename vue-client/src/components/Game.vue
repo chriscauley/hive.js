@@ -52,12 +52,15 @@ export default {
     room: Object,
   },
   computed: {
+    is_local() {
+      return this.room.id === 'local'
+    },
     mousetrap() {
       const ifCanUndo = action => {
-        if (this.room.id === 'local') {
+        if (this.is_local) {
           B[action](this.board)
         } else {
-          this.$store.ui.toast(`Can only ${action} in local games`)
+          this.$ui.toast(`Can only ${action} in local games`)
         }
       }
       return {
@@ -107,7 +110,12 @@ export default {
       this.$store.room.sync(this.room.id)
     },
     deleteSelected() {
-      this.$store.ui.toast('todo')
+      if (!this.is_local) {
+        this.$ui.toast('TODO: Delete not implemented for network games.')
+      } else {
+        const { piece_id } = this.board.selected
+        B.deletePiece(this.board, piece_id)
+      }
     },
   },
 }

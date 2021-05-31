@@ -1146,6 +1146,13 @@
   resolved "https://registry.yarnpkg.com/@unrest/tailwind/-/tailwind-0.0.8.tgz#763c336e9f8794cf899f72fe0796e603b177da41"
   integrity sha512-0hayenlo6vQrsdsjbL5r4LYHG89ymHKsBF4mwEFM9/wuLfdfTWJXgpPuvVp1uINTAyhiOJMtGm9bknlcM72+7A==
 
+"@unrest/vue-mousetrap@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@unrest/vue-mousetrap/-/vue-mousetrap-0.0.3.tgz#00e533d56f3ff498635c754c780ec6f9dc7dd591"
+  integrity sha512-arI4b7IbzZpgO7RwDS05qylieHPaDvFKUauU+hvxm3kAhW7UMVUL4Zc6cMfjJI+3jHq4qP3gLx7OWbgaPrGqkw==
+  dependencies:
+    mousetrap "^1.6.5"
+
 "@unrest/vue-reactive-storage@^0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@unrest/vue-reactive-storage/-/vue-reactive-storage-0.0.1.tgz#b31d4e1f52045ec20a49b31cd5e6afbd0dbb29fa"
@@ -5944,6 +5951,11 @@ modern-normalize@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/modern-normalize/-/modern-normalize-1.0.0.tgz#539d84a1e141338b01b346f3e27396d0ed17601e"
   integrity sha512-1lM+BMLGuDfsdwf3rsgBSrxJwAZHFIrQ8YR61xIqdHo0uNKI9M52wNpHSrliZATJp51On6JD0AfRxd4YGSU0lw==
+
+mousetrap@^1.6.5:
+  version "1.6.5"
+  resolved "https://registry.yarnpkg.com/mousetrap/-/mousetrap-1.6.5.tgz#8a766d8c272b08393d5f56074e0b5ec183485bf9"
+  integrity sha512-QNo4kEepaIBwiT8CDhP98umTetp+JNfQYBWvC1pc6/OAibuXtRcxZ58Qz8skvEHYvURne/7R8T5VoOI7rDsEUA==
 
 move-concurrently@^1.0.1:
   version "1.0.1"

@@ -1,7 +1,9 @@
 import config from './config'
 import room from './room'
+import { ui } from '@unrest/vue'
 
 const store = {
+  ui,
   list: [],
   install: (app, _options) => {
     app.config.globalProperties.$store = store

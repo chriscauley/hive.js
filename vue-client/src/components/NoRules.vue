@@ -6,12 +6,14 @@
       piece, but pieces can be moved anywhere whether the rules allow it or not.
     </div>
   </ur-modal>
-  <span @click="open = true" :class="css.alert.warning('cursor-pointer')">
-    {'¯\\_(ツ)_/¯ No Rules'}
-  </span>
-  <div v-if="delete_" :class="css.button.error()" @click="delete_">
-    Delete selected
+  <div v-if="deleteSelected">
+    <button :class="css.button.error()" @click="deleteSelected">
+      Delete selected
+    </button>
   </div>
+  <span v-else @click="open = true" :class="css.alert.warning('cursor-pointer')">
+    ¯\_(ツ)_/¯ No Rules
+  </span>
 </template>
 
 <script>
@@ -19,7 +21,7 @@ import css from '@unrest/css'
 
 export default {
   props: {
-    delete_: Function,
+    deleteSelected: Function,
   },
   data() {
     return { css, open: false }

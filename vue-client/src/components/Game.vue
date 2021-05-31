@@ -10,7 +10,7 @@
     <help-text v-bind="board.selected" :board="board" />
     <div :class="css.player_indicator">
       <winner v-if="board.winner" :board="board" :room="room" />
-      <no-rules v-if="board.rules.no_rules" :_delete="_delete" />
+      <no-rules v-if="board.rules.no_rules" :deleteSelected="board.selected && deleteSelected" />
       <div v-if="board.error" :class="css.alert.danger()">
         <i :class="css.icon('times-circle text-xl mr-2')" />
         {{ board.error }}
@@ -27,6 +27,7 @@
 
 <script>
 import css from '@unrest/css'
+import Mousetrap from '@unrest/vue-mousetrap'
 
 import B from 'hive.js/Board'
 import toRows from 'hive.js/Board/toRows'
@@ -37,34 +38,37 @@ import NoRules from './NoRules'
 import TimeSince from './TimeSince'
 import Winner from './Winner'
 
-// const handlers = {
-//   UNSELECT: () => {
-//     Board.unselect(board)
-//     update()
-//   },
-//   UNDO: undo,
-//   REDO: redo,
-//   CHEAT: checkCheat,
-// }
-// const keyMap = {
-//   UNSELECT: 'escape',
-//   TOGGLE_HELP: ['/', '?', 'shift+?'],
-//   UNDO: ['ctrl+z'],
-//   REDO: ['ctrl+y', 'ctrl+shift+y'],
-//   CHEAT: ['up', 'down', 'left', 'right', 'b', 'a'],
-// }
+Mousetrap.register({
+  cancel: 'esc',
+  undo: 'mod+z',
+  redo: 'mod+y,mod+shift+z',
+  help: '?,/',
+})
 
 export default {
   components: { HelpText, HiveBoard, NoRules, TimeSince, Winner },
+  mixins: [Mousetrap.Mixin],
   props: {
     room: Object,
   },
   computed: {
+    mousetrap() {
+      const ifCanUndo = action => {
+        if (this.room.id === 'local') {
+          B[action](this.board)
+        } else {
+          this.$store.ui.toast(`Can only ${action} in local games`)
+        }
+      }
+      return {
+        cancel: () => B.unselect(this.board),
+        undo: () => ifCanUndo('undo'),
+        redo: () => ifCanUndo('redo'),
+        'i l o v e b e e s': () => B.doAction(this.board, ['toggleCheat']),
+      }
+    },
     board() {
       return this.room.board
-    },
-    _delete() {
-      return this.board.selected && this.deleteSelected
     },
     turn_text() {
       if (!this.board.local_player) {
@@ -103,7 +107,7 @@ export default {
       this.$store.room.sync(this.room.id)
     },
     deleteSelected() {
-      alert('TODO')
+      this.$store.ui.toast('todo')
     },
   },
 }

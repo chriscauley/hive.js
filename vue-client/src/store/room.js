@@ -1,5 +1,5 @@
 import { reactive } from 'vue'
-import { RestStorage } from '@unrest/vue-reactive-storage'
+import { ui } from '@unrest/vue'
 import ls from 'local-storage-json'
 
 import B from 'hive.js/Board'
@@ -118,12 +118,29 @@ export default ({ store }) => {
     }
   }
 
-  const room_store = RestStorage('room')
-  room_store.watch = watchRoom
-  room_store.send = sendRoom
-  room_store.sync = sync
-  room_store.isHost = room_id => {
-    return room_id === 'local' || state.rooms[room_id]?.state.host_id === store.auth.user?.id
+  const onlyIfLocal = (room_id, action) => {
+    const { board } = state.rooms[room_id] || {}
+    if (!board) {
+      return
+    }
+    if (room_id === 'local') {
+      B[action](board)
+    } else {
+      ui.toast(`Can only ${action} in local games.`)
+    }
   }
+
+  const room_store = {
+    state,
+    undo: room_id => onlyIfLocal(room_id, 'undo'),
+    redo: room_id => onlyIfLocal(room_id, 'redo'),
+    watch: watchRoom,
+    send: sendRoom,
+    sync,
+    isHost: room_id => {
+      return room_id === 'local' || state.rooms[room_id]?.state.host_id === store.auth.user?.id
+    },
+  }
+
   return room_store
 }

@@ -56,17 +56,10 @@ export default {
       return this.room.id === 'local'
     },
     mousetrap() {
-      const ifCanUndo = action => {
-        if (this.is_local) {
-          B[action](this.board)
-        } else {
-          this.$ui.toast(`Can only ${action} in local games`)
-        }
-      }
       return {
         cancel: () => B.unselect(this.board),
-        undo: () => ifCanUndo('undo'),
-        redo: () => ifCanUndo('redo'),
+        undo: () => this.$store.room.undo(this.room.id),
+        redo: () => this.$store.room.redo(this.room.id),
         'i l o v e b e e s': () => B.doAction(this.board, ['toggleCheat']),
       }
     },

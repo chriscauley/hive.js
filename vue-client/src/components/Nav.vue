@@ -58,8 +58,8 @@ export default {
         { text: 'Change Pieces', click: () => warn('change_pieces') },
         { text: 'Import Game', class: 'disabled' },
         { text: 'Export Game', class: 'disabled' },
-        { text: 'Undo', class: 'disabled' },
-        { text: 'Redo', class: 'disabled' },
+        { text: 'Undo (ctrl+z)', click: () => this.$store.room.undo(room_id) },
+        { text: 'Redo (ctrl+y)', click: () => this.$store.room.redo(room_id) },
       ]
       const disable = item => {
         delete item.click

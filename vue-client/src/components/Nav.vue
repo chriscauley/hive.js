@@ -47,9 +47,6 @@ export default {
   computed: {
     game_links() {
       const { room_id } = this.$route.params
-      if (!room_id) {
-        return []
-      }
       const warn = action => {
         this.pending_action = action
       }
@@ -68,6 +65,11 @@ export default {
       if (!this.$store.room.isHost(room_id)) {
         disable(items[0])
         disable(items[1])
+      }
+      if (!this.$store.room.state.rooms[room_id]?.board) {
+        disable(items[3])
+        disable(items[4])
+        disable(items[5])
       }
       return items
     },

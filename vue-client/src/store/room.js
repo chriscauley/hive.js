@@ -2,6 +2,7 @@ import { reactive } from 'vue'
 import { ui } from '@unrest/vue'
 import ls from 'local-storage-json'
 
+import router from '@/router'
 import B from 'hive.js/Board'
 
 const TIMEOUTS = {}
@@ -13,6 +14,8 @@ const state = reactive({
   current_room: null,
   rooms: {},
 })
+
+window.ui = ui
 
 export default ({ store }) => {
   SOCKETS.local = {
@@ -139,6 +142,22 @@ export default ({ store }) => {
     sync,
     isHost: room_id => {
       return room_id === 'local' || state.rooms[room_id]?.state.host_id === store.auth.user?.id
+    },
+    loadJson: value => {
+      const room = watchRoom('local')
+      try {
+        if (typeof value === 'string') {
+          value = JSON.parse(value)
+        }
+        room.board = B.fromJson(value)
+        room.state.rules = room.board.rules
+        router.push('/play/local')
+        ui.toast('Local game loaded')
+        ui.alert(null)
+      } catch (e) {
+        const error = 'An unknown error occurred. Unable to parse game.'
+        ui.alert(error)
+      }
     },
   }
 

@@ -22,14 +22,6 @@
       </ur-dropdown>
       <ur-auth-menu />
     </section>
-    <ur-modal v-if="pending_action" @close="pending_action = null">
-      <div class="h3">{{ pendingTitle }}</div>
-      This action cannot be undone. Are you sure?
-      <template #actions>
-        <button class="btn -primary" @click="confirmPending">Confirm</button>
-        <button class="btn -secondary" @click="pending_action = null">Cancel</button>
-      </template>
-    </ur-modal>
   </header>
 </template>
 
@@ -40,21 +32,33 @@ const help_links = [
   { to: '/about/', text: 'About' },
   { to: '/change-log/', text: 'Change Log' },
 ]
+
 export default {
   data() {
-    return { css, help_links, pending_action: null }
+    return { css, help_links }
   },
   computed: {
     game_links() {
       const { room_id } = this.$route.params
       const warn = action => {
-        this.pending_action = action
+        const confirm = () => {
+          this.$store.room.send(this.$route.params.room_id, action)
+          this.$ui.alert(null)
+        }
+        return this.$ui.alert({
+          title: action[0].toUpperCase() + action.slice(1).replace('_', ' '),
+          text: 'This action cannot be undone. Are you sure?',
+          actions: [
+            { class: 'btn -secondary', text: 'Cancel', click: () => this.$ui.alert(null) },
+            { class: 'btn -primary', text: 'Confirm', click: confirm },
+          ],
+        })
       }
       const items = [
         { text: 'Reset Game', click: () => warn('reset_game') },
         { text: 'Change Pieces', click: () => warn('change_pieces') },
-        { text: 'Import Game', class: 'disabled' },
-        { text: 'Export Game', class: 'disabled' },
+        { text: 'Import Game', click: this.showImportModal },
+        { text: 'Export Game', click: this.showExportModal },
         { text: 'Undo (ctrl+z)', click: () => this.$store.room.undo(room_id) },
         { text: 'Redo (ctrl+y)', click: () => this.$store.room.redo(room_id) },
       ]
@@ -73,15 +77,13 @@ export default {
       }
       return items
     },
-    pendingTitle() {
-      const s = this.pending_action
-      return s[0].toUpperCase() + s.slice(1).replace('_', ' ')
-    },
   },
   methods: {
-    confirmPending() {
-      this.$store.room.send(this.$route.params.room_id, this.pending_action)
-      this.pending_action = null
+    showImportModal() {
+      this.$ui.alert({ tagName: 'import-game' })
+    },
+    showExportModal() {
+      this.$ui.alert({ tagName: 'export-game' })
     },
   },
 }

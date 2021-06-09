@@ -5,7 +5,7 @@ import UrVue, { ui } from '@unrest/vue'
 import '@unrest/tailwind/dist.css'
 
 import autoscroll from '@/autoscroll'
-import auth from '@/auth' // TODO move into new app @unrest/vue-auth
+import auth from '@unrest/vue-auth' // TODO move into new app @unrest/vue-auth
 import chat from '@/chat'
 import store from '@/store'
 import router from '@/router'
@@ -30,6 +30,6 @@ app.use(ui)
 app.use(chat)
 app.use(VueMarkdownIt)
 app.use(Form.plugin)
-app.use(auth) // must come after store!
+app.use(auth.plugin) // must come after store!
 
 app.mount('#app')

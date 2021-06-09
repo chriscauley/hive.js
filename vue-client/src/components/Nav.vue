@@ -20,7 +20,7 @@
       <ur-dropdown :items="help_links" placement="bottom">
         <div class="ur-dropdown__trigger">help</div>
       </ur-dropdown>
-      <ur-auth-menu />
+      <unrest-auth-menu />
     </section>
   </header>
 </template>
@@ -28,10 +28,7 @@
 <script>
 import css from '@unrest/css'
 
-const help_links = [
-  { to: '/about/', text: 'About' },
-  { to: '/change-log/', text: 'Change Log' },
-]
+const help_links = [{ to: '/about/', text: 'About' }, { to: '/change-log/', text: 'Change Log' }]
 
 export default {
   data() {

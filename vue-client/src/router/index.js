@@ -4,7 +4,7 @@ import { createRouter, createWebHistory, createMemoryHistory } from 'vue-router'
 import sprite from '@/sprite'
 import applyMeta from './applyMeta'
 import views from '@/views'
-import auth from '@/auth'
+import auth from '@unrest/vue-auth'
 
 const routes = [...auth.routes]
 

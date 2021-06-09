@@ -9,9 +9,11 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.9.2",
+    "@unrest/css": "^0.0.6",
     "@unrest/form": "^0.0.4",
     "@unrest/tailwind": "^0.0.8",
     "@unrest/vue": "^0.1.3",
+    "@unrest/vue-auth": "^0.0.1",
     "@unrest/vue-mousetrap": "^0.0.3",
     "@unrest/vue-reactive-storage": "^0.0.1",
     "core-js": "^3.6.5",

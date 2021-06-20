@@ -6,6 +6,15 @@ module.exports = {
   extends: ['plugin:vue/vue3-recommended', 'plugin:prettier/recommended'],
   ignorePatterns: ['node_modules', '**/assets/*', 'public/*'],
   rules: {
+    'prettier/prettier': [
+      'error',
+      {
+        singleQuote: true,
+        trailingComma: 'all',
+        semi: false,
+        printWidth: 100,
+      },
+    ],
     'no-console': ['error', { allow: ['warn', 'error'] }],
     'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     'react/react-in-jsx-scope': 0,

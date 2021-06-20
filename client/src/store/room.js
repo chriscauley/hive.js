@@ -73,6 +73,13 @@ export default ({ store }) => {
     }
     ws.onmessage = e => {
       const room = (state.rooms[room_id] = JSON.parse(e.data))
+      if (room.error === 404) {
+        room.state = {}
+        ui.alert({
+          title: 'Unable to find room',
+          confirm: () => (window.location = '/'),
+        })
+      }
       room.ticks = ws.__ticks++
       if (room.game_id && !BOARDS[room.game_id]) {
         const board = (BOARDS[room.game_id] = B.new(room.game))

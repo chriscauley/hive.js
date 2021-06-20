@@ -17,6 +17,14 @@ export default {
   __route: {
     path: '/play/:room_id/',
     meta: { authRequired: true },
+    beforeEnter: (to, from, next) => {
+      const { room_id } = to.params
+      if (room_id !== 'local' && isNaN(Number(room_id))) {
+        next('/')
+      } else {
+        next()
+      }
+    },
   },
   computed: {
     room_id() {

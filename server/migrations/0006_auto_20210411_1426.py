@@ -12,7 +12,7 @@ def populate_users(apps, schema_editor):
             continue
         room.state['host_id'] = host.id
         for user_id in room.state.pop('user_ids', []):
-            room.users.add(User.objects.get(user_id=user_id))
+            room.users.add(User.objects.get(id=user_id))
         room.save()
 
 

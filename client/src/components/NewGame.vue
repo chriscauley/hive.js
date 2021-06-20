@@ -12,9 +12,13 @@
             <button v-if="can_start" :class="css.button('mt-4 mr-4')" @click="startGame">
               Start
             </button>
-            <div v-else>
+            <div v-else class="mt-2 flex items-center">
               <i class="fa fa-warning text-yellow-500 mr-2" />
               Waiting for players...
+              <div class="btn -primary ml-4" @click="copyUrl">
+                <i class="fa fa-copy mr-1" />
+                {{ copied ? 'Copied!' : 'Copy url' }}
+              </div>
             </div>
           </div>
         </div>
@@ -78,7 +82,8 @@ export default {
     startGame: Function,
   },
   data() {
-    return { hovering: null, css }
+    const href = window.location.href
+    return { hovering: null, css, copied: null, href }
   },
   computed: {
     is_host() {
@@ -128,6 +133,16 @@ export default {
         rules.pieces[type] = 0
       }
       this.setRules(rules)
+    },
+    copyUrl() {
+      const input = document.createElement('input')
+      input.value = window.location.href
+      document.body.appendChild(input)
+      input.select()
+      document.execCommand('copy')
+      document.body.removeChild(input)
+      this.copied = true
+      setTimeout(() => (this.copied = false), 5000)
     },
   },
 }

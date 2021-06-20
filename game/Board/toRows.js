@@ -131,7 +131,7 @@ export default (board, { columns = 1 } = {}) => {
     player_id = parseInt(player_id)
     const className = _class(player_id, type)
     const cell = {
-      stack: range(count).map(() => className),
+      stack: range(count).map((i) => className+' -stack-index-'+i),
       player_id,
       piece_id: 'new',
       piece_type: type, // TODO remove drag and drop and then this can be type

@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.9.2",
-    "@unrest/css": "^0.0.6",
+    "@unrest/css": "0.0.7",
     "@unrest/form": "^0.0.4",
     "@unrest/tailwind": "^0.0.8",
     "@unrest/vue": "^0.1.3",

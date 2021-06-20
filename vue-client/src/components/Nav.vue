@@ -4,22 +4,22 @@
       <router-link to="/" :class="css.nav.brand()"> Hive! </router-link>
     </section>
     <section :class="css.nav.section('flex items-center')" v-if="$auth.ready">
-      <ur-dropdown v-if="game_links.length" :items="game_links" placement="bottom">
+      <unrest-dropdown v-if="game_links.length" :items="game_links" placement="bottom">
         <div class="ur-dropdown__trigger">game</div>
-      </ur-dropdown>
-      <ur-dropdown placement="bottom">
+      </unrest-dropdown>
+      <unrest-dropdown placement="bottom">
         <div class="ur-dropdown__trigger">config</div>
         <template #content>
           <div class="dropdown-menu" @click.stop>
-            <ur-form v-bind="$store.config.form">
+            <unrest-form v-bind="$store.config.form">
               <template #actions>{{ ' ' }}</template>
-            </ur-form>
+            </unrest-form>
           </div>
         </template>
-      </ur-dropdown>
-      <ur-dropdown :items="help_links" placement="bottom">
+      </unrest-dropdown>
+      <unrest-dropdown :items="help_links" placement="bottom">
         <div class="ur-dropdown__trigger">help</div>
-      </ur-dropdown>
+      </unrest-dropdown>
       <unrest-auth-menu />
     </section>
   </header>

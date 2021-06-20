@@ -1,6 +1,7 @@
 import { reactive } from 'vue'
-import { ui } from '@unrest/vue'
+import unrest from '@unrest/vue'
 import ls from 'local-storage-json'
+import { getClient } from '@unrest/vue-reactive-storage'
 
 import router from '@/router'
 import B from 'hive.js/Board'
@@ -9,13 +10,14 @@ const TIMEOUTS = {}
 const SOCKETS = {}
 const BOARDS = {}
 const LOCAL_GAME_KEY = 'local_storage_game'
+const client = getClient()
 
 const state = reactive({
   current_room: null,
   rooms: {},
 })
 
-window.ui = ui
+const { ui } = unrest
 
 export default ({ store }) => {
   SOCKETS.local = {
@@ -140,6 +142,7 @@ export default ({ store }) => {
     watch: watchRoom,
     send: sendRoom,
     sync,
+    save: () => client.post('/room/'),
     isHost: room_id => {
       return room_id === 'local' || state.rooms[room_id]?.state.host_id === store.auth.user?.id
     },

@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import VueMarkdownIt from 'vue3-markdown-it'
 import Form from '@unrest/form'
-import UrVue, { ui } from '@unrest/vue'
+import UrVue from '@unrest/vue'
 import '@unrest/tailwind/dist.css'
 
 import autoscroll from '@/autoscroll'
@@ -25,8 +25,8 @@ app.component('ExportGame', ExportGame)
 app.directive('autoscroll', autoscroll)
 app.use(router)
 app.use(store)
-app.use(UrVue)
-app.use(ui)
+app.use(UrVue.plugin)
+app.use(UrVue.ui)
 app.use(chat)
 app.use(VueMarkdownIt)
 app.use(Form.plugin)

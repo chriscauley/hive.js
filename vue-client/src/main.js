@@ -12,14 +12,12 @@ import router from '@/router'
 import App from '@/App.vue'
 import ImportGame from '@/components/ImportGame'
 import ExportGame from '@/components/ExportGame'
-import SchemaForm from '@/components/SchemaForm'
 import '@/styles/base.scss'
 
 auth.config.AUTH_START = '/'
 auth.config.oauth_providers = ['twitter', 'github']
 
 const app = createApp(App)
-app.component('SchemaForm', SchemaForm)
 app.component('ImportGame', ImportGame)
 app.component('ExportGame', ExportGame)
 app.directive('autoscroll', autoscroll)

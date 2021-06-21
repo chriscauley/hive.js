@@ -4,7 +4,7 @@ import pieces from '../pieces'
 import Board from './index'
 import webs from './webs'
 
-const _class = (player, type) => `piece hex-player_${player} type type-${type} hex `
+const _class = (p, t, s) => `piece hex-player_${p} type type-${t} hex -stacked-${s}`
 const empty = (board, index) => {
   const cls = 'piece hex'
   if (!board.empty[index]) {
@@ -17,9 +17,6 @@ const empty = (board, index) => {
 }
 
 const pieceToClass = (board, piece_id) => {
-  const type = board.piece_types[piece_id]
-  const player = board.piece_owners[piece_id]
-  return _class(player, type)
 }
 
 const sliceBoard = (board) => {
@@ -51,6 +48,21 @@ const sliceBoard = (board) => {
   )
 }
 
+export const makeStack = (board, index) => {
+  const stack = board.stacks[index]
+  if (!stack) {
+    return [empty(board, index)]
+  }
+  return stack.map((piece_id, stack_index) => {
+    if (stack.length > 4) {
+      stack_index = stack_index - stack.length + 4
+    }
+    const type = board.piece_types[piece_id]
+    const player = board.piece_owners[piece_id]
+    return _class(player, type, stack_index)
+  })
+}
+
 export default (board, { columns = 1 } = {}) => {
   const marked = getMarked(board)
   const { selected = {} } = board
@@ -75,35 +87,35 @@ export default (board, { columns = 1 } = {}) => {
   const rows = sliceBoard(board)
   rows.forEach((row) =>
     row.forEach((cell) => {
-      cell.stack = []
+      cell.stack = makeStack(board, cell.index)
       cell.selected = cell.index === selected.index
-      if (board.stacks[cell.index]) {
-        board.stacks[cell.index].forEach((piece_id) => {
-          cell.stack.push(pieceToClass(board, piece_id))
-          // last piece_id gets used here
-          cell.piece_id = piece_id
-          cell.player_id = board.piece_owners[piece_id]
-          cell.piece_type = board.piece_types[piece_id]
-        })
-      } else {
-        cell.stack.push(empty(board, cell.index))
+      const stack = board.stacks[cell.index]
+      if (stack) {
+        const piece_id = stack[stack.length-1]
+        cell.piece_id = piece_id
+        cell.player_id = board.piece_owners[piece_id]
+        cell.piece_type = board.piece_types[piece_id]
       }
       show_webs.forEach((web) => {
         if (!board.layers[web][cell.index]) {
           return // no webs
         }
         if (web === 'stack' && selected.player_id === board.layers.player[cell.index]) {
+          console.log('stack')
           return
         }
         if (web === 'crawl') {
           if (board.stacks[cell.index] && cell.index !== selected.index) {
             // only show crawl web on the selected piece or empty squares
+            console.log('crawl')
             return
           }
           const enemy_webs = board.layers[web][cell.index].filter(
             (i) => selected.player_id !== board.layers.player[i],
           )
+          console.log(selected)
           if (enemy_webs.length === 0) {
+            console.log('no webs')
             return
           }
 
@@ -129,9 +141,8 @@ export default (board, { columns = 1 } = {}) => {
 
   pieces.getAvailable(board).forEach(({ player_id, type, count }) => {
     player_id = parseInt(player_id)
-    const className = _class(player_id, type)
     const cell = {
-      stack: range(count).map((i) => className+' -stack-index-'+i),
+      stack: range(count).map((i) => _class(player_id, type, i)),
       player_id,
       piece_id: 'new',
       piece_type: type, // TODO remove drag and drop and then this can be type

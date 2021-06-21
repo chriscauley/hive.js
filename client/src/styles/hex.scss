@@ -70,18 +70,20 @@
     transition: top 0.5s, left 0.5s;
   }
   @for $i from  1 through 4 {
-    .stacked-#{$i} {
+    .-stacked-#{$i} {
       top: $i * $z;
       left: $i * $z;
     }
-    &.selected:hover .stacked-#{$i} {
+    &.selected:hover .-stacked-#{$i} {
       top: $i * -45%;
       left: $i * -45%;
       transition-delay: 0.5s;
     }
-    &.selected:hover .stacked--#{$i} {
-      top: $i * 20%;
-      left: $i * 20%;
+  }
+  @for $i from  1 through 16 {
+    &.selected:hover .-stacked--#{$i} {
+      top: $i * 30%;
+      left: $i * 30%;
       transition-delay: 0.5s;
     }
   }

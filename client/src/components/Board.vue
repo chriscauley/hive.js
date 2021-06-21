@@ -7,9 +7,9 @@
             v-for="(tile, iz) in cell.stack"
             :key="iz"
             @click="$emit('clickPiece', cell)"
-            :class="css.tile(cell, tile)"
-            :data-index="tile.index"
-            :data-xy="tile.xy"
+            :class="tile"
+            :data-index="cell.index"
+            :data-xy="cell.xy"
             :data-piece_id="cell.piece_id"
           />
         </div>
@@ -19,14 +19,6 @@
 </template>
 
 <script>
-const getZ = (cell, tile) => {
-  const index = cell.stack.indexOf(tile)
-  if (cell.stack.length < 4) {
-    return index
-  }
-  return index - cell.stack.length + 4
-}
-
 export default {
   props: {
     rows: Array,
@@ -39,7 +31,7 @@ export default {
         root: `zoom-${zoom} hex-grid hex-${hex_angle} theme-${theme}`,
         style: { '--columns': this.rows[0].length },
         cell: ({ selected }) => ['item', { selected }],
-        tile: (cell, tile) => [tile, `stacked-${getZ(cell, tile)}`],
+        tile: (cell, tile) => tile,
       }
     },
   },

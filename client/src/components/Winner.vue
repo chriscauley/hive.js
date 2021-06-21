@@ -2,7 +2,7 @@
   <div :class="css.alert.info('cursor-pointer')" @click="open = true">
     {{ text }}
   </div>
-  <ur-modal v-if="open" class="text-center" :close="() => (open = false)">
+  <unrest-modal v-if="open" class="text-center" :close="() => (open = false)">
     <h2>{{ text }}</h2>
     <template #actions>
       <button :class="css.button()" @click="open = false">
@@ -12,7 +12,7 @@
         Play Again
       </button>
     </template>
-  </ur-modal>
+  </unrest-modal>
 </template>
 
 <script>

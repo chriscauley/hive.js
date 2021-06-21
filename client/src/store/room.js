@@ -79,6 +79,7 @@ export default ({ store }) => {
           title: 'Unable to find room',
           confirm: () => (window.location = '/'),
         })
+        return
       }
       room.ticks = ws.__ticks++
       if (room.game_id && !BOARDS[room.game_id]) {

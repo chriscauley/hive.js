@@ -17,6 +17,7 @@ class HiveError(Exception):
     pass
 
 class ChatConsumer(AsyncWebsocketConsumer):
+    room_id = None
     async def connect(self):
         if not self.scope['user'].is_authenticated:
             reply_channel.send({"close": True})
@@ -29,12 +30,18 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.room_group_name,
             self.channel_name
         )
-        await self.accept()
 
         # application specific
+        await self.accept()
         room = await self.get_room()
-        await self.join_room(room)
-        await self.send_room(room)
+        if room:
+            await self.join_room(room)
+            await self.send_room(room)
+        else:
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                { 'type': 'all_message', 'message': { 'error': 404 } }
+            )
 
     async def send_room(self, room):
         messages = await self.get_room_messages(room)
@@ -63,10 +70,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.channel_name
         )
         room = await self.get_room()
-        if not 'watching' in room.state:
-            room.state['watching'] = []
-        await self.leave_room(room)
-        await self.send_room(room)
+        if room:
+            if not 'watching' in room.state:
+                room.state['watching'] = []
+            await self.leave_room(room)
+            await self.send_room(room)
 
     # Receive message from WebSocket
     async def receive(self, text_data):
@@ -81,7 +89,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def get_room(self):
-        return Room.objects.get(id=self.room_id)
+        try:
+            return Room.objects.get(id=self.room_id)
+        except Room.DoesNotExist:
+            pass
 
     @database_sync_to_async
     def join_room(self, room):

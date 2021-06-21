@@ -1,3 +1,4 @@
+// Specials are moves that involve more than one piece
 // since specials take multiple arguments, specials need multiple steps to fill board.special_args
 // if board.special_args is long enough, return a function to execute as the move
 // other wise return potential indexes for the next argument
@@ -72,7 +73,10 @@ const kung_fu_mantis = (board, piece_id, args) => {
   const targets = dindexes[0].map((di, i) => index + di + dindexes[1][i])
 
   // select piece to pull under, no scorpions
-  return targets.filter((i) => board.stacks[i]).filter((i) => notEnemyScorpion(board, index, i))
+  return targets
+    .filter((i) => board.stacks[i])
+    .filter((i) => !wouldBreakHive(board, [i, index]))
+    .filter((i) => notEnemyScorpion(board, index, i))
 }
 
 const praying_mantis = (board, piece_id, args) => {

@@ -40,7 +40,7 @@ body {
 
 /* TODO everything below this needs to be reintegrated */
 
-.app-content.debug {
+.router-view.debug {
   [data-index]:after {
     @apply -text-text -bg-bg;
     content: attr(data-index);

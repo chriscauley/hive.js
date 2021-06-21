@@ -101,21 +101,17 @@ export default (board, { columns = 1 } = {}) => {
           return // no webs
         }
         if (web === 'stack' && selected.player_id === board.layers.player[cell.index]) {
-          console.log('stack')
           return
         }
         if (web === 'crawl') {
           if (board.stacks[cell.index] && cell.index !== selected.index) {
             // only show crawl web on the selected piece or empty squares
-            console.log('crawl')
             return
           }
           const enemy_webs = board.layers[web][cell.index].filter(
             (i) => selected.player_id !== board.layers.player[i],
           )
-          console.log(selected)
           if (enemy_webs.length === 0) {
-            console.log('no webs')
             return
           }
 

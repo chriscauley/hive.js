@@ -80,7 +80,7 @@ export default {
       this.$ui.alert({ tagName: 'import-game' })
     },
     showExportModal() {
-      this.$ui.alert({ tagName: 'export-game' })
+      this.$ui.alert({ tagName: 'export-game', width: 420 })
     },
   },
 }

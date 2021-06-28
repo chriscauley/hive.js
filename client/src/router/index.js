@@ -1,5 +1,5 @@
 import { defaultsDeep } from 'lodash'
-import { createRouter, createWebHistory, createMemoryHistory } from 'vue-router'
+import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
 
 import sprite from '@/sprite'
 import applyMeta from './applyMeta'
@@ -22,7 +22,7 @@ const loadViews = o =>
 
 loadViews(views)
 loadViews(sprite.views)
-const createHistory = process.env.NODE_ENV === 'test' ? createMemoryHistory : createWebHistory
+const createHistory = process.env.VUE_APP_OFFLINE ? createWebHashHistory : createWebHistory
 
 const router = createRouter({
   history: createHistory(),

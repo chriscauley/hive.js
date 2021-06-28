@@ -19,6 +19,7 @@ if (VUE_APP_OFFLINE) {
     port: 8283,
     historyApiFallback: true,
   }
+  module.exports.publicPath = '/hive.js/'
 } else {
   module.exports.publicPath = '/static/'
 }

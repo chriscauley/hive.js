@@ -3,9 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "watch": "yarn build --watch",
     "build": "vue-cli-service build --dest ../dist",
-    "lint": "vue-cli-service lint"
+    "build:docs": "VUE_APP_OFFLINE=1 vue-cli-service build --dest ../docs",
+    "lint": "vue-cli-service lint",
+    "serve": "VUE_APP_OFFLINE=1 vue-cli-service serve",
+    "watch": "yarn build --watch"
   },
   "dependencies": {
     "@popperjs/core": "^2.9.2",

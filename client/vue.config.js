@@ -1,16 +1,9 @@
 const path = require('path')
 
-const devServer = {
-  host: 'vue-hive.localhost',
-  port: 8283,
-  proxy: 'http://hive.localhost:8239/',
-  historyApiFallback: true,
-}
+const { VUE_APP_OFFLINE } = process.env
 
 module.exports = {
   lintOnSave: false,
-  publicPath: '/static/',
-  devServer,
   configureWebpack: {
     resolve: {
       alias: {
@@ -18,4 +11,14 @@ module.exports = {
       },
     },
   },
+}
+
+if (VUE_APP_OFFLINE) {
+  module.exports.devServer = {
+    host: 'vue-hive.localhost',
+    port: 8283,
+    historyApiFallback: true,
+  }
+} else {
+  module.exports.publicPath = '/static/'
 }

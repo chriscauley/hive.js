@@ -4,10 +4,12 @@
       <div class="text-center pb-2">
         <h2>Welcome!</h2>
         <template v-if="$auth.user">
-          <router-link to="/new/online/" :class="css.button('block mb-4')">
-            Start Online Game
-          </router-link>
-          <div class="font-bold font-xl mb-4">-- OR --</div>
+          <template v-if="$auth.enabled">
+            <router-link to="/new/online/" :class="css.button('block mb-4')">
+              Start Online Game
+            </router-link>
+            <div class="font-bold font-xl mb-4">-- OR --</div>
+          </template>
           <router-link to="/new/local/" :class="css.button('block')">
             Start Local Game
           </router-link>

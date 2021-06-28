@@ -18,7 +18,7 @@ export default {
       <div className={css.modal.outer('-relative')}>
         <div className={css.modal.content('-auto')}>
           <h2>About</h2>
-          <vue3-markdown-it source={content} className="markdown" />
+          <unrest-markdown source={content} className="markdown" />
         </div>
       </div>
     </section>

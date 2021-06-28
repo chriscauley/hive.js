@@ -1,2 +1,3 @@
 yarn.lock binary
 docs/* binary
+docs/**/* binary

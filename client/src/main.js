@@ -1,5 +1,4 @@
 import { createApp } from 'vue'
-import VueMarkdownIt from 'vue3-markdown-it'
 import Form from '@unrest/form'
 import UrVue from '@unrest/vue'
 import '@unrest/tailwind/dist.css'
@@ -14,8 +13,11 @@ import ImportGame from '@/components/ImportGame'
 import ExportGame from '@/components/ExportGame'
 import '@/styles/base.scss'
 
-auth.config.AUTH_START = '/'
-auth.config.oauth_providers = ['twitter', 'github']
+auth.configure({
+  AUTH_START: '/',
+  oauth_providers: ['twitter', 'github'],
+  enabled: !process.env.VUE_APP_OFFLINE,
+})
 
 const app = createApp(App)
 app.component('ImportGame', ImportGame)
@@ -26,7 +28,6 @@ app.use(store)
 app.use(UrVue.plugin)
 app.use(UrVue.ui)
 app.use(chat)
-app.use(VueMarkdownIt)
 app.use(Form.plugin)
 app.use(auth.plugin) // must come after store!
 

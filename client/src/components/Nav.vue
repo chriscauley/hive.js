@@ -37,7 +37,7 @@ export default {
   computed: {
     game_links() {
       const { room_id } = this.$route.params
-      const warn = action => {
+      const warn = (action) => {
         const confirm = () => {
           this.$store.room.send(this.$route.params.room_id, action)
           this.$ui.alert(null)
@@ -59,7 +59,7 @@ export default {
         { text: 'Undo (ctrl+z)', click: () => this.$store.room.undo(room_id) },
         { text: 'Redo (ctrl+y)', click: () => this.$store.room.redo(room_id) },
       ]
-      const disable = item => {
+      const disable = (item) => {
         delete item.click
         item.class = 'disabled'
       }

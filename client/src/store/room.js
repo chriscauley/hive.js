@@ -41,7 +41,7 @@ export default ({ store }) => {
     },
   }
 
-  const watchRoom = room_id => {
+  const watchRoom = (room_id) => {
     state.current_room = room_id
     if (room_id === 'local') {
       if (!state.rooms.local) {
@@ -71,7 +71,7 @@ export default ({ store }) => {
         room.reconnect_tries = (room.reconnect_tries || 0) + 1
       }, 5000)
     }
-    ws.onmessage = e => {
+    ws.onmessage = (e) => {
       const room = (state.rooms[room_id] = JSON.parse(e.data))
       if (room.error === 404) {
         room.state = {}
@@ -85,7 +85,7 @@ export default ({ store }) => {
       if (room.game_id && !BOARDS[room.game_id]) {
         const board = (BOARDS[room.game_id] = B.new(room.game))
         board.local_player = parseInt(
-          Object.keys(board.players).find(key => {
+          Object.keys(board.players).find((key) => {
             return board.players[key] === store.auth.user.id
           }),
         )
@@ -103,7 +103,7 @@ export default ({ store }) => {
     SOCKETS[room_id].send(JSON.stringify({ action, content }))
   }
 
-  const sync = room_id => {
+  const sync = (room_id) => {
     const room = state.rooms[room_id]
     if (room_id === 'local') {
       ls.set(LOCAL_GAME_KEY, B.toJson(room.board))
@@ -145,16 +145,16 @@ export default ({ store }) => {
 
   const room_store = {
     state,
-    undo: room_id => onlyIfLocal(room_id, 'undo'),
-    redo: room_id => onlyIfLocal(room_id, 'redo'),
+    undo: (room_id) => onlyIfLocal(room_id, 'undo'),
+    redo: (room_id) => onlyIfLocal(room_id, 'redo'),
     watch: watchRoom,
     send: sendRoom,
     sync,
     save: () => client.post('/room/'),
-    isHost: room_id => {
+    isHost: (room_id) => {
       return room_id === 'local' || state.rooms[room_id]?.state.host_id === store.auth.user?.id
     },
-    loadJson: value => {
+    loadJson: (value) => {
       const room = watchRoom('local')
       try {
         if (typeof value === 'string') {

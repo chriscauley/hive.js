@@ -50,7 +50,7 @@ export default () => {
   const config = ReactiveLocalStorage({ LS_KEY: 'config', initial })
   config.schema = schema
   const { state, save } = config
-  const onChange = data => {
+  const onChange = (data) => {
     save(data)
     const { darkmode } = state
     document.body.classList[darkmode ? 'add' : 'remove']('theme-dark_mode')

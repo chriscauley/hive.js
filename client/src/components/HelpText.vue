@@ -46,7 +46,7 @@ export default {
     items() {
       const { board } = this
       const { piece_id, piece_type } = board.selected
-      const items = help[piece_type].map(i => (typeof i === 'function' ? i(board) : i))
+      const items = help[piece_type].map((i) => (typeof i === 'function' ? i(board) : i))
       if (piece_id === 'new') {
         items.unshift(PLACEMENT)
       }

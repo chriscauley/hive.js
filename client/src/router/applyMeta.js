@@ -12,7 +12,7 @@ export default (to, from, next) => {
   const nearestWithTitle = to.matched
     .slice()
     .reverse()
-    .find(r => r.meta?.title)
+    .find((r) => r.meta?.title)
   if (nearestWithTitle) {
     document.title = nearestWithTitle.meta.title
   }
@@ -20,16 +20,16 @@ export default (to, from, next) => {
   const nearestWithMeta = to.matched
     .slice()
     .reverse()
-    .find(r => r.meta?.metaTags)
+    .find((r) => r.meta?.metaTags)
 
   // Remove any stale meta tags from the document using the key attribute we set below.
-  Array.from(document.querySelectorAll(`[${q}]`)).forEach(el => el.parentNode.removeChild(el))
+  Array.from(document.querySelectorAll(`[${q}]`)).forEach((el) => el.parentNode.removeChild(el))
 
   // Turn the meta tag definitions into actual elements in the head.
-  nearestWithMeta?.meta.tags.forEach(tagDef => {
+  nearestWithMeta?.meta.tags.forEach((tagDef) => {
     const tag = document.createElement('meta')
 
-    Object.keys(tagDef).forEach(key => tag.setAttribute(key, tagDef[key]))
+    Object.keys(tagDef).forEach((key) => tag.setAttribute(key, tagDef[key]))
 
     // We use this to track which meta tags we create so we don't interfere with other ones.
     tag.setAttribute(q, '')

@@ -29,7 +29,7 @@ const content = {
   ],
 }
 
-const getId = s => s.split(' ')[0].replace(/\./g, '-')
+const getId = (s) => s.split(' ')[0].replace(/\./g, '-')
 
 export default {
   __route: {
@@ -49,7 +49,7 @@ export default {
             >
               <h3>{title}</h3>
               <ul className="browser-default">
-                {items.map(item => (
+                {items.map((item) => (
                   <li key={item}>{item}</li>
                 ))}
               </ul>

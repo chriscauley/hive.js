@@ -3,7 +3,7 @@
 </template>
 
 <script>
-const fmt = num => num.toString().padStart(2, '0')
+const fmt = (num) => num.toString().padStart(2, '0')
 
 export default {
   props: {

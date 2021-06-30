@@ -9,7 +9,7 @@
           :player="irow"
           :type="type"
           :count="getCount(type)"
-          @click="e => onClick?.(e, type)"
+          @click="(e) => onClick?.(e, type)"
           @mouseover="onHover?.(type)"
           @mouseout="onHover?.(null)"
         />
@@ -35,7 +35,7 @@ export default {
     const _len = 5
     let row = []
     const piece_lists = [row]
-    pieces.list.forEach(type => {
+    pieces.list.forEach((type) => {
       if (row.length === _len) {
         piece_lists.push((row = []))
       }

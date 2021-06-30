@@ -26,7 +26,7 @@ const NeedsPlayers = ({ _board }) => {
 }
 
 const NeedsReady = ({ send, board }) => {
-  const sit = color => () => send(board.room_id, 'ready', color)
+  const sit = (color) => () => send(board.room_id, 'ready', color)
   return (
     <>
       <h2>Please choose a seat</h2>

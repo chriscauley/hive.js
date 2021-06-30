@@ -1181,16 +1181,17 @@
   dependencies:
     classnames "^2.2.6"
 
-"@unrest/eslint-config@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@unrest/eslint-config/-/eslint-config-0.0.1.tgz#3a065a91c5c24b6577be414db994daae8d6fab63"
-  integrity sha512-pYhcWB+aDThhncltR250j92roQ7DORcRwIbMDbztn+ENfGlmTwOMQcxSrl63w0zN1jWdHgZ9sF3ObRWwS81Awg==
+"@unrest/eslint-config@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@unrest/eslint-config/-/eslint-config-0.0.3.tgz#2a472b47a63e88405ad0dca3b067489ebb753d2a"
+  integrity sha512-FYyQLNMnQezdo4UT4IaZEJlzKvuijdyb/xU9VajIGl3yPtH0McYyqlcmGJJkwh/eHAs+Y+6kdCTB1hzWrQqX3Q==
   dependencies:
     babel-eslint "^10.1.0"
     eslint "^6.7.2"
     eslint-config-prettier "^8.1.0"
     eslint-plugin-prettier "^3.3.1"
     eslint-plugin-vue "^7.0.0-0"
+    prettier "^1.18.2"
 
 "@unrest/form@^0.0.4":
   version "0.0.4"

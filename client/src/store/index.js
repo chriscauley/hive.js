@@ -5,7 +5,7 @@ const store = {
   list: [],
   install: (app, _options) => {
     app.config.globalProperties.$store = store
-    store.list.forEach(m => m.init?.())
+    store.list.forEach((m) => m.init?.())
   },
 }
 

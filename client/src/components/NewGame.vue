@@ -7,7 +7,7 @@
       </div>
       <div class="flex">
         <div :class="`w-1/2 ${is_host ? '' : 'is_guest'}`">
-          <rule-list :rules="rules" :onClick="onClick" :onHover="t => (hovering = t)" />
+          <rule-list :rules="rules" :onClick="onClick" :onHover="(t) => (hovering = t)" />
           <div v-if="is_host">
             <button v-if="can_start" :class="css.button('mt-4 mr-4')" @click="startGame">
               Start
@@ -51,9 +51,9 @@ import HivePiece from './Piece'
 import ls from 'local-storage-json'
 
 // TODO move clean rules into store
-const cleanRules = rules => {
+const cleanRules = (rules) => {
   rules &&
-    Object.keys(rules.pieces).forEach(type => {
+    Object.keys(rules.pieces).forEach((type) => {
       if (!pieces.piece_counts[type]) {
         delete rules.pieces[type]
       }
@@ -115,10 +115,10 @@ export default {
     },
   },
   methods: {
-    title: s =>
+    title: (s) =>
       s
         .split('_')
-        .map(s => s[0].toUpperCase() + s.slice(1))
+        .map((s) => s[0].toUpperCase() + s.slice(1))
         .join(' '),
     onClick(e, type) {
       if (!this.is_host) {

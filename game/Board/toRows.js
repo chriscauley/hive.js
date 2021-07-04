@@ -16,9 +16,6 @@ const empty = (board, index) => {
   return cls + ' hex-empty_' + colors[r_i]
 }
 
-const pieceToClass = (board, piece_id) => {
-}
-
 const sliceBoard = (board) => {
   let max_x = -Infinity,
     max_y = -Infinity,
@@ -91,7 +88,7 @@ export default (board, { columns = 1 } = {}) => {
       cell.selected = cell.index === selected.index
       const stack = board.stacks[cell.index]
       if (stack) {
-        const piece_id = stack[stack.length-1]
+        const piece_id = stack[stack.length - 1]
         cell.piece_id = piece_id
         cell.player_id = board.piece_owners[piece_id]
         cell.piece_type = board.piece_types[piece_id]

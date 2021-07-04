@@ -1,7 +1,7 @@
 module.exports = {
   clearMocks: true,
-  coverageDirectory: "coverage",
+  coverageDirectory: 'coverage',
   transform: {
-    "^.+\\.(js|jsx)$": "babel-jest",
+    '^.+\\.(js|jsx)$': 'babel-jest',
   },
-};
+}

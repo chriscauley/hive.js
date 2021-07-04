@@ -114,9 +114,7 @@ const isTouchingEnemySpider = (board, start_index, target_index) => {
   return (
     undefined !==
     webs.find(
-      (i) =>
-        board.layers.player[i] !== owner && // friendly spiders do not stop
-        !starting_webs.includes(i), // cannot get stopped by web you start in
+      (i) => board.layers.player[i] !== owner && !starting_webs.includes(i), // friendly spiders do not stop // cannot get stopped by web you start in
     )
   )
 }

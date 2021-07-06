@@ -148,7 +148,7 @@ const B = {
 
   nextTurn: (b) => {
     delete b.frozen // undo information is now lost (if it existed)
-    const last = b.actions[b.actions.length-1]
+    const last = b.actions[b.actions.length - 1]
     b.turn++
     const toggledCheat = last && last[0] === 'toggleCheat'
 

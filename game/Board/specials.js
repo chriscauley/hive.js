@@ -199,7 +199,7 @@ const dragonfly_nymph = (b, piece_id, args) => {
     // 1 for move, 2 for redo
     return () => {
       args.push('pulled')
-      pullUnder(b, index, args[0])
+      return pullUnder(b, index, args[0])
     }
   }
   return b.geo.dindexes.dragonfly[mod(index, 2)]

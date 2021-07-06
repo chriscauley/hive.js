@@ -30,6 +30,7 @@
 import css from '@unrest/css'
 
 import help from 'hive.js/help'
+import B from 'hive.js/Board'
 
 const PLACEMENT =
   'PLACEMENT: Place this piece in any empty space that only touches friendly tiles. After placed, this pieces moves are:'
@@ -55,7 +56,7 @@ export default {
   },
   methods: {
     unselect() {
-      alert('TODO')
+      B.unselect(this.board)
     },
     toggle() {
       this.$store.config.save({ show_help: !this.show_help })

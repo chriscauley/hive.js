@@ -5,7 +5,7 @@
   "license": "MIT",
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.14.5",
-    "@unrest/eslint-config": "^0.0.4",
+    "@unrest/eslint-config": "0.0.5",
     "babel-jest": "^27.0.6",
     "jest": "^27.0.6"
   },

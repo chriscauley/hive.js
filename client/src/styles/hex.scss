@@ -56,10 +56,10 @@
     }
   }
   .item:nth-child(even) {
-    top: 0.08em - math.div($hex_h, 2);
+    top: -2.71em;
   }
   &.odd-q .item:nth-child(even) {
-    top: 0.08em + math.div($hex_h, 2);
+    top: -2.7em;
   }
 }
 

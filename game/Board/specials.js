@@ -81,7 +81,7 @@ const kung_fu_mantis = (board, piece_id, args) => {
 
 const praying_mantis = (board, piece_id, args) => {
   const index = board.reverse[piece_id]
-  if (board.stacks[index].length > 1) {
+  if (board.stacks[index].length > 1 || wouldBreakHive(board, [index])) {
     return []
   }
   const targets = []

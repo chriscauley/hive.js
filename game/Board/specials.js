@@ -93,7 +93,7 @@ const praying_mantis = (board, piece_id, args) => {
 
     // praying_mantis travels in same direction until it falls off hive
     while (board.stacks[target_index]) {
-      if (board.layers.fly[target_index]) {
+      if (last !== undefined && board.layers.fly[last]) {
         // cannot leap over orbweaver
         return
       }

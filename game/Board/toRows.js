@@ -176,7 +176,7 @@ const columnize = (cells, columns) => {
 const getMarked = (board) => {
   const { selected } = board
   const marked = {}
-  Object.keys(board.cantmove).forEach((index) => (marked[index] = 'gray'))
+  Object.keys(board.cantmove).forEach((index) => (marked[index] = ' gray'))
 
   if (!selected) {
     return marked

@@ -148,10 +148,16 @@ const B = {
 
   nextTurn: (b) => {
     delete b.frozen // undo information is now lost (if it existed)
+    const last = b.actions[b.actions.length-1]
     b.turn++
-    B.nextPlayer(b)
+    const toggledCheat = last && last[0] === 'toggleCheat'
+
+    if (!toggledCheat) {
+      B.nextPlayer(b)
+      b.last_move_at = new Date().valueOf()
+    }
+
     B.unselect(b)
-    b.last_move_at = new Date().valueOf()
     B.update(b)
   },
 

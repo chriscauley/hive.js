@@ -60,7 +60,10 @@ export default {
         cancel: () => B.unselect(this.board),
         undo: () => this.$store.room.undo(this.room.id),
         redo: () => this.$store.room.redo(this.room.id),
-        'i l o v e b e e s': () => B.doAction(this.board, ['toggleCheat']),
+        'i l o v e b e e s': () => {
+          B.doAction(this.board, ['toggleCheat'])
+          this.$store.room.sync(this.room.id)
+        },
       }
     },
     board() {

@@ -5,7 +5,7 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 DEBUG = False
 
 ALLOWED_HOSTS = ['hive.unrest.io']
-
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # Application definition
 

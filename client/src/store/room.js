@@ -1,7 +1,7 @@
 import { reactive } from 'vue'
 import unrest from '@unrest/vue'
 import ls from 'local-storage-json'
-import { getClient } from '@unrest/vue-reactive-storage'
+import { getClient } from '@unrest/vue-storage'
 
 import router from '@/router'
 import B from 'hive.js/Board'

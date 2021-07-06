@@ -28,7 +28,10 @@
 <script>
 import css from '@unrest/css'
 
-const help_links = [{ to: '/about/', text: 'About' }, { to: '/change-log/', text: 'Change Log' }]
+const help_links = [
+  { to: '/about/', text: 'About' },
+  { to: '/change-log/', text: 'Change Log' },
+]
 
 export default {
   data() {

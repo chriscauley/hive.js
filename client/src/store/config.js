@@ -1,4 +1,4 @@
-import { ReactiveLocalStorage } from '@unrest/vue-reactive-storage'
+import { ReactiveLocalStorage } from '@unrest/vue-storage'
 
 const initial = {
   show_help: true,

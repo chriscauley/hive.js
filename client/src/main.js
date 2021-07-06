@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import Form from '@unrest/form'
+import Form from '@unrest/vue-form'
 import UrVue from '@unrest/vue'
 import '@unrest/tailwind/dist.css'
 

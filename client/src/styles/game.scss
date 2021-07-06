@@ -1,3 +1,4 @@
+@use "sass:math";
 @import "./var.scss";
 
 .game {
@@ -34,9 +35,9 @@
     transform: translate(0, -50%);
   }
   .player_1 {
-    left: $size / 2;
+    left: math.div($size, 2);
   }
   .player_2 {
-    right: #{$size / 2};
+    right: math.div($size, 2);
   }
 }

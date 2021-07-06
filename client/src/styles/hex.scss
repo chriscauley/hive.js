@@ -1,3 +1,4 @@
+@use "sass:math";
 @import "./var.scss";
 
 .hex-grid {
@@ -16,9 +17,9 @@
   }
   .item {
     @apply relative;
-    width: $hex_w / 2 + $buffer;
+    width: math.div($hex_w, 2) + $buffer;
     height: $hex_h + $buffer;
-    margin: 0 $hex_w / 8;
+    margin: 0 math.div($hex_w, 8);
     .content {
       height: calc(#{$hex_h} + 1px);
       left: 50%;
@@ -55,10 +56,10 @@
     }
   }
   .item:nth-child(even) {
-    top: - ($hex_h / 2 + 0.08em);
+    top: 0.08em - math.div($hex_h, 2);
   }
   &.odd-q .item:nth-child(even) {
-    top: ($hex_h / 2 + 0.08em);
+    top: 0.08em + math.div($hex_h, 2);
   }
 }
 

@@ -439,6 +439,4 @@ const B = {
   },
 }
 
-window.B = B
-
 export default B

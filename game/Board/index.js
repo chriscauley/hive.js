@@ -164,7 +164,9 @@ const B = {
   doAction: (b, args) => {
     const action_type = args[0]
     const index = args[1]
-    if (action_type === 'toggleCheat') {
+    if (action_type === 'delete') {
+      B.deletePiece(b, args[1]) // piece_id, not index
+    } else if (action_type === 'toggleCheat') {
       b.rules.no_rules = !b.rules.no_rules
     } else if (action_type === 'place') {
       const piece_id = b.piece_types.length

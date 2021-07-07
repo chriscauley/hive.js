@@ -106,12 +106,9 @@ export default {
       this.$store.room.sync(this.room.id)
     },
     deleteSelected() {
-      if (!this.is_local) {
-        this.$ui.toast('TODO: Delete not implemented for network games.')
-      } else {
-        const { piece_id } = this.board.selected
-        B.deletePiece(this.board, piece_id)
-      }
+      const { piece_id } = this.board.selected
+      B.doAction(this.board, ['delete', piece_id])
+      this.$store.room.sync(this.room.id)
     },
   },
 }

@@ -110,7 +110,7 @@ const praying_mantis = (board, piece_id, args) => {
     let snag_targets = []
     targets.filter((t) => t[1] !== undefined).map((t) => (snag_targets = snag_targets.concat(t)))
     markChalk(board, snag_targets, (s) => (s += ' purple-inner'))
-    return targets.filter((t) => !board.layers.stack[t[0]]).map((t) => t[0])
+    return targets.filter((t) => notEnemyScorpion(board, index, t[0])).map((t) => t[0])
   }
   return () => {
     const [target_index, snag_index] = targets.find((t) => t[0] === args[0])

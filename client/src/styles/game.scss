@@ -33,7 +33,7 @@
     position: absolute;
     top: 50%;
     transform: translate(0, -50%);
-    .hex-grid.odd-q .item:nth-child(even) {
+    &.hex-grid.odd-q .item:nth-child(even) {
       /* the player pieces look weird if we don't shift the second column down */
       top: 2.7em;
     }

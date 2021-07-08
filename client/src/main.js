@@ -11,6 +11,7 @@ import router from '@/router'
 import App from '@/App.vue'
 import ImportGame from '@/components/ImportGame'
 import ExportGame from '@/components/ExportGame'
+import Hexagon from '@/sprite/Hexagon'
 import '@/styles/base.scss'
 
 auth.configure({
@@ -22,6 +23,7 @@ auth.configure({
 const app = createApp(App)
 app.component('ImportGame', ImportGame)
 app.component('ExportGame', ExportGame)
+app.component('Hexagon', Hexagon)
 app.directive('autoscroll', autoscroll)
 app.use(router)
 app.use(store)

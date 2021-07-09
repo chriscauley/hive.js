@@ -63,30 +63,27 @@
   }
 }
 
-.hex-grid .item {
-  $z: -5%;
-  .piece {
-    top: 0;
-    left: 0;
-    transition: top 0.5s, left 0.5s;
+.piece {
+  top: 0;
+  left: 0;
+  transition: top 0.5s, left 0.5s;
+}
+@for $i from  1 through 4 {
+  .-z-#{$i} {
+    margin-top: $i * -5%;
+    margin-left: $i * -5%;
   }
-  @for $i from  1 through 4 {
-    .-stacked-#{$i} {
-      top: $i * $z;
-      left: $i * $z;
-    }
-    &.selected:hover .-stacked-#{$i} {
-      top: $i * -45%;
-      left: $i * -45%;
-      transition-delay: 0.5s;
-    }
+  .selected:hover .-z-hover-#{$i} {
+    margin-top: $i * -45%;
+    margin-left: $i * -45%;
+    transition-delay: 0.5s;
   }
-  @for $i from  1 through 16 {
-    &.selected:hover .-stacked--#{$i} {
-      top: $i * 30%;
-      left: $i * 30%;
-      transition-delay: 0.5s;
-    }
+}
+@for $i from  1 through 16 {
+  .selected:hover .-z-hover--#{$i} {
+    margin-top: $i * 30%;
+    margin-left: $i * 30%;
+    transition-delay: 0.5s;
   }
 }
 

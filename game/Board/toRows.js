@@ -1,19 +1,15 @@
+// TODO will be toCells afterwards
 /* Renders the board into a state that can be displayed */
 import { range } from 'lodash'
 import pieces from '../pieces'
 import Board from './index'
 import webs from './webs'
 
-const _class = (p, t, s) => `piece hex-player_${p} type type-${t} hex -stacked-${s}`
+const COLORS = ['r', 'g', 'b', 'r']
+
 const empty = (board, index) => {
-  const cls = 'piece hex'
-  if (!board.empty[index]) {
-    // hexes far away from the hive are "invisible"
-    return cls
-  }
-  const colors = ['r', 'g', 'b', 'r']
   const r_i = (board.geo.index2xy(index)[1] % 3) + (index % 2)
-  return cls + ' hex-empty_' + colors[r_i]
+  return `piece hex hex-empty_${COLORS[r_i]}`
 }
 
 const sliceBoard = (board) => {
@@ -47,24 +43,48 @@ const sliceBoard = (board) => {
 
 export const makeStack = (board, index) => {
   const stack = board.stacks[index]
+  const xy = board.geo.index2xy(index)
+  if (board.empty[index]) {
+    return [
+      {
+        xy,
+        index,
+        class: [empty(board, index)],
+        z: 0,
+        id: index,
+      },
+    ]
+  }
   if (!stack) {
-    return [empty(board, index)]
+    return
   }
   return stack.map((piece_id, stack_index) => {
+    const z_hover = stack.length - stack_index
+    let z = z_hover
     if (stack.length > 4) {
-      stack_index = stack_index - stack.length + 4
+      z = z_hover - stack.length + 4
     }
-    const type = board.piece_types[piece_id]
-    const player = board.piece_owners[piece_id]
-    return _class(player, type, stack_index)
+    const player_id = board.piece_owners[piece_id]
+    const piece_type = board.piece_types[piece_id]
+    return {
+      class: [
+        `hex hex-player_${player_id} type type-${piece_type} piece`,
+        `-z-${z} -z-hover-${z_hover}`,
+      ],
+      player_id,
+      piece_type,
+      index,
+      xy,
+      id: piece_id,
+    }
   })
 }
 
-export default (board, { columns = 1 } = {}) => {
+export default (board) => {
   const marked = getMarked(board)
   const { selected = {} } = board
   if (selected.index !== undefined) {
-    marked[selected.index] = ' purple'
+    marked[selected.index] = ' purple' // TOOD note 1
   } else if (selected.piece_id !== 'new' && board.last) {
     if (board.last.from) {
       marked[board.last.from] = ' blue-dashed'
@@ -85,7 +105,15 @@ export default (board, { columns = 1 } = {}) => {
   rows.forEach((row) =>
     row.forEach((cell) => {
       cell.stack = makeStack(board, cell.index)
-      cell.selected = cell.index === selected.index
+      if (!cell.stack) {
+        return
+      }
+      const top = (cell.top = cell.stack[cell.stack.length - 1])
+      top.top = true
+      if (cell.index === selected.index) {
+        top.selected = true
+        top.class.push('purple') // TODO does marked cover this? (note 1)
+      }
       const stack = board.stacks[cell.index]
       if (stack) {
         const piece_id = stack[stack.length - 1]
@@ -119,10 +147,10 @@ export default (board, { columns = 1 } = {}) => {
         }
         cell.title = webs.title[web](selected.piece_type)
         cell.web = web
+        top.class.push(web)
       })
       if (marked[cell.index]) {
-        const _i = cell.stack.length - 1
-        cell.stack[_i] = cell.stack[_i] + marked[cell.index]
+        top.class.push(marked[cell.index])
       }
     }),
   )
@@ -133,13 +161,27 @@ export default (board, { columns = 1 } = {}) => {
   }
 
   pieces.getAvailable(board).forEach(({ player_id, type, count }) => {
+    let index = players[player_id].length
+    if (index !== 0) {
+      index++ // looks better in player piece bins
+    }
+    const xy = [index % 2, Math.floor(index / 2)]
     player_id = parseInt(player_id)
     const cell = {
-      stack: range(count).map((i) => _class(player_id, type, i)),
+      stack: range(count).map((z) => ({
+        class: [`hex hex-player_${player_id} type type-${type} piece -z-${z}`],
+        player_id,
+        piece_type: type,
+        index,
+        xy,
+        id: `new_${player_id}_${type}_${z}`,
+      })),
+      index,
       player_id,
       piece_id: 'new',
       piece_type: type, // TODO remove drag and drop and then this can be type
       type: 'cell',
+      xy,
     }
     if (
       selected.piece_id === 'new' &&
@@ -147,30 +189,16 @@ export default (board, { columns = 1 } = {}) => {
       player_id === selected.player_id
     ) {
       const _i = cell.stack.length - 1
-      cell.stack[_i] = cell.stack[_i] + ' purple'
+      cell.stack[cell.stack.length].class.push('purple')
     }
     players[player_id].push(cell)
   })
 
   return {
     rows,
-    player_1: columnize(players[1], columns),
-    player_2: columnize(players[2], columns),
+    player_1: [players[1]],
+    player_2: [players[2]],
   }
-}
-
-const columnize = (cells, columns) => {
-  const out = []
-  let row = []
-  out.push(row)
-  while (cells.length) {
-    row.push(cells.shift())
-    if (row.length === columns) {
-      row = []
-      out.push(row)
-    }
-  }
-  return out
 }
 
 const getMarked = (board) => {

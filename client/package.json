@@ -7,7 +7,8 @@
     "build:docs": "VUE_APP_OFFLINE=1 vue-cli-service build --dest ../docs",
     "lint": "eslint \"src/**/*\"",
     "serve": "VUE_APP_OFFLINE=1 vue-cli-service serve",
-    "watch": "yarn build --watch"
+    "watch": "yarn build --watch",
+    "test": "echo no tests yet"
   },
   "dependencies": {
     "@popperjs/core": "^2.9.2",

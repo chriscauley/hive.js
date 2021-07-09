@@ -10,4 +10,9 @@ jobs:
           cd game
           yarn install
           yarn test
-
+          yarn lint
+      - run: |
+          cd ../client
+          yarn install
+          yarn test
+          yarn lint

@@ -8,12 +8,25 @@
         @click="$emit('clickPiece', cell)"
       >
         <hexagon v-for="(piece, i) in cell.stack" :key="i" :width="geo.width" :cls="piece.class" />
+        <g>
+          <foreignObject
+            :width="geo.width"
+            :height="geo.height"
+            :id="`piece-${piece}`"
+            v-for="piece in piece_list"
+            :key="piece"
+            >
+            <div :class="`piece type type-${piece}`" />
+          </foreignObject>
+        </g>
       </g>
     </svg>
   </div>
-</template>
+ </template>
 
-<script>
+ <script>
+import pieces from 'hive.js/pieces'
+
 export default {
   props: {
     rows: Array,
@@ -30,7 +43,7 @@ export default {
       offset_x: width + buffer,
       offset_y: height + buffer,
     }
-    return { geo }
+    return { geo, piece_list: pieces.list }
   },
   computed: {
     svg() {

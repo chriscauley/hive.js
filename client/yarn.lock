@@ -1251,37 +1251,37 @@
   resolved "https://registry.yarnpkg.com/@unrest/vue-auth/-/vue-auth-0.0.6.tgz#fc7a5ee92404c18d44c4bd6ee4329364f6a05d4c"
   integrity sha512-yKHeRd+7Nev4yfkJ+D8lzg6i9+iibE+O0HrBHmlukR4kbDG77eoAxhPplSr4Hs2AcQ32z5r+Doo8r+dVdUR7Ew==
 
-"@unrest/vue-form@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@unrest/vue-form/-/vue-form-0.0.1.tgz#96f905d0e5e0d35b29d4c55a0c39f36bc968158c"
-  integrity sha512-Q++Cm0g+BNHDBqze+Qds9p5FpGdn8zYW17nQokGrdgYvED6WcyEjL/q6p/ypniBx4iC2D//q9YSasAu30MLS5g==
+"@unrest/vue-form@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@unrest/vue-form/-/vue-form-0.0.6.tgz#53d7df9dc69846357b1425ba85612063c356aa8c"
+  integrity sha512-7tGThIMGamTyyMhgW36/TLIVgiVYNf89qx8y0XP0/tkwP8YJGKSGd6gBkWJvCTPZN0oT5w3m3hVf7SRp1Bs7eQ==
   dependencies:
     jsonschema "^1.4.0"
     lodash.pick "^4.4.0"
     vue "^3.0.0"
 
-"@unrest/vue-mousetrap@^0.0.4":
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/@unrest/vue-mousetrap/-/vue-mousetrap-0.0.4.tgz#49fabd867adf83af3dc432ddb7ad0f1f2c812bda"
-  integrity sha512-xWj+9OW0EmVlJB6REsDs7k28vAwzrgK82VlwZ9+zJOkqM0xrryNht7aGQivuzw813BjlrPDU7rnLWBaxC21ZPQ==
+"@unrest/vue-mousetrap@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@unrest/vue-mousetrap/-/vue-mousetrap-0.0.5.tgz#3a4391b273ce4ecfa8e0d4f740e0d5b03c35d536"
+  integrity sha512-cTAZdjCK2m9FILNpb6tF4Ibbyg5mt+qezYzBm93U4j68nvpZUhJwockduBqSWj+ggqhwZ3hMy4LankJErildtg==
   dependencies:
     "@unrest/eslint-config" "^0.0.4"
     mousetrap "^1.6.5"
 
-"@unrest/vue-storage@^0.0.4":
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/@unrest/vue-storage/-/vue-storage-0.0.4.tgz#d1d6abeff9de597fa56dfa61e960fe782d2d4b97"
-  integrity sha512-MlMWoON/3Ay7AD6D7SjyblhW8iuDdNPlAFXIAp9ZFPlrLwC8YdExbmSR3AANOkHtLa+kjwza/KbiyX3gRqVRKg==
+"@unrest/vue-storage@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@unrest/vue-storage/-/vue-storage-0.0.5.tgz#cde7b1567b2bf10878e501cd9f2d871fcc60bb9d"
+  integrity sha512-2KN6zWGnY2Xuc7rVLoktYhxXtSYwLk/m1OCHZupYYqFGElL8YzwwyySa4fvZGmnfKVfmSiZ43GSXElCbv0qbiQ==
   dependencies:
     axios "^0.21.1"
     core-js "^3.6.5"
     local-storage-json "^1.1.0"
     vue "^3.0.0"
 
-"@unrest/vue@^0.1.7":
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/@unrest/vue/-/vue-0.1.7.tgz#6e370e987cfbdf8cb1dcc21bd536d46a08d330c5"
-  integrity sha512-xAneUXXsXvAW8cw2UAnG9O92pKuFkrZJsUybj+kLYr0y2FpuyqcxlrH6rihEoEPVuNn73ZOJHxMivGYJbopQVQ==
+"@unrest/vue@^0.1.8":
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/@unrest/vue/-/vue-0.1.8.tgz#698768d9b8733924a6603295e422f79abbf539c4"
+  integrity sha512-spp4HGEz0P35l8H+3eqDpntDUqOGNMzRR1zXS29nKPAHMycf9WD7pnvj1oRSWCfEztdt8TO/Zd6BePQdgSchWw==
   dependencies:
     dedent "^0.7.0"
     marked "^2.1.3"

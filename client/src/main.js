@@ -15,7 +15,7 @@ import '@/styles/base.scss'
 
 auth.configure({
   AUTH_START: '/',
-  oauth_providers: ['github'],
+  oauth_providers: ['twitter', 'github'],
   enabled: !process.env.VUE_APP_OFFLINE,
 })
 

@@ -40,7 +40,7 @@ const fly = [
 ]
 const lanternfly = [_along, 'If touching pieces on 3 sides, can fly anywhere.', _fly]
 const lanternfly_nymph = [_along, 'Can fly to any space surrounded on 3 or more sides.']
-const wasp = ['Can fly over hive and land in any space not touching a friendly piece.', _fly]
+const hornet = ['Can fly over hive and land in any space not touching a friendly piece.', _fly]
 const cockroach = ['Can move over friendly pieces to any empty space.', _fly]
 const dragonfly = [
   'Can move one space forward than one space left or right.',
@@ -56,7 +56,7 @@ const centipede = [_along, 'Can swap with an adjacent piece.']
 const earthworm = [_along, 'Can swap with the bottom piece of any stack 3  (on hive) moves away.']
 const orbweaver = _spiderlike([
   'No piece can move over.',
-  'Defends against grasshopper, cicada, ladybug, fly, wasp, and cockroach.',
+  'Defends against grasshopper, cicada, ladybug, fly, hornet, emerald wasp, and cockroach.',
 ])
 const trapdoor_spider = _spiderlike([
   'Traps any piece that moves next to it.',
@@ -90,7 +90,7 @@ export default {
   fly,
   lanternfly,
   lanternfly_nymph,
-  wasp,
+  hornet,
   cockroach,
   dragonfly,
   dragonfly_nymph,

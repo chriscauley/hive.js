@@ -20,7 +20,7 @@ const piece_counts = {
   // boardgamegeeks
   orchid_mantis: 2,
   fly: 3,
-  wasp: 3,
+  hornet: 3,
   dragonfly: 1,
   cockroach: 1,
   centipede: 1,
@@ -65,7 +65,7 @@ const colors = {
   spider: '#5c2900',
   trapdoor_spider: '#5c2900', // copies spider for now
   queen: '#e6b900',
-  wasp: '#e62b8b',
+  hornet: '#e62b8b',
   emerald_wasp: '#43b38c',
   kung_fu_mantis: '#aa3355',
 }
@@ -77,7 +77,7 @@ const tags = {
     'orbweaver',
     'lanternfly',
     'fly',
-    'wasp',
+    'hornet',
     'cockroach',
     'grasshopper',
     'cicada',

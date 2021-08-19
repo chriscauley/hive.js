@@ -315,7 +315,7 @@ const lanternfly_nymph = (b, index) => {
   return stepAlongHive(b, index).concat(targets)
 }
 
-const wasp = (b, index) => {
+const hornet = (b, index) => {
   const current_player = b.piece_owners[last(b.stacks[index])]
   const subhive = getSubhive(b, index, [webs.no.fly])
   const placements = getPlacement(b, current_player === 1 ? 2 : 1, [index])
@@ -369,7 +369,7 @@ const moves = {
   fly,
   lanternfly,
   lanternfly_nymph,
-  wasp,
+  hornet,
   getPlacement,
   ladybug,
   orchid_mantis,

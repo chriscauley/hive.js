@@ -16,7 +16,7 @@ export default {
     'orchid_mantis',
     'praying_mantis',
     'fly',
-    'wasp',
+    'hornet',
     'scorpion',
     'cockroach',
     'dragonfly',
@@ -95,9 +95,9 @@ export default {
     'From this position the scorpion can move to one of two spaces.',
     'The beetle and grasshopper have their moves restricted by the adjacent scorpion.',
   ],
-  wasp: [
-    'The black wasp can move to one of four spaces.',
-    'The white wasp can move to one of six spaces.',
+  hornet: [
+    'The black hornet can move to one of four spaces.',
+    'The white hornet can move to one of six spaces.',
   ],
   cockroach: [
     'The black cockroach can step on any adjacent black piece, and then off the hive for a total of 8 possible moves.',

@@ -13,7 +13,7 @@ const queen = [_along('queen')]
 
 const emerald_wasp = [
   'If starting on the ground, the emerald wasp can take two steps on top of the hive',
-  'If starting on the hive, the emrald wasp can step off the hive',
+  'If starting on the hive, the emerald wasp can step off the hive',
   _orbweaver('emerald_wasp'),
   _scorpion('emerald_wasp'),
 ]
@@ -111,9 +111,9 @@ const lanternfly_nymph = [
   'The lanternfly nymph can move over the hive to any unoccupied space which is surrounded on 3 or more sides.',
 ]
 
-const wasp = [
-  'The wasp takes unlimited steps on top of the hive and then steps off to any space not touching friendly tiles (opposite of placement).',
-  _orbweaver('wasp'),
+const hornet = [
+  'The hornet takes unlimited steps on top of the hive and then steps off to any space not touching friendly tiles (opposite of placement).',
+  _orbweaver('hornet'),
 ]
 
 const cockroach = [
@@ -172,7 +172,7 @@ export default {
   fly,
   lanternfly,
   lanternfly_nymph,
-  wasp,
+  hornet,
   cockroach,
   dragonfly: _dragonfly('dragonfly'),
   damselfly,

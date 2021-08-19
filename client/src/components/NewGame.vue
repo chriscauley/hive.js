@@ -93,6 +93,10 @@ export default {
       let { rules } = this.room.state
       if (!rules && this.is_host) {
         rules = cleanRules(ls.get(LS_KEY) || { variants: {}, pieces: { ...pieces.VANILLA } })
+        if (rules.pieces.wasp) { // TODO delete after 9/2021
+          rules.pieces.hornet = rules.pieces.wasp
+          delete rules.pieces.wasp
+        }
         this.setRules(rules)
       }
       return cleanRules(rules)

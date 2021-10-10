@@ -6,10 +6,11 @@
           v-for="type in piece_list"
           :key="type"
           :title="type"
-          :player="irow"
+          :player="getCount(type) ? 0 : 1"
           :type="type"
           :count="getCount(type)"
           @click="(e) => onClick?.(e, type)"
+          @contextmenu.prevent="(e) => onContextmenu?.(e, type)"
           @mouseover="onHover?.(type)"
           @mouseout="onHover?.(null)"
         />
@@ -29,6 +30,7 @@ export default {
   props: {
     rules: Object,
     onClick: Function,
+    onContextmenu: Function,
     onHover: Function,
   },
   data() {

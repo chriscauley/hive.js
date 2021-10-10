@@ -3,7 +3,7 @@
     <section :class="css.nav.section('left')">
       <router-link to="/" :class="css.nav.brand()"> Hive! </router-link>
     </section>
-    <section :class="css.nav.section('flex items-center')" v-if="$auth.ready">
+    <section class="unrest-grid" v-if="$auth.ready">
       <unrest-dropdown v-if="game_links.length" :items="game_links" placement="bottom">
         <div class="ur-dropdown__trigger">game</div>
       </unrest-dropdown>

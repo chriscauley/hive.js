@@ -73,21 +73,47 @@ body {
 }
 
 .new-game {
-  @apply border p-4 shadow -bg-bg;
+  @apply border p-4 shadow -bg-bg rounded-lg;
+  @apply flex flex-col gap-4;
   width: 672px;
-  .rjsf {
-    margin-right: 30px;
-    width: 200px;
+  &__row {
+    @apply flex items-center gap-8;
   }
-  .RuleList {
-    padding-left: 10px;
-    width: 400px;
-    @apply mt-8;
-    .TutorialNav {
-      font-size: 12px;
-      flex-basis: 300px;
+  &__col {
+    @apply w-1/2;
+  }
+  &__hover-piece {
+    @apply flex items-center text-3xl font-bold gap-x-2;
+  }
+  &__hover-inner {
+    @apply relative;
+    height: 32px;
+    width: 36px;
+  }
+  &__presets {
+    @apply flex flex-col gap-y-1;
+    .btn {
+      @apply mx-auto;
+      width: 150px;
     }
   }
+  &__actions {
+    @apply flex items-center gap-2;
+  }
+}
+
+.new-game .RuleList {
+  padding-left: 10px;
+  width: 305px;
+  @apply mt-8;
+  .TutorialNav {
+    font-size: 12px;
+    flex-basis: 300px;
+  }
+}
+
+.new-game h2 {
+  margin: 0;
 }
 
 .markdown h3 {

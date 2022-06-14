@@ -7,3 +7,5 @@ loguru==0.6.0
 psycopg2-binary==2.9.3
 social-auth-app-django==5.0.0
 social-auth-core==4.3.0
+django-unrest===0.1.7
+django-unrest-schema===0.0.1

@@ -1241,49 +1241,50 @@
     eslint-plugin-vue "^7.0.0-0"
     prettier "^1.18.2"
 
-"@unrest/tailwind@^0.0.11":
+"@unrest/tailwind@0.1.17":
+  version "0.1.17"
+  resolved "https://registry.yarnpkg.com/@unrest/tailwind/-/tailwind-0.1.17.tgz#b00c1735dad2f6b649a60002da6385c94afd4cad"
+  integrity sha512-4yekpG9jC+2dXfinMCbdX3e52g2pIe2CoaaOhJzfixvs/GoCB+/rg5hCB8S2WfMhJVF9wgjeqlFhphiRD6RUnQ==
+
+"@unrest/vue-auth@0.0.11":
   version "0.0.11"
-  resolved "https://registry.yarnpkg.com/@unrest/tailwind/-/tailwind-0.0.11.tgz#39b32fc7c930531cd07a20f084c2161ce1234190"
-  integrity sha512-YivR7tWNAf3wxlqII1EFvAd9Aco8uIbUZvDZ6eFcdyWutDPthyHdtb+ArixR28KNfZh9mE/S7ywkN/VIkh6yKA==
+  resolved "https://registry.yarnpkg.com/@unrest/vue-auth/-/vue-auth-0.0.11.tgz#1ab2a8e13ca4e8bd84ea4fa418d15ac3147580d7"
+  integrity sha512-mcho0w74IY0HTfhV+KZ7NsYirpo8N+PDvW0Nd9GxRskBdXwc/OQLaNvrAzCHSpDUfURnSsBqbzJ2dbOtaQQbCw==
 
-"@unrest/vue-auth@^0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@unrest/vue-auth/-/vue-auth-0.0.6.tgz#fc7a5ee92404c18d44c4bd6ee4329364f6a05d4c"
-  integrity sha512-yKHeRd+7Nev4yfkJ+D8lzg6i9+iibE+O0HrBHmlukR4kbDG77eoAxhPplSr4Hs2AcQ32z5r+Doo8r+dVdUR7Ew==
-
-"@unrest/vue-form@^0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@unrest/vue-form/-/vue-form-0.0.6.tgz#53d7df9dc69846357b1425ba85612063c356aa8c"
-  integrity sha512-7tGThIMGamTyyMhgW36/TLIVgiVYNf89qx8y0XP0/tkwP8YJGKSGd6gBkWJvCTPZN0oT5w3m3hVf7SRp1Bs7eQ==
+"@unrest/vue-form@0.0.14":
+  version "0.0.14"
+  resolved "https://registry.yarnpkg.com/@unrest/vue-form/-/vue-form-0.0.14.tgz#171040315173f05974991b1a24b3d86a6fd61d1c"
+  integrity sha512-rRZbgfZLOoJzRBfHlXeBwuGLdOa5EOwR4OQ3FwS7/KdSqnxy6CgaEBi4SYI8cK28IJ1Qtg90OP2a3DwxpEp3yw==
   dependencies:
     jsonschema "^1.4.0"
     lodash.pick "^4.4.0"
-    vue "^3.0.0"
 
-"@unrest/vue-mousetrap@^0.0.5":
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/@unrest/vue-mousetrap/-/vue-mousetrap-0.0.5.tgz#3a4391b273ce4ecfa8e0d4f740e0d5b03c35d536"
-  integrity sha512-cTAZdjCK2m9FILNpb6tF4Ibbyg5mt+qezYzBm93U4j68nvpZUhJwockduBqSWj+ggqhwZ3hMy4LankJErildtg==
+"@unrest/vue-mousetrap@0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@unrest/vue-mousetrap/-/vue-mousetrap-0.0.9.tgz#0652af7f407daec7e35a74b9ce7cb97aad7eddb8"
+  integrity sha512-oyGVonC9nVOA9jbHzAZoFTjZmm+QK4ZbHJ/4Sws2WMyL5neTfi8n2Q2gqG+zj3CwNx2xco1Uce6fbd8VMYbj1w==
   dependencies:
     "@unrest/eslint-config" "^0.0.4"
     mousetrap "^1.6.5"
 
-"@unrest/vue-storage@^0.0.5":
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/@unrest/vue-storage/-/vue-storage-0.0.5.tgz#cde7b1567b2bf10878e501cd9f2d871fcc60bb9d"
-  integrity sha512-2KN6zWGnY2Xuc7rVLoktYhxXtSYwLk/m1OCHZupYYqFGElL8YzwwyySa4fvZGmnfKVfmSiZ43GSXElCbv0qbiQ==
+"@unrest/vue-storage@0.0.14":
+  version "0.0.14"
+  resolved "https://registry.yarnpkg.com/@unrest/vue-storage/-/vue-storage-0.0.14.tgz#9f603cf4630a25c15936fd794e49c7d43860d69c"
+  integrity sha512-DjGHywmF8TzJAPIBAmu+BWLa5wdQOl6h836UUCzW3A7rXEqYxPXZn6dXlO3vliJqiswvTdV0V+MhDHuieLSu/Q==
   dependencies:
     axios "^0.21.1"
     core-js "^3.6.5"
     local-storage-json "^1.1.0"
-    vue "^3.0.0"
+    lodash.debounce "^4.0.8"
 
-"@unrest/vue@^0.1.8":
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/@unrest/vue/-/vue-0.1.8.tgz#698768d9b8733924a6603295e422f79abbf539c4"
-  integrity sha512-spp4HGEz0P35l8H+3eqDpntDUqOGNMzRR1zXS29nKPAHMycf9WD7pnvj1oRSWCfEztdt8TO/Zd6BePQdgSchWw==
+"@unrest/vue@0.2.5":
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/@unrest/vue/-/vue-0.2.5.tgz#3ce8e44077cdd6571b72bf372408df475002345d"
+  integrity sha512-7MLdJDuXrpmrofcgl1lz3AE7EEiq3pQTPtwwra8JyWeuoNZUwDYuFoqcQ5X0K7uGVbIlxNagB3HyJjPW7MHDiQ==
   dependencies:
     dedent "^0.7.0"
+    lodash.clonedeep "^4.5.0"
+    lodash.startcase "^4.4.0"
     marked "^2.1.3"
 
 "@vue/babel-helper-vue-jsx-merge-props@^1.2.1":
@@ -5716,6 +5717,11 @@ lodash.pick@^4.4.0:
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/lodash.pick/-/lodash.pick-4.4.0.tgz#52f05610fff9ded422611441ed1fc123a03001b3"
   integrity sha1-UvBWEP/53tQiYRRB7R/BI6AwAbM=
+
+lodash.startcase@^4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/lodash.startcase/-/lodash.startcase-4.4.0.tgz#9436e34ed26093ed7ffae1936144350915d9add8"
+  integrity sha512-+WKqsK294HMSc2jEbNgpHpd0JfIBhp7rEV4aqXWqFr6AlXov+SlcgB1Fv01y2kGe3Gc8nMW7VA0SrGuSkRfIEg==
 
 lodash.toarray@^4.4.0:
   version "4.4.0"

@@ -1,5 +1,6 @@
 import { reactive } from 'vue'
 import unrest from '@unrest/vue'
+import auth from '@unrest/vue-auth'
 import ls from 'local-storage-json'
 import { getClient } from '@unrest/vue-storage'
 
@@ -19,7 +20,7 @@ const state = reactive({
 
 const { ui } = unrest
 
-export default ({ store }) => {
+export default () => {
   SOCKETS.local = {
     send(json_data) {
       const { action, content } = JSON.parse(json_data)
@@ -86,7 +87,7 @@ export default ({ store }) => {
         const board = (BOARDS[room.game_id] = B.new(room.game))
         board.local_player = parseInt(
           Object.keys(board.players).find((key) => {
-            return board.players[key] === store.auth.user.id
+            return board.players[key] === auth.user.id
           }),
         )
       }
@@ -152,7 +153,11 @@ export default ({ store }) => {
     sync,
     save: () => client.post('/room/'),
     isHost: (room_id) => {
-      return room_id === 'local' || state.rooms[room_id]?.state.host_id === store.auth.user?.id
+      if (!room_id) {
+        return false
+      }
+      const host_id = state.rooms[room_id]?.state.host_id
+      return room_id === 'local' || host_id === auth.user?.id
     },
     loadJson: (value) => {
       const room = watchRoom('local')

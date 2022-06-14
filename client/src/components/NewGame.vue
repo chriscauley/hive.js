@@ -191,7 +191,7 @@ export default {
       },
     },
     is_host() {
-      return this.room.id === 'local' || this.room.state.host_id === this.$store.auth.user?.id
+      return this.room.id === 'local' || this.room.state.host_id === this.$auth.user?.id
     },
     rules() {
       let { rules } = this.room.state

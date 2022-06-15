@@ -30,6 +30,7 @@ const router = createRouter({
 })
 
 router.beforeEach(applyMeta)
+router.beforeEach(auth.checkAuth)
 router.beforeEach(() => {
   // refresh any api calls after navigation
 })

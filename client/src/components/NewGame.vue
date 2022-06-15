@@ -13,7 +13,7 @@
             :onClick="onClick"
             :onContextmenu="onContextmenu"
             :onHover="(t) => (hovering = t)"
-            />
+          />
         </div>
         <div class="new-game__col">
           <div v-if="hovering" class="h-full">
@@ -33,21 +33,23 @@
             </p>
             <div class="new-game__presets">
               <div
-                :class="css.preset(preset)"
-                @click="selected_preset=preset.slug"
-                @mouseover="hovering_preset=preset"
-                @mouseout="hovering_preset=null"
+                class="new-game__preset"
+                @mouseover="hovering_preset = preset"
+                @mouseout="hovering_preset = null"
                 v-for="preset in presets"
+                :key="preset.name"
                 >
-                {{ preset.name }}
+                <div :class="css.preset(preset)" @click="selected_preset = preset.slug">
+                  {{ preset.name }}
+                </div>
               </div>
               <div :class="css.preset({ slug: 'custom' })" @click="showCustom">Custom</div>
             </div>
           </div>
           <div v-else>
             <!--is guest-->
-            Waiting for host to choose pieces. Check out the rules while you wait.
-            Hover over a piece to read more. Use the chat to request the host change pieces.
+            Waiting for host to choose pieces. Check out the rules while you wait. Hover over a
+            piece to read more. Use the chat to request the host change pieces.
           </div>
         </div>
       </div>
@@ -111,7 +113,7 @@ const presets = [
       trapdoor_spider: 2,
       beetle: 2,
       damselfly: 1,
-    }
+    },
   },
   {
     slug: 'balanced',
@@ -127,7 +129,7 @@ const presets = [
       orbweaver: 1,
       fly: 1,
       emerald_wasp: 1,
-    }
+    },
   },
   {
     slug: 'battle',
@@ -154,11 +156,11 @@ const presets = [
       orbweaver: 1,
       ladybug: 2,
       beetle: 2,
-    }
-  }
+    },
+  },
 ]
 
-presets.forEach(p => p.name = startCase(p.slug))
+presets.forEach((p) => (p.name = startCase(p.slug)))
 
 export default {
   components: { RuleList, HivePiece },
@@ -170,24 +172,31 @@ export default {
   data() {
     const href = window.location.href
     const css = {
-      preset: (p) => ['btn', p.slug === this.selected_preset ? '-primary' : '-secondary']
+      preset: (p) => ['btn', p.slug === this.selected_preset ? '-primary' : '-secondary'],
     }
-    return { css, hovering: null, copied: null, href, presets, _preset: 'classic_hive', hovering_preset: null }
+    return {
+      css,
+      hovering: null,
+      copied: null,
+      href,
+      presets,
+      preset: 'classic_hive',
+      hovering_preset: null,
+    }
   },
   computed: {
     selected_preset: {
       get() {
-        console.log('getting', this._preset)
-        return this._preset
+        return this.preset
       },
       set(value) {
         const { rules } = this
-        const preset = presets.find(p => p.slug === value)
+        const preset = presets.find((p) => p.slug === value)
         if (preset) {
           rules.pieces = { ...preset.pieces }
           this.setRules(rules)
         }
-        this._preset = value
+        this.preset = value
       },
     },
     is_host() {
@@ -197,7 +206,8 @@ export default {
       let { rules } = this.room.state
       if (!rules && this.is_host) {
         rules = cleanRules(ls.get(LS_KEY) || { variants: {}, pieces: { ...pieces.VANILLA } })
-        if (rules.pieces.wasp) { // TODO delete after 1/2022
+        if (rules.pieces.wasp) {
+          // TODO delete after 1/2022
           rules.pieces.hornet = rules.pieces.wasp
           delete rules.pieces.wasp
         }
@@ -224,7 +234,16 @@ export default {
   },
   methods: {
     showCustom() {
-      this.$ui.alert("To add a piece click the tile on the left side of this menu. To remove a piece, shift+click or right click the piece.")
+      const close = () => this.$ui.alert(null)
+      this.$ui.alert(() => (
+        <div>
+          <div>To add a piece click the tile on the left side of this menu.</div>
+          <div>To remove a piece, shift+click or right click the piece.</div>
+          <div class="modal-footer">
+            <div class="btn -primary" onClick={close}>Okay</div>
+          </div>
+        </div>
+      ))
     },
     title: (s) =>
       s
@@ -235,7 +254,6 @@ export default {
       if (!this.is_host) {
         return
       }
-      console.log(0)
       const { rules } = this
       rules.pieces[type] = rules.pieces[type] || 0
       rules.pieces[type] += e.shiftKey ? -1 : 1
@@ -244,9 +262,7 @@ export default {
       } else if (rules.pieces[type] > MAX || rules.pieces[type] === 0) {
         delete rules.pieces[type]
       }
-      console.log(1, rules)
-      this.selected_preset = presets.find(p => console.log(p) || isEqual(p.pieces, rules.pieces))?.slug || 'custom'
-      console.log(2)
+      this.selected_preset = presets.find((p) => isEqual(p.pieces, rules.pieces))?.slug || 'custom'
       this.setRules(rules)
     },
     onContextmenu(e, type) {

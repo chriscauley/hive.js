@@ -20,7 +20,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     room_id = None
     async def connect(self):
         if not self.scope['user'].is_authenticated:
-            reply_channel.send({"close": True})
+            self.send({"close": True})
             return
         self.room_id = self.scope['url_route']['kwargs']['room_id']
         self.room_group_name = 'chat_%s' % self.room_id

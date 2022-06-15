@@ -90,8 +90,11 @@ body {
     height: 32px;
     width: 36px;
   }
+  &__preset {
+    @apply flex pb-2;
+  }
   &__presets {
-    @apply flex flex-col gap-y-1;
+    @apply flex flex-col items-center;
     .btn {
       @apply mx-auto;
       width: 150px;
@@ -103,9 +106,8 @@ body {
 }
 
 .new-game .RuleList {
-  padding-left: 10px;
+  @apply mt-8 pl-2 select-none;
   width: 305px;
-  @apply mt-8;
   .TutorialNav {
     font-size: 12px;
     flex-basis: 300px;
@@ -118,4 +120,14 @@ body {
 
 .markdown h3 {
   @apply mt-6;
+}
+
+.view-home {
+  @apply flex flex-col gap-2 text-center;
+  h2 {
+    @apply mb-0;
+  }
+  .btn {
+    @apply justify-center;
+  }
 }

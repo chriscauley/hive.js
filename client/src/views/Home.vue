@@ -1,7 +1,7 @@
 <template>
   <div v-if="$auth.ready" :class="css.modal.outer('-relative')">
     <div :class="css.modal.content('-auto')">
-      <div class="text-center pb-2">
+      <div class="view-home">
         <h2>Welcome!</h2>
         <template v-if="$auth.user">
           <template v-if="$auth.enabled">

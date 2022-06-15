@@ -17,7 +17,7 @@
     "@unrest/vue-auth": "0.0.11",
     "@unrest/vue-form": "0.0.14",
     "@unrest/vue-mousetrap": "^0.0.10",
-    "@unrest/vue-storage": "0.0.15",
+    "@unrest/vue-storage": "0.0.17",
     "core-js": "^3.6.5",
     "lodash": "^4.17.21",
     "object-hash": "^2.2.0",

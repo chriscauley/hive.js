@@ -38,7 +38,7 @@
                 @mouseout="hovering_preset = null"
                 v-for="preset in presets"
                 :key="preset.name"
-                >
+              >
                 <div :class="css.preset(preset)" @click="selected_preset = preset.slug">
                   {{ preset.name }}
                 </div>
@@ -180,14 +180,14 @@ export default {
       copied: null,
       href,
       presets,
-      preset: 'classic_hive',
+      selected_preset_slug: 'classic_hive',
       hovering_preset: null,
     }
   },
   computed: {
     selected_preset: {
       get() {
-        return this.preset
+        return this.selected_preset_slug
       },
       set(value) {
         const { rules } = this
@@ -196,7 +196,7 @@ export default {
           rules.pieces = { ...preset.pieces }
           this.setRules(rules)
         }
-        this.preset = value
+        this.selected_preset_slug = value
       },
     },
     is_host() {
@@ -240,7 +240,9 @@ export default {
           <div>To add a piece click the tile on the left side of this menu.</div>
           <div>To remove a piece, shift+click or right click the piece.</div>
           <div class="modal-footer">
-            <div class="btn -primary" onClick={close}>Okay</div>
+            <div class="btn -primary" onClick={close}>
+              Okay
+            </div>
           </div>
         </div>
       ))

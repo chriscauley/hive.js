@@ -10,23 +10,23 @@
     "watch": "yarn build --watch"
   },
   "dependencies": {
-    "@popperjs/core": "^2.9.2",
+    "@popperjs/core": "^2.11.5",
     "@unrest/css": "^0.0.7",
     "@unrest/tailwind": "0.1.18",
     "@unrest/vue": "^0.2.9",
-    "@unrest/vue-auth": "0.0.11",
+    "@unrest/vue-auth": "^0.0.12",
     "@unrest/vue-form": "0.0.14",
     "@unrest/vue-mousetrap": "^0.0.10",
     "@unrest/vue-storage": "0.0.17",
-    "@vue/cli": "^5.0.4",
     "core-js": "^3.23.1",
     "lodash": "^4.17.21",
     "object-hash": "^2.2.0",
     "querystring": "^0.2.1",
+    "sass": "^1.52.3",
     "url": "^0.11.0",
     "vue": "^3.0.5",
     "vue-router": "^4.0.0-beta.13",
-    "vue3-markdown-it": "1.0.10"
+    "vue3-markdown-it": "^1.0.10"
   },
   "devDependencies": {
     "@unrest/eslint-config": "^0.0.5",
@@ -35,8 +35,7 @@
     "@vue/compiler-sfc": "^3.0.5",
     "postcss": "^7",
     "postcss-import": "^12.0.0",
-    "sass": "^1.32.8",
-    "sass-loader": "^10.1.1",
+    "sass-loader": "^13.0.0",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat"
   },
   "browserslist": [

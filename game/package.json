@@ -4,15 +4,16 @@
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
-    "@babel/plugin-proposal-class-properties": "^7.14.5",
-    "@unrest/eslint-config": "0.0.5",
-    "babel-jest": "^27.0.6",
-    "jest": "^27.0.6"
+    "@babel/plugin-proposal-class-properties": "^7.17.12",
+    "@unrest/eslint-config": "^0.0.8",
+    "babel-jest": "^28.1.1"
   },
   "dependencies": {
-    "@babel/preset-env": "^7.14.7",
+    "@babel/preset-env": "^7.18.2",
+    "jest": "^28.1.1",
+    "jest-environment-jsdom": "^28.1.1",
     "lodash": "^4.17.21",
-    "object-hash": "^2.1.1"
+    "object-hash": "^3.0.0"
   },
   "scripts": {
     "lint": "eslint \"**/*\"",

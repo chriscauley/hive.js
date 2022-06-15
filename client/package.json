@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "vue-cli-service build --dest ../dist",
-    "build:docs": "VUE_APP_OFFLINE=1 vue-cli-service build --dest ../docs",
-    "lint": "eslint \"src/**/*\"",
     "serve": "VUE_APP_OFFLINE=1 vue-cli-service serve",
+    "build": "vue-cli-service build --dest ../dist",
+    "lint": "eslint \"src/**/*\"",
+    "build:docs": "VUE_APP_OFFLINE=1 vue-cli-service build --dest ../docs",
     "watch": "yarn build --watch"
   },
   "dependencies": {
@@ -18,17 +18,20 @@
     "@unrest/vue-form": "0.0.14",
     "@unrest/vue-mousetrap": "^0.0.10",
     "@unrest/vue-storage": "0.0.17",
-    "core-js": "^3.6.5",
+    "@vue/cli": "^5.0.4",
+    "core-js": "^3.23.1",
     "lodash": "^4.17.21",
     "object-hash": "^2.2.0",
+    "querystring": "^0.2.1",
+    "url": "^0.11.0",
     "vue": "^3.0.5",
     "vue-router": "^4.0.0-beta.13",
     "vue3-markdown-it": "^1.0.8"
   },
   "devDependencies": {
     "@unrest/eslint-config": "^0.0.5",
-    "@vue/cli-plugin-babel": "^4.5.0",
-    "@vue/cli-service": "^4.5.13",
+    "@vue/cli-plugin-babel": "~5.0.4",
+    "@vue/cli-service": "~5.0.4",
     "@vue/compiler-sfc": "^3.0.5",
     "postcss": "^7",
     "postcss-import": "^12.0.0",

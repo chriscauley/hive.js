@@ -5,13 +5,13 @@
   "license": "MIT",
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.17.12",
+    "@babel/preset-env": "^7.18.2",
     "@unrest/eslint-config": "^0.0.8",
-    "babel-jest": "^28.1.1"
+    "babel-jest": "^28.1.1",
+    "jest": "^28.1.1",
+    "jest-environment-jsdom": "^28.1.1"
   },
   "dependencies": {
-    "@babel/preset-env": "^7.18.2",
-    "jest": "^28.1.1",
-    "jest-environment-jsdom": "^28.1.1",
     "lodash": "^4.17.21",
     "object-hash": "^3.0.0"
   },

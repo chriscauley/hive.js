@@ -1832,15 +1832,16 @@
     local-storage-json "^1.1.0"
     lodash.debounce "^4.0.8"
 
-"@unrest/vue@0.2.6":
-  version "0.2.6"
-  resolved "https://registry.yarnpkg.com/@unrest/vue/-/vue-0.2.6.tgz#a220ce869a35963b60a2c481470ed414d81ee7f6"
-  integrity sha512-4EJSkBGH7g+MVqyxPLkZ3k6cDeof0TgmFjCj7KaBPqwCjftZ6NHoX7jGz8FQp5mqrvLi1BEC/yZ3Qu040ma/Og==
+"@unrest/vue@^0.2.9":
+  version "0.2.9"
+  resolved "https://registry.yarnpkg.com/@unrest/vue/-/vue-0.2.9.tgz#b9d91563bb6b86110565264cde3ea7b8ef4184c8"
+  integrity sha512-LXLdSRF1tjHigLfBD3OV0Vm5q/2G1f/0kBCWvlZiAR7ZD8pMIria9NrpEO+DUGFI6E8ydAj5qBmEjHl7FUiLWQ==
   dependencies:
+    "@vue/cli-plugin-babel" "^5.0.4"
     dedent "^0.7.0"
     lodash.clonedeep "^4.5.0"
     lodash.startcase "^4.4.0"
-    marked "^2.1.3"
+    marked "^4.0.17"
 
 "@vue/babel-helper-vue-jsx-merge-props@^1.2.1":
   version "1.2.1"
@@ -6780,10 +6781,10 @@ markdown-it@^12.3.2:
     mdurl "^1.0.1"
     uc.micro "^1.0.5"
 
-marked@^2.1.3:
-  version "2.1.3"
-  resolved "https://registry.yarnpkg.com/marked/-/marked-2.1.3.tgz#bd017cef6431724fd4b27e0657f5ceb14bff3753"
-  integrity sha512-/Q+7MGzaETqifOMWYEA7HVMaZb4XbcRfaOzcSsHZEith83KGlvaSG33u0SKu89Mj5h+T8V2hM+8O45Qc5XTgwA==
+marked@^4.0.17:
+  version "4.0.17"
+  resolved "https://registry.yarnpkg.com/marked/-/marked-4.0.17.tgz#1186193d85bb7882159cdcfc57d1dfccaffb3fe9"
+  integrity sha512-Wfk0ATOK5iPxM4ptrORkFemqroz0ZDxp5MWfYA7H/F+wO17NRWV5Ypxi6p3g2Xmw2bKeiYOl6oVnLHKxBA0VhA==
 
 mdn-data@2.0.14:
   version "2.0.14"

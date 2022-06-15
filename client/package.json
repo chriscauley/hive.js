@@ -13,7 +13,7 @@
     "@popperjs/core": "^2.9.2",
     "@unrest/css": "^0.0.7",
     "@unrest/tailwind": "0.1.18",
-    "@unrest/vue": "0.2.6",
+    "@unrest/vue": "^0.2.9",
     "@unrest/vue-auth": "0.0.11",
     "@unrest/vue-form": "0.0.14",
     "@unrest/vue-mousetrap": "^0.0.10",

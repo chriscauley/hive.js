@@ -1,4 +1,4 @@
-channels==3.0.2
+channels==3.0.3
 channels-redis==3.4.0
 Django==4.0.5
 django-mailer==2.2

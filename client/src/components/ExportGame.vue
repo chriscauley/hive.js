@@ -11,9 +11,7 @@
     <div class="modal-footer flex">
       <button class="btn -primary" @click="copy"><i class="fa fa-clipboard" /> Copy</button>
       <div class="flex-grow" />
-      <button class="btn -primary" @click="$emit('close')">
-        Close
-      </button>
+      <button class="btn -primary" @click="$emit('close')">Close</button>
     </div>
   </div>
 </template>

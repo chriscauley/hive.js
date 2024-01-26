@@ -1,10 +1,10 @@
 <template>
   <div class="game">
-    <hive-board :rows="rows.player_1" :class="css.player(1, rows.player_1)" @clickPiece="click" />
-    <hive-board :rows="rows.player_2" :class="css.player(2, rows.player_2)" @clickPiece="click" />
+    <hive-board :rows="rows.player_1" :class="css.player(1, rows.player_1)" @click-piece="click" />
+    <hive-board :rows="rows.player_2" :class="css.player(2, rows.player_2)" @click-piece="click" />
     <div class="scroll-box" ref="scroll_box">
       <div class="inner">
-        <hive-board :rows="rows.rows" class="game_board" @clickPiece="click" />
+        <hive-board :rows="rows.rows" class="game_board" @click-piece="click" />
       </div>
     </div>
     <help-text v-bind="board.selected" :board="board" />

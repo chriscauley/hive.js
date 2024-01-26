@@ -1,15 +1,11 @@
 <template>
   <div>
-    <p>
-      Paste the serialized version of a game to load it.
-    </p>
+    <p>Paste the serialized version of a game to load it.</p>
     <div>
       <textarea @paste="paste" style="width: 100%" ref="textarea" />
     </div>
     <div class="modal-footer">
-      <button class="btn -primary" @click="$ui.alert()">
-        Cancel
-      </button>
+      <button class="btn -primary" @click="$ui.alert()">Cancel</button>
     </div>
   </div>
 </template>

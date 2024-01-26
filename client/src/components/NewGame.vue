@@ -28,9 +28,7 @@
             </ul>
           </div>
           <div v-else-if="is_host" class="flex-grow">
-            <p>
-              Choose a piece set below. You can hover over pieces/presets to learn more.
-            </p>
+            <p>Choose a piece set below. You can hover over pieces/presets to learn more.</p>
             <div class="new-game__presets">
               <div
                 class="new-game__preset"
@@ -43,9 +41,7 @@
                   {{ preset.name }}
                 </div>
               </div>
-              <div :class="css.preset({ slug: 'custom' })" @click="show_custom=true">
-                Custom
-              </div>
+              <div :class="css.preset({ slug: 'custom' })" @click="show_custom = true">Custom</div>
             </div>
           </div>
           <div v-else>
@@ -56,9 +52,7 @@
         </div>
       </div>
       <div v-if="is_host" class="new-game__actions">
-        <button v-if="can_start" class="btn btn-primary" @click="startGame">
-          Start
-        </button>
+        <button v-if="can_start" class="btn btn-primary" @click="startGame">Start</button>
         <div v-else class="mt-2 flex items-center">
           <i class="fa fa-warning text-yellow-500 mr-2" />
           Waiting for players...
@@ -69,15 +63,11 @@
         </div>
       </div>
     </div>
-    <unrest-modal>
+    <unrest-modal v-if="show_custom" @close="show_custom = false">
       <div>
-        <div>To add a piece click the tile on the left side of this menu.</div>
-        <div>To remove a piece, shift+click or right click the piece.</div>
-        <div class="modal-footer">
-          <div class="btn -primary" onClick="show_custom: false">
-            Okay
-          </div>
-        </div>
+        <p>To add a piece click the tile on the left side of this menu.</p>
+        <p>To remove a piece, shift+click or right click the piece.</p>
+        <p>On mobile, click and hold a piece for 3 seconds to set clear it.</p>
       </div>
     </unrest-modal>
   </div>

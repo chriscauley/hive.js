@@ -1,3 +1,4 @@
+@import 'tailwind';
 @import 'views';
 /* Game pieces */
 @import './hex';
@@ -129,5 +130,15 @@ body {
   }
   .btn {
     @apply justify-center;
+  }
+}
+
+.help-text {
+  @apply fixed left-0 bottom-0;
+  .alert {
+    @apply mb-0;
+  }
+  &.-closed {
+    @apply m-4;
   }
 }

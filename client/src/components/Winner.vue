@@ -5,12 +5,8 @@
   <unrest-modal v-if="open" class="text-center" :close="() => (open = false)">
     <h2>{{ text }}</h2>
     <template #actions>
-      <button :class="css.button()" @click="open = false">
-        Keep Playing
-      </button>
-      <button v-if="can_end" :class="css.button()" @click="send('reset_game')">
-        Play Again
-      </button>
+      <button :class="css.button()" @click="open = false">Keep Playing</button>
+      <button v-if="can_end" :class="css.button()" @click="send('reset_game')">Play Again</button>
     </template>
   </unrest-modal>
 </template>

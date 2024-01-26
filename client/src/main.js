@@ -4,7 +4,7 @@ import UrVue from '@unrest/vue'
 import '@unrest/tailwind/dist.css'
 
 import autoscroll from '@/autoscroll'
-import auth from '@unrest/vue-auth' // TODO move into new app @unrest/vue-auth
+import auth from '@unrest/vue-auth'
 import chat from '@/chat'
 import store from '@/store'
 import router from '@/router'

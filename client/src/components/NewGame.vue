@@ -43,7 +43,9 @@
                   {{ preset.name }}
                 </div>
               </div>
-              <div :class="css.preset({ slug: 'custom' })" @click="showCustom">Custom</div>
+              <div :class="css.preset({ slug: 'custom' })" @click="show_custom=true">
+                Custom
+              </div>
             </div>
           </div>
           <div v-else>
@@ -67,6 +69,17 @@
         </div>
       </div>
     </div>
+    <unrest-modal>
+      <div>
+        <div>To add a piece click the tile on the left side of this menu.</div>
+        <div>To remove a piece, shift+click or right click the piece.</div>
+        <div class="modal-footer">
+          <div class="btn -primary" onClick="show_custom: false">
+            Okay
+          </div>
+        </div>
+      </div>
+    </unrest-modal>
   </div>
 </template>
 
@@ -182,6 +195,7 @@ export default {
       presets,
       selected_preset_slug: 'classic_hive',
       hovering_preset: null,
+      show_custom: false,
     }
   },
   computed: {
@@ -233,20 +247,6 @@ export default {
     },
   },
   methods: {
-    showCustom() {
-      const close = () => this.$ui.alert(null)
-      this.$ui.alert(() => (
-        <div>
-          <div>To add a piece click the tile on the left side of this menu.</div>
-          <div>To remove a piece, shift+click or right click the piece.</div>
-          <div class="modal-footer">
-            <div class="btn -primary" onClick={close}>
-              Okay
-            </div>
-          </div>
-        </div>
-      ))
-    },
     title: (s) =>
       s
         .split('_')

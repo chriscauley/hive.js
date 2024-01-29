@@ -1,9 +1,9 @@
 <template>
   <div class="mini-board">
-    <hive-board v-bind="board_props" @clickPiece="clickPiece" />
-    <button v-if="show_edit" :class="css.button('absolute top-0 right-0')" @click="edit">
-      <i :class="css.icon('edit')" />
-    </button>
+    <hive-board v-bind="board_props" @click-piece="clickPiece" />
+    <!-- <button v-if="show_edit" :class="css.button('absolute top-0 right-0')" @click="edit"> -->
+    <!--   <i :class="css.icon('edit')" /> -->
+    <!-- </button> -->
   </div>
 </template>
 
@@ -18,7 +18,6 @@ export default {
   props: { board: Object },
   emits: ['update-board'],
   data() {
-    console.log('new board')
     return { css }
   },
   computed: {
@@ -44,29 +43,26 @@ export default {
       }
       return { rows, class: cls }
     },
-    show_edit() {
-      // TODO
-      return false
-    },
+    // show_edit() {
+    //   return false
+    // },
   },
   methods: {
     clickPiece(target) {
       Board.select(this.board, target)
       Board.update(this.board)
       this.$emit('update-board')
-      console.log('click', target, this.board)
     },
-    edit() {
-      console.log('TODO')
-      // const { loadJson } = useGame()
-      // const edit = () => {
-      //   const b = Board.toJson(board)
-      //   b.turn = 0
-      //   b.rules.players = 'local'
-      //   loadJson(JSON.stringify(b))
-      //   close()
-      // }
-    },
+    // edit() {
+    //   const { loadJson } = useGame()
+    //   const edit = () => {
+    //     const b = Board.toJson(board)
+    //     b.turn = 0
+    //     b.rules.players = 'local'
+    //     loadJson(JSON.stringify(b))
+    //     close()
+    //   }
+    // },
   },
 }
 </script>

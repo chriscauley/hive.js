@@ -1,5 +1,11 @@
 <template>
-  <header :class="css.nav.outer()">
+  <header :class="css.nav.outer(nav_open && '-nav-open')">
+    <button class="navbar__open" @click="nav_open = true">
+      <i class="fa fa-bars" />
+    </button>
+    <button class="navbar__close" @click="nav_open = false">
+      <i class="fa fa-close" />
+    </button>
     <section :class="css.nav.section('left')">
       <router-link to="/" :class="css.nav.brand()">Hive!</router-link>
     </section>
@@ -38,7 +44,7 @@ import Tutorial from './Tutorial.vue'
 export default {
   components: { Tutorial },
   data() {
-    return { css, tutorial_open: false }
+    return { css, tutorial_open: false, nav_open: false }
   },
   computed: {
     help_links() {

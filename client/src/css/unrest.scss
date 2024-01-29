@@ -1,0 +1,41 @@
+/* stuff that should probably be re-integrated into unrest */
+/* from bootstrap theme */
+.navbar__open, .navbar__close {
+  @apply absolute hidden p-6 right-0 text-3xl top-0;
+}
+
+@media (max-width: 650px) {
+  /* navbar is collapsible */
+  #app {
+    padding-top: 77px;
+  }
+  .navbar {
+    @apply absolute left-0 right-0 top-0;
+    align-items: flex-start;
+    flex-direction: column;
+    &__open {
+      display: block;
+    }
+    &__section.left ~ * {
+      display: none;
+    }
+  }
+  .navbar.-nav-open {
+    .navbar__open {
+      display: none;
+    }
+    .navbar__close {
+      display: block;
+    }
+    .navbar__section.left ~ * {
+      display: block;
+    }
+  }
+}
+
+@media (max-width: 650px) {
+  /* modal is full screen */
+  .tutorial {
+    width: 100%;
+  }
+}

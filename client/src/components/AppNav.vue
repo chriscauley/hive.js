@@ -44,7 +44,7 @@ import Tutorial from './Tutorial.vue'
 export default {
   components: { Tutorial },
   data() {
-    return { css, tutorial_open: true, nav_open: false }
+    return { css, tutorial_open: false, nav_open: false }
   },
   computed: {
     help_links() {

@@ -12,6 +12,7 @@
 @import './chat';
 @import './online-room';
 @import './unrest';
+@import './var';
 @import './z-index';
 
 #app, html, body {
@@ -137,5 +138,9 @@ body {
   }
   &.-closed {
     @apply m-4;
+  }
+  @media (max-width: $w-sm) {
+    bottom: unset;
+    top: 77px; /* navbar height */
   }
 }

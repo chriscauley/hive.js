@@ -1,8 +1,10 @@
 @import 'tailwind';
 @import 'views';
+
 /* Game pieces */
 @import './hex';
 @import './pieces';
+@import './tutorial';
 
 /* Components */
 @import './scrollbar';
@@ -46,14 +48,6 @@ body {
     @apply -text-text -bg-bg;
     content: attr(data-index);
     position: absolute;
-  }
-}
-
-.tutorial {
-  width: 586px;
-  .hex-grid.-tutorial-nav {
-    padding: 32px 8px 32px;
-    font-size: 8px;
   }
 }
 
@@ -109,12 +103,11 @@ body {
   }
 }
 
-.new-game .RuleList {
+.new-game .rule-list {
   @apply mt-8 pl-2 select-none;
   width: 305px;
-  .hex-grid.-tutorial-nav {
+  .hex-grid {
     font-size: 12px;
-    flex-basis: 300px;
   }
 }
 

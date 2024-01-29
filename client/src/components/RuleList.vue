@@ -1,6 +1,6 @@
 <template>
-  <div class="RuleList mt-4">
-    <span v-for="(piece_list, irow) in piece_lists" :key="irow" class="hex-grid TutorialNav">
+  <div class="rule-list">
+    <span v-for="(piece_list, irow) in piece_lists" :key="irow" class="hex-grid">
       <div class="row">
         <hive-piece
           v-for="type in piece_list"

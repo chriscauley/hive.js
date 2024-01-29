@@ -1,7 +1,7 @@
 <template>
   <header :class="css.nav.outer()">
     <section :class="css.nav.section('left')">
-      <router-link to="/" :class="css.nav.brand()"> Hive! </router-link>
+      <router-link to="/" :class="css.nav.brand()">Hive!</router-link>
     </section>
     <div class="flex-grow" />
     <template v-if="$auth.ready">
@@ -38,7 +38,7 @@ import Tutorial from './Tutorial.vue'
 export default {
   components: { Tutorial },
   data() {
-    return { css, tutorial_open: true }
+    return { css, tutorial_open: false }
   },
   computed: {
     help_links() {

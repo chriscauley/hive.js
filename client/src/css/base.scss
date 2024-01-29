@@ -72,12 +72,26 @@ body {
   @apply flex h-full items-center justify-center overflow-auto;
 }
 
+.new-game__col {
+  @media (max-width: $w-sm) {
+    &.-desktop {
+      display: none;
+    }
+    .new-game__row.-center & {
+      width: unset;
+    }
+  }
+}
+
 .new-game {
   @apply border p-4 shadow -bg-bg rounded-lg;
   @apply flex flex-col gap-4;
   width: 672px;
   &__row {
     @apply flex items-center gap-8;
+    &.-center {
+      @apply justify-center;
+    }
   }
   &__col {
     @apply w-1/2;
@@ -102,6 +116,9 @@ body {
   }
   &__actions {
     @apply flex items-center gap-2;
+    @media (max-width: $w-sm) {
+      justify-content: center;
+    }
   }
 }
 

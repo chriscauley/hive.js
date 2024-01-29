@@ -6,7 +6,7 @@
         <div class="flex-grow" />
         <div>{{ total_pieces }} pieces selected</div>
       </div>
-      <div class="new-game__row">
+      <div class="new-game__row -center">
         <div :class="`new-game__col ${is_host ? '' : 'is_guest'}`">
           <rule-list
             :rules="visible_rules"
@@ -15,7 +15,7 @@
             :onHover="(t) => (hovering = t)"
           />
         </div>
-        <div class="new-game__col">
+        <div class="new-game__col -desktop">
           <div v-if="hovering" class="h-full">
             <div class="new-game__hover-piece">
               <div style="width: 36px, height: 32px" class="new-game__hover-inner">

@@ -6,3 +6,10 @@ $cell_w: 0.75 * $hex_w;
 $cell_h: $hex_h;
 $buffer: 0.25em;
 $chat_w: 320px;
+
+/* Break points. Should be taken from tailwind after converting to postcss*/
+$w-sm: 640px;
+$w-md: 768px;
+$w-lg: 1024px;
+$w-xl: 1280px;
+$w-2xl: 1536px;

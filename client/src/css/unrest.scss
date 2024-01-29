@@ -1,10 +1,10 @@
-/* stuff that should probably be re-integrated into unrest */
-/* from bootstrap theme */
+@import './var';
+
 .navbar__open, .navbar__close {
   @apply absolute hidden p-6 right-0 text-3xl top-0;
 }
 
-@media (max-width: 650px) {
+@media (max-width: $w-sm) {
   /* navbar is collapsible */
   #app {
     padding-top: 77px;
@@ -30,12 +30,5 @@
     .navbar__section.left ~ * {
       display: block;
     }
-  }
-}
-
-@media (max-width: 650px) {
-  /* modal is full screen */
-  .tutorial {
-    width: 100%;
   }
 }

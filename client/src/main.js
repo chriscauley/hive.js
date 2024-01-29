@@ -12,7 +12,7 @@ import App from '@/App.vue'
 import ImportGame from '@/components/ImportGame'
 import ExportGame from '@/components/ExportGame'
 import makeSprites from '@/sprite/makeSprites'
-import '@/styles/base.scss'
+import '@/css/base.scss'
 
 makeSprites()
 

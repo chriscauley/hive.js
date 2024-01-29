@@ -6,6 +6,16 @@
         <div class="flex-grow" />
         <div>{{ total_pieces }} pieces selected</div>
       </div>
+      <div class="new-game__mobile">
+        <div class="btn-group">
+          <button :class="btnClass('add')" @click="mode = 'add'">+1</button>
+          <button :class="btnClass('remove')" @click="mode = 'remove'">-1</button>
+          <button :class="btnClass('trash')" @click="mode = 'trash'">
+            <i class="fa fa-trash" />
+          </button>
+        </div>
+        <button class="btn -danger" @click="selected_preset = 'classic_hive'">Reset</button>
+      </div>
       <div class="new-game__row -center">
         <div :class="`new-game__col ${is_host ? '' : 'is_guest'}`">
           <rule-list
@@ -178,6 +188,7 @@ export default {
       preset: (p) => ['btn', p.slug === this.selected_preset ? '-primary' : '-secondary'],
     }
     return {
+      mode: 'add',
       css,
       hovering: null,
       copied: null,
@@ -237,6 +248,9 @@ export default {
     },
   },
   methods: {
+    btnClass(value) {
+      return `btn -${this.mode === value ? 'primary' : 'secondary'}`
+    },
     title: (s) =>
       s
         .split('_')
@@ -248,7 +262,14 @@ export default {
       }
       const { rules } = this
       rules.pieces[type] = rules.pieces[type] || 0
-      rules.pieces[type] += e.shiftKey ? -1 : 1
+      if (this.mode === 'remove') {
+        rules.pieces[type] += -1
+      } else if (this.mode === 'trash') {
+        rules.pieces[type] = 0
+      } else {
+        // default is add
+        rules.pieces[type] += e.shiftKey ? -1 : 1
+      }
       if (rules.pieces[type] < 0) {
         rules.pieces[type] = MAX
       } else if (rules.pieces[type] > MAX || rules.pieces[type] === 0) {

@@ -72,8 +72,15 @@ body {
   @apply flex h-full items-center justify-center overflow-auto;
 }
 
-.new-game__col {
-  @media (max-width: $w-sm) {
+.new-game__mobile {
+  display: none;
+}
+
+@media (max-width: $w-sm) {
+  .new-game__mobile {
+    @apply flex justify-between;
+  }
+  .new-game__col {
     &.-desktop {
       display: none;
     }

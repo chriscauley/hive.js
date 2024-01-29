@@ -1,0 +1,108 @@
+<template>
+  <div class="tutorial">
+    <div class="hex-grid -tutorial-nav">
+      <div class="row" v-for="(row, ir) in rows" :key="ir">
+        <div v-for="slug in row" :key="slug" class="item" @click="setSlug(slug)">
+          <div class="content">
+            <div :class="getTileClass(slug)" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <h3 class="h3">{{ tutorial.title }}</h3>
+    <div>
+      <div class="flex">
+        <ul class="browser-default">
+          <li v-for="(item, li) in items" :key="li">
+            {{ item }}
+          </li>
+        </ul>
+      </div>
+      <mini-board v-if="board" :board="board" :key="board" />
+    </div>
+  </div>
+</template>
+
+<script>
+import { startCase } from 'lodash'
+import MiniBoard from '@/components/MiniBoard'
+import Board from 'hive.js/Board'
+import help from 'hive.js/help'
+import boards from 'hive.js/tutorial/boards'
+import captions from 'hive.js/tutorial/captions'
+
+const listify = (arg) => (Array.isArray(arg) ? arg : [arg])
+
+export default {
+  components: { MiniBoard },
+  data() {
+    return { index: 0, board: null }
+  },
+  computed: {
+    items() {
+      // TODO when is this function invoked? I'd like to move board into miniboard
+      // and I think this is a blocker
+      const f = (i) => (typeof i === 'function' ? i(this.board) : i)
+      return [...this.tutorial.help_items.map(f), ...this.tutorial.captions.map(f)]
+    },
+    rows() {
+      const row_length = Math.floor(captions.slugs.length / 2) + 1
+      return [0, 1].map((i) => captions.slugs.slice(row_length * i, row_length * (i + 1)))
+    },
+    tutorial() {
+      const slug = captions.slugs[this.index]
+      const tutorial = {
+        slug,
+        title: startCase(slug),
+        help_items: help[slug] || [],
+        captions: listify(captions[slug]),
+        board: boards[slug],
+      }
+      if (tutorial.board) {
+        Board.update(tutorial.board)
+        const piece_id = tutorial.board.piece_types.indexOf(slug)
+        if (piece_id !== undefined) {
+          Board.select(tutorial.board, {
+            index: tutorial.board.reverse[piece_id],
+            piece_type: slug,
+            player_id: tutorial.board.piece_owners[piece_id],
+            piece_id,
+          })
+        }
+      }
+      return tutorial
+    },
+  },
+  watch: {
+    index: 'createBoard',
+  },
+  methods: {
+    getTileClass(slug) {
+      const player = this.index === captions.slugs.indexOf(slug) ? 2 : 1
+      return `hex hex-player_${player} type type-${slug} piece`
+    },
+    setIndex(delta) {
+      this.index += delta
+    },
+    setSlug(slug) {
+      this.index = captions.slugs.indexOf(slug)
+    },
+    createBoard() {
+      const slug = captions.slugs[this.index]
+      this.board = boards[slug]
+      if (this.board) {
+        Board.update(this.board)
+        const piece_id = this.board.piece_types.indexOf(slug)
+        if (piece_id !== undefined) {
+          Board.select(this.board, {
+            index: this.board.reverse[piece_id],
+            piece_type: slug,
+            player_id: this.board.piece_owners[piece_id],
+            piece_id,
+          })
+        }
+      }
+    },
+  },
+}
+</script>

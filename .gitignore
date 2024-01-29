@@ -6,6 +6,7 @@ dist
 node_modules
 
 # python
+.secret_key
 server/settings/local.py
 server/settings/.secret_key
 __pycache__

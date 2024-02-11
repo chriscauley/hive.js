@@ -60,8 +60,14 @@ const stepAlongHive = (board, index, excludes = []) => {
 
 export const stepOnHive = (board, index, excludes = []) => {
   const touching = board.geo.touching[index]
+
+  const adjacentScorpions = touching.filter((target_index) => {
+    return notEnemyScorpion(board, index, target_index)
+  }).length
+
   return touching.filter((target_index) => {
     return (
+      !adjacentScorpions &&
       board.stacks[target_index] &&
       !excludes.includes(target_index) &&
       notEnemyScorpion(board, index, target_index)
@@ -352,6 +358,14 @@ const spider = (b, i) => {
 
 const kung_fu_mantis = (b, i) => (b.stacks[i].length > 1 ? beetle(b, i) : [])
 
+const orbweaver = (b, i) => {
+  return nStepsAlongHive(b, i, 1);
+}
+
+const scorpion = (b, i) => {
+  return nStepsAlongHive(b, i, 3);
+}
+
 const moves = {
   stepOnHive,
   stepOffHive,
@@ -375,12 +389,10 @@ const moves = {
   orchid_mantis,
   praying_mantis,
   mosquito,
-
-  // all spider-likes move the same
   spider,
-  scorpion: spider,
+  scorpion,
   trapdoor_spider: spider,
-  orbweaver: spider,
+  orbweaver,
   emerald_wasp,
   kung_fu_mantis,
 }

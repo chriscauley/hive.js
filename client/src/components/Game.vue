@@ -1,10 +1,32 @@
 <template>
   <div class="game">
-    <hive-board :rows="rows.player_1" :class="css.player(1, rows.player_1)" @clickPiece="click" />
-    <hive-board :rows="rows.player_2" :class="css.player(2, rows.player_2)" @clickPiece="click" />
+    <div class="game-piles -desktop">
+      <hive-board
+        :rows="rows.player_1"
+        :class="css.player(1, rows.player_1)"
+        @click-piece="click"
+      />
+      <hive-board
+        :rows="rows.player_2"
+        :class="css.player(2, rows.player_2)"
+        @click-piece="click"
+      />
+    </div>
+    <div class="game-piles -mobile">
+      <hive-board
+        :rows="m_rows.player_1"
+        :class="css.player(1, m_rows.player_1)"
+        @click-piece="click"
+      />
+      <hive-board
+        :rows="m_rows.player_2"
+        :class="css.player(2, m_rows.player_2)"
+        @click-piece="click"
+      />
+    </div>
     <div class="scroll-box" ref="scroll_box">
       <div class="inner">
-        <hive-board :rows="rows.rows" class="game_board" @clickPiece="click" />
+        <hive-board :rows="rows.rows" class="game_board" @click-piece="click" />
       </div>
     </div>
     <help-text v-bind="board.selected" :board="board" />
@@ -92,6 +114,9 @@ export default {
     },
     rows() {
       return toRows(this.board, { columns: 2 })
+    },
+    m_rows() {
+      return toRows(this.board, { columns: 6 })
     },
   },
   mounted() {

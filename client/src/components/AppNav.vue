@@ -1,11 +1,17 @@
 <template>
-  <header :class="css.nav.outer()">
+  <header :class="css.nav.outer(nav_open && '-nav-open')">
+    <button class="navbar__open" @click="nav_open = true">
+      <i class="fa fa-bars" />
+    </button>
+    <button class="navbar__close" @click="nav_open = false">
+      <i class="fa fa-close" />
+    </button>
     <section :class="css.nav.section('left')">
-      <router-link to="/" :class="css.nav.brand()"> Hive! </router-link>
+      <router-link to="/" :class="css.nav.brand()">Hive!</router-link>
     </section>
     <div class="flex-grow" />
     <template v-if="$auth.ready">
-      <unrest-dropdown v-if="game_links.length" :items="game_links" placement="bottom">
+      <unrest-dropdown :items="game_links" placement="bottom">
         <div class="ur-dropdown__trigger">game</div>
       </unrest-dropdown>
       <unrest-dropdown placement="bottom">
@@ -23,22 +29,31 @@
       </unrest-dropdown>
       <unrest-auth-menu />
     </template>
+    <Teleport to="body">
+      <unrest-modal v-if="tutorial_open" class="-tutorial" @close="tutorial_open = false">
+        <tutorial />
+      </unrest-modal>
+    </Teleport>
   </header>
 </template>
 
 <script>
 import css from '@unrest/css'
-
-const help_links = [
-  { to: '/about/', text: 'About' },
-  { to: '/change-log/', text: 'Change Log' },
-]
+import Tutorial from './Tutorial.vue'
 
 export default {
+  components: { Tutorial },
   data() {
-    return { css, help_links }
+    return { css, tutorial_open: false, nav_open: false }
   },
   computed: {
+    help_links() {
+      return [
+        { click: () => (this.tutorial_open = true), text: 'Tutorial' },
+        { to: '/about/', text: 'About' },
+        { to: '/change-log/', text: 'Change Log' },
+      ]
+    },
     game_links() {
       const { room_id } = this.$route.params
       const warn = (action) => {

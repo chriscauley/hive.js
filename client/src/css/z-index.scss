@@ -1,7 +1,8 @@
 .player_1, .player_2 {
   z-index: 10;
 }
-.navbar, .dropdown .dropdown-menu, .HelpText { z-index: 100 }
+.dropdown .dropdown-menu, .help-text { z-index: 100 }
+.navbar { z-index: 101 }
 .modal { z-index: 200 }
 .hex:after,
 .game .item:hover { z-index: 1 }

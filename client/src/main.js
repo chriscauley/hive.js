@@ -1,17 +1,20 @@
 import { createApp } from 'vue'
-import Form from '@unrest/vue-form'
+import UnrestForm from '@unrest/vue-form'
 import UrVue from '@unrest/vue'
 import '@unrest/tailwind/dist.css'
 
 import autoscroll from '@/autoscroll'
-import auth from '@unrest/vue-auth' // TODO move into new app @unrest/vue-auth
+import auth from '@unrest/vue-auth'
 import chat from '@/chat'
 import store from '@/store'
 import router from '@/router'
 import App from '@/App.vue'
 import ImportGame from '@/components/ImportGame'
 import ExportGame from '@/components/ExportGame'
-import '@/styles/base.scss'
+import makeSprites from '@/sprite/makeSprites'
+import '@/css/base.scss'
+
+makeSprites()
 
 auth.configure({
   AUTH_START: '/',
@@ -28,7 +31,7 @@ app.use(store)
 app.use(UrVue.plugin)
 app.use(UrVue.ui)
 app.use(chat)
-app.use(Form.plugin)
+app.use(UnrestForm)
 app.use(auth.plugin) // must come after store!
 
 app.mount('#app')

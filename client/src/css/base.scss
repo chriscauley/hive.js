@@ -1,14 +1,19 @@
+@import 'tailwind';
 @import 'views';
+
 /* Game pieces */
 @import './hex';
 @import './pieces';
+@import './tutorial';
 
 /* Components */
 @import './scrollbar';
 @import './game';
 @import './chat';
-@import './z-index';
 @import './online-room';
+@import './unrest';
+@import './var';
+@import './z-index';
 
 #app, html, body {
   height: 100%;
@@ -48,11 +53,6 @@ body {
   }
 }
 
-.TutorialNav {
-  padding: 20px 0 0;
-  font-size: 6.5px;
-}
-
 .rjsf {
   .has-help {
     @apply flex items-center;
@@ -72,12 +72,33 @@ body {
   @apply flex h-full items-center justify-center overflow-auto;
 }
 
+.new-game__mobile {
+  display: none;
+}
+
+@media (max-width: $w-sm) {
+  .new-game__mobile {
+    @apply flex justify-between;
+  }
+  .new-game__col {
+    &.-desktop {
+      display: none;
+    }
+    .new-game__row.-center & {
+      width: unset;
+    }
+  }
+}
+
 .new-game {
   @apply border p-4 shadow -bg-bg rounded-lg;
   @apply flex flex-col gap-4;
   width: 672px;
   &__row {
     @apply flex items-center gap-8;
+    &.-center {
+      @apply justify-center;
+    }
   }
   &__col {
     @apply w-1/2;
@@ -102,15 +123,17 @@ body {
   }
   &__actions {
     @apply flex items-center gap-2;
+    @media (max-width: $w-sm) {
+      justify-content: center;
+    }
   }
 }
 
-.new-game .RuleList {
+.new-game .rule-list {
   @apply mt-8 pl-2 select-none;
   width: 305px;
-  .TutorialNav {
+  .hex-grid {
     font-size: 12px;
-    flex-basis: 300px;
   }
 }
 
@@ -129,5 +152,19 @@ body {
   }
   .btn {
     @apply justify-center;
+  }
+}
+
+.help-text {
+  @apply fixed left-0 bottom-0;
+  .alert {
+    @apply mb-0;
+  }
+  &.-closed {
+    @apply m-4;
+  }
+  @media (max-width: $w-sm) {
+    bottom: unset;
+    top: 77px; /* navbar height */
   }
 }

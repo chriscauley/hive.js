@@ -28,6 +28,7 @@ export default {
   },
   computed: {
     room_id() {
+      window.T = this
       const { room_id } = this.$route.params
       return room_id === 'local' ? room_id : Number(room_id)
     },

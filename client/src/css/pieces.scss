@@ -6,6 +6,12 @@ $types: ant beetle centipede grasshopper ladybug mosquito pill_bug queen spider 
   }
 }
 
+.piece.type-empty {
+  /* used to make a place holder for justify-center on tutorial nav */
+  opacity: 0;
+  pointer-events: none;
+}
+
 .dummy_piece {
   height: $hex_h;
   width: $hex_w;

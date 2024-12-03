@@ -1,25 +1,21 @@
 <template>
-  <div v-if="!show_help" class="fixed left-0 bottom-0 m-4 HelpText">
+  <div v-if="!show_help" class="help-text -closed">
     <div @click="toggle" :class="css.button('circle')">
       <i :class="css.icon('question')" />
     </div>
   </div>
-  <div v-else-if="!board.selected" class="fixed left-0 bottom-0 m-4 HelpText">
+  <div v-else-if="!board.selected" class="help-text">
     <div :class="css.alert.info()">Select a Tile</div>
   </div>
-  <div v-else class="fixed left-0 bottom-0 HelpText">
+  <div v-else class="help-text">
     <div :class="css.alert.info()">
       <div>
         <ul class="browser-default">
           <li v-for="item in items" :key="item">{{ item }}</li>
         </ul>
         <div>
-          <button @click="unselect" :class="css.button('mr-2')">
-            Deselect
-          </button>
-          <button @click="toggle" :class="css.button()">
-            Hide Help
-          </button>
+          <button @click="unselect" :class="css.button('mr-2')">Deselect</button>
+          <button @click="toggle" :class="css.button()">Hide Help</button>
         </div>
       </div>
     </div>

@@ -6,7 +6,17 @@
         <div class="flex-grow" />
         <div>{{ total_pieces }} pieces selected</div>
       </div>
-      <div class="new-game__row">
+      <div class="new-game__mobile">
+        <div class="btn-group">
+          <button :class="btnClass('add')" @click="mode = 'add'">+1</button>
+          <button :class="btnClass('remove')" @click="mode = 'remove'">-1</button>
+          <button :class="btnClass('trash')" @click="mode = 'trash'">
+            <i class="fa fa-trash" />
+          </button>
+        </div>
+        <button class="btn -danger" @click="selected_preset = 'classic_hive'">Reset</button>
+      </div>
+      <div class="new-game__row -center">
         <div :class="`new-game__col ${is_host ? '' : 'is_guest'}`">
           <rule-list
             :rules="visible_rules"
@@ -15,7 +25,7 @@
             :onHover="(t) => (hovering = t)"
           />
         </div>
-        <div class="new-game__col">
+        <div class="new-game__col -desktop">
           <div v-if="hovering" class="h-full">
             <div class="new-game__hover-piece">
               <div style="width: 36px, height: 32px" class="new-game__hover-inner">
@@ -28,9 +38,7 @@
             </ul>
           </div>
           <div v-else-if="is_host" class="flex-grow">
-            <p>
-              Choose a piece set below. You can hover over pieces/presets to learn more.
-            </p>
+            <p>Choose a piece set below. You can hover over pieces/presets to learn more.</p>
             <div class="new-game__presets">
               <div
                 class="new-game__preset"
@@ -43,7 +51,7 @@
                   {{ preset.name }}
                 </div>
               </div>
-              <div :class="css.preset({ slug: 'custom' })" @click="showCustom">Custom</div>
+              <div :class="css.preset({ slug: 'custom' })" @click="show_custom = true">Custom</div>
             </div>
           </div>
           <div v-else>
@@ -54,9 +62,7 @@
         </div>
       </div>
       <div v-if="is_host" class="new-game__actions">
-        <button v-if="can_start" class="btn btn-primary" @click="startGame">
-          Start
-        </button>
+        <button v-if="can_start" class="btn btn-primary" @click="startGame">Start</button>
         <div v-else class="mt-2 flex items-center">
           <i class="fa fa-warning text-yellow-500 mr-2" />
           Waiting for players...
@@ -67,6 +73,13 @@
         </div>
       </div>
     </div>
+    <unrest-modal v-if="show_custom" @close="show_custom = false">
+      <div>
+        <p>To add a piece click the tile on the left side of this menu.</p>
+        <p>To remove a piece, shift+click or right click the piece.</p>
+        <p>On mobile, click and hold a piece for 3 seconds to set clear it.</p>
+      </div>
+    </unrest-modal>
   </div>
 </template>
 
@@ -175,6 +188,7 @@ export default {
       preset: (p) => ['btn', p.slug === this.selected_preset ? '-primary' : '-secondary'],
     }
     return {
+      mode: 'add',
       css,
       hovering: null,
       copied: null,
@@ -182,6 +196,7 @@ export default {
       presets,
       selected_preset_slug: 'classic_hive',
       hovering_preset: null,
+      show_custom: false,
     }
   },
   computed: {
@@ -233,19 +248,8 @@ export default {
     },
   },
   methods: {
-    showCustom() {
-      const close = () => this.$ui.alert(null)
-      this.$ui.alert(() => (
-        <div>
-          <div>To add a piece click the tile on the left side of this menu.</div>
-          <div>To remove a piece, shift+click or right click the piece.</div>
-          <div class="modal-footer">
-            <div class="btn -primary" onClick={close}>
-              Okay
-            </div>
-          </div>
-        </div>
-      ))
+    btnClass(value) {
+      return `btn -${this.mode === value ? 'primary' : 'secondary'}`
     },
     title: (s) =>
       s
@@ -258,7 +262,14 @@ export default {
       }
       const { rules } = this
       rules.pieces[type] = rules.pieces[type] || 0
-      rules.pieces[type] += e.shiftKey ? -1 : 1
+      if (this.mode === 'remove') {
+        rules.pieces[type] += -1
+      } else if (this.mode === 'trash') {
+        rules.pieces[type] = 0
+      } else {
+        // default is add
+        rules.pieces[type] += e.shiftKey ? -1 : 1
+      }
       if (rules.pieces[type] < 0) {
         rules.pieces[type] = MAX
       } else if (rules.pieces[type] > MAX || rules.pieces[type] === 0) {

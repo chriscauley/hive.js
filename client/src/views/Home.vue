@@ -15,15 +15,11 @@
           </router-link>
         </template>
         <template v-else>
-          <div @click="makeGuest" :class="css.button('block mb-4')">
-            Play as Guest
-          </div>
+          <div @click="makeGuest" :class="css.button('block mb-4')">Play as Guest</div>
           <router-link :to="signup" :class="css.button('block mb-4')">
             Create An Account
           </router-link>
-          <router-link :to="login" :class="css.button('block')">
-            Log In
-          </router-link>
+          <router-link :to="login" :class="css.button('block')"> Log In </router-link>
         </template>
       </div>
       <!-- TODO <RoomList /> -->

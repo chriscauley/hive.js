@@ -1,0 +1,47 @@
+.modal.-tutorial .modal-content {
+  overflow-x: hidden;
+}
+
+.tutorial {
+  width: 586px;
+  .tutorial-nav .hex-grid {
+    padding: 32px 8px 32px;
+    font-size: 8px;
+  }
+  .tutorial-nav.-mobile {
+    display: none;
+  }
+  .tutorial__rule-list {
+    &.-index-0 {
+      @apply border-b-4 border-double mb-4 p-2;
+    }
+  }
+}
+
+.tutorial-nav.-mobile {
+  .h3.-menu-trigger {
+    @apply border-b cursor-pointer flex gap-4 items-center justify-between pb-2;
+    .hex-grid {
+      padding: 0;
+    }
+  }
+  .hex-grid.-mobile {
+    font-size: 2.5vw;
+    .row {
+      @apply justify-center;
+    }
+  }
+}
+
+@media (max-width: $w-sm) {
+  /* modal is full screen */
+  .tutorial {
+    width: 100%;
+    .tutorial-nav.-mobile {
+      display: block;
+    }
+    .tutorial-nav.-desktop {
+      display: none;
+    }
+  }
+}

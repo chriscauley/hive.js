@@ -9,9 +9,6 @@
   &.zoom-small { font-size: 14px }
   &.zoom-smallest { font-size: 12px }
   width: calc(var(--columns) * #{$cell_w + $buffer});
-  &.cut_first {
-    margin-left: -$hex_w;
-  }
   .row {
     display: flex;
   }
@@ -61,6 +58,17 @@
   &.odd-q .item:nth-child(even) {
     top: -2.7em;
   }
+  &.-cut-first {
+    margin-left: -($cell_w + 0.5 * $buffer);
+  }
+  &.-pad-top {
+    margin-top: 0.5 * $hex_h;
+  }
+}
+
+.mini-board {
+  @apply flex justify-center;
+  margin-top: 2rem;
 }
 
 .hex-grid .item {

@@ -28,6 +28,43 @@
   }
 }
 
+.game-piles {
+  &.-mobile {
+    display: none;
+    .player_1, .player_2 {
+      display: none;
+      top: unset;
+      bottom: 0;
+      transform: unset;
+      &.highlight-green {
+        display: block;
+      }
+    }
+    .player_1 {
+      left: 0;
+    }
+    .player_2 {
+      right: 0;
+    }
+  }
+}
+
+@media (max-width: $w-sm) {
+  .game-piles.-mobile {
+    display: block;
+  }
+  .game-piles.-desktop {
+    display: none;
+  }
+}
+
+@media (max-width: 450px) {
+  .game-piles .hex-grid {
+    font-size: 3.5vw;
+  }
+}
+
+
 .game {
   .player_1, .player_2 {
     position: absolute;

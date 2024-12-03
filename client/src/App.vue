@@ -1,15 +1,15 @@
 <template>
-  <Nav />
+  <app-nav />
   <router-view :class="`router-view ${debug ? 'debug' : ''}`" />
   <unrest-ui />
 </template>
 
 <script>
-import Nav from '@/components/Nav'
+import AppNav from '@/components/AppNav.vue'
 
 export default {
   name: 'App',
-  components: { Nav },
+  components: { AppNav },
   computed: {
     debug() {
       return this.$store.config.state.debug

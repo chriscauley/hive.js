@@ -3,6 +3,7 @@ export default {
     'basics',
     'onehive',
     'stacks',
+    // 'interface',
     'queen',
     'beetle',
     'earthworm',
@@ -48,6 +49,15 @@ export default {
     'For placing or similar purposes, only the color of the top piece matters.',
     'Only the top piece on a stack can move or be moved.',
   ],
+  // interface: [
+  //   "It is currently whites turn. You can tell because the white's piece placement area (not pictured) will be highlighted in green.",
+  //   "If you click on any moveable (not grayed out) white piece, it will be selected (purple outline) and the places it can move are highlighted (green outline).",
+  //   "If you click on any moveable black piece, it will be selected (purple outline) and the places it could move if it were black's turn will be highlighted (red outline).",
+  //   'An interior purple hex means that a move uses the pieces special ability (dragonfly, praying mantis).',
+  //   'A red x means a move is blocked by the scorpion (no piece can stack on top of the scorpion).',
+  //   'A red web on a piece means amove i s blocked by the orb weaver (no piece can fly over an orbweaver).',
+  //   'A red web on the ground means an ant is blocked by the trap door spider.',
+  // ],
   queen: [
     'From this position, the white queen can move to one of two spaces. It cannot move between the beetle and ant because it cannot fit.',
     'The black queen cannot move without breaking the hive.',

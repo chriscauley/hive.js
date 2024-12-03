@@ -6,7 +6,7 @@ import webs from './webs'
 export const notEnemyScorpion = (board, source, target) => {
   const { stack, player } = board.layers
   return !stack[target] || player[source] === player[target]
-}
+} //confused how this works to identify not a scorpion
 
 const getPlacement = (board, player_id, excludes = []) => {
   if (board.turn === 0) {
@@ -45,6 +45,7 @@ const getPlacement = (board, player_id, excludes = []) => {
 
 const stepAlongHive = (board, index, excludes = []) => {
   const touching = board.geo.touching[index]
+
   return touching.filter((target_index, i) => {
     if (board.stacks[target_index] || excludes.includes(target_index)) {
       return false
@@ -60,6 +61,14 @@ const stepAlongHive = (board, index, excludes = []) => {
 
 export const stepOnHive = (board, index, excludes = []) => {
   const touching = board.geo.touching[index]
+
+  const adjacentScorpions = touching.filter((target_index) => {
+    return notEnemyScorpion(board, index, target_index)
+  }).length
+
+//!adjacentScorpions && TODO: add this to the touching.filter
+//right now other  bugs like orbweaver count for this too
+
   return touching.filter((target_index) => {
     return (
       board.stacks[target_index] &&
@@ -352,6 +361,14 @@ const spider = (b, i) => {
 
 const kung_fu_mantis = (b, i) => (b.stacks[i].length > 1 ? beetle(b, i) : [])
 
+const orbweaver = (b, i) => {
+  return nStepsAlongHive(b, i, 1);
+}
+
+const scorpion = (b, i) => {
+  return nStepsAlongHive(b, i, 3);
+}
+
 const moves = {
   stepOnHive,
   stepOffHive,
@@ -378,9 +395,9 @@ const moves = {
 
   // all spider-likes move the same
   spider,
-  scorpion: spider,
+  scorpion: scorpion,
   trapdoor_spider: spider,
-  orbweaver: spider,
+  orbweaver: orbweaver,
   emerald_wasp,
   kung_fu_mantis,
 }

@@ -5,8 +5,17 @@ import webs from './webs'
 
 export const notEnemyScorpion = (board, source, target) => {
   const { stack, player } = board.layers
-  return !stack[target] || player[source] === player[target]
+  const touching = board.geo.touching[target];
+  const noAdjacentScorpions = touching.filter((i) => notEnemyStinger(board, source, i)).length === 6;
+
+  return noAdjacentScorpions && (!stack[target] || player[source] === player[target])
 } //confused how this works to identify not a scorpion
+  
+export const notEnemyStinger = (board, source, target) => {
+  const { stinger, player } = board.layers
+
+  return !stinger[target]  || player[source] === player[target]
+} 
 
 const getPlacement = (board, player_id, excludes = []) => {
   if (board.turn === 0) {
@@ -61,13 +70,6 @@ const stepAlongHive = (board, index, excludes = []) => {
 
 export const stepOnHive = (board, index, excludes = []) => {
   const touching = board.geo.touching[index]
-
-  const adjacentScorpions = touching.filter((target_index) => {
-    return notEnemyScorpion(board, index, target_index)
-  }).length
-
-//!adjacentScorpions && TODO: add this to the touching.filter
-//right now other  bugs like orbweaver count for this too
 
   return touching.filter((target_index) => {
     return (
@@ -366,7 +368,7 @@ const orbweaver = (b, i) => {
 }
 
 const scorpion = (b, i) => {
-  return nStepsAlongHive(b, i, 3);
+  return nStepsAlongHive(b, i, 2);
 }
 
 const moves = {

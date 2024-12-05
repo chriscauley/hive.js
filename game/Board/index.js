@@ -27,6 +27,7 @@ const B = {
       type: {},
       player: {},
       stack: {},
+      stinger: {},
       crawl: {},
       fly: {},
     }
@@ -35,6 +36,9 @@ const B = {
     b.player_list = [1, 2]
     b.reverse = {}
     b.geo = getGeo(b)
+
+
+
     Object.entries(b.stacks).forEach(([index, stack]) => {
       if (!stack || stack.length === 0) {
         // prune unused stacks

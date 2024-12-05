@@ -5,6 +5,7 @@ const web_targets = {
   fly: ['fly', 'hornet', 'ladybug', 'cockroach', 'grasshopper', 'cicada', 'lanterfly'],
   crawl: ['ant', 'cicada'], // , 'orbweaver', 'scorpion', 'trapdoor_spider', 'spider'],
   stack: ['beetle', 'orchid_mantis', 'praying_mantis', 'fly', 'dragonfly'],
+  stinger: ['beetle', 'orchid_mantis', 'praying_mantis', 'fly', 'dragonfly'], //includes damsel fly
 }
 
 const piece_shows_webs = {}
@@ -20,6 +21,7 @@ export default {
   scorpion: (b, i) => {
     // no piece can step on top of a scorpion
     b.layers.stack[i] = true
+    b.layers.stinger[i] = true
   },
   orbweaver: (b, i) => {
     // no piece can fly over an orbweaver
@@ -38,6 +40,7 @@ export default {
     fly: (b, i) => !b.layers.fly[i],
     crawl: (b, i) => !b.layers.crawl[i],
     stack: (b, i) => !b.layers.stack[i],
+    stinger: (b, i) => !b.layers.stinger[i]
   },
 
   getVisible(b, i) {
@@ -56,5 +59,6 @@ export default {
       `Since the ${type} started in this web, it cannot be stuck on it again.`,
     stack: (type) => `The ${type} cannot step on top of the scorpion.`,
     fly: (type) => `The ${type} cannot move over the orbweaver.`,
+    stinger: (type) => `The ${type} cannot move within the scorpion's stinger range.`,
   },
 }

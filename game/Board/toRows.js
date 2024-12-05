@@ -173,9 +173,24 @@ const columnize = (cells, columns) => {
   return out
 }
 
+// TODO See commit! These lines are blocking a recursion error that happens with
+// everything with purple-inner (selected.chalk exists!)
+let last_selected
+let i_recursion
+let last_marked
+
 const getMarked = (board) => {
   const { selected } = board
+  if (selected?.piece_id !== last_selected) {
+    i_recursion = 0
+    last_selected = selected?.piece_id
+  }
+  if (i_recursion > 10) {
+    return last_marked
+  }
+  i_recursion++
   const marked = {}
+  last_marked = marked
   Object.keys(board.cantmove).forEach((index) => (marked[index] = ' gray'))
 
   if (!selected) {

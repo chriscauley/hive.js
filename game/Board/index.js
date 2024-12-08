@@ -27,6 +27,7 @@ const B = {
       type: {},
       player: {},
       stack: {},
+      stinger: {},
       crawl: {},
       fly: {},
     }

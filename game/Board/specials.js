@@ -104,7 +104,9 @@ const praying_mantis = (board, piece_id, args) => {
       }
       target_index += dindex
     }
-    targets.push([last, snag])
+    if (!board.layers.stinger[last]) {
+      targets.push([last, snag])
+    }
   })
   if (args.length === 0) {
     let snag_targets = []

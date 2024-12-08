@@ -54,7 +54,6 @@ const getPlacement = (board, player_id, excludes = []) => {
 
 const stepAlongHive = (board, index, excludes = []) => {
   const touching = board.geo.touching[index]
-
   return touching.filter((target_index, i) => {
     if (board.stacks[target_index] || excludes.includes(target_index)) {
       return false
@@ -70,7 +69,6 @@ const stepAlongHive = (board, index, excludes = []) => {
 
 export const stepOnHive = (board, index, excludes = []) => {
   const touching = board.geo.touching[index]
-
   return touching.filter((target_index) => {
     return (
       board.stacks[target_index] &&

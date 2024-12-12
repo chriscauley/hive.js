@@ -118,7 +118,7 @@ const presets = [
     },
   },
   {
-    slug: 'superhive',
+    slug: 'modern_hive',
     description: 'Classic hive with a few tweaks',
     pieces: {
       ant: 3,
@@ -169,6 +169,84 @@ const presets = [
       orbweaver: 1,
       ladybug: 2,
       beetle: 2,
+    },
+  },
+  {
+    slug: 'dunes',
+    description: 'Tough, hard to pin pieces.',
+    pieces: {
+      beetle: 3,
+      praying_mantis: 1,
+      scorpion: 2,
+      fly: 1,
+      kung_fu_mantis: 1,
+      emerald_wasp: 3,
+    },
+  },
+  {
+    slug: 'swamp',
+    description: 'Fast moving pieces and grabbers.',
+    pieces: {
+      cicada: 3,
+      praying_mantis: 3,
+      orchid_mantis: 2,
+      dragonfly_nymph: 2,
+      orbweaver: 2,
+    },
+  },
+  {
+    slug: 'marsh',
+    description: 'Carrying pieces.',
+    pieces: {
+      kung_fu_mantis: 2,
+      lanternfly_nymph: 2,
+      dragonfly: 3,
+      cockroach: 2,
+      praying_mantis: 2,
+    },
+  },
+  {
+    slug: 'attic',
+    description: 'Pesky flies.',
+    pieces: {
+      beetle: 1,
+      scorpion: 1,
+      orbweaver: 1,
+      fly: 4,
+      beetle: 1,
+      damselfly: 3,
+      ant: 2,
+    },
+  },
+  {
+    slug: 'frenzy',
+    description: 'Quick attackers.',
+    pieces: {
+      hornet: 3,
+      orchid_mantis: 2,
+      scorpion: 2,
+      praying_mantis: 2,
+      ant: 2
+    },
+  },
+  {
+    slug: 'jitters',
+    description: 'Emerald Wasp and other pieces that take effort to activate.',
+    pieces: {
+      emerald_wasp: 4,
+      orchid_mantis: 2,
+      cockroach: 3,
+      trapdoor_spider: 2,
+    },
+  },
+  {
+    slug: 'skulking',
+    description: '4 bugs that can counter each other.',
+    pieces: {
+      cicada: 3,
+      trapdoor_spider: 3,
+      lanternfly_nymph: 3,
+      beetle: 3,
     },
   },
 ]

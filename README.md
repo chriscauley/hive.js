@@ -6,7 +6,7 @@ This is intended to be a hive game engine, as well as assets and a react client.
 git clone https://github.com/chriscauley/hive.js.git
 cd hive.js
 yarn install
-yarn develop
+yarn serve
 ```
 
 The above will start only the client. If you also want to run the client you will need python3 and postgres installed. You'll also need docker (or redis if you don't want to use docker). To install the python server and start both the client and multiplayer server at http://localhost:8239 run:

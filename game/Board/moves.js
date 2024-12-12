@@ -5,8 +5,17 @@ import webs from './webs'
 
 export const notEnemyScorpion = (board, source, target) => {
   const { stack, player } = board.layers
-  return !stack[target] || player[source] === player[target]
-}
+  const touching = board.geo.touching[target];
+  const noAdjacentScorpions = touching.filter((i) => notEnemyStinger(board, source, i)).length === 6;
+
+  return noAdjacentScorpions && (!stack[target] || player[source] === player[target])
+} //confused how this works to identify not a scorpion
+  
+export const notEnemyStinger = (board, source, target) => {
+  const { stinger, player } = board.layers
+
+  return !stinger[target]  || player[source] === player[target]
+} 
 
 const getPlacement = (board, player_id, excludes = []) => {
   if (board.turn === 0) {
@@ -352,6 +361,14 @@ const spider = (b, i) => {
 
 const kung_fu_mantis = (b, i) => (b.stacks[i].length > 1 ? beetle(b, i) : [])
 
+const orbweaver = (b, i) => {
+  return nStepsAlongHive(b, i, 1);
+}
+
+const scorpion = (b, i) => {
+  return nStepsAlongHive(b, i, 2);
+}
+
 const moves = {
   stepOnHive,
   stepOffHive,
@@ -378,9 +395,9 @@ const moves = {
 
   // all spider-likes move the same
   spider,
-  scorpion: spider,
+  scorpion: scorpion,
   trapdoor_spider: spider,
-  orbweaver: spider,
+  orbweaver: orbweaver,
   emerald_wasp,
   kung_fu_mantis,
 }

@@ -1,4 +1,4 @@
-const _along = 'Move one square along the hive.'
+const _along = 'Move one space along the hive.'
 const _stack = 'Cannot step on scorpion.'
 const _fly = 'Cannot move over orbweaver.'
 const _crawl = 'Will stop moving if it touches the trapdoor spider.'
@@ -7,7 +7,7 @@ const _beetle = 'Moves like a beetle if it starts a turn on the hive.'
 
 const queen = [_along, 'If surrounded, you lose.', 'You can only have one queen.']
 const beetle = [_along, 'Can move onto hive.', _stack]
-const grasshopper = ['Hops over hive.', _fly]
+const grasshopper = ['Jumps over the hive.', _fly]
 const cicada = ['Can make unlimited jumps over the hive.', _fly, _crawl]
 const spider = _spiderlike([])
 const ant = ['Can move unlimited spaces along the hive.', _crawl]
@@ -17,10 +17,10 @@ const mosquito = [
   _beetle,
   'Cannot copy special abilities.',
 ]
-const pill_bug = [_along, 'Can move any piece it is touching to another empty square.']
+const pill_bug = [_along, 'Can move any piece it is touching to an empty adjacent space.']
 const orchid_mantis = [_along, 'Can pull a piece under itself.', _beetle, _stack]
 const kung_fu_mantis = [
-  'Can pull a piece two spaces in any direction under itself.',
+  'Can pull a piece from two spaces in any direction under itself.',
   _beetle,
   _stack,
 ]
@@ -28,13 +28,13 @@ const kung_fu_mantis = [
 const praying_mantis = [
   'Can jump over the hive and land on the furthest piece in any direction',
   'Will carry a stacked piece with it when it jumps.',
-  'If on the hive, can only step on the ground.',
+  'If on the hive, can only step to the ground.',
   _fly,
   _stack,
 ]
 const fly = [
   'If on ground, can step on the hive.',
-  'If on the hive, can fly to any open square.',
+  'If on the hive, can fly to any open tile.',
   _fly,
   _stack,
 ]
@@ -54,22 +54,25 @@ const dragonfly_nymph = [
 ]
 const centipede = [_along, 'Can swap with an adjacent piece.']
 const earthworm = [_along, 'Can swap with the bottom piece of any stack 3  (on hive) moves away.']
-const orbweaver = _spiderlike([
+const orbweaver = [
+  'Moves one step along the hive',
   'No piece can move over.',
   'Defends against grasshopper, cicada, ladybug, fly, hornet, emerald wasp, and cockroach.',
-])
+]
+
 const trapdoor_spider = _spiderlike([
   'Traps any piece that moves next to it.',
   'Defends against ant and cicada.',
 ])
-const scorpion = _spiderlike([
+const scorpion = [
+  'Moves two steps along the hive.',
   'No piece can stack on top of the scorpion.',
   'Defends against beetle, fly, dragonfly, and orchid mantis, kung fu mantis, and praying mantis.',
-])
+]
 
 const emerald_wasp = [
   'If on the ground, can take two steps onto the hive.',
-  'If on the hive, can only step on the ground.',
+  'If on the hive, can only step to the ground.',
   _fly,
   _stack,
 ]

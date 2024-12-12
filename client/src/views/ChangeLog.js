@@ -1,6 +1,20 @@
 import css from '@unrest/css'
 
 const content = {
+  'v1.0.3 Dec 12, 2024': [
+    'Arachnid rebalance: Scorpion movement decreased to 2, range of stinger increased by 1. Hop ability removed.',
+    'Arachnid rebalance: Orbweaver movement decreased to 1. Hop ability removed.',
+    'NEW PIECE SET: Dunes. Tough, hard to pin pieces.',
+    'NEW PIECE SET: Swamp. Fast moving pieces and grabbers.',
+    'NEW PIECE SET: Marsh. Carrying pieces.',
+    'NEW PIECE SET: Attic. Pesky flies.',
+    'NEW PIECE SET: Frenzy. Quick attackers.',
+    'NEW PIECE SET: Jitters. Emerald Wasp and other pieces that take effort to activate.',
+    'NEW PIECE SET: Skulking. 4 bugs that can counter each other.',
+    'Renamed Superhive to Modern Hive, to reflect its intention as a modern balance patch.',
+    'Reorganized pieces in piece selection. Functionality is roughly organized in columns. Power roughly increases with each row.',
+    'Help text improved for accuracy, consistency, and grammar.'
+  ],
   'v1.0.2 Dec 28, 2020': [
     'NEW PIECE: Praying Mantis can leap onto furthest piece in any direction and drag a stacked piece with it.',
     'NEW PIECE: Kung Fu Mantis can grab a piece two spaces away and move it underneath.',

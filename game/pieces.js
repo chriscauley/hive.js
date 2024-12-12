@@ -9,35 +9,33 @@ const VANILLA = {
   spider: 2,
 }
 
+//sorted for vertical roguh functionality groupings
 const piece_counts = {
   queen: 1,
   ...VANILLA,
-  // expansion
-  ladybug: 1,
-  mosquito: 1,
   pill_bug: 1,
-
-  // boardgamegeeks
   orchid_mantis: 2,
-  fly: 3,
-  hornet: 3,
-  dragonfly: 1,
-  cockroach: 1,
-  centipede: 1,
-  scorpion: 2,
-
-  // hive.js
-  trapdoor_spider: 2,
-  orbweaver: 2,
   cicada: 3,
-  lanternfly: 3,
-  lanternfly_nymph: 3,
-  earthworm: 1,
-  damselfly: 1,
-  dragonfly_nymph: 2,
+  cockroach: 1,
+  trapdoor_spider: 2,
+  centipede: 1,
+  dragonfly: 1,
   praying_mantis: 1,
-  emerald_wasp: 1,
+  lanternfly: 3,
+  scorpion: 2,
+  ladybug: 1,
+  dragonfly_nymph: 2,
   kung_fu_mantis: 1,
+  fly: 3,
+  orbweaver: 2,
+  emerald_wasp: 1,
+  damselfly: 1,
+  earthworm: 1,
+  hornet: 3,
+  praying_mantis: 1,
+  lanternfly_nymph: 3,
+  mosquito: 1,
+
 }
 
 // currently not used, colors are stored on svg

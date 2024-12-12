@@ -118,7 +118,7 @@ const presets = [
     },
   },
   {
-    slug: 'superhive',
+    slug: 'modern_hive',
     description: 'Classic hive with a few tweaks',
     pieces: {
       ant: 3,

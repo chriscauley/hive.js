@@ -1,5 +1,6 @@
 import django, os;os.environ['DJANGO_SETTINGS_MODULE']='server.settings';django.setup()
 
+from django.core.asgi import get_asgi_application
 from django.urls import re_path
 from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
@@ -10,7 +11,7 @@ websocket_urlpatterns = [
 ]
 
 application = ProtocolTypeRouter({
-    # (http->django views is added by default)
+    'http': get_asgi_application(),
     'websocket': AuthMiddlewareStack(
         URLRouter(websocket_urlpatterns)
     ),

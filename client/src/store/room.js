@@ -11,7 +11,7 @@ const BOARDS = {}
 const LOCAL_GAME_KEY = 'local_storage_game'
 
 // Shared reactive auth state — set by components via room_store.setUser()
-const authState = reactive({ userId: null, user: null })
+const authState = reactive({ userId: null, user: null, isLoading: true })
 
 const state = reactive({
   current_room: null,
@@ -144,8 +144,21 @@ export default () => {
     }
   }
 
+  const init = () => {
+    if (import.meta.env.VITE_OFFLINE) {
+      authState.isLoading = false
+    } else {
+      fetchJson('/api/auth/me').then((data) => {
+        room_store.setUser(data.id ? data : null)
+      }).catch(() => {}).finally(() => {
+        authState.isLoading = false
+      })
+    }
+  }
+
   const room_store = {
     state,
+    init,
     undo: (room_id) => onlyIfLocal(room_id, 'undo'),
     redo: (room_id) => onlyIfLocal(room_id, 'redo'),
     watch: watchRoom,
@@ -155,6 +168,7 @@ export default () => {
     setUser: (user) => { authState.user = user; authState.userId = user?.id ?? null },
     getUser: () => authState.user,
     getUserId: () => authState.userId,
+    isAuthLoading: () => authState.isLoading,
     isHost: (room_id) => {
       if (!room_id) {
         return false

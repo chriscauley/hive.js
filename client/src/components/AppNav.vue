@@ -43,6 +43,7 @@
     </Menu>
     <AuthNav
       :user="$store.room.getUser()"
+      :isLoading="$store.room.isAuthLoading()"
       @logout="logout"
       @login="$router.push('/auth/login/')"
       @register="$router.push('/auth/sign-up/')"

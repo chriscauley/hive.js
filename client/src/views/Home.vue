@@ -3,7 +3,8 @@
     <div class="modal__content -auto">
       <div class="view-home">
         <h2>Welcome!</h2>
-        <template v-if="user">
+        <LoadingSkeleton v-if="isLoading" :lines="3" />
+        <template v-else-if="user">
           <template v-if="online">
             <router-link to="/new/online/" class="btn -primary block mb-4">
               Start Online Game
@@ -27,7 +28,7 @@
 </template>
 
 <script>
-import { fetchJson } from '@unrest/ui'
+import { fetchJson, LoadingSkeleton } from '@unrest/ui'
 
 const online = !import.meta.env.VITE_OFFLINE
 
@@ -39,22 +40,20 @@ export default {
     const { query } = this.$route
     const signup = { path: '/auth/sign-up/', query }
     const login = { path: '/auth/login/', query }
-    return { signup, login, online, user: online ? null : { id: 'local' } }
+    return { signup, login, online }
   },
-  mounted() {
-    if (online) {
-      fetchJson('/api/auth/me').then((data) => {
-        this.user = data.id ? data : null
-        this.$store.room.setUser(this.user)
-      }).catch(() => {
-        this.user = null
-      })
-    }
+  components: { LoadingSkeleton },
+  computed: {
+    isLoading() {
+      return this.$store.room.isAuthLoading()
+    },
+    user() {
+      return online ? this.$store.room.getUser() : { id: 'local' }
+    },
   },
   methods: {
     makeGuest() {
       fetchJson('/api/auth/guest', { method: 'POST' }).then((user) => {
-        this.user = user
         this.$store.room.setUser(user)
         if (this.$route.query.next) {
           this.$router.replace(this.$route.query.next)

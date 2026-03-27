@@ -43,9 +43,9 @@ export default {
   },
   mounted() {
     if (online) {
-      fetchJson('/api/auth/me').then((user) => {
-        this.user = user
-        this.$store.room.setUser(user?.id)
+      fetchJson('/api/auth/me').then((data) => {
+        this.user = data.id ? data : null
+        this.$store.room.setUser(this.user)
       }).catch(() => {
         this.user = null
       })
@@ -55,7 +55,7 @@ export default {
     makeGuest() {
       fetchJson('/api/auth/guest', { method: 'POST' }).then((user) => {
         this.user = user
-        this.$store.room.setUser(user?.id)
+        this.$store.room.setUser(user)
         if (this.$route.query.next) {
           this.$router.replace(this.$route.query.next)
         }

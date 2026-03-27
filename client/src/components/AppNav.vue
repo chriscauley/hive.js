@@ -41,18 +41,24 @@
         </MenuItem>
       </MenuItems>
     </Menu>
+    <AuthNav
+      :user="$store.room.getUser()"
+      @logout="logout"
+      @login="$router.push('/auth/login/')"
+      @register="$router.push('/auth/sign-up/')"
+    />
   </header>
 </template>
 
 <script>
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
-import { UnrestSchemaForm, store } from '@unrest/ui'
+import { AuthNav, UnrestSchemaForm, fetchJson, store } from '@unrest/ui'
 import ImportGame from './ImportGame.vue'
 import ExportGame from './ExportGame.vue'
 import Tutorial from './Tutorial.vue'
 
 export default {
-  components: { Menu, MenuButton, MenuItems, MenuItem, UnrestSchemaForm },
+  components: { AuthNav, Menu, MenuButton, MenuItems, MenuItem, UnrestSchemaForm },
   data() {
     return { nav_open: false }
   },
@@ -110,6 +116,12 @@ export default {
     },
     showExportModal() {
       store.alert({ component: ExportGame })
+    },
+    logout() {
+      fetchJson('/api/auth/logout', { method: 'POST' }).then(() => {
+        this.$store.room.setUser(null)
+        this.$router.push('/')
+      })
     },
   },
 }

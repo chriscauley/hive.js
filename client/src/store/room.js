@@ -11,7 +11,7 @@ const BOARDS = {}
 const LOCAL_GAME_KEY = 'local_storage_game'
 
 // Shared reactive auth state — set by components via room_store.setUser()
-const authState = reactive({ userId: null })
+const authState = reactive({ userId: null, user: null })
 
 const state = reactive({
   current_room: null,
@@ -152,7 +152,8 @@ export default () => {
     send: sendRoom,
     sync,
     save: () => fetchJson('/api/room/', { method: 'POST' }),
-    setUser: (id) => { authState.userId = id },
+    setUser: (user) => { authState.user = user; authState.userId = user?.id ?? null },
+    getUser: () => authState.user,
     getUserId: () => authState.userId,
     isHost: (room_id) => {
       if (!room_id) {

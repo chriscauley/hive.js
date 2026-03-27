@@ -29,7 +29,7 @@
 <script>
 import { fetchJson } from '@unrest/ui'
 
-const online = !process.env.VUE_APP_OFFLINE
+const online = !import.meta.env.VITE_OFFLINE
 
 export default {
   __route: {
@@ -53,7 +53,7 @@ export default {
   },
   methods: {
     makeGuest() {
-      fetchJson('/api/auth/guest/', { method: 'POST' }).then((user) => {
+      fetchJson('/api/auth/guest', { method: 'POST' }).then((user) => {
         this.user = user
         this.$store.room.setUser(user?.id)
         if (this.$route.query.next) {

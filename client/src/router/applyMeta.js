@@ -3,7 +3,7 @@
 const q = 'data-vue-router-controlled'
 
 export default (to, from, next) => {
-  if (process.env.NODE_ENV === 'test') {
+  if (import.meta.env.MODE === 'test') {
     // mocked document is missing some features and this is not mission critical
     next()
     return

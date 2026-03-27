@@ -1,5 +1,5 @@
-import config from './config'
-import room from './room'
+import config from './config.js'
+import room from './room.js'
 
 const store = {
   list: [],

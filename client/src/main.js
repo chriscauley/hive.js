@@ -7,10 +7,10 @@ import chat from '@/chat'
 import store from '@/store'
 import router from '@/router'
 import App from '@/App.vue'
-import ImportGame from '@/components/ImportGame'
-import ExportGame from '@/components/ExportGame'
-import makeSprites from '@/sprite/makeSprites'
-import '@/css/base.scss'
+import ImportGame from '@/components/ImportGame.vue'
+import ExportGame from '@/components/ExportGame.vue'
+import makeSprites from '@/sprite/makeSprites.js'
+import '@/css/base.css'
 
 makeSprites()
 

@@ -10,7 +10,7 @@
 <script>
 import Board from 'hive.js/Board'
 import toRows from 'hive.js/Board/toRows'
-import HiveBoard from '@/components/Board'
+import HiveBoard from '@/components/Board.vue'
 export default {
   components: { HiveBoard },
   props: { board: Object },

@@ -3,7 +3,7 @@ import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router
 
 import { createAuthGuard } from '@unrest/ui'
 import sprite from '@/sprite'
-import applyMeta from './applyMeta'
+import applyMeta from './applyMeta.js'
 import views from '@/views'
 
 const routes = []
@@ -22,7 +22,7 @@ const loadViews = (o) =>
 
 loadViews(views)
 loadViews(sprite.views)
-const createHistory = process.env.VUE_APP_OFFLINE ? createWebHashHistory : createWebHistory
+const createHistory = import.meta.env.VITE_OFFLINE ? createWebHashHistory : createWebHistory
 
 const router = createRouter({
   history: createHistory(),

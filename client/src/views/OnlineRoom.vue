@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import NewGame from '@/components/NewGame'
-import Game from '@/components/Game'
+import NewGame from '@/components/NewGame.vue'
+import Game from '@/components/Game.vue'
 
 export default {
   components: { Game, NewGame },

@@ -1,4 +1,4 @@
-import Widget from './Widget'
+import Widget from './Widget.vue'
 
 export default {
   install(app, _option) {

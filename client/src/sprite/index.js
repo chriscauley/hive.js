@@ -1,8 +1,7 @@
-import makeSprites from './makeSprites'
-import Hexes from './Hexes'
-import Nav from './Nav'
-// import PieceGenerator from './PieceGenerator'
-import Pieces from './Pieces'
+import makeSprites from './makeSprites.js'
+import Hexes from './Hexes.vue'
+import Nav from './Nav.vue'
+import Pieces from './Pieces.vue'
 
 export default {
   makeSprites,

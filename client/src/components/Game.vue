@@ -38,11 +38,11 @@ import { useInputMap } from '@unrest/ui'
 import B from 'hive.js/Board'
 import toRows from 'hive.js/Board/toRows'
 import sprite from '@/sprite'
-import HiveBoard from './Board'
-import HelpText from './HelpText'
-import NoRules from './NoRules'
-import TimeSince from './TimeSince'
-import Winner from './Winner'
+import HiveBoard from './Board.vue'
+import HelpText from './HelpText.vue'
+import NoRules from './NoRules.vue'
+import TimeSince from './TimeSince.vue'
+import Winner from './Winner.vue'
 
 export default {
   components: { HelpText, HiveBoard, NoRules, TimeSince, Winner },

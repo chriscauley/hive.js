@@ -53,7 +53,7 @@
 
 <script>
 import { startCase, range } from 'lodash'
-import MiniBoard from '@/components/MiniBoard'
+import MiniBoard from '@/components/MiniBoard.vue'
 import Board from 'hive.js/Board'
 import help from 'hive.js/help'
 import boards from 'hive.js/tutorial/boards'

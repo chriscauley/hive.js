@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import HivePiece from './Piece'
+import HivePiece from './Piece.vue'
 
 import pieces from 'hive.js/pieces'
 import sprite from '@/sprite'

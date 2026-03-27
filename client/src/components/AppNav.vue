@@ -47,8 +47,8 @@
 <script>
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 import { UnrestSchemaForm, store } from '@unrest/ui'
-import ImportGame from './ImportGame'
-import ExportGame from './ExportGame'
+import ImportGame from './ImportGame.vue'
+import ExportGame from './ExportGame.vue'
 import Tutorial from './Tutorial.vue'
 
 export default {

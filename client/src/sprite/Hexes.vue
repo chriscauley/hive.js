@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import makeSprites, { SPRITES } from './makeSprites'
-import SpriteNav from './Nav'
+import makeSprites, { SPRITES } from './makeSprites.js'
+import SpriteNav from './Nav.vue'
 
 export default {
   components: { SpriteNav },

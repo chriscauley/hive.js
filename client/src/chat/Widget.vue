@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import ChatBox from './ChatBox'
+import ChatBox from './ChatBox.vue'
 
 export default {
   components: { ChatBox },

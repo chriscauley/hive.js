@@ -15,8 +15,8 @@
 </template>
 
 <script>
-import makeSprites from './makeSprites'
-import SpriteNav from './Nav'
+import makeSprites from './makeSprites.js'
+import SpriteNav from './Nav.vue'
 import pieces from 'hive.js/pieces'
 
 const players = ['player_1', 'player_2']

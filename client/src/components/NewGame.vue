@@ -81,9 +81,9 @@ import { startCase, isEqual } from 'lodash'
 
 import pieces from 'hive.js/pieces'
 import short_help from 'hive.js/short_help'
-import RuleList from './RuleList'
+import RuleList from './RuleList.vue'
 import { store as uiStore } from '@unrest/ui'
-import HivePiece from './Piece'
+import HivePiece from './Piece.vue'
 import ls from 'local-storage-json'
 
 // TODO move clean rules into store

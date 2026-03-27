@@ -23,9 +23,6 @@ body {
 }
 
 [data-theme="dark"] {
-  .hex {
-    filter: brightness(0.9)
-  }
   .highlight-green {
     @apply bg-green-500;
   }
@@ -93,38 +90,45 @@ body {
   @apply border p-4 shadow bg-app-bg rounded-lg;
   @apply flex flex-col gap-4;
   width: 672px;
-  &__row {
-    @apply flex items-center gap-8;
-    &.-center {
-      @apply justify-center;
-    }
+}
+
+.new-game__row {
+  @apply flex items-center gap-8;
+  &.-center {
+    @apply justify-center;
   }
-  &__col {
-    @apply w-1/2;
+}
+
+.new-game__col {
+  @apply w-1/2;
+}
+
+.new-game__hover-piece {
+  @apply flex items-center text-3xl font-bold gap-x-2;
+}
+
+.new-game__hover-inner {
+  @apply relative;
+  height: 32px;
+  width: 36px;
+}
+
+.new-game__preset {
+  @apply flex pb-2;
+}
+
+.new-game__presets {
+  @apply flex flex-col items-center;
+  .btn {
+    @apply mx-auto;
+    width: 150px;
   }
-  &__hover-piece {
-    @apply flex items-center text-3xl font-bold gap-x-2;
-  }
-  &__hover-inner {
-    @apply relative;
-    height: 32px;
-    width: 36px;
-  }
-  &__preset {
-    @apply flex pb-2;
-  }
-  &__presets {
-    @apply flex flex-col items-center;
-    .btn {
-      @apply mx-auto;
-      width: 150px;
-    }
-  }
-  &__actions {
-    @apply flex items-center gap-2;
-    @media (max-width: 640px) {
-      justify-content: center;
-    }
+}
+
+.new-game__actions {
+  @apply flex items-center gap-2;
+  @media (max-width: 640px) {
+    justify-content: center;
   }
 }
 

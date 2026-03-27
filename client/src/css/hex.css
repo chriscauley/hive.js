@@ -109,6 +109,21 @@
 .hex {
   background-size: contain;
   background-repeat: no-repeat;
+  &.hex-player_1 {
+    filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.4));
+  }
+  &.hex-player_2 {
+    filter: drop-shadow(1px 1px 2px rgba(255, 255, 255, 0.4));
+  }
+  &.-stacked-0 {
+    filter: none;
+  }
+}
+
+[data-theme="dark"] .hex {
+  &[class*="hex-empty"] {
+    filter: brightness(0.9);
+  }
 }
 
 .hex.debug {

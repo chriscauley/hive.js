@@ -41,47 +41,39 @@
   cursor: pointer;
 
   /* some bugs are off center and need to be shifted */
-  &.hex.type- {
-    &scorpion:before, &dragonfly:before {
-      margin-left: 4%;
-    }
-    &fly:before {
-      margin-left: 15%;
-    }
-    &spider:before, &queen:before, &trapdoor_spider:before, &orbweaver:before {
-      margin-top: 5%;
-    }
-    &orbweaver:before {
-      height: 100%;
-    }
-    &earthworm:before {
-      margin-top: 15%;
-    }
-    &orchid_mantis, &fly, &hornet, &pill_bug, &scorpion, &cockroach {
-      &:before {
-        transform: rotate(-30deg);
-      }
-    }
+  &.hex.type-scorpion:before, &.hex.type-dragonfly:before {
+    margin-left: 4%;
+  }
+  &.hex.type-fly:before {
+    margin-left: 15%;
+  }
+  &.hex.type-spider:before, &.hex.type-queen:before, &.hex.type-trapdoor_spider:before, &.hex.type-orbweaver:before {
+    margin-top: 5%;
+  }
+  &.hex.type-orbweaver:before {
+    height: 100%;
+  }
+  &.hex.type-earthworm:before {
+    margin-top: 15%;
+  }
+  &.hex.type-orchid_mantis:before, &.hex.type-fly:before,
+  &.hex.type-hornet:before, &.hex.type-pill_bug:before,
+  &.hex.type-scorpion:before, &.hex.type-cockroach:before {
+    transform: rotate(-30deg);
   }
 
   &.hex-player_2.hex.type-emerald_wasp:before {
     filter: brightness(1.25);
   }
 
-  &.hex-player_2.hex.type- {
-    &scorpion, &spider, &trapdoor_spider, &praying_mantis {
-      &:before {
-        filter: brightness(1.5);
-      }
-    }
+  &.hex-player_2.hex.type-scorpion:before, &.hex-player_2.hex.type-spider:before,
+  &.hex-player_2.hex.type-trapdoor_spider:before, &.hex-player_2.hex.type-praying_mantis:before {
+    filter: brightness(1.5);
   }
 
-  &.hex-player_2.hex.gray.type- {
-    &scorpion, &spider, &trapdoor_spider, &praying_mantis {
-      &:before {
-        filter: brightness(2.5);
-      }
-    }
+  &.hex-player_2.hex.gray.type-scorpion:before, &.hex-player_2.hex.gray.type-spider:before,
+  &.hex-player_2.hex.gray.type-trapdoor_spider:before, &.hex-player_2.hex.gray.type-praying_mantis:before {
+    filter: brightness(2.5);
   }
 
   &.hex.type-emerald_wasp:before {
@@ -89,10 +81,8 @@
     width: 70px;
   }
 
-  &.hex-player_2.hex.type- {
-    &lanternfly:before {
-      filter: brightness(1.25);
-    }
+  &.hex-player_2.hex.type-lanternfly:before {
+    filter: brightness(1.25);
   }
 
   .theme-carbon &:before {

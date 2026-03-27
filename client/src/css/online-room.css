@@ -1,6 +1,7 @@
 .online-room {
   @apply flex overflow-hidden items-center justify-center;
-  &__left {
-    @apply flex-grow flex-shrink h-full overflow-hidden relative;
-  }
+}
+
+.online-room__left {
+  @apply flex-grow flex-shrink h-full overflow-hidden relative;
 }

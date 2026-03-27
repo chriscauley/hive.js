@@ -12,6 +12,9 @@ export default defineConfig({
       '/api': 'http://127.0.0.1:8005',
       '/ws': { target: 'http://127.0.0.1:8005', ws: true },
     },
+    fs: {
+      allow: ['..'],
+    },
   },
   build: {
     outDir: '../dist',

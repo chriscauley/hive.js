@@ -1,19 +1,18 @@
-@import 'tailwind';
-@import 'views';
+@import './tailwind.css';
+@import './views.css';
 
 /* Game pieces */
-@import './hex';
-@import './pieces';
-@import './tutorial';
+@import './hex.css';
+@import './pieces.css';
+@import './tutorial.css';
 
 /* Components */
-@import './scrollbar';
-@import './game';
-@import './chat';
-@import './online-room';
-@import './unrest';
-@import './var';
-@import './z-index';
+@import './scrollbar.css';
+@import './game.css';
+@import './chat.css';
+@import './online-room.css';
+@import './unrest.css';
+@import './z-index.css';
 
 #app, html, body {
   height: 100%;
@@ -76,7 +75,7 @@ body {
   display: none;
 }
 
-@media (max-width: $w-sm) {
+@media (max-width: 640px) {
   .new-game__mobile {
     @apply flex justify-between;
   }
@@ -123,7 +122,7 @@ body {
   }
   &__actions {
     @apply flex items-center gap-2;
-    @media (max-width: $w-sm) {
+    @media (max-width: 640px) {
       justify-content: center;
     }
   }
@@ -163,7 +162,7 @@ body {
   &.-closed {
     @apply m-4;
   }
-  @media (max-width: $w-sm) {
+  @media (max-width: 640px) {
     bottom: unset;
     top: 77px; /* navbar height */
   }

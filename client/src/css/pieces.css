@@ -1,10 +1,29 @@
-$types: ant beetle centipede grasshopper ladybug mosquito pill_bug queen spider dragonfly dragonfly_nymph fly orchid_mantis praying_mantis hornet scorpion cockroach cicada earthworm trapdoor_spider orbweaver lanternfly damselfly emerald_wasp kung_fu_mantis lanternfly_nymph;
-
-@each $type in $types {
-  .piece.type-#{$type}:before {
-    background-image: url("../../../game/images/pieces/#{$type}.svg");
-  }
-}
+.piece.type-ant:before { background-image: url("../../../game/images/pieces/ant.svg"); }
+.piece.type-beetle:before { background-image: url("../../../game/images/pieces/beetle.svg"); }
+.piece.type-centipede:before { background-image: url("../../../game/images/pieces/centipede.svg"); }
+.piece.type-grasshopper:before { background-image: url("../../../game/images/pieces/grasshopper.svg"); }
+.piece.type-ladybug:before { background-image: url("../../../game/images/pieces/ladybug.svg"); }
+.piece.type-mosquito:before { background-image: url("../../../game/images/pieces/mosquito.svg"); }
+.piece.type-pill_bug:before { background-image: url("../../../game/images/pieces/pill_bug.svg"); }
+.piece.type-queen:before { background-image: url("../../../game/images/pieces/queen.svg"); }
+.piece.type-spider:before { background-image: url("../../../game/images/pieces/spider.svg"); }
+.piece.type-dragonfly:before { background-image: url("../../../game/images/pieces/dragonfly.svg"); }
+.piece.type-dragonfly_nymph:before { background-image: url("../../../game/images/pieces/dragonfly_nymph.svg"); }
+.piece.type-fly:before { background-image: url("../../../game/images/pieces/fly.svg"); }
+.piece.type-orchid_mantis:before { background-image: url("../../../game/images/pieces/orchid_mantis.svg"); }
+.piece.type-praying_mantis:before { background-image: url("../../../game/images/pieces/praying_mantis.svg"); }
+.piece.type-hornet:before { background-image: url("../../../game/images/pieces/hornet.svg"); }
+.piece.type-scorpion:before { background-image: url("../../../game/images/pieces/scorpion.svg"); }
+.piece.type-cockroach:before { background-image: url("../../../game/images/pieces/cockroach.svg"); }
+.piece.type-cicada:before { background-image: url("../../../game/images/pieces/cicada.svg"); }
+.piece.type-earthworm:before { background-image: url("../../../game/images/pieces/earthworm.svg"); }
+.piece.type-trapdoor_spider:before { background-image: url("../../../game/images/pieces/trapdoor_spider.svg"); }
+.piece.type-orbweaver:before { background-image: url("../../../game/images/pieces/orbweaver.svg"); }
+.piece.type-lanternfly:before { background-image: url("../../../game/images/pieces/lanternfly.svg"); }
+.piece.type-damselfly:before { background-image: url("../../../game/images/pieces/damselfly.svg"); }
+.piece.type-emerald_wasp:before { background-image: url("../../../game/images/pieces/emerald_wasp.svg"); }
+.piece.type-kung_fu_mantis:before { background-image: url("../../../game/images/pieces/kung_fu_mantis.svg"); }
+.piece.type-lanternfly_nymph:before { background-image: url("../../../game/images/pieces/lanternfly_nymph.svg"); }
 
 .piece.type-empty {
   /* used to make a place holder for justify-center on tutorial nav */
@@ -13,8 +32,8 @@ $types: ant beetle centipede grasshopper ladybug mosquito pill_bug queen spider 
 }
 
 .dummy_piece {
-  height: $hex_h;
-  width: $hex_w;
+  height: 5.196em;
+  width: 6em;
 }
 
 .piece {

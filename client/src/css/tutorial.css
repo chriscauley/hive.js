@@ -33,7 +33,7 @@
   }
 }
 
-@media (max-width: $w-sm) {
+@media (max-width: 640px) {
   /* modal is full screen */
   .tutorial {
     width: 100%;

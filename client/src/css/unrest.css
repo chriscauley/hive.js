@@ -1,10 +1,8 @@
-@import './var';
-
 .navbar__open, .navbar__close {
   @apply absolute hidden p-6 right-0 text-3xl top-0;
 }
 
-@media (max-width: $w-sm) {
+@media (max-width: 640px) {
   #app {
     padding-top: 77px;
   }

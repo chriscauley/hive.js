@@ -33,7 +33,7 @@
               </div>
               {{ title(hovering) }}
             </div>
-            <ul class="browser-default">
+            <ul class="bullet-list">
               <li v-for="text in hovering_lines" :key="text">{{ text }}</li>
             </ul>
           </div>

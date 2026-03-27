@@ -46,7 +46,7 @@ export default {
               className="mb-4 pb-2 border-b border-app-text-alt last:border-b-0"
             >
               <h3>{title}</h3>
-              <ul className="browser-default">
+              <ul className="bullet-list">
                 {items.map((item) => (
                   <li key={item}>{item}</li>
                 ))}

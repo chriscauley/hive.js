@@ -1,9 +1,24 @@
 @import "tailwindcss";
 
 @theme {
-  --color-app-bg: var(--color-bg);
-  --color-app-surface: var(--color-surface);
-  --color-app-text: var(--color-text);
-  --color-app-text-alt: var(--color-text-secondary);
-  --color-app-border: var(--color-border);
+  --color-app-bg: #35654d;
+  --color-app-surface: #2a5040;
+  --color-app-text: #e8f0eb;
+  --color-app-text-alt: #a3bfad;
+  --color-app-border: #4a7d62;
+}
+
+body {
+  background-color: #35654d;
+  color: #e8f0eb;
+}
+
+[data-theme="dark"] body {
+  background-color: #284c3b;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) body {
+    background-color: #284c3b;
+  }
 }

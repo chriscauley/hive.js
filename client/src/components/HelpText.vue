@@ -10,7 +10,7 @@
   <div v-else class="help-text">
     <div class="alert -info">
       <div>
-        <ul class="browser-default">
+        <ul class="bullet-list">
           <li v-for="item in items" :key="item">{{ item }}</li>
         </ul>
         <div>

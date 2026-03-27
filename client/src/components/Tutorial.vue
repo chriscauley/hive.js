@@ -36,13 +36,13 @@
       </div>
     </div>
     <div>
-      <ul class="browser-default">
+      <ul class="bullet-list">
         <li v-for="(item, li) in item_groups[0]" :key="li">
           {{ item }}
         </li>
       </ul>
       <mini-board v-if="board" :board="board" :key="board" />
-      <ul class="browser-default">
+      <ul class="bullet-list">
         <li v-for="(item, li) in item_groups[1]" :key="li">
           {{ item }}
         </li>

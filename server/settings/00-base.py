@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'channels',
     'mailer',
+    'unrest',
 
     'server',
     'server.user',
@@ -30,10 +31,10 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'unrest.middleware.JsonBodyMiddleware',
 ]
 
 ROOT_URLCONF = 'server.urls'
@@ -70,8 +71,8 @@ CHANNEL_LAYERS = {
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'hive',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, '..', 'db.sqlite3'),
     },
 }
 
@@ -119,7 +120,7 @@ EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = SERVER_EMAIL = 'noreply@unrest.io'
 EMAIL_BACKEND = "mailer.backend.DbBackend"
 
-UNREST_ALLOW_GUEST = True
+UNREST_DEV_PORT = 8005
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'

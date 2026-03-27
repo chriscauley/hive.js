@@ -6,6 +6,7 @@ dist
 node_modules
 
 # python
+db.sqlite3
 .secret_key
 server/settings/local.py
 server/settings/.secret_key

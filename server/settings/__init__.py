@@ -20,5 +20,11 @@ for s_file in settings_files:
     except IOError:
         pass
 
-from unrest.settings import get_secret_key
-SECRET_KEY = get_secret_key(BASE_DIR)
+_secret_path = os.path.join(BASE_DIR, '.secret_key')
+if os.path.exists(_secret_path):
+    SECRET_KEY = open(_secret_path).read().strip()
+else:
+    from django.core.management.utils import get_random_secret_key
+    SECRET_KEY = get_random_secret_key()
+    with open(_secret_path, 'w') as f:
+        f.write(SECRET_KEY)

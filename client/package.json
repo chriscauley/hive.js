@@ -12,6 +12,8 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
+    "@formkit/themes": "^1.7.2",
+    "@formkit/vue": "^1.7.2",
     "@headlessui/vue": "^1.7.23",
     "@popperjs/core": "^2.11.8",
     "@tanstack/vue-query": "^5.92.9",

@@ -1,4 +1,6 @@
 import { createApp } from 'vue'
+import { plugin as formkit, defaultConfig } from '@formkit/vue'
+import '@formkit/themes/genesis'
 import UnrestUi from '@unrest/ui'
 import '@unrest/ui/style.css'
 
@@ -21,6 +23,7 @@ app.directive('autoscroll', autoscroll)
 app.use(router)
 app.use(store)
 app.use(UnrestUi)
+app.use(formkit, defaultConfig)
 app.use(chat)
 
 app.mount('#app')

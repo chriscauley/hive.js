@@ -51,7 +51,7 @@
                   {{ preset.name }}
                 </div>
               </div>
-              <div :class="css.preset({ slug: 'custom' })" @click="show_custom = true">Custom</div>
+              <div :class="css.preset({ slug: 'custom' })" @click="showCustomInfo">Custom</div>
             </div>
           </div>
           <div v-else>
@@ -73,13 +73,6 @@
         </div>
       </div>
     </div>
-    <unrest-modal v-if="show_custom" @close="show_custom = false">
-      <div>
-        <p>To add a piece click the tile on the left side of this menu.</p>
-        <p>To remove a piece, shift+click or right click the piece.</p>
-        <p>On mobile, click and hold a piece for 3 seconds to set clear it.</p>
-      </div>
-    </unrest-modal>
   </div>
 </template>
 
@@ -89,6 +82,7 @@ import { startCase, isEqual } from 'lodash'
 import pieces from 'hive.js/pieces'
 import short_help from 'hive.js/short_help'
 import RuleList from './RuleList'
+import { store as uiStore } from '@unrest/ui'
 import HivePiece from './Piece'
 import ls from 'local-storage-json'
 
@@ -196,7 +190,6 @@ export default {
       presets,
       selected_preset_slug: 'classic_hive',
       hovering_preset: null,
-      show_custom: false,
     }
   },
   computed: {
@@ -215,7 +208,7 @@ export default {
       },
     },
     is_host() {
-      return this.room.id === 'local' || this.room.state.host_id === this.$auth.user?.id
+      return this.room.id === 'local' || this.room.state.host_id === this.$store.room.getUserId()
     },
     rules() {
       let { rules } = this.room.state
@@ -248,6 +241,12 @@ export default {
     },
   },
   methods: {
+    showCustomInfo() {
+      uiStore.alert({
+        title: 'Custom Pieces',
+        text: 'To add a piece click the tile on the left side of this menu. To remove a piece, shift+click or right click the piece. On mobile, click and hold a piece for 3 seconds to clear it.',
+      })
+    },
     btnClass(value) {
       return `btn -${this.mode === value ? 'primary' : 'secondary'}`
     },

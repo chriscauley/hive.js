@@ -1,5 +1,9 @@
-@tailwind base;
+@import "tailwindcss";
 
-@tailwind components;
-
-@tailwind utilities;
+@theme {
+  --color-app-bg: var(--color-bg);
+  --color-app-surface: var(--color-surface);
+  --color-app-text: var(--color-text);
+  --color-app-text-alt: var(--color-text-secondary);
+  --color-app-border: var(--color-border);
+}

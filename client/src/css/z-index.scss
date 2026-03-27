@@ -1,8 +1,12 @@
-.player_1, .player_2 {
-  z-index: 10;
+/* App-specific z-index layers (see @unrest/ui z-index.css for base scale) */
+:root {
+  --z-player: 10;
+  --z-help-text: 15;
 }
-.dropdown .dropdown-menu, .help-text { z-index: 100 }
-.navbar { z-index: 101 }
-.modal { z-index: 200 }
+
+.player_1, .player_2 {
+  z-index: var(--z-player);
+}
+.help-text { z-index: var(--z-help-text); }
 .hex:after,
-.game .item:hover { z-index: 1 }
+.game .item:hover { z-index: 1; }

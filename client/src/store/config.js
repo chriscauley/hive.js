@@ -1,11 +1,11 @@
-import { ReactiveLocalStorage } from '@unrest/vue-storage'
+import { useLocalStorage } from '@unrest/ui'
 
 const initial = {
   show_help: true,
   theme: 'classic',
   darkmode: true,
   hex_angle: 'flat',
-  zoom: '0', // TODO integer zero isn't working here
+  zoom: 0,
 
   // not in schema
   chat_collapsed: false,
@@ -41,21 +41,23 @@ const schema = {
     zoom: {
       type: 'integer',
       title: 'Zoom',
-      // enum: ZoomInput.enum,
     },
   },
 }
 
+const applyTheme = (darkmode) => {
+  document.documentElement.setAttribute('data-theme', darkmode ? 'dark' : 'light')
+}
+
 export default () => {
-  const config = ReactiveLocalStorage({ LS_KEY: 'config', initial })
+  const config = useLocalStorage('config', initial)
   config.schema = schema
   const { state, save } = config
   const onChange = (data) => {
     save(data)
-    const { darkmode } = state
-    document.body.classList[darkmode ? 'add' : 'remove']('theme-dark_mode')
+    applyTheme(state.darkmode)
   }
   config.form = { schema, state, onChange }
-  document.body.classList[state.darkmode ? 'add' : 'remove']('theme-dark_mode')
+  applyTheme(state.darkmode)
   return config
 }

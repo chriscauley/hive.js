@@ -1,8 +1,6 @@
 import { reactive } from 'vue'
-import unrest from '@unrest/vue'
-import auth from '@unrest/vue-auth'
+import { store as uiStore, fetchJson } from '@unrest/ui'
 import ls from 'local-storage-json'
-import { getClient } from '@unrest/vue-storage'
 
 import router from '@/router'
 import B from 'hive.js/Board'
@@ -11,14 +9,16 @@ const TIMEOUTS = {}
 const SOCKETS = {}
 const BOARDS = {}
 const LOCAL_GAME_KEY = 'local_storage_game'
-const client = getClient()
+
+// Shared reactive auth state — set by components via room_store.setUser()
+const authState = reactive({ userId: null })
 
 const state = reactive({
   current_room: null,
   rooms: {},
 })
 
-const { ui } = unrest
+const ui = uiStore
 
 export default () => {
   SOCKETS.local = {
@@ -87,7 +87,7 @@ export default () => {
         const board = (BOARDS[room.game_id] = B.new(room.game))
         board.local_player = parseInt(
           Object.keys(board.players).find((key) => {
-            return board.players[key] === auth.user.id
+            return board.players[key] === authState.userId
           }),
         )
       }
@@ -151,13 +151,15 @@ export default () => {
     watch: watchRoom,
     send: sendRoom,
     sync,
-    save: () => client.post('/room/'),
+    save: () => fetchJson('/api/room/', { method: 'POST' }),
+    setUser: (id) => { authState.userId = id },
+    getUserId: () => authState.userId,
     isHost: (room_id) => {
       if (!room_id) {
         return false
       }
       const host_id = state.rooms[room_id]?.state.host_id
-      return room_id === 'local' || host_id === auth.user?.id
+      return room_id === 'local' || host_id === authState.userId
     },
     loadJson: (value) => {
       const room = watchRoom('local')

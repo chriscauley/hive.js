@@ -1,5 +1,3 @@
-import css from '@unrest/css'
-
 const content = {
   'v1.0.2 Dec 28, 2020': [
     'NEW PIECE: Praying Mantis can leap onto furthest piece in any direction and drag a stacked piece with it.',
@@ -38,14 +36,14 @@ export default {
   },
   render: () => (
     <div>
-      <div className={css.modal.outer()} style={{ position: 'relative', zIndex: 1 }}>
-        <div className={css.modal.content()}>
+      <div className="modal" style={{ position: 'relative', zIndex: 1 }}>
+        <div className="modal__content">
           <h2>Change Log</h2>
           {Object.entries(content).map(([title, items]) => (
             <div
               key={title}
               id={getId(title)}
-              className="mb-4 pb-2 border-b border--text-alt last:border-b-0"
+              className="mb-4 pb-2 border-b border-app-text-alt last:border-b-0"
             >
               <h3>{title}</h3>
               <ul className="browser-default">

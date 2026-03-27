@@ -7,7 +7,6 @@ from server.views import join_room, new_room
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('social_django.urls', namespace='social')),
     path('', include('unrest.urls')),
     path('api/room/', new_room),
     path('api/room/<room_id>/', join_room),

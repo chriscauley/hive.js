@@ -1,13 +1,13 @@
 @import "./var.scss";
 
 .ur-chat-widget {
-  @apply border -bg-bg h-full;
+  @apply border bg-app-bg h-full;
   flex-shrink: 0;
   width: $chat_w;
 }
 
 .ur-chat-widget .menu-bar {
-  @apply -bg-bg-alt py-1 px-2 text-right;
+  @apply bg-app-surface py-1 px-2 text-right;
 }
 
 .ur-chat-widget .room_list {

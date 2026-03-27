@@ -1,55 +1,65 @@
 <template>
-  <header :class="css.nav.outer(nav_open && '-nav-open')">
+  <header class="app-nav" :class="{ '-nav-open': nav_open }">
     <button class="navbar__open" @click="nav_open = true">
       <i class="fa fa-bars" />
     </button>
     <button class="navbar__close" @click="nav_open = false">
       <i class="fa fa-close" />
     </button>
-    <section :class="css.nav.section('left')">
-      <router-link to="/" :class="css.nav.brand()">Hive!</router-link>
+    <section class="app-nav__left">
+      <router-link to="/" class="app-nav__brand">Hive!</router-link>
     </section>
     <div class="flex-grow" />
-    <template v-if="$auth.ready">
-      <unrest-dropdown :items="game_links" placement="bottom">
-        <div class="ur-dropdown__trigger">game</div>
-      </unrest-dropdown>
-      <unrest-dropdown placement="bottom">
-        <div class="ur-dropdown__trigger">config</div>
-        <template #content>
-          <div class="dropdown-menu" @click.stop>
-            <unrest-form v-bind="$store.config.form">
-              <template #actions>{{ ' ' }}</template>
-            </unrest-form>
-          </div>
-        </template>
-      </unrest-dropdown>
-      <unrest-dropdown :items="help_links" placement="bottom">
-        <div class="ur-dropdown__trigger">help</div>
-      </unrest-dropdown>
-      <unrest-auth-menu />
-    </template>
-    <Teleport to="body">
-      <unrest-modal v-if="tutorial_open" class="-tutorial" @close="tutorial_open = false">
-        <tutorial />
-      </unrest-modal>
-    </Teleport>
+    <Menu as="div" class="hui-menu">
+      <MenuButton class="hui-menu-item">game</MenuButton>
+      <MenuItems class="hui-menu-items">
+        <MenuItem v-for="item in game_links" :key="item.text" :disabled="!item.click" v-slot="{ active }">
+          <button :class="['hui-menu-item', { active }, item.class]" @click="item.click?.()">
+            {{ item.text }}
+          </button>
+        </MenuItem>
+      </MenuItems>
+    </Menu>
+    <Menu as="div" class="hui-menu">
+      <MenuButton class="hui-menu-item">config</MenuButton>
+      <MenuItems class="hui-menu-items" @click.stop>
+        <div class="p-2">
+          <UnrestSchemaForm v-bind="$store.config.form" />
+        </div>
+      </MenuItems>
+    </Menu>
+    <Menu as="div" class="hui-menu">
+      <MenuButton class="hui-menu-item">help</MenuButton>
+      <MenuItems class="hui-menu-items">
+        <MenuItem v-for="item in help_links" :key="item.text" v-slot="{ active }">
+          <router-link v-if="item.to" :to="item.to" :class="['hui-menu-item', { active }]">
+            {{ item.text }}
+          </router-link>
+          <button v-else :class="['hui-menu-item', { active }]" @click="item.click?.()">
+            {{ item.text }}
+          </button>
+        </MenuItem>
+      </MenuItems>
+    </Menu>
   </header>
 </template>
 
 <script>
-import css from '@unrest/css'
+import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
+import { UnrestSchemaForm, store } from '@unrest/ui'
+import ImportGame from './ImportGame'
+import ExportGame from './ExportGame'
 import Tutorial from './Tutorial.vue'
 
 export default {
-  components: { Tutorial },
+  components: { Menu, MenuButton, MenuItems, MenuItem, UnrestSchemaForm },
   data() {
-    return { css, tutorial_open: false, nav_open: false }
+    return { nav_open: false }
   },
   computed: {
     help_links() {
       return [
-        { click: () => (this.tutorial_open = true), text: 'Tutorial' },
+        { click: () => store.alert({ component: Tutorial, title: 'Tutorial' }), text: 'Tutorial' },
         { to: '/about/', text: 'About' },
         { to: '/change-log/', text: 'Change Log' },
       ]
@@ -59,13 +69,13 @@ export default {
       const warn = (action) => {
         const confirm = () => {
           this.$store.room.send(this.$route.params.room_id, action)
-          this.$ui.alert(null)
+          store.closeAlert()
         }
-        return this.$ui.alert({
+        return store.alert({
           title: action[0].toUpperCase() + action.slice(1).replace('_', ' '),
           text: 'This action cannot be undone. Are you sure?',
           actions: [
-            { class: 'btn -secondary', text: 'Cancel', click: () => this.$ui.alert(null) },
+            { class: 'btn -secondary', text: 'Cancel', click: () => store.closeAlert() },
             { class: 'btn -primary', text: 'Confirm', click: confirm },
           ],
         })
@@ -96,10 +106,10 @@ export default {
   },
   methods: {
     showImportModal() {
-      this.$ui.alert({ tagName: 'import-game' })
+      store.alert({ component: ImportGame })
     },
     showExportModal() {
-      this.$ui.alert({ tagName: 'export-game', width: 420 })
+      store.alert({ component: ExportGame })
     },
   },
 }

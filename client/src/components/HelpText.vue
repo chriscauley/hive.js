@@ -1,21 +1,21 @@
 <template>
   <div v-if="!show_help" class="help-text -closed">
-    <div @click="toggle" :class="css.button('circle')">
-      <i :class="css.icon('question')" />
+    <div @click="toggle" class="btn -primary circle">
+      <i class="fa fa-question" />
     </div>
   </div>
   <div v-else-if="!board.selected" class="help-text">
-    <div :class="css.alert.info()">Select a Tile</div>
+    <div class="alert -info">Select a Tile</div>
   </div>
   <div v-else class="help-text">
-    <div :class="css.alert.info()">
+    <div class="alert -info">
       <div>
         <ul class="browser-default">
           <li v-for="item in items" :key="item">{{ item }}</li>
         </ul>
         <div>
-          <button @click="unselect" :class="css.button('mr-2')">Deselect</button>
-          <button @click="toggle" :class="css.button()">Hide Help</button>
+          <button @click="unselect" class="btn -primary mr-2">Deselect</button>
+          <button @click="toggle" class="btn -primary">Hide Help</button>
         </div>
       </div>
     </div>
@@ -23,8 +23,6 @@
 </template>
 
 <script>
-import css from '@unrest/css'
-
 import help from 'hive.js/help'
 import B from 'hive.js/Board'
 
@@ -36,7 +34,6 @@ export default {
     board: Object,
   },
   computed: {
-    css: () => css,
     show_help() {
       return this.$store.config.state.show_help
     },

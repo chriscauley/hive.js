@@ -15,20 +15,18 @@
     </div>
     <form @submit="submit" class="text-box">
       <textarea v-model="value" class="input" ref="textarea" @keypress="onKeyPress" />
-      <button type="submit" :class="css.icon('send')" />
+      <button type="submit" class="fa fa-send" />
     </form>
   </div>
 </template>
 
 <script>
-import css from '@unrest/css'
-
 export default {
   props: {
     room_id: Number,
   },
   data() {
-    return { css, value: '' }
+    return { value: '' }
   },
   computed: {
     room() {

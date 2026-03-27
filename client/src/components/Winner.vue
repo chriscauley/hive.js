@@ -1,26 +1,19 @@
 <template>
-  <div :class="css.alert.info('cursor-pointer')" @click="open = true">
+  <div class="game__status -info cursor-pointer" @click="showAlert">
     {{ text }}
   </div>
-  <unrest-modal v-if="open" class="text-center" :close="() => (open = false)">
-    <h2>{{ text }}</h2>
-    <template #actions>
-      <button :class="css.button()" @click="open = false">Keep Playing</button>
-      <button v-if="can_end" :class="css.button()" @click="send('reset_game')">Play Again</button>
-    </template>
-  </unrest-modal>
 </template>
 
 <script>
-import css from '@unrest/css'
+import { store as uiStore } from '@unrest/ui'
 
 export default {
   props: {
     board: Object,
     room: Object,
   },
-  data() {
-    return { open: true, css }
+  mounted() {
+    this.showAlert()
   },
   computed: {
     text() {
@@ -32,8 +25,21 @@ export default {
     },
   },
   methods: {
-    send(action) {
-      this.$store.room.send(this.room.id, action)
+    showAlert() {
+      const actions = [
+        { class: 'btn -primary', text: 'Keep Playing', click: () => uiStore.closeAlert() },
+      ]
+      if (this.can_end) {
+        actions.push({
+          class: 'btn -primary',
+          text: 'Play Again',
+          click: () => {
+            this.$store.room.send(this.room.id, 'reset_game')
+            uiStore.closeAlert()
+          },
+        })
+      }
+      uiStore.alert({ title: this.text, actions })
     },
   },
 }

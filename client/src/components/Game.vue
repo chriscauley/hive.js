@@ -1,28 +1,12 @@
 <template>
   <div class="game">
     <div class="game-piles -desktop">
-      <hive-board
-        :rows="rows.player_1"
-        :class="css.player(1, rows.player_1)"
-        @click-piece="click"
-      />
-      <hive-board
-        :rows="rows.player_2"
-        :class="css.player(2, rows.player_2)"
-        @click-piece="click"
-      />
+      <hive-board :rows="rows.player_1" :class="playerClass(1, rows.player_1)" @click-piece="click" />
+      <hive-board :rows="rows.player_2" :class="playerClass(2, rows.player_2)" @click-piece="click" />
     </div>
     <div class="game-piles -mobile">
-      <hive-board
-        :rows="m_rows.player_1"
-        :class="css.player(1, m_rows.player_1)"
-        @click-piece="click"
-      />
-      <hive-board
-        :rows="m_rows.player_2"
-        :class="css.player(2, m_rows.player_2)"
-        @click-piece="click"
-      />
+      <hive-board :rows="m_rows.player_1" :class="playerClass(1, m_rows.player_1)" @click-piece="click" />
+      <hive-board :rows="m_rows.player_2" :class="playerClass(2, m_rows.player_2)" @click-piece="click" />
     </div>
     <div class="scroll-box" ref="scroll_box">
       <div class="inner">
@@ -30,14 +14,14 @@
       </div>
     </div>
     <help-text v-bind="board.selected" :board="board" />
-    <div :class="css.player_indicator">
+    <div :class="indicatorClass">
       <winner v-if="board.winner" :board="board" :room="room" />
       <no-rules v-if="board.rules.no_rules" :deleteSelected="board.selected && deleteSelected" />
-      <div v-if="board.error" :class="css.alert.danger()">
-        <i :class="css.icon('times-circle text-xl mr-2')" />
+      <div v-if="board.error" class="game__status -error">
+        <i class="fa fa-times-circle text-xl mr-2" />
         {{ board.error }}
       </div>
-      <div v-else :class="css.alert.info()">
+      <div v-else class="game__status -info">
         <div>
           {{ turn_text }}
           <time-since :time="board.last_move_at" />
@@ -48,8 +32,8 @@
 </template>
 
 <script>
-import css from '@unrest/css'
-import Mousetrap from '@unrest/vue-mousetrap'
+import { computed, getCurrentInstance } from 'vue'
+import { useInputMap } from '@unrest/ui'
 
 import B from 'hive.js/Board'
 import toRows from 'hive.js/Board/toRows'
@@ -60,57 +44,38 @@ import NoRules from './NoRules'
 import TimeSince from './TimeSince'
 import Winner from './Winner'
 
-Mousetrap.register({
-  cancel: 'esc',
-  undo: 'mod+z',
-  redo: 'mod+y,mod+shift+z',
-  help: '?,/',
-})
-
 export default {
   components: { HelpText, HiveBoard, NoRules, TimeSince, Winner },
-  mixins: [Mousetrap.Mixin],
   props: {
     room: Object,
   },
+  setup(props) {
+    const { proxy } = getCurrentInstance()
+    const board = computed(() => props.room.board)
+    const inputMap = computed(() => ({
+      Escape: () => B.unselect(board.value),
+      '$mod+KeyZ': () => proxy.$store.room.undo(props.room.id),
+      '$mod+KeyY,$mod+Shift+KeyZ': () => proxy.$store.room.redo(props.room.id),
+      'i l o v e b e e s': () => {
+        B.doAction(board.value, ['toggleCheat'])
+        proxy.$store.room.sync(props.room.id)
+      },
+    }))
+    useInputMap(inputMap)
+  },
   computed: {
-    is_local() {
-      return this.room.id === 'local'
-    },
-    mousetrap() {
-      return {
-        cancel: () => B.unselect(this.board),
-        undo: () => this.$store.room.undo(this.room.id),
-        redo: () => this.$store.room.redo(this.room.id),
-        'i l o v e b e e s': () => {
-          B.doAction(this.board, ['toggleCheat'])
-          this.$store.room.sync(this.room.id)
-        },
-      }
-    },
     board() {
       return this.room.board
     },
     turn_text() {
       if (!this.board.local_player) {
-        // local game or spectating person
         return `Player ${this.board.current_player}'s turn`
       }
       return B.isUsersTurn(this.board) ? 'Your turn' : "Opponent's turn"
     },
-    css() {
-      const { alert, icon } = css
-      const { current_player } = this.board
-
-      const player = (number, piece_rows) => {
-        const highlight = number === current_player
-        const color = B.isUsersTurn(this.board) ? 'green' : 'red'
-        const height = piece_rows[piece_rows.length - 1].length === 1 ? '' : 'long'
-        return `player_${number} odd-q ${highlight ? 'highlight-' + color : ''} ${height}`
-      }
-      const orientation = current_player === 1 ? 'left' : 'right'
-      const player_indicator = `absolute top-0 ${orientation}-0 flex`
-      return { alert, icon, player, player_indicator }
+    indicatorClass() {
+      const orientation = this.board.current_player === 1 ? 'left' : 'right'
+      return `absolute top-0 ${orientation}-0 flex`
     },
     rows() {
       return toRows(this.board, { columns: 2 })
@@ -126,6 +91,13 @@ export default {
     scroll_box.scroll((scrollWidth - clientWidth) / 2, (scrollHeight - clientHeight) / 2)
   },
   methods: {
+    playerClass(number, piece_rows) {
+      const { current_player } = this.board
+      const highlight = number === current_player
+      const color = B.isUsersTurn(this.board) ? 'green' : 'red'
+      const height = piece_rows[piece_rows.length - 1].length === 1 ? '' : 'long'
+      return `player_${number} odd-q ${highlight ? 'highlight-' + color : ''} ${height}`
+    },
     click(cell) {
       B.click(this.board, cell)
       this.$store.room.sync(this.room.id)

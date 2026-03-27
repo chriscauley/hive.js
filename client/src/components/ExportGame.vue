@@ -4,48 +4,29 @@
       The string below represents the current game state. Please use it to report bugs or if you
       want to reload a previous game.
     </p>
-    <unrest-form :schema="schema" :state="state">
-      <template #actions>{{ ' ' }}</template>
-    </unrest-form>
-    <textarea :value="game_string" cols="36" rows="10" />
-    <div class="modal-footer flex">
+    <textarea :value="game_string" cols="36" rows="10" readonly />
+    <div class="modal__actions">
       <button class="btn -primary" @click="copy"><i class="fa fa-clipboard" /> Copy</button>
       <div class="flex-grow" />
-      <button class="btn -primary" @click="$emit('close')">Close</button>
+      <button class="btn -primary" @click="emit('close')">Close</button>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 import B from 'hive.js/Board'
+import appStore from '@/store'
 
-export default {
-  emits: ['close'],
-  data() {
-    return { state: {} }
-  },
-  computed: {
-    game_string() {
-      const { room_id } = this.$route.params
-      const json = B.toJson(this.$store.room.state.rooms[room_id].board)
-      Object.entries(this.state).forEach(([key, value]) => {
-        if (!value) {
-          delete json[key]
-        }
-      })
-      return JSON.stringify(json)
-    },
-    schema() {
-      return {
-        type: 'lazy',
-        actions: true,
-      }
-    },
-  },
-  methods: {
-    copy() {
-      navigator.clipboard.writeText(this.game_string)
-    },
-  },
-}
+const emit = defineEmits(['close'])
+const route = useRoute()
+
+const game_string = computed(() => {
+  const { room_id } = route.params
+  const json = B.toJson(appStore.room.state.rooms[room_id].board)
+  return JSON.stringify(json)
+})
+
+const copy = () => navigator.clipboard.writeText(game_string.value)
 </script>

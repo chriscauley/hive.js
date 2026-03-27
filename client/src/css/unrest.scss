@@ -5,29 +5,28 @@
 }
 
 @media (max-width: $w-sm) {
-  /* navbar is collapsible */
   #app {
     padding-top: 77px;
   }
-  .navbar {
+  .app-nav {
     @apply absolute left-0 right-0 top-0;
     align-items: flex-start;
     flex-direction: column;
-    &__open {
+    .navbar__open {
       display: block;
     }
-    &__section.left ~ * {
+    .app-nav__left ~ * {
       display: none;
     }
   }
-  .navbar.-nav-open {
+  .app-nav.-nav-open {
     .navbar__open {
       display: none;
     }
     .navbar__close {
       display: block;
     }
-    .navbar__section.left ~ * {
+    .app-nav__left ~ * {
       display: block;
     }
   }

@@ -21,21 +21,21 @@
 
 body {
   overflow: hidden;
-  &.theme-dark_mode {
-    background: #234e52;
-    .hex {
-      filter: brightness(0.9)
-    }
-    .highlight-green {
-      @apply bg-green-500;
-    }
-    .highlight-red {
-      @apply bg-red-800;
-    }
+}
+
+[data-theme="dark"] {
+  .hex {
+    filter: brightness(0.9)
+  }
+  .highlight-green {
+    @apply bg-green-500;
+  }
+  .highlight-red {
+    @apply bg-red-800;
   }
 }
 
-/* TODO move into @unrest/tailwind? */
+/* app shell layout */
 #app[data-v-app] {
   @apply flex flex-col;
   .router-view {
@@ -47,7 +47,7 @@ body {
 
 .router-view.debug {
   [data-index]:after {
-    @apply -text-text -bg-bg;
+    @apply text-app-text bg-app-bg;
     content: attr(data-index);
     position: absolute;
   }
@@ -91,7 +91,7 @@ body {
 }
 
 .new-game {
-  @apply border p-4 shadow -bg-bg rounded-lg;
+  @apply border p-4 shadow bg-app-bg rounded-lg;
   @apply flex flex-col gap-4;
   width: 672px;
   &__row {

@@ -1,34 +1,35 @@
 <template>
-  <div v-if="$auth.ready" :class="css.modal.outer('-relative')">
-    <div :class="css.modal.content('-auto')">
+  <div class="modal -relative">
+    <div class="modal__content -auto">
       <div class="view-home">
         <h2>Welcome!</h2>
-        <template v-if="$auth.user">
-          <template v-if="$auth.enabled">
-            <router-link to="/new/online/" :class="css.button('block mb-4')">
+        <template v-if="user">
+          <template v-if="online">
+            <router-link to="/new/online/" class="btn -primary block mb-4">
               Start Online Game
             </router-link>
             <div class="font-bold font-xl mb-4">-- OR --</div>
           </template>
-          <router-link to="/new/local/" :class="css.button('block')">
+          <router-link to="/new/local/" class="btn -primary block">
             Start Local Game
           </router-link>
         </template>
         <template v-else>
-          <div @click="makeGuest" :class="css.button('block mb-4')">Play as Guest</div>
-          <router-link :to="signup" :class="css.button('block mb-4')">
+          <div @click="makeGuest" class="btn -primary block mb-4">Play as Guest</div>
+          <router-link :to="signup" class="btn -primary block mb-4">
             Create An Account
           </router-link>
-          <router-link :to="login" :class="css.button('block')"> Log In </router-link>
+          <router-link :to="login" class="btn -primary block">Log In</router-link>
         </template>
       </div>
-      <!-- TODO <RoomList /> -->
     </div>
   </div>
 </template>
 
 <script>
-import css from '@unrest/css'
+import { fetchJson } from '@unrest/ui'
+
+const online = !process.env.VUE_APP_OFFLINE
 
 export default {
   __route: {
@@ -38,18 +39,27 @@ export default {
     const { query } = this.$route
     const signup = { path: '/auth/sign-up/', query }
     const login = { path: '/auth/login/', query }
-    return { css, signup, login }
+    return { signup, login, online, user: online ? null : { id: 'local' } }
+  },
+  mounted() {
+    if (online) {
+      fetchJson('/api/auth/me').then((user) => {
+        this.user = user
+        this.$store.room.setUser(user?.id)
+      }).catch(() => {
+        this.user = null
+      })
+    }
   },
   methods: {
     makeGuest() {
-      this.$auth.api
-        .post('auth/guest/')
-        .then(this.$auth.refetch)
-        .then(() => {
-          if (this.$route.query.next) {
-            this.$router.replace(this.$route.query.next)
-          }
-        })
+      fetchJson('/api/auth/guest/', { method: 'POST' }).then((user) => {
+        this.user = user
+        this.$store.room.setUser(user?.id)
+        if (this.$route.query.next) {
+          this.$router.replace(this.$route.query.next)
+        }
+      })
     },
   },
 }

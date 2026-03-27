@@ -1,6 +1,6 @@
 <template>
   <div v-if="error" class="ur-chat-error">
-    <i :class="css.icon('exclamation-triangle')" :title="error" />
+    <i class="fa fa-exclamation-triangle" :title="error" />
   </div>
   <div v-else-if="collapsed" class="ur-chat-collapsed" @click="toggle">
     <i class="fa fa-comment" />
@@ -8,7 +8,7 @@
   <div v-else class="ur-chat-widget">
     <div class="flex flex-col h-full">
       <div class="menu-bar">
-        <i :class="css.icon('minus cursor-pointer mx-1')" @click="toggle" />
+        <i class="fa fa-minus cursor-pointer mx-1" @click="toggle" />
       </div>
       <chat-box :room_id="room_id" />
     </div>
@@ -16,7 +16,6 @@
 </template>
 
 <script>
-import css from '@unrest/css'
 import ChatBox from './ChatBox'
 
 export default {
@@ -25,7 +24,7 @@ export default {
     room_id: Number,
   },
   data() {
-    return { css }
+    return {}
   },
   computed: {
     collapsed() {

@@ -11,14 +11,12 @@
 import Board from 'hive.js/Board'
 import toRows from 'hive.js/Board/toRows'
 import HiveBoard from '@/components/Board'
-import css from '@unrest/css'
-
 export default {
   components: { HiveBoard },
   props: { board: Object },
   emits: ['update-board'],
   data() {
-    return { css }
+    return {}
   },
   computed: {
     board_props() {

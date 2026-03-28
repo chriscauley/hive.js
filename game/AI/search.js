@@ -6,29 +6,112 @@ const EXACT = 0
 const LOWER = 1
 const UPPER = 2
 
-const orderActions = (board, actions) => {
-  // rough ordering: queen-surrounding moves first, then specials, then moves, then placements
-  const opponent = board.current_player === 1 ? 2 : 1
-  const opp_queen = board.queens[opponent]
-  const opp_neighbors = opp_queen !== undefined
-    ? new Set(board.geo.touching[opp_queen].map(String))
-    : null
+const MAX_PRUNED_MOVES = 20
 
-  const scores = actions.map((action) => {
-    const dest = action[0] === 'place' ? action[1] : action[0] === 'move' ? action[2] : null
-    // prioritize moves toward opponent queen
-    if (opp_neighbors && dest !== null && opp_neighbors.has(String(dest))) return 0
-    if (action[0] === 'special') return 1
-    if (action[0] === 'move') return 2
-    return 3
-  })
-
-  const indexed = actions.map((a, i) => [scores[i], i, a])
-  indexed.sort((a, b) => a[0] - b[0])
-  return indexed.map((x) => x[2])
+// compute all indices within 2 hops of an index
+const getZone = (board, index) => {
+  const zone = new Set()
+  if (index === undefined) return zone
+  for (const n1 of board.geo.touching[index]) {
+    zone.add(n1)
+    for (const n2 of board.geo.touching[n1]) {
+      zone.add(n2)
+    }
+  }
+  return zone
 }
 
-const search = (board, depth, alpha, beta, player_id, tt, deadline) => {
+const getDest = (action) => {
+  if (action[0] === 'place') return action[1]
+  if (action[0] === 'move') return action[2]
+  return null
+}
+
+const getSource = (action) => {
+  if (action[0] === 'move') return action[1]
+  if (action[0] === 'special') return action[1]
+  return null
+}
+
+// score an action for ordering (lower = searched first)
+const scoreAction = (action, opp_queen_neighbors, my_queen_neighbors, opp_zone, my_zone, killers) => {
+  const dest = getDest(action)
+  const source = getSource(action)
+
+  // killer moves from same depth
+  if (killers) {
+    for (const k of killers) {
+      if (k && k[0] === action[0] && k[1] === action[1] && k[2] === action[2]) return -1
+    }
+  }
+
+  // moves that land adjacent to opponent queen (attack)
+  if (dest !== null && opp_queen_neighbors?.has(dest)) return 0
+
+  // specials are usually strong
+  if (action[0] === 'special') return 1
+
+  // moves that land adjacent to own queen (defense)
+  if (dest !== null && my_queen_neighbors?.has(dest)) return 2
+
+  // moves within 2-hop zone of either queen
+  if (dest !== null && (opp_zone.has(dest) || my_zone.has(dest))) return 3
+  if (source !== null && (opp_zone.has(source) || my_zone.has(source))) return 3
+
+  // placements (type variety: queen > ant > beetle > others)
+  if (action[0] === 'place') {
+    if (action[2] === 'queen') return 3
+    return 5
+  }
+
+  // everything else
+  return 6
+}
+
+const orderAndPrune = (board, actions, is_root, killers) => {
+  const player = board.current_player
+  const opponent = player === 1 ? 2 : 1
+
+  const opp_queen = board.queens[opponent]
+  const my_queen = board.queens[player]
+  const opp_queen_neighbors = opp_queen !== undefined
+    ? new Set(board.geo.touching[opp_queen])
+    : null
+  const my_queen_neighbors = my_queen !== undefined
+    ? new Set(board.geo.touching[my_queen])
+    : null
+  const opp_zone = getZone(board, opp_queen)
+  const my_zone = getZone(board, my_queen)
+
+  const scored = actions.map((action) => ({
+    action,
+    score: scoreAction(action, opp_queen_neighbors, my_queen_neighbors, opp_zone, my_zone, killers),
+  }))
+  scored.sort((a, b) => a.score - b.score)
+
+  if (is_root) return scored.map((s) => s.action)
+
+  // at interior nodes, prune low-priority moves
+  const result = []
+  for (const { action, score } of scored) {
+    if (result.length >= MAX_PRUNED_MOVES && score > 3) break
+    result.push(action)
+  }
+  return result
+}
+
+// killer moves: track 2 killers per depth
+const makeKillerTable = () => Array.from({ length: 20 }, () => [null, null])
+
+const storeKiller = (killers, depth, action) => {
+  if (!killers[depth]) return
+  if (action[0] === 'place') return // placements are position-dependent, bad killers
+  if (killers[depth][0] === action) return
+  killers[depth][1] = killers[depth][0]
+  killers[depth][0] = action
+}
+
+const search = (board, depth, alpha, beta, player_id, tt, deadline, killers, is_root) => {
   if (deadline && Date.now() > deadline) return { score: 0, timeout: true }
 
   const hash = B.getHash(board)
@@ -47,12 +130,10 @@ const search = (board, depth, alpha, beta, player_id, tt, deadline) => {
 
   const actions = getAllActions(board, board.current_player)
   if (actions.length === 0) {
-    // no legal moves -- this shouldn't normally happen as B.update skips the player,
-    // but handle defensively
     return { score: evaluate(board, player_id) }
   }
 
-  const ordered = orderActions(board, actions)
+  const ordered = orderAndPrune(board, actions, is_root, killers[depth])
   const maximizing = board.current_player === player_id
 
   let best_score = maximizing ? -Infinity : Infinity
@@ -60,10 +141,9 @@ const search = (board, depth, alpha, beta, player_id, tt, deadline) => {
   const orig_alpha = alpha
 
   for (const action of ordered) {
-    // save winner before doAction -- B.checkWinner never clears it, so undo leaves it stale
     const saved_winner = board.winner
     B.doAction(board, action)
-    const result = search(board, depth - 1, alpha, beta, player_id, tt, deadline)
+    const result = search(board, depth - 1, alpha, beta, player_id, tt, deadline, killers, false)
     B.undo(board)
     board.winner = saved_winner
 
@@ -83,10 +163,12 @@ const search = (board, depth, alpha, beta, player_id, tt, deadline) => {
       beta = Math.min(beta, best_score)
     }
 
-    if (alpha >= beta) break
+    if (alpha >= beta) {
+      storeKiller(killers, depth, action)
+      break
+    }
   }
 
-  // store in transposition table
   let flag = EXACT
   if (best_score <= orig_alpha) flag = UPPER
   else if (best_score >= beta) flag = LOWER
@@ -98,21 +180,21 @@ const search = (board, depth, alpha, beta, player_id, tt, deadline) => {
 const iterativeDeepening = (board, max_depth, time_limit_ms, player_id) => {
   const clone = B.fromJson(B.toJson(board))
   const deadline = Date.now() + time_limit_ms
+  const killers = makeKillerTable()
   let best_action = null
   let best_score = -Infinity
 
   for (let depth = 1; depth <= max_depth; depth++) {
     const tt = {}
-    const result = search(clone, depth, -Infinity, Infinity, player_id, tt, deadline)
+    const result = search(clone, depth, -Infinity, Infinity, player_id, tt, deadline, killers, true)
     if (result.timeout) break
     best_action = result.action
     best_score = result.score
-    // early exit on guaranteed win
     if (best_score >= WIN_SCORE) break
   }
 
   return best_action
 }
 
-export { search, iterativeDeepening, orderActions }
+export { search, iterativeDeepening, orderAndPrune }
 export default iterativeDeepening

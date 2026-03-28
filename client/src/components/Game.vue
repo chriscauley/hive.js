@@ -68,6 +68,10 @@ export default {
       return this.room.board
     },
     turn_text() {
+      if (this.room.ai_thinking) return 'Thinking...'
+      if (this.board.ai_player) {
+        return B.isUsersTurn(this.board) ? 'Your turn' : "Computer's turn"
+      }
       if (!this.board.local_player) {
         return `Player ${this.board.current_player}'s turn`
       }

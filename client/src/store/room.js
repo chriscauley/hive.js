@@ -4,6 +4,7 @@ import ls from 'local-storage-json'
 
 import router from '@/router'
 import B from 'hive.js/Board'
+import { requestAIMove, cancelAIMove } from '@/worker/aiManager'
 
 const TIMEOUTS = {}
 const SOCKETS = {}
@@ -34,7 +35,15 @@ export default () => {
           game_id: 'local',
           rooom_id: 'local',
         })
+        const ai = room.state.rules?.ai
+        if (ai?.enabled) {
+          let player = ai.player
+          if (player === 'random') player = Math.random() < 0.5 ? 1 : 2
+          room.board.ai_player = player
+          room.board.ai_difficulty = ai.difficulty || 'medium'
+        }
         ls.set(LOCAL_GAME_KEY, B.toJson(room.board))
+        checkAITurn('local')
       } else if (action === 'change_pieces') {
         delete BOARDS.local
         delete room.board
@@ -51,6 +60,9 @@ export default () => {
           id: room_id,
           state: { rules: b && b.rules },
           board: b && B.fromJson(b),
+        }
+        if (state.rooms.local.board?.ai_player) {
+          checkAITurn('local')
         }
       }
       return state.rooms.local
@@ -104,10 +116,36 @@ export default () => {
     SOCKETS[room_id].send(JSON.stringify({ action, content }))
   }
 
+  const checkAITurn = async (room_id) => {
+    const room = state.rooms[room_id]
+    const { board } = room || {}
+    if (!board?.ai_player || board.winner) return
+    if (board.current_player !== board.ai_player) return
+    if (room.ai_thinking) return
+
+    room.ai_thinking = true
+    const board_json = B.toJson(board)
+    const action = await requestAIMove(board_json, board.ai_difficulty || 'medium')
+    room.ai_thinking = false
+    if (!action) return
+    B.doAction(board, action)
+    ls.set(LOCAL_GAME_KEY, B.toJson(board))
+    if (room_id !== 'local') {
+      sendRoom(room_id, 'action', {
+        hash: board.hash,
+        action: board.actions[board.actions.length - 1],
+        action_count: board.actions.length,
+      })
+    }
+    // check again in case opponent has no moves (turn auto-skipped)
+    checkAITurn(room_id)
+  }
+
   const sync = (room_id) => {
     const room = state.rooms[room_id]
     if (room_id === 'local') {
       ls.set(LOCAL_GAME_KEY, B.toJson(room.board))
+      checkAITurn(room_id)
       return
     }
     if (!room.game) {
@@ -159,7 +197,20 @@ export default () => {
   const room_store = {
     state,
     init,
-    undo: (room_id) => onlyIfLocal(room_id, 'undo'),
+    undo: (room_id) => {
+      const { board } = state.rooms[room_id] || {}
+      if (!board || room_id !== 'local') {
+        if (room_id !== 'local') ui.toast('Can only undo in local games.')
+        return
+      }
+      cancelAIMove()
+      state.rooms[room_id].ai_thinking = false
+      B.undo(board)
+      // in AI games, also undo the AI's previous move
+      if (board.ai_player && board.actions.length > 0) {
+        B.undo(board)
+      }
+    },
     redo: (room_id) => onlyIfLocal(room_id, 'redo'),
     watch: watchRoom,
     send: sendRoom,

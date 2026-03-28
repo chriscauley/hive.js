@@ -18,7 +18,7 @@ const B = {
   PLAYER_COUNT,
   getHash: (b) => objectHash(pick(b, ['stacks', 'piece_types', 'piece_owners', 'current_player'])),
   update(b) {
-    window.b = b
+    if (typeof window !== 'undefined') window.b = b
     if (b.reverse && B.getHash(b) === b.hash) {
       return
     }
@@ -220,6 +220,8 @@ const B = {
     'current_player',
     'last_move_at',
     'game_id',
+    'ai_player',
+    'ai_difficulty',
   ],
   toJson: (b) => cloneDeep(pick(b, B.json_fields)),
   fromJson: (board) => {
@@ -325,9 +327,8 @@ const B = {
   },
 
   isUsersTurn: (board) => {
-    if (!board.players) {
-      return true
-    }
+    if (board.ai_player) return board.current_player !== board.ai_player
+    if (!board.players) return true
     return board.current_player === board.local_player
   },
 

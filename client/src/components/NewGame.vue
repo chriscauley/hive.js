@@ -62,7 +62,35 @@
         </div>
       </div>
       <div v-if="is_host" class="new-game__actions">
-        <button v-if="can_start" class="btn btn-primary" @click="startGame">Start</button>
+        <div v-if="room.id === 'local'" class="new-game__ai-settings">
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" v-model="ai_enabled" />
+            Play against computer
+          </label>
+          <template v-if="ai_enabled">
+            <div class="flex gap-2 mt-2">
+              <div class="btn-group">
+                <button
+                  v-for="d in ['easy', 'medium', 'hard']"
+                  :key="d"
+                  :class="['btn', ai_difficulty === d ? '-primary' : '-secondary']"
+                  @click="ai_difficulty = d"
+                >{{ d }}</button>
+              </div>
+            </div>
+            <div class="flex gap-2 mt-2">
+              <div class="btn-group">
+                <button
+                  v-for="opt in color_options"
+                  :key="opt.value"
+                  :class="['btn', ai_color === opt.value ? '-primary' : '-secondary']"
+                  @click="ai_color = opt.value"
+                >{{ opt.label }}</button>
+              </div>
+            </div>
+          </template>
+        </div>
+        <button v-if="can_start" class="btn btn-primary" @click="doStart">Start</button>
         <div v-else class="mt-2 flex items-center">
           <i class="fa fa-warning text-yellow-500 mr-2" />
           Waiting for players...
@@ -189,6 +217,14 @@ export default {
       href,
       presets,
       selected_preset_slug: 'classic_hive',
+      ai_enabled: false,
+      ai_difficulty: 'medium',
+      ai_color: 2,
+      color_options: [
+        { value: 1, label: 'Play as black' },
+        { value: 2, label: 'Play as white' },
+        { value: 'random', label: 'Random' },
+      ],
       hovering_preset: null,
     }
   },
@@ -241,6 +277,14 @@ export default {
     },
   },
   methods: {
+    doStart() {
+      if (this.ai_enabled) {
+        const { rules } = this
+        rules.ai = { enabled: true, difficulty: this.ai_difficulty, player: this.ai_color }
+        this.setRules(rules)
+      }
+      this.startGame()
+    },
     showCustomInfo() {
       uiStore.alert({
         title: 'Custom Pieces',

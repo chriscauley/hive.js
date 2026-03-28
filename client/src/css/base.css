@@ -126,10 +126,14 @@ body {
 }
 
 .new-game__actions {
-  @apply flex items-center gap-2;
+  @apply flex flex-col items-start gap-2;
   @media (max-width: 640px) {
-    justify-content: center;
+    @apply items-center;
   }
+}
+
+.new-game__ai-settings {
+  @apply p-3 rounded border border-white/20 mb-2 w-full;
 }
 
 .new-game .rule-list {

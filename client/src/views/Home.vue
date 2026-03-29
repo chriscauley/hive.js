@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { fetchJson, LoadingSkeleton } from '@unrest/ui'
+import { fetchJson } from '@unrest/ui'
 
 const online = !import.meta.env.VITE_OFFLINE
 
@@ -42,7 +42,6 @@ export default {
     const login = { path: '/auth/login/', query }
     return { signup, login, online }
   },
-  components: { LoadingSkeleton },
   computed: {
     isLoading() {
       return this.$store.room.isAuthLoading()

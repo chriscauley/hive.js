@@ -53,13 +53,13 @@
 
 <script>
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
-import { AuthNav, UnrestSchemaForm, fetchJson, store } from '@unrest/ui'
+import { fetchJson, store } from '@unrest/ui'
 import ImportGame from './ImportGame.vue'
 import ExportGame from './ExportGame.vue'
 import Tutorial from './Tutorial.vue'
 
 export default {
-  components: { AuthNav, Menu, MenuButton, MenuItems, MenuItem, UnrestSchemaForm },
+  components: { Menu, MenuButton, MenuItems, MenuItem },
   data() {
     return { nav_open: false }
   },

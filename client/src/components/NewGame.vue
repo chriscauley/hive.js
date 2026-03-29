@@ -63,32 +63,7 @@
       </div>
       <div v-if="is_host" class="new-game__actions">
         <div v-if="room.id === 'local'" class="new-game__ai-settings">
-          <label class="flex items-center gap-2 cursor-pointer">
-            <input type="checkbox" v-model="ai_enabled" />
-            Play against computer
-          </label>
-          <template v-if="ai_enabled">
-            <div class="flex gap-2 mt-2">
-              <div class="btn-group">
-                <button
-                  v-for="d in ['easy', 'medium', 'hard']"
-                  :key="d"
-                  :class="['btn', ai_difficulty === d ? '-primary' : '-secondary']"
-                  @click="ai_difficulty = d"
-                >{{ d }}</button>
-              </div>
-            </div>
-            <div class="flex gap-2 mt-2">
-              <div class="btn-group">
-                <button
-                  v-for="opt in color_options"
-                  :key="opt.value"
-                  :class="['btn', ai_color === opt.value ? '-primary' : '-secondary']"
-                  @click="ai_color = opt.value"
-                >{{ opt.label }}</button>
-              </div>
-            </div>
-          </template>
+          <UnrestSchemaForm :schema="ai_schema" :state="ai_state" :onChange="onAIChange" />
         </div>
         <button v-if="can_start" class="btn btn-primary" @click="doStart">Start</button>
         <div v-else class="mt-2 flex items-center">
@@ -220,11 +195,6 @@ export default {
       ai_enabled: false,
       ai_difficulty: 'medium',
       ai_color: 2,
-      color_options: [
-        { value: 1, label: 'Play as black' },
-        { value: 2, label: 'Play as white' },
-        { value: 'random', label: 'Random' },
-      ],
       hovering_preset: null,
     }
   },
@@ -268,6 +238,35 @@ export default {
     hovering_lines() {
       return short_help[this.hovering]
     },
+    ai_schema() {
+      const schema = {
+        type: 'object',
+        properties: {
+          ai_enabled: { type: 'boolean', title: 'Play against computer' },
+        },
+      }
+      if (this.ai_enabled) {
+        schema.properties.ai_difficulty = {
+          type: 'string',
+          title: 'Difficulty',
+          enum: ['easy', 'medium', 'hard'],
+        }
+        schema.properties.ai_color = {
+          type: 'string',
+          title: 'Play as',
+          enum: ['black', 'white', 'random'],
+        }
+      }
+      return schema
+    },
+    ai_state() {
+      const color_map = { 1: 'black', 2: 'white', random: 'random' }
+      return {
+        ai_enabled: this.ai_enabled,
+        ai_difficulty: this.ai_difficulty,
+        ai_color: color_map[this.ai_color] || 'white',
+      }
+    },
     can_start() {
       if (this.room.id === 'local') {
         return true
@@ -277,6 +276,12 @@ export default {
     },
   },
   methods: {
+    onAIChange(data) {
+      const color_map = { black: 1, white: 2, random: 'random' }
+      this.ai_enabled = data.ai_enabled
+      if (data.ai_difficulty) this.ai_difficulty = data.ai_difficulty
+      if (data.ai_color) this.ai_color = color_map[data.ai_color] ?? 2
+    },
     doStart() {
       if (this.ai_enabled) {
         const { rules } = this

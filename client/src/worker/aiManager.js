@@ -10,7 +10,7 @@ const requestAIMove = (board_json, difficulty) =>
     const handler = (e) => {
       if (e.data.request_id === id) {
         worker.removeEventListener('message', handler)
-        resolve(e.data.action)
+        resolve({ action: e.data.action, analysis: e.data.analysis })
       }
     }
     worker.addEventListener('message', handler)

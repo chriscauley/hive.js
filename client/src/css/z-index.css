@@ -2,6 +2,7 @@
 :root {
   --z-player: 10;
   --z-help-text: 15;
+  --z-ai-panel: 12;
 }
 
 .player_1, .player_2 {

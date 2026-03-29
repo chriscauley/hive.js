@@ -111,8 +111,24 @@ const storeKiller = (killers, depth, action) => {
   killers[depth][0] = action
 }
 
-const search = (board, depth, alpha, beta, player_id, tt, deadline, killers, is_root) => {
+const actionLabel = (board, action) => {
+  if (action[0] === 'place') return `Place ${action[2]}`
+  if (action[0] === 'move') {
+    const stack = board.stacks[action[1]]
+    const piece_id = stack?.[stack.length - 1]
+    const type = piece_id !== undefined ? board.piece_types[piece_id] : '?'
+    return `Move ${type}`
+  }
+  if (action[0] === 'special') {
+    const type = board.piece_types[action[2]] || '?'
+    return `Special ${type}`
+  }
+  return String(action[0])
+}
+
+const search = (board, depth, alpha, beta, player_id, tt, deadline, killers, is_root, stats) => {
   if (deadline && Date.now() > deadline) return { score: 0, timeout: true }
+  if (stats) stats.nodes++
 
   const hash = B.getHash(board)
   const tt_entry = tt[hash]
@@ -143,7 +159,7 @@ const search = (board, depth, alpha, beta, player_id, tt, deadline, killers, is_
   for (const action of ordered) {
     const saved_winner = board.winner
     B.doAction(board, action)
-    const result = search(board, depth - 1, alpha, beta, player_id, tt, deadline, killers, false)
+    const result = search(board, depth - 1, alpha, beta, player_id, tt, deadline, killers, false, stats)
     B.undo(board)
     board.winner = saved_winner
 
@@ -163,6 +179,10 @@ const search = (board, depth, alpha, beta, player_id, tt, deadline, killers, is_
       beta = Math.min(beta, best_score)
     }
 
+    if (is_root && stats) {
+      stats.root_moves.push({ action, score: result.score, label: actionLabel(board, action) })
+    }
+
     if (alpha >= beta) {
       storeKiller(killers, depth, action)
       break
@@ -180,20 +200,25 @@ const search = (board, depth, alpha, beta, player_id, tt, deadline, killers, is_
 const iterativeDeepening = (board, max_depth, time_limit_ms, player_id) => {
   const clone = B.fromJson(B.toJson(board))
   const deadline = Date.now() + time_limit_ms
+  const start = Date.now()
   const killers = makeKillerTable()
+  const stats = { nodes: 0, depth_reached: 0, time_ms: 0, root_moves: [] }
   let best_action = null
   let best_score = -Infinity
 
   for (let depth = 1; depth <= max_depth; depth++) {
     const tt = {}
-    const result = search(clone, depth, -Infinity, Infinity, player_id, tt, deadline, killers, true)
+    stats.root_moves = []
+    const result = search(clone, depth, -Infinity, Infinity, player_id, tt, deadline, killers, true, stats)
     if (result.timeout) break
     best_action = result.action
     best_score = result.score
+    stats.depth_reached = depth
     if (best_score >= WIN_SCORE) break
   }
 
-  return best_action
+  stats.time_ms = Date.now() - start
+  return { action: best_action, score: best_score, stats }
 }
 
 export { search, iterativeDeepening, orderAndPrune }

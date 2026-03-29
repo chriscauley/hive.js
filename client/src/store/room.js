@@ -125,8 +125,9 @@ export default () => {
 
     room.ai_thinking = true
     const board_json = B.toJson(board)
-    const action = await requestAIMove(board_json, board.ai_difficulty || 'medium')
+    const { action, analysis } = await requestAIMove(board_json, board.ai_difficulty || 'medium')
     room.ai_thinking = false
+    room.ai_analysis = analysis
     if (!action) return
     B.doAction(board, action)
     ls.set(LOCAL_GAME_KEY, B.toJson(board))

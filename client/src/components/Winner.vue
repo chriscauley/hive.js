@@ -38,6 +38,14 @@ export default {
             uiStore.closeAlert()
           },
         })
+        actions.push({
+          class: 'btn -primary',
+          text: 'New Game',
+          click: () => {
+            this.$store.room.send(this.room.id, 'change_pieces')
+            uiStore.closeAlert()
+          },
+        })
       }
       uiStore.alert({ title: this.text, actions })
     },

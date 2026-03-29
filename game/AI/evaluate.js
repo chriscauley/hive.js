@@ -134,5 +134,60 @@ const evaluate = (board, player_id) => {
   return score
 }
 
-export { evaluate, WIN_SCORE }
+// Same logic as evaluate but returns a breakdown of each heuristic component.
+// Only called once per AI turn (not in the search loop) so allocation cost is fine.
+const evaluateDetailed = (board, player_id) => {
+  const opponent = player_id === 1 ? 2 : 1
+
+  if (board.winner === player_id) return { score: WIN_SCORE, terminal: 'win', breakdown: null }
+  if (board.winner === opponent) return { score: -WIN_SCORE, terminal: 'loss', breakdown: null }
+  if (board.winner === 'tie') return { score: 0, terminal: 'tie', breakdown: null }
+
+  const my_surround = countSurround(board, board.queens[player_id])
+  const opp_surround = countSurround(board, board.queens[opponent])
+  const surround_raw = opp_surround - my_surround
+
+  let my_queen_moves = 0
+  let opp_queen_moves = 0
+  if (board.queens[player_id] !== undefined) {
+    const id = board.piece_types.findIndex(
+      (t, i) => t === 'queen' && board.piece_owners[i] === player_id,
+    )
+    if (id !== -1) my_queen_moves = B.getMoves(board, id).length
+  }
+  if (board.queens[opponent] !== undefined) {
+    const id = board.piece_types.findIndex(
+      (t, i) => t === 'queen' && board.piece_owners[i] === opponent,
+    )
+    if (id !== -1) opp_queen_moves = B.getMoves(board, id).length
+  }
+  const queen_mobility_raw = my_queen_moves - opp_queen_moves
+
+  const my_mt = countMobilityAndThreats(board, player_id)
+  const opp_mt = countMobilityAndThreats(board, opponent)
+  const mobility_raw = my_mt.mobility - opp_mt.mobility
+  const threats_raw = my_mt.threats - opp_mt.threats
+
+  const pieces_raw = countPiecesInPlay(board, player_id) - countPiecesInPlay(board, opponent)
+
+  const my_pins = countPinning(board, player_id)
+  const opp_pins = countPinning(board, opponent)
+  const stack_pins_raw = my_pins.stack_pins - opp_pins.stack_pins
+  const structural_pins_raw = my_pins.structural_pins - opp_pins.structural_pins
+
+  const breakdown = {
+    queen_surround:   { raw: surround_raw,         weighted: surround_raw * 200,         label: 'Queen Surround' },
+    queen_mobility:   { raw: queen_mobility_raw,    weighted: queen_mobility_raw * 30,    label: 'Queen Mobility' },
+    threats:          { raw: threats_raw,            weighted: threats_raw * 40,           label: 'Queen Threats' },
+    mobility:         { raw: mobility_raw,           weighted: mobility_raw * 5,           label: 'Piece Mobility' },
+    pieces_in_play:   { raw: pieces_raw,             weighted: pieces_raw * 10,            label: 'Pieces in Play' },
+    stack_pins:       { raw: stack_pins_raw,         weighted: stack_pins_raw * 50,        label: 'Stack Pins' },
+    structural_pins:  { raw: structural_pins_raw,    weighted: structural_pins_raw * 15,   label: 'Structural Pins' },
+  }
+
+  const score = Object.values(breakdown).reduce((sum, b) => sum + b.weighted, 0)
+  return { score, terminal: null, breakdown }
+}
+
+export { evaluate, evaluateDetailed, WIN_SCORE }
 export default evaluate

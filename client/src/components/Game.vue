@@ -15,6 +15,7 @@
       </div>
     </div>
     <help-text v-bind="board.selected" :board="board" />
+    <AIPanel v-if="board.ai_player" :room="room" />
     <div :class="indicatorClass">
       <winner v-if="board.winner" :board="board" :room="room" />
       <no-rules v-if="board.rules.no_rules" :deleteSelected="board.selected && deleteSelected" />
@@ -45,9 +46,10 @@ import HelpText from './HelpText.vue'
 import NoRules from './NoRules.vue'
 import TimeSince from './TimeSince.vue'
 import Winner from './Winner.vue'
+import AIPanel from './AIPanel.vue'
 
 export default {
-  components: { HelpText, HiveBoard, NoRules, TimeSince, Winner },
+  components: { AIPanel, HelpText, HiveBoard, NoRules, TimeSince, Winner },
   props: {
     room: Object,
   },

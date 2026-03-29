@@ -93,11 +93,13 @@ test('evaluate scores partial surround correctly', () => {
 
 test('findBestMove returns a valid action (easy)', () => {
   const board = makeMidGame()
-  const action = AI.findBestMove(board, 'easy')
+  const { action, analysis } = AI.findBestMove(board, 'easy')
 
   expect(action).toBeTruthy()
   expect(Array.isArray(action)).toBe(true)
   expect(['place', 'move', 'special']).toContain(action[0])
+  expect(analysis).toBeTruthy()
+  expect(analysis.search_stats.depth_reached).toBeGreaterThan(0)
 
   const clone = B.fromJson(B.toJson(board))
   expect(() => B.doAction(clone, action)).not.toThrow()
@@ -105,16 +107,17 @@ test('findBestMove returns a valid action (easy)', () => {
 
 test('findBestMove returns a valid action (medium)', () => {
   const board = makeMidGame()
-  const action = AI.findBestMove(board, 'medium')
+  const { action, analysis } = AI.findBestMove(board, 'medium')
 
   expect(action).toBeTruthy()
+  expect(analysis.top_moves.length).toBeGreaterThan(0)
   const clone = B.fromJson(B.toJson(board))
   expect(() => B.doAction(clone, action)).not.toThrow()
 }, 10000)
 
 test('findBestMove handles first move of game', () => {
   const board = B.new({ rules: { pieces: { ant: 3, beetle: 2, spider: 2 } } })
-  const action = AI.findBestMove(board, 'easy')
+  const { action } = AI.findBestMove(board, 'easy')
 
   expect(action).toBeTruthy()
   expect(action[0]).toBe('place')

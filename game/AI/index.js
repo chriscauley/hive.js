@@ -1,4 +1,5 @@
 import iterativeDeepening from './search'
+import { evaluateDetailed } from './evaluate'
 import getAllActions from './enumerate'
 
 const DIFFICULTY = {
@@ -11,29 +12,39 @@ const findBestMove = (board, difficulty = 'medium') => {
   const config = DIFFICULTY[difficulty] || DIFFICULTY.medium
   const player_id = board.current_player
 
-  if (config.top_n === 1) {
-    return iterativeDeepening(board, config.max_depth, config.time_limit, player_id)
+  const result = iterativeDeepening(board, config.max_depth, config.time_limit, player_id)
+  const pre_eval = evaluateDetailed(board, player_id)
+  const top_moves = (result.stats.root_moves || [])
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 8)
+  const analysis = {
+    pre_eval,
+    best_score: result.score,
+    top_moves,
+    search_stats: {
+      depth_reached: result.stats.depth_reached,
+      nodes: result.stats.nodes,
+      time_ms: result.stats.time_ms,
+    },
+    difficulty,
   }
 
-  // for easier difficulties, get the best move from a shallow search then randomize
-  const best = iterativeDeepening(board, config.max_depth, config.time_limit, player_id)
-  if (!best) return null
-
-  // gather all root-level actions and pick from top N
-  const actions = getAllActions(board, player_id)
-  if (actions.length <= 1) return actions[0] || null
-  if (actions.length <= config.top_n) {
-    return actions[Math.floor(Math.random() * actions.length)]
+  let chosen = result.action
+  if (config.top_n > 1 && chosen) {
+    const actions = getAllActions(board, player_id)
+    if (actions.length > 1) {
+      const pool_size = Math.min(config.top_n, actions.length)
+      // pick randomly from top N scored moves if available, else from all actions
+      if (top_moves.length > 1) {
+        const pool = top_moves.slice(0, pool_size)
+        chosen = pool[Math.floor(Math.random() * pool.length)].action
+      } else {
+        chosen = actions[Math.floor(Math.random() * actions.length)]
+      }
+    }
   }
 
-  // always include the best move in the pool, fill rest randomly
-  const pool = [best]
-  const rest = actions.filter((a) => a !== best)
-  while (pool.length < config.top_n && rest.length > 0) {
-    const i = Math.floor(Math.random() * rest.length)
-    pool.push(rest.splice(i, 1)[0])
-  }
-  return pool[Math.floor(Math.random() * pool.length)]
+  return { action: chosen, analysis }
 }
 
 export { findBestMove, DIFFICULTY }

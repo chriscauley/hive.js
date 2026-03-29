@@ -31,6 +31,9 @@ body {
   .highlight-red {
     @apply bg-red-800;
   }
+  select, input[type="number"] {
+    @apply bg-app-bg text-app-text;
+  }
 }
 
 /* app shell layout */

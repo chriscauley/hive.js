@@ -216,7 +216,13 @@ const dragonfly = (b, piece_id, args) => {
   const parity = mod(index, 2)
   if (args.length === 0) {
     const f = (i) => notEnemyScorpion(b, index, i)
-    const targets = b.geo.dindexes.dragonfly[parity].map((di) => index + di).filter(f)
+    let targets = b.geo.dindexes.dragonfly[parity].map((di) => index + di).filter(f)
+    // filter targets that would leave the piece disconnected from the hive
+    targets = targets.filter((t) => {
+      if (b.stacks[t]) return true // landing on an occupied stack is always connected
+      // empty target must be adjacent to at least one occupied hex other than the source
+      return b.geo.touching[t].some((n) => n !== index && b.stacks[n])
+    })
     markChalk(
       b,
       targets.filter((i2) => willSnag(b, index, i2)),

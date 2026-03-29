@@ -11,8 +11,18 @@ const countSurround = (board, queen_index) => {
   return count
 }
 
-const countMobility = (board, player_id) => {
-  let count = 0
+// returns { mobility, threats } where threats = count of pieces that can
+// reach a square adjacent to the opponent's queen
+const countMobilityAndThreats = (board, player_id) => {
+  const opponent = player_id === 1 ? 2 : 1
+  const opp_queen = board.queens[opponent]
+  const opp_queen_neighbors = opp_queen !== undefined
+    ? new Set(board.geo.touching[opp_queen])
+    : null
+
+  let mobility = 0
+  let threats = 0
+
   for (const [piece_id_str, index] of Object.entries(board.reverse)) {
     const piece_id = parseInt(piece_id_str)
     if (board.piece_owners[piece_id] !== player_id) continue
@@ -21,9 +31,17 @@ const countMobility = (board, player_id) => {
     if (board.cantmove[index]) continue
     const moves = B.getMoves(board, piece_id)
     const specials = B.getSpecials(board, piece_id, [])
-    if (moves.length > 0 || specials.length > 0) count++
+    if (moves.length > 0 || specials.length > 0) mobility++
+    if (opp_queen_neighbors) {
+      for (const dest of moves) {
+        if (opp_queen_neighbors.has(dest)) {
+          threats++
+          break
+        }
+      }
+    }
   }
-  return count
+  return { mobility, threats }
 }
 
 const countPiecesInPlay = (board, player_id) => {
@@ -98,8 +116,11 @@ const evaluate = (board, player_id) => {
     }
   }
 
-  // mobility differential
-  score += (countMobility(board, player_id) - countMobility(board, opponent)) * 5
+  // mobility and queen threats (computed together to avoid double iteration)
+  const my_mt = countMobilityAndThreats(board, player_id)
+  const opp_mt = countMobilityAndThreats(board, opponent)
+  score += (my_mt.mobility - opp_mt.mobility) * 5
+  score += (my_mt.threats - opp_mt.threats) * 40
 
   // pieces in play
   score += (countPiecesInPlay(board, player_id) - countPiecesInPlay(board, opponent)) * 10

@@ -9,6 +9,7 @@
 /* Components */
 @import './scrollbar.css';
 @import './game.css';
+@import './arrows.css';
 @import './chat.css';
 @import './online-room.css';
 @import './unrest.css';

@@ -10,7 +10,8 @@
     </div>
     <div class="scroll-box" ref="scroll_box">
       <div class="inner">
-        <hive-board :rows="rows.rows" class="game_board" @click-piece="click" />
+        <hive-board :rows="rows.rows" :arrows="arrows" class="game_board"
+          @click-piece="click" @hover-piece="hoverPiece" @hover-leave="hoverLeave" />
       </div>
     </div>
     <help-text v-bind="board.selected" :board="board" />
@@ -37,6 +38,7 @@ import { useInputMap } from '@unrest/ui'
 
 import B from 'hive.js/Board'
 import toRows from 'hive.js/Board/toRows'
+import getPaths from 'hive.js/Board/paths'
 import sprite from '@/sprite'
 import HiveBoard from './Board.vue'
 import HelpText from './HelpText.vue'
@@ -63,9 +65,29 @@ export default {
     }))
     useInputMap(inputMap)
   },
+  data() {
+    return { hoveredIndex: null }
+  },
   computed: {
     board() {
       return this.room.board
+    },
+    selectedPaths() {
+      const { selected } = this.board
+      if (!selected || selected.piece_id === 'new' || this.board.cantmove[selected.index]) {
+        return null
+      }
+      return getPaths(this.board, selected.piece_id)
+    },
+    arrows() {
+      const { selected } = this.board
+      if (selected && this.hoveredIndex !== null && this.selectedPaths?.[this.hoveredIndex]) {
+        return [{ path: this.selectedPaths[this.hoveredIndex], color: '#4a4' }]
+      }
+      if (!selected && this.board.last?.path) {
+        return [{ path: this.board.last.path, color: '#4af' }]
+      }
+      return []
     },
     turn_text() {
       if (this.room.ai_thinking) return 'Thinking...'
@@ -103,8 +125,15 @@ export default {
       return `player_${number} odd-q ${highlight ? 'highlight-' + color : ''} ${height}`
     },
     click(cell) {
+      this.hoveredIndex = null
       B.click(this.board, cell)
       this.$store.room.sync(this.room.id)
+    },
+    hoverPiece(cell) {
+      this.hoveredIndex = cell.index
+    },
+    hoverLeave() {
+      this.hoveredIndex = null
     },
     deleteSelected() {
       const { piece_id } = this.board.selected

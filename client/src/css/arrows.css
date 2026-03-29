@@ -1,0 +1,20 @@
+.arrow-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 5;
+}
+
+.arrow-overlay polyline {
+  fill: none;
+  stroke-width: 0.35;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.7;
+}
+
+.arrow-overlay circle {
+  opacity: 0.7;
+}

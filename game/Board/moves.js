@@ -353,6 +353,8 @@ const spider = (b, i) => {
 const kung_fu_mantis = (b, i) => (b.stacks[i].length > 1 ? beetle(b, i) : [])
 
 const moves = {
+  makePaths,
+  stepAlongHive,
   stepOnHive,
   stepOffHive,
   centipede,

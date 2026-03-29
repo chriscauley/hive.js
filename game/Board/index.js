@@ -6,6 +6,7 @@ import wouldBreakHive from './wouldBreakHive'
 import specials from './specials'
 import moves from './moves'
 import webs from './webs'
+import getPaths from './paths'
 
 const board_cache = {}
 const PLAYER_COUNT = 2
@@ -180,14 +181,22 @@ const B = {
     } else if (action_type === 'special') {
       const piece_id = args[2]
       const special_args = args[3]
+      const from_index = b.reverse[piece_id]
       const special = B.getSpecials(b, piece_id, special_args)
       if (typeof special !== 'function') {
         throw 'Attempting to doAction on an incomplete special'
       }
       b.last = special()
+      if (b.last.from !== undefined && b.last.to !== undefined) {
+        b.last.path = [b.last.from, b.last.to]
+      }
     } else {
       const new_index = args[2]
       const piece_id = last(b.stacks[index])
+
+      // compute path before mutating board state
+      const allPaths = getPaths(b, piece_id)
+      const path = allPaths[new_index] || [index, new_index]
 
       b.stacks[index].pop()
       b.stacks[new_index] = b.stacks[new_index] || []
@@ -195,6 +204,7 @@ const B = {
       b.last = {
         from: index,
         to: new_index,
+        path,
       }
     }
     b.actions.push(args)

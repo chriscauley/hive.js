@@ -1,0 +1,74 @@
+# systemd unit for hive.unrest.io.
+#
+# Canonical copy lives here in the repo; /etc/systemd/system/hive.service is a
+# copy, not a symlink, so the unit is readable before /home is guaranteed
+# mounted. After editing this file:
+#
+#   sudo cp deploy/hive.service /etc/systemd/system/hive.service
+#   sudo systemctl daemon-reload && sudo systemctl restart hive
+#
+# NOTE: unlike the other apps on this box, hive is NOT a uwsgi/WSGI service.
+# It is Django Channels (ASGI) and serves websockets at /ws/chat/<room>/ for
+# multiplayer games, so it runs under daphne. There is deliberately no
+# uwsgi.ini here -- uwsgi would drop the websocket half of server/routing.py.
+# Consequences of that, versus the uwsgi units:
+#   * no touch-reload. To pick up Python changes: sudo systemctl restart hive
+#     (daphne has no graceful worker respawn; a restart drops open websockets).
+#   * no max-requests / reload-on-rss. MemoryMax below is the only backstop;
+#     an overrun is an OOM kill plus a Restart=on-failure respawn, not a
+#     graceful recycle.
+
+[Unit]
+Description=hive.unrest.io daphne (Django Channels ASGI)
+Documentation=https://github.com/chriscauley/hive.js
+# postgresql.service is a oneshot wrapper that "exits" once the real cluster
+# unit is up, so order against the cluster itself as well.
+# redis-server is required, not just wanted: channels_redis is the channel
+# layer, so websockets fail without it.
+After=network-online.target postgresql.service postgresql@16-main.service redis-server.service
+Wants=network-online.target
+Requires=redis-server.service
+
+[Service]
+Type=simple
+User=clepsy
+Group=clepsy
+WorkingDirectory=/home/clepsy/projects/hive.js
+Environment=DJANGO_SETTINGS_MODULE=server.settings
+ExecStartPre=/bin/mkdir -p /home/clepsy/projects/hive.js/logs
+# Bind to loopback only -- server/nginx.conf terminates TLS and proxies to
+# 127.0.0.1:8239 (a port, not a unix socket, so no chown-socket needed).
+# --proxy-headers makes daphne honour the X-Forwarded-For nginx sets.
+ExecStart=/home/clepsy/projects/hive.js/.venv/bin/daphne \
+    --bind 127.0.0.1 \
+    --port 8239 \
+    --proxy-headers \
+    --access-log /home/clepsy/projects/hive.js/logs/daphne.log \
+    server.routing:application
+
+Restart=on-failure
+RestartSec=5s
+# daphne shuts down cleanly on SIGTERM, so the default KillSignal is correct.
+KillMode=mixed
+TimeoutStopSec=30
+
+# Hardening. Mirrors deploy/weather.service.
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=read-only
+# Everything the app writes -- logs/, .static/, .media/ -- is inside the repo.
+# django-unrest is an editable install from .venv/src/django-unrest, which is
+# also inside this tree, so nothing outside it needs to be writable.
+ReadWritePaths=/home/clepsy/projects/hive.js
+ProtectKernelTunables=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+
+# Kernel-level backstop. A freshly started daphne here sits near 90 MB; the
+# ceiling is higher than weather's 400M because a single daphne process holds
+# every open websocket connection rather than recycling per request.
+MemoryMax=500M
+
+[Install]
+WantedBy=multi-user.target

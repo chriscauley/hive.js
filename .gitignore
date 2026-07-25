@@ -17,3 +17,9 @@ unrest
 .media
 client/ur
 ur
+
+# runtime logs
+# daphne writes logs/daphne.log (see deploy/hive.service). logs/.gitkeep is
+# tracked so the directory exists in a fresh clone before the service starts --
+# systemd's ExecStartPre recreates it too, but only on this host.
+logs/*.log

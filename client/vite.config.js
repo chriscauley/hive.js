@@ -5,6 +5,12 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
+  // Assets are served from /static/, not /. Django's catch-all in server/urls.py
+  // answers every unmatched path with index.html, and nginx only maps /static/
+  // and /media/ -- so a default base of '/' makes the browser fetch
+  // /assets/index-*.js and get HTML back. STATICFILES_DIRS points at ../dist,
+  // so `manage.py collectstatic` publishes this build into .static/.
+  base: '/static/',
   plugins: [vue(), vueJsx(), tailwindcss()],
   server: {
     port: 8283,

@@ -1,7 +1,15 @@
+import { useAuth } from '@unrest/ui'
+
 export default {
   __route: {
     path: '/new/:location/',
-    meta: { authRequired: true },
+    // Same split as OnlineRoom: /new/local/ is offline play and must stay open,
+    // /new/online/ POSTs to /api/room/ and needs an account.
+    beforeEnter: (to) => {
+      if (to.params.location === 'online' && !useAuth().isAuthenticated) {
+        return { path: '/', query: { next: to.fullPath } }
+      }
+    },
   },
   render: () => <div />,
   mounted() {

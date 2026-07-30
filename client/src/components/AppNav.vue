@@ -53,7 +53,7 @@
 
 <script>
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
-import { fetchJson, store } from '@unrest/ui'
+import { fetchJson, store, useAuth } from '@unrest/ui'
 import ImportGame from './ImportGame.vue'
 import ExportGame from './ExportGame.vue'
 import Tutorial from './Tutorial.vue'
@@ -121,6 +121,10 @@ export default {
     logout() {
       fetchJson('/api/auth/logout', { method: 'POST' }).then(() => {
         this.$store.room.setUser(null)
+        // Mirror of the write in Home.vue's makeGuest -- keep the guard's copy
+        // of the user in step, or it goes on admitting a logged-out visitor to
+        // online rooms.
+        useAuth().user = null
         this.$router.push('/')
       })
     },

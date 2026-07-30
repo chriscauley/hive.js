@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { fetchJson } from '@unrest/ui'
+import { fetchJson, useAuth } from '@unrest/ui'
 
 const online = !import.meta.env.VITE_OFFLINE
 
@@ -54,6 +54,12 @@ export default {
     makeGuest() {
       fetchJson('/api/auth/guest', { method: 'POST' }).then((user) => {
         this.$store.room.setUser(user)
+        // The app keeps two copies of "who is signed in": this store, and the
+        // ref inside @unrest/ui that the router guard reads. ensureUser() is
+        // memoized, so it will not re-fetch on its own -- without this write
+        // the guard still sees an anonymous visitor and bounces the ?next=
+        // redirect below straight back here.
+        useAuth().user = user
         if (this.$route.query.next) {
           this.$router.replace(this.$route.query.next)
         }

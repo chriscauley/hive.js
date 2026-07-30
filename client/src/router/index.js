@@ -30,7 +30,10 @@ const router = createRouter({
 })
 
 router.beforeEach(applyMeta)
-router.beforeEach(createAuthGuard())
+// hive signs in at the root, not /login: Home.vue is the login screen and
+// already returns you to ?next= after Play as Guest. The guard's default
+// loginPath of '/login' matches no route here.
+router.beforeEach(createAuthGuard({ loginPath: '/' }))
 router.beforeEach(() => {
   // refresh any api calls after navigation
 })

@@ -30,6 +30,6 @@ export default defineConfig({
       lodash: fileURLToPath(new URL('./node_modules/lodash', import.meta.url)),
       'object-hash': fileURLToPath(new URL('./node_modules/object-hash', import.meta.url)),
     },
-    dedupe: ['vue', 'vue-router', '@headlessui/vue', '@tanstack/vue-query'],
+    dedupe: ['vue', 'vue-router', '@headlessui/vue', '@tanstack/vue-query', '@formkit/vue'],
   },
 })

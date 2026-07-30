@@ -9,6 +9,8 @@
 </template>
 
 <script>
+import { useAuth } from '@unrest/ui'
+
 import NewGame from '@/components/NewGame.vue'
 import Game from '@/components/Game.vue'
 
@@ -16,11 +18,21 @@ export default {
   components: { Game, NewGame },
   __route: {
     path: '/play/:room_id/',
-    meta: { authRequired: true },
+    // NB: this deliberately does not use `meta: { auth: true }`. This route
+    // serves both /play/local/ (offline two-player, must stay open to anyone)
+    // and /play/<id>/ (an online room, which needs an account). meta.auth is a
+    // flat boolean the global guard reads, so the local exception has to be
+    // expressed here, where the param is available.
     beforeEnter: (to, from, next) => {
       const { room_id } = to.params
-      if (room_id !== 'local' && isNaN(Number(room_id))) {
+      if (room_id === 'local') {
+        next()
+      } else if (isNaN(Number(room_id))) {
         next('/')
+      } else if (!useAuth().isAuthenticated) {
+        // Guest accounts count. Without this the room mounts, opens a socket,
+        // and consumers.py closes it for anonymous users with nothing shown.
+        next({ path: '/', query: { next: to.fullPath } })
       } else {
         next()
       }

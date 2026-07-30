@@ -1,7 +1,7 @@
 <template>
   <div v-if="!show_help" class="help-text -closed">
     <div @click="toggle" class="btn -primary circle">
-      <i class="fa fa-question" />
+      <i class="fa-solid fa-question" />
     </div>
   </div>
   <div v-else-if="!board.selected" class="help-text">

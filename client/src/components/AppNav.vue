@@ -1,10 +1,10 @@
 <template>
   <header class="app-nav" :class="{ '-nav-open': nav_open }">
     <button class="navbar__open" @click="nav_open = true">
-      <i class="fa fa-bars" />
+      <i class="fa-solid fa-bars" />
     </button>
     <button class="navbar__close" @click="nav_open = false">
-      <i class="fa fa-close" />
+      <i class="fa-solid fa-xmark" />
     </button>
     <section class="app-nav__left">
       <router-link to="/" class="app-nav__brand">Hive!</router-link>

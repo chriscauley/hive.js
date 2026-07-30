@@ -20,7 +20,7 @@
       <winner v-if="board.winner" :board="board" :room="room" />
       <no-rules v-if="board.rules.no_rules" :deleteSelected="board.selected && deleteSelected" />
       <div v-if="board.error" class="game__status -error">
-        <i class="fa fa-times-circle text-xl mr-2" />
+        <i class="fa-solid fa-circle-xmark text-xl mr-2" />
         {{ board.error }}
       </div>
       <div v-else class="game__status -info">

@@ -23,7 +23,7 @@
         </div>
         {{ tutorial.title }}
         <div class="flex-grow" />
-        <i :class="`fa fa-chevron-${nav_open ? 'up' : 'down'}`" />
+        <i :class="`fa-solid fa-chevron-${nav_open ? 'up' : 'down'}`" />
       </h3>
       <div v-if="nav_open" class="hex-grid -mobile">
         <div class="row" v-for="(row, ir) in getRows(5)" :key="ir">

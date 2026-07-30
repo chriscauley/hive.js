@@ -1,7 +1,7 @@
 <template>
   <div v-if="room" class="ur-chat-box">
     <div v-if="room.disconnected">
-      <i class="fa fa-exclamation-triangle text-red-700 mr-2" />
+      <i class="fa-solid fa-triangle-exclamation text-red-700 mr-2" />
       Unable to connect to server
       <br />
       Will retry every 5 seconds ({{ room.reconnect_tries || 0 }} tries)
@@ -15,7 +15,7 @@
     </div>
     <form @submit="submit" class="text-box">
       <textarea v-model="value" class="input" ref="textarea" @keypress="onKeyPress" />
-      <button type="submit" class="fa fa-send" />
+      <button type="submit" class="fa-solid fa-paper-plane" />
     </form>
   </div>
 </template>

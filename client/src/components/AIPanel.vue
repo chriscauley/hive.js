@@ -1,11 +1,11 @@
 <template>
   <div v-if="!open" class="ai-panel -closed" @click="open = true">
-    <i class="fa fa-bar-chart" />
+    <i class="fa-solid fa-chart-bar" />
   </div>
   <div v-else class="ai-panel">
     <div class="ai-panel__header">
       <span>AI Analysis</span>
-      <button class="btn -sm" @click="open = false"><i class="fa fa-close" /></button>
+      <button class="btn -sm" @click="open = false"><i class="fa-solid fa-xmark" /></button>
     </div>
     <div v-if="!analysis" class="ai-panel__empty">Waiting for AI's first move...</div>
     <template v-else>

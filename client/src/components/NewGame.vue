@@ -11,7 +11,7 @@
           <button :class="btnClass('add')" @click="mode = 'add'">+1</button>
           <button :class="btnClass('remove')" @click="mode = 'remove'">-1</button>
           <button :class="btnClass('trash')" @click="mode = 'trash'">
-            <i class="fa fa-trash" />
+            <i class="fa-solid fa-trash" />
           </button>
         </div>
         <button class="btn -danger" @click="selected_preset = 'classic_hive'">Reset</button>
@@ -67,10 +67,10 @@
         </div>
         <button v-if="can_start" class="btn btn-primary" @click="doStart">Start</button>
         <div v-else class="mt-2 flex items-center">
-          <i class="fa fa-warning text-yellow-500 mr-2" />
+          <i class="fa-solid fa-triangle-exclamation text-yellow-500 mr-2" />
           Waiting for players...
           <div class="btn -primary ml-4" @click="copyUrl">
-            <i class="fa fa-copy mr-1" />
+            <i class="fa-solid fa-copy mr-1" />
             {{ copied ? 'Copied!' : 'Copy url' }}
           </div>
         </div>

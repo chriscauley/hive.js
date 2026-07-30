@@ -1,14 +1,14 @@
 <template>
   <div v-if="error" class="ur-chat-error">
-    <i class="fa fa-exclamation-triangle" :title="error" />
+    <i class="fa-solid fa-triangle-exclamation" :title="error" />
   </div>
   <div v-else-if="collapsed" class="ur-chat-collapsed" @click="toggle">
-    <i class="fa fa-comment" />
+    <i class="fa-solid fa-comment" />
   </div>
   <div v-else class="ur-chat-widget">
     <div class="flex flex-col h-full">
       <div class="menu-bar">
-        <i class="fa fa-minus cursor-pointer mx-1" @click="toggle" />
+        <i class="fa-solid fa-minus cursor-pointer mx-1" @click="toggle" />
       </div>
       <chat-box :room_id="room_id" />
     </div>

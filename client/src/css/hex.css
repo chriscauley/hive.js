@@ -35,16 +35,19 @@
       }
       &[data-count="yes"]:before {
         @apply bg-green-600;
-        font-family: "FontAwesome";
+        font-family: "Font Awesome 6 Free";
+        font-weight: 900;
         content: "\f00c";
       }
       &[data-count="no"]:before {
         @apply bg-red-600;
-        font-family: "FontAwesome";
+        font-family: "Font Awesome 6 Free";
+        font-weight: 900;
         content: "\f00d";
       }
       &[data-count="lock"]:before {
-        font-family: "FontAwesome";
+        font-family: "Font Awesome 6 Free";
+        font-weight: 900;
         content: "\f023";
       }
     }

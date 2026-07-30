@@ -3,9 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="/favicon.ico">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="alternate icon" href="/favicon.ico" sizes="48x48 32x32 16x16">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <title>Hive</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+  <!-- FA6, not FA4: @unrest/ui's icons are all fa-solid/fa-regular and render
+       as nothing under FA4. Its CHANGELOG pins consuming apps to 6.7.2. -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 <body>
   <div id="app"></div>

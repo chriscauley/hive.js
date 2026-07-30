@@ -171,7 +171,8 @@
 [data-web="stack"]:after {
   @apply text-red-600 flex w-full h-full justify-center items-center absolute;
   content: "\f00d";
-  font-family: "FontAwesome";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
   font-size: 4rem;
   pointer-events: none;
 }

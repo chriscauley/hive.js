@@ -24,7 +24,9 @@ body {
   overflow: hidden;
 }
 
-[data-theme="dark"] {
+/* @unrest/ui sets data-theme to "<family>-<mode>" (slate-dark, indigo-light,
+   ...), so match on the mode suffix rather than an exact "dark". */
+[data-theme$="-dark"] {
   .highlight-green {
     @apply bg-green-500;
   }

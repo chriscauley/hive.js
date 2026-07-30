@@ -24,6 +24,13 @@
       <MenuButton class="hui-menu-item">config</MenuButton>
       <MenuItems class="hui-menu-items" @click.stop>
         <div class="p-2">
+          <label class="settings-label">Theme</label>
+          <ThemePicker
+            :family="theme_family"
+            :mode="theme_mode"
+            @update:family="setThemeFamily"
+            @update:mode="setThemeMode"
+          />
           <UnrestSchemaForm v-bind="$store.config.form" />
         </div>
       </MenuItems>
@@ -53,13 +60,25 @@
 
 <script>
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
-import { fetchJson, store, useAuth } from '@unrest/ui'
+import { fetchJson, store, useAuth, useTheme } from '@unrest/ui'
 import ImportGame from './ImportGame.vue'
 import ExportGame from './ExportGame.vue'
 import Tutorial from './Tutorial.vue'
 
 export default {
   components: { Menu, MenuButton, MenuItems, MenuItem },
+  setup() {
+    // Returned flat, not as a nested `theme` object: Vue only auto-unwraps
+    // refs at the top level of what setup() returns, so theme.family would
+    // need .value in the template.
+    const theme = useTheme()
+    return {
+      theme_family: theme.family,
+      theme_mode: theme.mode,
+      setThemeFamily: theme.setFamily,
+      setThemeMode: theme.setMode,
+    }
+  },
   data() {
     return { nav_open: false }
   },

@@ -123,6 +123,11 @@ EMAIL_BACKEND = "mailer.backend.DbBackend"
 
 UNREST_DEV_PORT = 8005
 
+# Lets unrest_api's /api/auth/settings read and write the theme. Only the
+# fields named in the form's Meta are exposed; everything else in a PUT body is
+# ignored.
+UNREST_USER_SETTINGS_FORM = 'server.user.forms.UserSettingsForm'
+
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, '../.static')

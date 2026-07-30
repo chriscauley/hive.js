@@ -120,7 +120,7 @@
   }
 }
 
-[data-theme="dark"] .hex {
+[data-theme$="-dark"] .hex {
   &[class*="hex-empty"] {
     filter: brightness(0.9);
   }

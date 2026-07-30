@@ -13,12 +13,14 @@ body {
   color: #e8f0eb;
 }
 
-[data-theme="dark"] body {
+[data-theme$="-dark"] body {
   background-color: #284c3b;
 }
 
+/* Only reachable in the moment before src/theme.js sets data-theme, or if the
+   bundle fails to run at all. */
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) body {
+  :root:not([data-theme$="-light"]) body {
     background-color: #284c3b;
   }
 }

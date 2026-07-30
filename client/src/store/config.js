@@ -1,9 +1,10 @@
 import { useLocalStorage } from '@unrest/ui'
 
+// NB: `theme` here is the piece art style (see .theme-carbon in pieces.css),
+// not the colour scheme. Light/dark lives in @unrest/ui now -- see src/theme.js.
 const initial = {
   show_help: true,
   theme: 'classic',
-  darkmode: true,
   hex_angle: 'flat',
   zoom: 0,
 
@@ -15,10 +16,6 @@ const schema = {
   type: 'object',
   required: ['theme'],
   properties: {
-    darkmode: {
-      title: 'Dark Mode',
-      type: 'boolean',
-    },
     theme: {
       title: 'Theme',
       type: 'string',
@@ -45,19 +42,10 @@ const schema = {
   },
 }
 
-const applyTheme = (darkmode) => {
-  document.documentElement.setAttribute('data-theme', darkmode ? 'dark' : 'light')
-}
-
 export default () => {
   const config = useLocalStorage('config', initial)
   config.schema = schema
   const { state, save } = config
-  const onChange = (data) => {
-    save(data)
-    applyTheme(state.darkmode)
-  }
-  config.form = { schema, state, onChange }
-  applyTheme(state.darkmode)
+  config.form = { schema, state, onChange: save }
   return config
 }

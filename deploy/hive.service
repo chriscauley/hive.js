@@ -58,8 +58,10 @@ PrivateTmp=true
 ProtectSystem=full
 ProtectHome=read-only
 # Everything the app writes -- logs/, .static/, .media/ -- is inside the repo.
-# django-unrest is an editable install from .venv/src/django-unrest, which is
-# also inside this tree, so nothing outside it needs to be writable.
+# unrest_api is an editable install from ~/projects/unrest-server, which is
+# OUTSIDE this tree: ProtectHome=read-only still lets it be imported, and
+# Python tolerates being unable to write __pycache__ there, so it needs no
+# ReadWritePaths entry of its own.
 ReadWritePaths=/home/clepsy/projects/hive.js
 ProtectKernelTunables=true
 ProtectControlGroups=true

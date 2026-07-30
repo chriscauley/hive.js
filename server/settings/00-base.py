@@ -21,7 +21,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'channels',
     'mailer',
-    'unrest',
+    'unrest_api',
 
     'server',
     'server.user',
@@ -34,7 +34,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'unrest.middleware.JsonBodyMiddleware',
+    'unrest_api.middleware.JsonBodyMiddleware',
 ]
 
 ROOT_URLCONF = 'server.urls'
@@ -71,8 +71,8 @@ CHANNEL_LAYERS = {
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, '..', 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'hive',
     },
 }
 

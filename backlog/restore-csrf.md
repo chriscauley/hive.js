@@ -1,8 +1,12 @@
 # Turn CSRF protection back on
 
-**CSRF protection is currently disabled site-wide on hive.unrest.io.**
-`django.middleware.csrf.CsrfViewMiddleware` is absent from `MIDDLEWARE` in
-`server/settings/00-base.py`.
+**DONE (2026-07-30).** `django.middleware.csrf.CsrfViewMiddleware` is back in
+`MIDDLEWARE` in `server/settings/00-base.py`, restored to its original slot
+between `CommonMiddleware` and `AuthenticationMiddleware`.
+
+It was a one-line settings change — no client change and no rebuild. Kept here
+for the reasoning and for the `join_room` issue at the bottom, which is **not**
+fixed.
 
 ## How it got this way
 
@@ -15,36 +19,41 @@ It went unnoticed because nothing fails when CSRF is off — the site behaves
 normally, it just accepts cross-origin writes. Found on 2026-07-30 while fixing
 the 502 (bd14671), which was a separate fallout of the same commit.
 
-## Why this is likely a small job now
+## Why it was a small job
 
-The client half is already built, which is the part that would normally make
-this annoying. `@unrest/ui`'s `fetchJson` (`~/projects/unrest-ui/src/api.js`)
-already reads the `csrftoken` cookie and sets the `X-CSRFToken` header on every
-mutation, and **every** API call in `client/src/` goes through `fetchJson` —
-there are only four call sites (`store/room.js` ×2, `views/Home.vue`,
-`components/AppNav.vue`), no raw `fetch`.
+The client half was already built. `@unrest/ui`'s `fetchJson`
+(`~/projects/unrest-ui/src/api.js`) already reads the `csrftoken` cookie and
+sets the `X-CSRFToken` header on every mutation, and **every** API call in
+`client/src/` goes through `fetchJson` — four call sites (`store/room.js` ×2,
+`views/Home.vue`, `components/AppNav.vue`), no raw `fetch`.
 
-The token also already reaches the browser: `unrest_api`'s `me_view` is
-decorated `@ensure_csrf_cookie`, and `client/src/store/room.js:190` calls
-`fetchJson('/api/auth/me')` on load — so the cookie is set before any mutation
-fires.
+The token also already reached the browser, and the ordering is guaranteed
+rather than lucky:
 
-So the minimum change may be one line of settings. Verify rather than assume.
+    router.beforeEach(createAuthGuard())   // router/index.js:33
+      -> await ensureUser()                // unrest-ui/src/auth.js:105
+      -> fetchJson('/api/auth/me')         // unrest-ui/src/auth.js:15
+      -> me_view is @ensure_csrf_cookie    -> csrftoken cookie set
+    ...navigation resolves, THEN...
+    NewGameRedirect.mounted()              // views/NewGameRedirect.jsx:7
+      -> $store.room.save({})              -> POST /api/room/ with X-CSRFToken
 
-## Steps
+The guard is awaited *before* navigation completes and `mounted()` only runs
+after, so the cookie is always present by the time the one protected mutation
+fires. That is why no `configureApi({ csrfUrl })` call was needed and the
+client did not have to be rebuilt.
 
-- [ ] Add `'django.middleware.csrf.CsrfViewMiddleware'` back to `MIDDLEWARE` in
-      `server/settings/00-base.py`. Order matters: after `SessionMiddleware`,
-      before `AuthenticationMiddleware` — i.e. restore it to the slot it was
-      removed from.
-- [ ] Consider also calling `configureApi({ router, csrfUrl: '/api/auth/csrf/',
-      loginPath: '/login' })` in `client/src/main.js` (imported from
-      `@unrest/ui`, which currently isn't called at all). Not strictly required
-      given `@ensure_csrf_cookie` on `me`, but it makes `fetchJson` fetch a
-      token on demand instead of depending on `/api/auth/me` having run first —
-      worth having if a mutation can ever be the session's first request.
-      Requires `cd client && npm run build`.
-- [ ] `systemctl restart hive` (daphne — **drops every open websocket**).
+## What was done
+
+- [x] Added `'django.middleware.csrf.CsrfViewMiddleware'` back to `MIDDLEWARE`
+      in `server/settings/00-base.py`, in its original slot after
+      `CommonMiddleware` and before `AuthenticationMiddleware`.
+- [ ] *Not done, and not needed:* calling `configureApi({ router, csrfUrl:
+      '/api/auth/csrf/', loginPath: '/login' })` in `client/src/main.js`
+      (currently never called). The trace above makes it redundant. Worth
+      revisiting only if a route is ever added that can fire a mutation without
+      passing through the auth guard first.
+- [x] `systemctl restart hive`.
 
 ## What to actually exercise
 
@@ -59,10 +68,19 @@ passing test.
 
 Websockets are unaffected; Django's CSRF middleware doesn't apply to them.
 
-- [ ] Log in → create an online room → confirm 200, not 403.
-- [ ] Confirm a POST to `/api/room/` with no `X-CSRFToken` now gets 403 — the
-      point is that it *starts* failing. If it still succeeds, the middleware
-      isn't active.
+Verified against the live site after the restart, driving it the way the
+browser does (`/api/auth/me` first to seed the cookie, then the POST):
+
+| check | result |
+| --- | --- |
+| `/api/auth/me` sets `csrftoken` cookie | yes |
+| `POST /api/room/` **without** token | **403** — protection is active |
+| `POST /api/room/` **with** token | 200 |
+| `GET /` | 200 |
+| `POST /api/auth/guest` | 201 (still `@csrf_exempt`, as intended) |
+
+- [ ] Still worth a human doing it in a real browser: log in → create an online
+      room → play a move. The above is protocol-level.
 
 ## While you're here: `join_room` mutates on GET
 

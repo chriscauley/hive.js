@@ -5,7 +5,6 @@ like today, what it should look like after, and how to tell it worked.
 
 | Task | Size | Depends on |
 | --- | --- | --- |
-| [Turn CSRF protection back on](restore-csrf.md) | small | — |
 | [Fold `docs/` into `backlog/` and delete it](remove-docs-directory.md) | small | — |
 | [Finish the unrest-server migration](unrest-migration.md) | medium (server rename done; SPA catch-all + pruning left) | — |
 | [Login = email code + play as guest](email-login.md) | medium | unrest-migration |
@@ -13,9 +12,10 @@ like today, what it should look like after, and how to tell it worked.
 | [Animate piece movement](animate-piece-movement.md) | medium | — |
 | [Autoplaying game behind the login screen](login-attract-mode.md) | small | replays (for the game list), email-login (for the screen) |
 
-Suggested order: **restore-csrf** first — it is a live security hole on a
-deployed site and is now believed to be roughly a one-line fix (see the note).
-Then **remove-docs-directory** (it's five minutes and it
+Done: [restore-csrf](restore-csrf.md) (2026-07-30) — kept for its notes on the
+token flow and for the unfixed `join_room`-mutates-on-GET issue.
+
+Suggested order: **remove-docs-directory** first (it's five minutes and it
 un-duplicates the notes this folder now competes with), then
 **unrest-migration → email-login**. **replays** and
 **animate-piece-movement** are independent and can go at any time.

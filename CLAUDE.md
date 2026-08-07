@@ -39,6 +39,12 @@ server/                # Django backend
   user/                # Auth app
 ```
 
+## Backlog
+
+`backlog/README.md` indexes the open tasks and explains how incoming notes
+(`backlog/notes/`, written by `unrest_api.backlog`) get promoted into them. Read
+it before picking up work here.
+
 ## How the Game Works
 
 1. Players create/join a room and pick a piece set

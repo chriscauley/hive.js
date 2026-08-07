@@ -3,6 +3,9 @@
 One file per task. Each is written to be picked up cold — what the code looks
 like today, what it should look like after, and how to tell it worked.
 
+The `backlog/*.md` files here are the curated end of the pipeline. The other end
+is `backlog/notes/` — see [Incoming notes](#incoming-notes) below.
+
 | Task | Size | Depends on |
 | --- | --- | --- |
 | [Fold `docs/` into `backlog/` and delete it](remove-docs-directory.md) | small | — |
@@ -29,6 +32,18 @@ need `systemctl restart hive`, **which drops every open websocket** — restart
 when nobody is mid-game. Frontend changes need `cd client && npm run build`
 (Vite, output to `dist/`, served by nginx directly). Never `npm run dev` on this
 box.
+
+## Incoming notes
+
+`backlog/notes/` is the inbox, written by `unrest_api.backlog` from the admin
+`notes` view: `YYYY-MM-DD-slug.md` plus images in `backlog/notes/img/`. Nobody
+hand-authors those — the library owns the layout and makes the directories on
+first write. It arrives with [unrest-migration](unrest-migration.md); until then
+the folder won't exist.
+
+A note is raw input, not a task. Either it gets fixed immediately and deleted in
+the same commit as the fix, or it gets promoted into a `backlog/<slug>.md` task
+file here, added to the table above, and deleted. Notes shouldn't accumulate.
 
 ## Why this lives at `backlog/` and not `docs/backlog/`
 

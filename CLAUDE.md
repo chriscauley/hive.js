@@ -39,6 +39,38 @@ server/                # Django backend
   user/                # Auth app
 ```
 
+## Serving
+
+Live at **https://hive.unrest.io**, from the production checkout at
+`~/projects/hive.js` on `skade`. nginx terminates TLS and proxies everything
+except `/static/` and `/media/` to `127.0.0.1:8239`.
+
+**Unlike every other app on this box, hive is not uwsgi.** It is Django Channels
+(ASGI) serving websockets at `/ws/chat/<room>/`, so it runs under **daphne** as
+the systemd unit `hive`. There is deliberately no `uwsgi.ini` — uwsgi would drop
+the websocket half of `server/routing.py`. Two consequences:
+
+- **No `touch-reload`.** To pick up Python changes: `sudo systemctl restart hive`.
+  daphne has no graceful worker respawn, so a restart drops open websockets and
+  ends any game in progress.
+- **No `max-requests` / `reload-on-rss`.** `MemoryMax` in the unit is the only
+  backstop, and an overrun is an OOM kill plus a `Restart=on-failure` respawn,
+  not a graceful recycle.
+
+The frontend is *not* served off the build directory the way weather and tempo
+are, so a build alone changes nothing live: `vite build` writes `dist/`, which is
+a `STATICFILES_DIRS` entry, and `collectstatic` copies it into `.static/` — the
+directory nginx actually reads. Both steps are needed.
+
+`deploy/hive.service` is the canonical unit, but `/etc/systemd/system/hive.service`
+is a **copy, not a symlink** (so the unit is readable before `/home` is
+guaranteed mounted). After editing it, `sudo cp` it into place and
+`daemon-reload`. The unit's own header comments carry the rest.
+
+`bin/deploy` predates systemd and ends by running daphne in the foreground — it
+would collide with the running unit on port 8239. Use it as a checklist, not a
+script.
+
 ## Backlog
 
 `backlog/README.md` indexes the open tasks and explains how incoming notes

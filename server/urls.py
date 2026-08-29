@@ -9,6 +9,8 @@ index = lambda request: HttpResponse(open('dist/index.html').read(), content_typ
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/auth/', include('unrest_api.urls')),
+    # Superuser scratchpad: writes notes + screenshots into ./backlog/notes/
+    path('api/backlog/', include('unrest_api.backlog')),
     path('api/room/', new_room),
     path('api/room/<room_id>/', join_room),
     re_path('', index),

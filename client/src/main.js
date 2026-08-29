@@ -3,6 +3,29 @@ import { plugin as formkit, defaultConfig } from '@formkit/vue'
 import '@formkit/themes/genesis'
 import UnrestUi from '@unrest/ui'
 import '@unrest/ui/style.css'
+// Bundled, not from cdnjs: as a <link> in <head> both of these were
+// render-blocking on a third party, and @unrest/ui no longer ships the
+// webfonts it names in --font-sans/--font-mono. FA6, not FA7: @unrest/ui's
+// icons are fa-solid/fa-regular and its CHANGELOG pins consumers to 6.7.2.
+import '@fortawesome/fontawesome-free/css/fontawesome.min.css'
+import '@fortawesome/fontawesome-free/css/solid.min.css'
+import '@fortawesome/fontawesome-free/css/regular.min.css'
+import '@fontsource/inter/latin-400.css'
+import '@fontsource/inter/latin-500.css'
+import '@fontsource/inter/latin-600.css'
+import '@fontsource/inter/latin-700.css'
+import '@fontsource/inter/latin-ext-400.css'
+import '@fontsource/inter/latin-ext-500.css'
+import '@fontsource/inter/latin-ext-600.css'
+import '@fontsource/inter/latin-ext-700.css'
+import '@fontsource/jetbrains-mono/latin-400.css'
+import '@fontsource/jetbrains-mono/latin-500.css'
+import '@fontsource/jetbrains-mono/latin-600.css'
+import '@fontsource/jetbrains-mono/latin-700.css'
+import '@fontsource/jetbrains-mono/latin-ext-400.css'
+import '@fontsource/jetbrains-mono/latin-ext-500.css'
+import '@fontsource/jetbrains-mono/latin-ext-600.css'
+import '@fontsource/jetbrains-mono/latin-ext-700.css'
 
 import { useAuth } from '@unrest/ui'
 
